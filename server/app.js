@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 // uncomment after placing your favicon in /public
@@ -16,6 +13,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Includes all routes
+var router = require('./router')(app);
 
 // development error handler
 // will print stacktrace
@@ -51,6 +51,5 @@ if(app.get('env') === 'production') {
     });
   });
 }
-
 
 module.exports = app;
