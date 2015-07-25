@@ -14,14 +14,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM('active','inactive'),
       allowNull: true,
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
     carId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -29,6 +21,10 @@ module.exports = function(sequelize, DataTypes) {
     driverId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.STRING,
+      allowNull: true,
     }
   });
 };

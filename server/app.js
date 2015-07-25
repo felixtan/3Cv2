@@ -14,9 +14,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Includes all routes
-var router = require('./router')(app);
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -51,5 +48,8 @@ if(app.get('env') === 'production') {
     });
   });
 }
+
+// Includes all routes
+var router = require('./router')(app);
 
 module.exports = app;

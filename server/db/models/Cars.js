@@ -1,11 +1,9 @@
+'use strict';
+
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Cars', { 
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true
-    },
     tlcNumber: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -22,21 +20,21 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: true,
     },
-    ownerId: {
+    userId: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    notes: {
+    description: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
     }
+    // createdAt: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    // },
+    // updatedAt: {
+    //   type: DataTypes.DATE,
+    //   allowNull: false,
+    // }
   });
 };
