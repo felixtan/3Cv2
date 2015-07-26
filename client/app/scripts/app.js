@@ -22,17 +22,12 @@ angular
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
-      .when('/signup', {
-        templateUrl: 'views/signup.html',
-        controller: 'SignupCtrl',
-        controllerAs: 'signup'
+        controllerAs: 'main',
+        resolve: {
+          carsRespObj: function(carService) {
+            return carService.getCars();
+          }
+        }
       })
       .otherwise({
         redirectTo: '/'
