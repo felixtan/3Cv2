@@ -1,6 +1,6 @@
 'use strict';
 
-var Drivers = require('../../db/models').Drivers;
+var Drivers = require('../../db/models').Driver;
 
 module.exports = {
 
@@ -43,6 +43,16 @@ module.exports = {
             // userId: req.user.customData._id
         })
         .then(function(driver) {
+            /**
+             * If carId is defined, then associate the new driver with
+             * the car.
+             */ 
+            if(req.body.carId !== null && typeof req.body.carId !== 'undefined') {
+                driver.addCar([req.body.carId]).then(function() {
+                    console.log('Driver ' + driver.id + ' is associated with Car ' + req.body.carId);
+                });    
+            }
+
             res.json(driver.dataValues);
         })
         .catch(function(err) {

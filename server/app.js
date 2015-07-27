@@ -49,6 +49,8 @@ if(app.get('env') === 'production') {
   });
 }
 
+app.set('models', require('./db/models'));
+
 // Includes all routes
 var router = require('./router')(app);
 

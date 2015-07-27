@@ -11,14 +11,17 @@ var db = {};
 fs.readdirSync(__dirname).filter(function(file) {
  return (file.indexOf(".") !== 0) && (file !== "index.js");
 }).forEach(function(file) {
-    console.log(path.join(__dirname, file));
  var model = sequelize["import"](path.join(__dirname, file));
  db[model.name] = model;
 });
- 
+
+db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
+db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
+
 Object.keys(db).forEach(function(modelName) {
  if ("associate" in db[modelName]) {
- db[modelName].associate(db);
+    db[modelName].associate(db);
+    console.log('doing something with associations');
  }
 });
  

@@ -1,13 +1,13 @@
 'use strict';
 
-var Cars = require('../../db/models').Cars;
+var Cars = require('../../db/models').Car;
+// var Cars = app.get('models').Car;
 
 module.exports = {
 
     getCars: function(req, res) {
         Cars.findAll().then(function(cars) {
             res.json(cars);
-            // return cars;
         })
         .catch(function(err) {
             console.error(err);
@@ -40,6 +40,16 @@ module.exports = {
             description: req.body.description
         })
         .then(function(car) {
+            /**
+             * If driverId is defined, then associate the new car with
+             * the driver.
+             */ 
+            if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
+                car.addDriver([req.body.driverId]).then(function() {
+                    console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
+                });    
+            }
+
             res.json(car.dataValues);
         })
         .catch(function(err) {
@@ -83,5 +93,17 @@ module.exports = {
             console.error(err);
             res.status(500).json({ error: err });
         });
+    },
+
+    disassociateDrivers: function(req, res) {
+        // untested function
+
+        /**
+         * 1. Takes an array of driver ids.
+         * 2. Performs difference operation between array of all driver ids and input array.
+         * 3. Call cars.setDrivers()
+         */
+
+
     }
 };

@@ -3,21 +3,29 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Cars', { 
-    tlcNumber: {
+  return sequelize.define('Driver', { 
+    givenName: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    licensePlateNumber: {
+    surName: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    mileage: {
-      type: DataTypes.INTEGER,
+    driversLicenseNum: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
-    oilChangeRequired: {
-      type: DataTypes.BOOLEAN,
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    address: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     userId: {
@@ -28,13 +36,5 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT,
       allowNull: true,
     }
-    // createdAt: {
-    //   type: DataTypes.DATE,
-    //   allowNull: false,
-    // },
-    // updatedAt: {
-    //   type: DataTypes.DATE,
-    //   allowNull: false,
-    // }
   });
 };
