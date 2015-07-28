@@ -12,10 +12,9 @@ angular.module('clientApp')
 
     // Public API here
     return {
-      getCars: function () {
-        return $http.get('/api/cars')
+      getCarsnDrivers: function () {
+        return $http.get('/api/assignments')
                   .success(function(data) {
-                    console.log('returned from carService.getCars() call:', data);
                     return data;
                   })
                   .error(function(data) {

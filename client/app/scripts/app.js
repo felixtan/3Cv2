@@ -24,8 +24,8 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
-          carsRespObj: function(carService) {
-            return carService.getCars();
+          mainDataService: function(carService) {
+            return carService.getCarsnDrivers();
           }
         }
       })

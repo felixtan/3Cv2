@@ -6,12 +6,12 @@
 
 var cars = require('./routes/cars');
 var drivers = require('./routes/drivers');
-var main = require('./routes/main');
+var assignments = require('./routes/assignments');
 
 module.exports = function (app) {
 
     // Dashboard/Main UI
-    app.get('/', main.render);
+    app.get('/api/assignments', assignments.getAss);
 
     // Car API routes
     app.get('/api/cars', cars.getCars);

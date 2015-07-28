@@ -29,7 +29,7 @@ var server = http.createServer(app);
 // multiple connections to the database
 var models = app.get('models');
 
-models.sequelize.sync({force: true}).then(function() {
+models.sequelize.sync().then(function() {
   console.log('Connected to the threec database.');
   server.listen(port);
 });

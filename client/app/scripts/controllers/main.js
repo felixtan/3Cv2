@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function (carsRespObj) {
-    var cars =  carsRespObj.data;
+  .controller('MainCtrl', function (mainDataService) {
+    var cars =  mainDataService.data;
     this.cars = cars;
   });
