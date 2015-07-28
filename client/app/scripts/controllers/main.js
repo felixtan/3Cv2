@@ -8,7 +8,6 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function (mainDataService) {
-    var cars =  mainDataService.data;
-    this.cars = cars;
+  .controller('MainCtrl', function (mainViewData) {
+    this.cars =  mainViewData.data;
   });

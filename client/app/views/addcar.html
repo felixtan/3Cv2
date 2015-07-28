@@ -1,0 +1,34 @@
+<link rel="stylesheet" type="text/css" href="../styles/partials/_addcar.scss">
+
+<form novalidate role='form'>
+    <div class='form-group'>
+        <label for='tlcNumber'>TLC Number</label>
+        <input type='text' class='form-control' ng-model='newCarForm.data.tlcNumber' placeholder=''>
+    </div>
+    <div class='form-group'>
+        <label for='licensePlateNumber'>License Plate Number</label>
+        <input type='text' class='form-control' ng-model='newCarForm.data.licensePlateNumber' placeholder=''>
+    </div>
+    <div class='form-group'>
+        <label for='mileage'>Mileage</label>
+        <input type='text' class='form-control' ng-model='newCarForm.data.mileage' placeholder=''>
+    </div>
+    <div class='form-group'>
+        <label for='driver'>Driver</label>
+        <select class='form-control' ng-model='newCarForm.data.driver' placeholder='Select Driver'>
+            <option> - </option>
+            <option ng-repeat='driver in newCarForm.drivers' value='{{ driver.id }}'>{{ driver.givenName }}</option>
+        </select>
+    </div>
+
+    <label for='description'>Description</label>
+    <textarea ng-model='newCarForm.data.description' type='text' class='form-control' rows='5'>
+    </textarea>
+    <br>
+    <button type='submit' class='btn btn-success' ng-click='newCarForm.saveCar()'>Submit</button>
+     <button type='submit' class='btn btn-danger' ng-click='newCarForm.reset()'>Reset</button>
+</form>
+
+<div>
+    {{ newCarForm.data.driver }}
+</div>

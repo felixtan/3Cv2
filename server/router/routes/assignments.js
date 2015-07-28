@@ -33,6 +33,31 @@ module.exports = {
                 }
             });
             res.json(minimizedData);
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });;
+    },
+
+    getDrivers: function(req, res) {
+        Drivers.findAll().then(function(drivers) {
+            var minimizedData = drivers;
+            minimizedData.forEach(function(driver) {
+                delete driver.dataValues.driversLicenseNum;
+                delete driver.dataValues.phoneNumber;
+                delete driver.dataValues.email;
+                delete driver.dataValues.address;
+                delete driver.dataValues.description;
+                delete driver.dataValues.userId;
+                delete driver.dataValues.createdAt;
+                delete driver.dataValues.updatedAt;
+            });
+            res.json(minimizedData);
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
         });
     }
 }

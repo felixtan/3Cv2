@@ -24,8 +24,18 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
-          mainDataService: function(assignmentService) {
-            return assignmentService.getAss();
+          mainViewData: function(dataService) {
+            return dataService.getAss();
+          }
+        }
+      })
+      .when('/add-car', {
+        templateUrl: 'views/addcar.html',
+        controller: 'AddcarCtrl',
+        controllerAs: 'newCarForm',
+        resolve: {
+          addCarViewData: function(dataService) {
+            return dataService.getDrivers();
           }
         }
       })
