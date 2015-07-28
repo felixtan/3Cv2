@@ -24,8 +24,8 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
-          mainDataService: function(carService) {
-            return carService.getCarsnDrivers();
+          mainDataService: function(assignmentService) {
+            return assignmentService.getAss();
           }
         }
       })

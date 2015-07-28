@@ -8,11 +8,11 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('carService', function ($http) {
+  .factory('assignmentService', function ($http) {
 
     // Public API here
     return {
-      getCarsnDrivers: function () {
+      getAss: function () {
         return $http.get('/api/assignments')
                   .success(function(data) {
                     return data;
