@@ -53,8 +53,8 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="#/">Dashboard<span class="sr-only">(current)</span></a></li>
-            <li><a href="#/add-car">Add Car</a></li>
-            <li><a href="#/">Analytics</a></li>
+            <li><a href="#/add-car">New Car</a></li>
+            <li><a href="#/add-driver">New Driver</a></li>
             <li><a href="#/">Export</a></li>
           </ul>
         </div>
@@ -100,8 +100,10 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/services/dataservice.js"></script>
         <script src="scripts/controllers/addcar.js"></script>
+        <script src="scripts/controllers/adddriver.js"></script>
         <!-- endbuild -->
 
+    <!-- Applies css to side nav active page element -->
     <script type="text/javascript">
       $(document).ready(function() {
         $('.nav.nav-sidebar li').each(function() {

@@ -14,7 +14,6 @@ angular.module('clientApp')
     
     this.reset = function() {
         this.data = {};
-        console.log('form reset');
     };
 
     this.saveCar = function() {
@@ -27,8 +26,7 @@ angular.module('clientApp')
         })
         .success(function(data) {
             // TODO: create modal popup telling the user 
-            console.log('New car created.');
-            console.log('context:', this);
+            console.log('New car saved.');
         })
         .error(function(data) {
             // TODO: better handle errors

@@ -59,5 +59,25 @@ module.exports = {
             console.error(err);
             res.status(500).json({ error: err });
         });
+    },
+
+    getCars: function(req, res) {
+        Cars.findAll().then(function(cars) {
+            var minimizedData = cars;
+            minimizedData.forEach(function(car) {
+                delete car.dataValues.updatedAt;
+                delete car.dataValues.createdAt;
+                delete car.dataValues.licensePlateNumber;
+                delete car.dataValues.mileage;
+                delete car.dataValues.description;
+                delete car.dataValues.userId;
+                delete car.dataValues.oilChangeRequired;
+            });
+            res.json(minimizedData);
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });
     }
 }

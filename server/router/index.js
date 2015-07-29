@@ -13,6 +13,7 @@ module.exports = function (app) {
     // Dashboard/Main UI
     app.get('/api/assignments', assignments.getAss);
     app.get('/api/assignments/drivers', assignments.getDrivers);
+    app.get('/api/assignments/cars', assignments.getCars);
 
     // Car API routes
     app.get('/api/cars', cars.getCars);

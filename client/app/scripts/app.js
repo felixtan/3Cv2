@@ -39,6 +39,16 @@ angular
           }
         }
       })
+      .when('/add-driver', {
+        templateUrl: 'views/adddriver.html',
+        controller: 'AddDriverCtrl',
+        controllerAs: 'newDriverForm',
+        resolve: {
+          addDriverViewData: function(dataService) {
+            return dataService.getCars();
+          }
+        }
+      })
       .otherwise({
         redirectTo: '/'
       });

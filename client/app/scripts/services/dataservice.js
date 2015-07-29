@@ -30,6 +30,17 @@ angular.module('clientApp')
                   .error(function(data) {
                     console.error(data);
                   });
+      },
+
+      getCars: function () {
+        return $http.get('/api/assignments/cars')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(data) {
+                    console.error(data);
+                  });
       }
+      
     };
   });
