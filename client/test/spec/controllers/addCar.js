@@ -17,7 +17,4 @@ describe('Controller: AddcarCtrl', function () {
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(AddcarCtrl.awesomeThings.length).toBe(3);
-  });
 });
