@@ -27,12 +27,11 @@ angular.module('clientApp')
         })
         .success(function(data) {
             // TODO: create modal popup telling the user 
-            this.data = {};
             console.log('New car created.');
+            console.log('context:', this);
         })
         .error(function(data) {
             // TODO: better handle errors
-            this.data = {};
             console.error(data);
         });
     };

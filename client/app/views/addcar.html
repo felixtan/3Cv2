@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../styles/partials/_addcar.scss">
 
-<form novalidate role='form'>
+<form novalidate role='form' id='newCarForm'>
     <div class='form-group'>
         <label for='tlcNumber'>TLC Number</label>
         <input type='text' class='form-control' ng-model='newCarForm.data.tlcNumber' placeholder=''>
@@ -25,10 +25,14 @@
     <textarea ng-model='newCarForm.data.description' type='text' class='form-control' rows='5'>
     </textarea>
     <br>
-    <button type='submit' class='btn btn-success' ng-click='newCarForm.saveCar()'>Submit</button>
-     <button type='submit' class='btn btn-danger' ng-click='newCarForm.reset()'>Reset</button>
+    <button type='submit' class='btn btn-success submitbtn' ng-click='newCarForm.saveCar()'>Submit</button>
+     <button type='reset' class='btn btn-danger' ng-click='newCarForm.reset()'>Reset</button>
 </form>
 
-<div>
-    {{ newCarForm.data.driver }}
-</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.submitbtn').click(function() {
+            $('#newCarForm')[0].reset();
+        });
+    });
+</script>
