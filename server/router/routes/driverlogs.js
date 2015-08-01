@@ -10,8 +10,6 @@ module.exports = {
     getDriversLogs: function(req, res) {
         // gets logs for all drivers
         Driver.findAll({ include: DriverLog }).then(function(drivers) {
-            var data = {};
-            
             res.json(drivers);
         })
         .catch(function(err) {

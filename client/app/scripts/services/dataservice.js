@@ -42,8 +42,8 @@ angular.module('clientApp')
                   });
       },
 
-      getDriversLogs: function () {
-        return $http.get('/api/logs/drivers')
+      getPtgLogs: function () {
+        return $http.get('/api/logs/ptg')
                   .success(function(data) {
                     return data;
                   })

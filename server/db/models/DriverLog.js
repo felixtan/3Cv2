@@ -4,10 +4,22 @@
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('DriverLog', {
-        week: {
+        date: {
             type: DataTypes.DATE,
             allowNull: false
-        }, 
+        },
+        dateInMs: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+        },
+        givenName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        surName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         uberRevenue: {
             type: DataTypes.INTEGER,
             allowNull: true

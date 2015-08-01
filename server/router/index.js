@@ -8,8 +8,12 @@ var cars = require('./routes/cars');
 var drivers = require('./routes/drivers');
 var assignments = require('./routes/assignments');
 var driverLogs = require('./routes/driverlogs');
+var ptgLogs = require('./routes/ptglogs');
 
 module.exports = function (app) {
+
+    // PTG logs
+    app.get('/api/logs/ptg', ptgLogs.getLogs);
 
     // Driver logs
     app.get('/api/logs/drivers', driverLogs.getDriversLogs);
