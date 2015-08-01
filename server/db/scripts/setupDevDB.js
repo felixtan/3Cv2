@@ -101,7 +101,7 @@ module.exports = {
                 uberRevenue: 1593,
                 tollCosts: 123,
                 gasCosts: 140,
-                desposit: 0,
+                deposit: 0,
                 hours: 45,
                 acceptRate: 98
         },
@@ -111,7 +111,7 @@ module.exports = {
                 uberRevenue: 1061,
                 tollCosts: 108,
                 gasCosts: 164,
-                desposit: 75,
+                deposit: 75,
                 hours: 24.4,
                 acceptRate: 98
         },
@@ -121,7 +121,7 @@ module.exports = {
                 uberRevenue: 1388,
                 tollCosts: 71,
                 gasCosts: 276,
-                desposit: 75,
+                deposit: 75,
                 hours: 46.4,
                 acceptRate: 81
         };

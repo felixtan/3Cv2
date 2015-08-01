@@ -4,6 +4,7 @@ var models = require('../../db/models');
 var sequelize = models.sequelize;
 var PtgLogs = models.PtgLog;
 var DriverLogs = models.DriverLog;
+var Drivers = models.Driver;
 
 module.exports = {
     getLogs: function(req, res) {

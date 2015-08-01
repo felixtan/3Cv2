@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="styles/partials/_ptg.scss">
+
 <h1 class="page-header">Driver Payout Record</h1>
 
 <div class="table-responsive">
@@ -8,11 +10,22 @@
           <thead>
             <tr>
               <td><strong>Week \ Driver</strong></td>
+              <td ng-repeat="driver in ptg.drivers">{{ driver.givenName }} {{driver.surName}}</td>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat='log in ptg.data.driver'>
-              
+            <tr ng-repeat="ptgLog in ptg.logs | orderBy:'ptgLog.dateInMs'">
+              <td>{{ ptgLog.date | date : formet : shortDate }}</td>
+              <td ng-repeat="driver in ptgLog.DriverLogs">
+                <ul style='list-style-type:none; padding-left:0'>
+                  <li>Uber: {{ driver.uberRevenue }}</li>
+                  <li>Tolls: {{ driver.tollCosts }}</li>
+                  <li>Gas: {{ driver.gasCosts }}</li>
+                  <li>Deposit: {{ driver.deposit }}</li>
+                  <li>Hours: {{ driver.hours }}</li>
+                  <li>Acceptance: {{ driver.acceptRate }}%</li>
+                </ul>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -20,3 +33,5 @@
     </tbody>
   </table>
 </div>
+
+<!-- ng-repeat="driverLog in ptgLog.DriverLogs | orderBy:'driverLog.givenName'" -->

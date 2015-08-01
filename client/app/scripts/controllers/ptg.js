@@ -8,6 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PtgCtrl', function (ptgViewData) {
-    this.data = ptgViewData.data; 
+  .controller('PtgCtrl', function (ptgViewData, basicDriverData) {
+    this.logs = ptgViewData.data; 
+    this.drivers = basicDriverData.data;
   });

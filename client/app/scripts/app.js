@@ -56,6 +56,9 @@ angular
         resolve: {
           ptgViewData: function(dataService) {
             return dataService.getPtgLogs();
+          },
+          basicDriverData: function(dataService) {
+            return dataService.getDrivers();
           }
         }
       })

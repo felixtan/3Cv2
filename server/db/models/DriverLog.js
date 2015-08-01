@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        desposit: {
+        deposit: {
             type: DataTypes.INTEGER,
             allowNull: true
         },
