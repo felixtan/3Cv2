@@ -184,11 +184,11 @@ module.exports = {
                     });
 
                 }).then(function() {
-                    Car.create(car3).then(function() {
-                        console.log('Finished populating the development database.');    
-                    });
+                    Car.create(car3);
                 });
             });
+        }).then(function() {
+            console.log('Finished populating the development database.');    
         });
     }
 }
