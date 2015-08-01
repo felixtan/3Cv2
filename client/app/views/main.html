@@ -1,25 +1,18 @@
 <h1 class="page-header">Dashboard</h1>
 
-<div class="row">
-</div>
-
 <h2 class="sub-header">Cars</h2>
 <div class="table-responsive" ng-repeat='car in main.cars'>
   <table class="table">
-    <thead>
-      <th>
-        <h4>{{ car.tlcNumber }}</h4>
-      </th>
-    </thead>
     <tbody>
       <div class="table-responsive">
         <table class="table">
+          <h4>{{ car.tlcNumber }}</h4>
           <thead>
             <th>Name</th>
           </thead>
           <tbody>
             <tr ng-repeat='driver in car.Drivers'>
-              <td>{{ driver.givenName }}</td>
+              <td>{{ driver.givenName }} {{ driver.surName }}</td>
             </tr>
           </tbody>
         </table>

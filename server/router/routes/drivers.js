@@ -39,7 +39,7 @@ module.exports = {
             address: req.body.address,
             gasCardNum: req.body.gasCardNum,
             ezPassNum: req.body.ezPassNum,
-            description: req.body.description,
+            description: req.body.description
             // userId: req.user.customData._id
         })
         .then(function(driver) {
@@ -75,7 +75,7 @@ module.exports = {
             // userId: req.user.customData._id
         }, {
             where: {
-                id: req.params.id,
+                id: req.params.id
             }
         })
         .then(function() {
@@ -102,4 +102,4 @@ module.exports = {
             res.status(500).json({ error: err });
         });
     }
-};
+}

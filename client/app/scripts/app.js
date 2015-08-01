@@ -49,6 +49,26 @@ angular
           }
         }
       })
+      .when('/pay-toll-gas', {
+        templateUrl: 'views/ptg.html',
+        controller: 'PtgCtrl',
+        controllerAs: 'ptg',
+        resolve: {
+          ptgViewData: function(dataService) {
+            return dataService.getDriversLogs();
+          }
+        }
+      })
+      .when('/settings', {
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl',
+        controllerAs: 'settings',
+        resolve: {
+          settings: function(ptgLogSettingsService) {
+            return ptgLogSettingsService.getSettings();
+          }
+        }
+      })
       .otherwise({
         redirectTo: '/'
       });

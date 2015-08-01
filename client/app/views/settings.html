@@ -1,0 +1,17 @@
+<h1 class='page-header'>Settings</h1>
+
+<form novalidate role='form' id='settingsForm'>
+    <div class='form-group'>
+        <label for='logPeriod'>PTG Log Period</label>
+        <input type='text' class='form-control' ng-model='settings.ptgLogPeriod.value' length='5' size='5' placeholder='1-99'> 
+        <select ng-model='settings.ptgLogPeriod.unit'>
+            <option value='days'>Day(s)</option>
+            <option value='weeks'>Week(s)</option>
+            <option value='months'>Month(s)</option>
+        </select>
+    </div>
+
+    <button type='submit' class='btn btn-success' ng-click='settings.apply()'>Apply</button>
+</form>
+
+{{ settings.ptgLog }}

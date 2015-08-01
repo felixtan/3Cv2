@@ -7,8 +7,15 @@
 var cars = require('./routes/cars');
 var drivers = require('./routes/drivers');
 var assignments = require('./routes/assignments');
+var driverLogs = require('./routes/driverlogs');
 
 module.exports = function (app) {
+
+    // Driver logs
+    app.get('/api/logs/drivers', driverLogs.getDriversLogs);
+    app.get('/api/logs/drivers/:id', driverLogs.getDriverLogs);
+    app.post('/api/logs/drivers/:id', driverLogs.saveDriverLog);
+    app.put('/api/logs/drivers/:id', driverLogs.updateDriverLog);
 
     // Dashboard/Main UI
     app.get('/api/assignments', assignments.getAss);

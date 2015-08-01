@@ -17,8 +17,8 @@ angular.module('clientApp')
                   .success(function(data) {
                     return data;
                   })
-                  .error(function(data) {
-                    console.error(data);          // TODO: handle these errors better
+                  .error(function(err) {    // Need to handle error better
+                    console.error(err);
                   });
       },
 
@@ -27,8 +27,8 @@ angular.module('clientApp')
                   .success(function(data) {
                     return data;
                   })
-                  .error(function(data) {
-                    console.error(data);
+                  .error(function(err) {
+                    console.error(err);
                   });
       },
 
@@ -37,10 +37,19 @@ angular.module('clientApp')
                   .success(function(data) {
                     return data;
                   })
-                  .error(function(data) {
-                    console.error(data);
+                  .error(function(err) {
+                    console.error(err);
+                  });
+      },
+
+      getDriversLogs: function () {
+        return $http.get('/api/logs/drivers')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    console.error(err);
                   });
       }
-      
     };
   });

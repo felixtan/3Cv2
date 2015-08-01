@@ -1,0 +1,23 @@
+<h1 class="page-header">Driver Payout Record</h1>
+
+<div class="table-responsive">
+  <table class="table">
+    <tbody>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <td><strong>Week \ Driver</strong></td>
+              <td ng-repeat='driver in ptg.data'>{{ driver.givenName }} {{ driver.surName}}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat='log in ptg.data.driver'>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </tbody>
+  </table>
+</div>

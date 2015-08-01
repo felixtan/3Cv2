@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     oilChangeRequired: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: false,
     },
     userId: {
       type: DataTypes.STRING,

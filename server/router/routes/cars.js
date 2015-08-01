@@ -7,6 +7,7 @@ module.exports = {
 
     getCars: function(req, res) {
         Cars.findAll().then(function(cars) {
+            console.log(cars);
             res.json(cars);
         })
         .catch(function(err) {
