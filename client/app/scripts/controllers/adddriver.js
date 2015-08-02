@@ -31,9 +31,8 @@ angular.module('clientApp')
             // TODO: create modal popup telling the user 
             console.log('New driver saved.');
         })
-        .error(function(data) {
-            // TODO: better handle errors
-            console.error(data);
+        .error(function(err) {
+            console.error(err);
         });
     };
   });

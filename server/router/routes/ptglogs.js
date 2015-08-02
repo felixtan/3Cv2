@@ -9,9 +9,12 @@ var Drivers = models.Driver;
 module.exports = {
     getLogs: function(req, res) {
         PtgLogs.findAll({ order: '"dateInMs"', include: DriverLogs }).then(function(logs) {
-            var minimizedData = logs;
+
+            var minimizedData = {};
+            minimizedData.logs = logs;
             
-            minimizedData.forEach(function(log) {
+            minimizedData.logs.forEach(function(log) {
+
                 delete log.dataValues.updatedAt;
                 delete log.dataValues.createdAt;
 
@@ -20,13 +23,48 @@ module.exports = {
                     delete driverLog.dataValues.createdAt;
                     delete driverLog.dataValues.Ptg_DriverLogs;
                 });
+
             });
+            console.log(minimizedData);
+            return minimizedData;
 
-            res.json(minimizedData);
+        }).then(function(data) {
+            
+            var finalData = data;
 
-        }).catch(function(err) {
-            console.log(err);
-            res.status(500).json({ error: err });
+            PtgLogs.max("dateInMs").then(function(mostRecentDateInMs) {
+                finalData.mostRecentDateInMs = mostRecentDateInMs;
+                res.json(data);
+            });
+        });
+    },
+
+    createLog: function(req, res) {
+        PtgLogs.create({
+            dateInMs: req.body.dateInMs,
+            date: req.body.date
+        }).then(function(ptgLog) {
+            
+            
+            Drivers.findAll().then(function(drivers) {
+                drivers.forEach(function(driver) {
+                    // Create new driverLog for each driver
+                    DriverLogs.create({
+                        date: ptgLog.date,
+                        dateInMs: ptgLog.dateInMs,
+                        givenName: driver.givenName,
+                        surName: driver.surName
+                    }).then(function(driverLog) {
+                        driver.addLog([driverLog.id]);
+                        ptgLog.addDriverLog([driverLog.id]);
+                    });
+                });
+            }).then(function() {
+                console.log(ptgLog);
+                res.json(ptgLog);
+            }).catch(function(err) {
+                console.error(err);
+            });
         });
     }
 }

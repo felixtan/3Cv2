@@ -2,6 +2,10 @@
 
 <h1 class="page-header">Driver Payout Record</h1>
 
+<div class='col-xs'>
+  <button class='btn btn-success' ng-click='ptg.newLog()'> + </button>
+</div>
+
 <div class="table-responsive">
   <table class="table">
     <tbody>
@@ -10,13 +14,13 @@
           <thead>
             <tr>
               <td><strong>Week \ Driver</strong></td>
-              <td ng-repeat="driver in ptg.drivers">{{ driver.givenName }} {{driver.surName}}</td>
+              <td ng-repeat="driver in ptg.drivers | orderBy:'givenName'">{{ driver.givenName }} {{driver.surName}}</td>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="ptgLog in ptg.logs | orderBy:'ptgLog.dateInMs'">
               <td>{{ ptgLog.date | date : formet : shortDate }}</td>
-              <td ng-repeat="driver in ptgLog.DriverLogs">
+              <td ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
                 <ul style='list-style-type:none; padding-left:0'>
                   <li>Uber: {{ driver.uberRevenue }}</li>
                   <li>Tolls: {{ driver.tollCosts }}</li>

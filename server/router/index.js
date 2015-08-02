@@ -14,6 +14,7 @@ module.exports = function (app) {
 
     // PTG logs
     app.get('/api/logs/ptg', ptgLogs.getLogs);
+    app.post('/api/logs/ptg', ptgLogs.createLog);
 
     // Driver logs
     app.get('/api/logs/drivers', driverLogs.getDriversLogs);
