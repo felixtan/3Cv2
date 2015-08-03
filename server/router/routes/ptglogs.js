@@ -25,7 +25,7 @@ module.exports = {
                 });
 
             });
-            console.log(minimizedData);
+            
             return minimizedData;
 
         }).then(function(data) {
@@ -60,7 +60,6 @@ module.exports = {
                     });
                 });
             }).then(function() {
-                console.log(ptgLog);
                 res.json(ptgLog);
             }).catch(function(err) {
                 console.error(err);

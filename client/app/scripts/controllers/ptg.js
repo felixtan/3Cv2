@@ -20,11 +20,14 @@ angular.module('clientApp')
             dateInMs: newDateInMs,
             date: new Date(newDateInMs)
         }).success(function(data) {
-            this.mostRecentDateInMs = data.dateInMs;
             console.log('New PTG log created.');
         }).error(function(err) {
             console.error(err);
         });
-    }
+    };
+
+    this.delete = function() {
+        // delete this row of driver logs
+    };
 
   });
