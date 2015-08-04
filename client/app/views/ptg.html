@@ -18,39 +18,49 @@
       <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
         <td>
           <span>{{ ptgLog.date | date : formet : shortDate }}</span>
-          <button class='btn btn-warning btn-xs edit-btn' ng-click='rowForm.$show()'>Edit</button>
+            <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
+              Edit
+            </button>
+          <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
+            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+              Save
+            </button>
+            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
+              Cancel
+            </button>
+        </form>
         </td>
         <td ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
           
           <!-- editable driver log (text with validation) -->
           <ul class='driver-logs'>
             <li>
-              <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowForm' e-required>
+              <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' e-required>
                 Uber: {{ driver.uberRevenue || ' ' }}
               </span>
             </li>
             <li>
-              <span editable-text='driver.tollCosts' e-name='tollCosts' e-form='rowForm' e-required>
+              <span editable-text='driver.tollCosts' e-name='tollCosts' e-form='rowform' e-required>
                 Tolls: {{ driver.tollCosts || ' ' }}
               </span>
             </li>
             <li>
-              <span editable-text='driver.gasCosts' e-name='gasCosts' e-form='rowForm' e-required>
+              <span editable-text='driver.gasCosts' e-name='gasCosts' e-form='rowform' e-required>
                 Gas: {{ driver.gasCosts || ' ' }}
               </span>
             </li>
             <li>
-              <span editable-text='driver.deposit' e-name='deposit' e-form='rowForm' e-required>
+              <span editable-text='driver.deposit' e-name='deposit' e-form='rowform' e-required>
                 Deposit: {{ driver.deposit || ' ' }}
               </span>
             </li>
             <li>
-              <span editable-text='driver.hours' e-name='hours' e-form='rowForm' e-required>
+              <span editable-text='driver.hours' e-name='hours' e-form='rowform' e-required>
                 Hours: {{ driver.hours || ' ' }}
               </span>
             </li>
             <li>
-              <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowForm' e-required>
+              <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowform' e-required>
                 Acceptance: {{ driver.acceptRate || ' ' }}%
               </span>              
             </li>

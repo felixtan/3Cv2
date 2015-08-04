@@ -26,8 +26,7 @@ angular.module('clientApp')
         });
     };
 
-    this.delete = function() {
-        // delete this row of driver logs
-    };
+    // Editable rows
+
 
   });
