@@ -41,7 +41,7 @@ module.exports = {
             uberRevenue: req.body.uberRevenue,
             tollCosts: req.body.tollCosts,
             gasCosts: req.body.gasCosts,
-            desposit: req.body.deposit,
+            deposit: req.body.deposit,
             hours: req.body.hours,
             acceptRate: req.body.acceptRate,
             payout: req.body.payout,
@@ -65,7 +65,7 @@ module.exports = {
             uberRevenue: req.body.uberRevenue,
             tollCosts: req.body.tollCosts,
             gasCosts: req.body.gasCosts,
-            desposit: req.body.deposit,
+            deposit: req.body.deposit,
             hours: req.body.hours,
             acceptRate: req.body.acceptRate,
             payout: req.body.payout,
@@ -73,8 +73,8 @@ module.exports = {
             profitsContributed: req.body.profitsContributed
         }, {
             where: {
-                driverId: req.params.id,
-                id: req.body.driverLogId
+                // driverId: req.params.id, 
+                id: req.params.id
             }
         })
         .then(function() {

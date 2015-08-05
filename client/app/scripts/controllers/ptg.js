@@ -14,6 +14,8 @@ angular.module('clientApp')
     this.drivers = basicDriverData.data;
     const oneWeekInMs = 604800000;
 
+    console.log(this.logs);
+
     this.newLog = function() {
         var newDateInMs = this.mostRecentDateInMs + oneWeekInMs; 
         $http.post('/api/logs/ptg', {
@@ -26,7 +28,22 @@ angular.module('clientApp')
         });
     };
 
-    // Editable rows
+    this.updateLog = function(driver) {
+        console.log(driver);
+        $http.put('/api/logs/drivers/' + driver.id, {
+            uberRevenue: driver.uberRevenue,
+            tollCosts: driver.tollCosts,
+            gasCosts: driver.gasCosts,
+            deposit: driver.deposit,
+            hours: driver.hours,
+            acceptRate: driver.acceptRate,
+            payout: driver.payout
+        }).success(function(data) {
+            console.log('PTG log updated.');
+        }).error(function(err) {
+            console.error(err);
+        });
+    }
 
 
   });

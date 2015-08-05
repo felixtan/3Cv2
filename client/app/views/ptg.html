@@ -36,7 +36,7 @@
           <ul class='driver-logs'>
             <li>
               <p ng-show='rowform.$visible'>Uber: $</p>
-              <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' e-required>
+              <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='ptg.updateLog(driver)' e-required>
                 Uber: ${{ driver.uberRevenue || ' ' }}
               </span>
             </li>

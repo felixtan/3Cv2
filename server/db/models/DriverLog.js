@@ -21,39 +21,39 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },
         uberRevenue: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         tollCosts: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         gasCosts: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         deposit: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         hours: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.FLOAT(1),
             allowNull: true
         },
         acceptRate: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(1),
             allowNull: true
         },
         payout: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         debt: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         },
         profitContributed: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT(2),
             allowNull: true
         }
     });
