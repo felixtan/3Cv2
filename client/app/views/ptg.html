@@ -30,36 +30,42 @@
             </button>
         </form>
         </td>
-        <td ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
+        <td class='driver-log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
           
           <!-- editable driver log (text with validation) -->
           <ul class='driver-logs'>
             <li>
+              <p ng-show='rowform.$visible'>Uber: $</p>
               <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' e-required>
-                Uber: {{ driver.uberRevenue || ' ' }}
+                Uber: ${{ driver.uberRevenue || ' ' }}
               </span>
             </li>
             <li>
+              <p ng-show='rowform.$visible'>Tolls: $</p>
               <span editable-text='driver.tollCosts' e-name='tollCosts' e-form='rowform' e-required>
-                Tolls: {{ driver.tollCosts || ' ' }}
+                Tolls: ${{ driver.tollCosts || ' ' }}
               </span>
             </li>
             <li>
+              <p ng-show='rowform.$visible'>Gas: $</p>
               <span editable-text='driver.gasCosts' e-name='gasCosts' e-form='rowform' e-required>
-                Gas: {{ driver.gasCosts || ' ' }}
+                Gas: ${{ driver.gasCosts || ' ' }}
               </span>
             </li>
             <li>
+              <p ng-show='rowform.$visible'>Deposit: $</p>
               <span editable-text='driver.deposit' e-name='deposit' e-form='rowform' e-required>
-                Deposit: {{ driver.deposit || ' ' }}
+                Deposit: ${{ driver.deposit || ' ' }}
               </span>
             </li>
             <li>
+              <p ng-show='rowform.$visible'>Hours:</p>
               <span editable-text='driver.hours' e-name='hours' e-form='rowform' e-required>
                 Hours: {{ driver.hours || ' ' }}
               </span>
             </li>
             <li>
+              <p ng-show='rowform.$visible'>Acceptance: %</p>
               <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowform' e-required>
                 Acceptance: {{ driver.acceptRate || ' ' }}%
               </span>              
