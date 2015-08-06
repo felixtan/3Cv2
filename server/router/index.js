@@ -9,8 +9,13 @@ var drivers = require('./routes/drivers');
 var assignments = require('./routes/assignments');
 var driverLogs = require('./routes/driverlogs');
 var ptgLogs = require('./routes/ptglogs');
+var gasCards = require('./routes/gasCards');
 
 module.exports = function (app) {
+    
+    // Driver Assets
+    app.get('/api/assets/gas-cards', gasCards.get);
+    app.post('/api/assets/gas-cards', gasCards.save);
 
     // PTG logs
     app.get('/api/logs/ptg', ptgLogs.getLogs);

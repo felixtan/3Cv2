@@ -1,7 +1,6 @@
 'use strict';
 
 var Cars = require('../../db/models').Car;
-// var Cars = app.get('models').Car;
 
 module.exports = {
 

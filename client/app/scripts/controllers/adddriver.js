@@ -8,8 +8,8 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddDriverCtrl', function (addDriverViewData, $http) {
-    this.cars = addDriverViewData.data;
+  .controller('AddDriverCtrl', function (getCars, $http) {
+    this.cars = getCars.data;
     this.data = {};
     
     this.reset = function() {

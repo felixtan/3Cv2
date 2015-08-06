@@ -45,8 +45,11 @@ angular
         controller: 'AddDriverCtrl',
         controllerAs: 'newDriverForm',
         resolve: {
-          addDriverViewData: function(dataService) {
+          getCars: function(dataService) {
             return dataService.getCars();
+          },
+          getGasCards: function(dataService) {
+            return dataService.getGasCards();
           }
         }
       })
@@ -70,6 +73,19 @@ angular
         resolve: {
           settings: function(ptgLogSettingsService) {
             return ptgLogSettingsService.getSettings();
+          }
+        }
+      })
+      .when('/add-card', {
+        templateUrl: 'views/addcard.html',
+        controller: 'AddCardCtrl',
+        controllerAs: 'newCardForm',
+        resolve: {
+          getGasCards: function(dataService) {
+            return dataService.getGasCards();
+          },
+          getDrivers: function(dataService) {
+            return dataService.getDrivers();
           }
         }
       })

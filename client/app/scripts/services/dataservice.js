@@ -50,6 +50,16 @@ angular.module('clientApp')
                   .error(function(err) {
                     console.error(err);
                   });
+      },
+
+      getGasCards: function() {
+        return $http.get('/api/assets/gas-cards')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    console.error(err);
+                  });
       }
     };
   });

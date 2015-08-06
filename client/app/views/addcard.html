@@ -1,0 +1,26 @@
+<link rel="stylesheet" type="text/css" href="../styles/partials/_addcard.scss">
+
+<form novalidate role='form' id='newCardForm'>
+    <div class='form-group'>
+        <label for='number'>Number</label>
+        <input type='text' class='form-control' ng-model='newCardForm.data.number' placeholder=''>
+    </div>
+    <div class='form-group'>
+        <label for='driver'>Driver</label>
+        <select class='form-control' ng-model='newCardForm.data.driver'>
+            <option> - </option>
+            <option ng-repeat='driver in newCardForm.drivers' value='{{ driver.id }}'>{{ driver.givenName }} {{ driver.surName}} </option>
+        </select>
+    </div>
+    <br>
+    <button type='submit' class='btn btn-success submitbtn' ng-click='newCardForm.saveCard()'>Submit</button>
+     <button type='reset' class='btn btn-danger' ng-click='newCardForm.reset()'>Reset</button>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.submitbtn').click(function() {
+            $('#newCardForm')[0].reset();
+        });
+    });
+</script>

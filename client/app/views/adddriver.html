@@ -30,8 +30,15 @@
         <input type='text' class='form-control' ng-model='newDriverForm.data.payRate' placeholder=''>
     </div>
     <div class='form-group'>
+        <label for='gasCard'>Gas Card</label>
+        <select class='form-control' ng-model='newDriverForm.data.gasCard'>
+            <option> - </option>
+            <option ng-repeat='gasCard in newDriverForm.data.gasCards' value='{{ gasCard.id }}'>{{ gasCard.number }}</option>
+        </select>
+    </div>
+    <div class='form-group'>
         <label for='car'>Car</label>
-        <select class='form-control' ng-model='newDriverForm.data.car' placeholder='Select Car'>
+        <select class='form-control' ng-model='newDriverForm.data.car'>
             <option> - </option>
             <option ng-repeat='car in newDriverForm.cars' value='{{ car.id }}'>{{ car.tlcNumber }}</option>
         </select>
