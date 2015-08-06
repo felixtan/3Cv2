@@ -1,6 +1,9 @@
 'use strict';
 
-var Drivers = require('../../db/models').Driver;
+var models = require('../../db/models');
+var Drivers = models.Driver;
+var DriverLog = models.DriverLog;
+var PtgLogs = models.PtgLog;
 
 module.exports = {
 
@@ -53,7 +56,24 @@ module.exports = {
                 });    
             }
 
-            res.json(driver.dataValues);
+            /**
+             * Create driver logs
+             */
+            PtgLogs.findAll().then(function(ptgLogs) {
+                ptgLogs.forEach(function(ptgLog) {
+                    DriverLog.create({
+                        date: ptgLog.date,
+                        dateInMs: ptgLog.dateInMs,
+                        givenName: driver.givenName,
+                        surName: driver.surName
+                    }).then(function(driverLog) {
+                        driver.addLog([driverLog.id]);
+                        ptgLog.addDriverLog([driverLog.id]);
+                    });
+                });
+            }).then(function() {
+                res.json(driver);
+            });
         })
         .catch(function(err) {
             console.error(err);
