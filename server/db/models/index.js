@@ -20,8 +20,20 @@ db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
 db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
 db.Driver.belongsToMany(db.DriverLog, { as: 'Logs', through: 'Driver_DriverLogs' });
 db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
-// db.Driver.belongsToMany(db.GasCard, { through: 'Driver_Assets' });
-db.GasCard.belongsToMany(db.Driver, { through: 'Driver_Assets' });
+
+// trying n:m relationship for flexibility
+// db.GasCard.belongsToMany(db.Driver, { through: 'DriverAssets' });
+// db.EzPass.belongsToMany(db.Driver, { through: 'DriverAssets' });
+// db.Driver.belongsToMany(db.GasCard, { through: 'DriverAssets' });
+// db.Driver.belongsToMany(db.EzPass, { through: 'DriverAssets' });
+
+// this works
+// db.Driver.hasMany(db.GasCard);
+// db.Driver.hasMany(db.EzPass);
+
+db.GasCard.hasMany(db.GasCardLog);
+db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignment' });
+db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignment' });
 
 Object.keys(db).forEach(function(modelName) {
  if ("associate" in db[modelName]) {

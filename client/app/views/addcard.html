@@ -2,6 +2,13 @@
 
 <form novalidate role='form' id='newCardForm'>
     <div class='form-group'>
+        <label for='type'>Type</label>
+        <select class='form-control' ng-model='newCardForm.data.type'>
+            <option> - </option>
+            <option ng-repeat='type in newCardForm.data.typeNames' value='{{ type }}'>{{ type }} </option>
+        </select>
+    </div>
+    <div class='form-group'>
         <label for='number'>Number</label>
         <input type='text' class='form-control' ng-model='newCardForm.data.number' placeholder=''>
     </div>

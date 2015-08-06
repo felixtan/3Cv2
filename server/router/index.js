@@ -10,12 +10,19 @@ var assignments = require('./routes/assignments');
 var driverLogs = require('./routes/driverlogs');
 var ptgLogs = require('./routes/ptglogs');
 var gasCards = require('./routes/gasCards');
+var ezPass = require('./routes/ezpass');
 
 module.exports = function (app) {
     
-    // Driver Assets
+    // EX pass
+    app.get('/api/assets/ezpass', ezPass.get);
+    app.post('/api/assets/ezpass', ezPass.save);
+    app.delete('/api/assets/ezpass', ezPass.delete);
+
+    // Gas cards
     app.get('/api/assets/gas-cards', gasCards.get);
     app.post('/api/assets/gas-cards', gasCards.save);
+    app.delete('/api/assets/gas-cards', gasCards.delete);
 
     // PTG logs
     app.get('/api/logs/ptg', ptgLogs.getLogs);
