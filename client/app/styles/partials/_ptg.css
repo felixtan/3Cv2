@@ -11,5 +11,8 @@ ul.driver-logs {
     float: right;
 }
 
-
+.btn-primary {
+    background-color: #3e7cb4;
+    border-color: #3e7cb4;
+}
 /* Overrides xeditable css */

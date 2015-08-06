@@ -2,19 +2,19 @@
 
 <h1 class="page-header">Driver Payout Record</h1>
 
-<div class='col-xs'>
-  <button class='btn btn-success' ng-click='ptg.newLog()'> + </button>
+<div class='sub-header'>
+  <button class='btn btn-success' ng-click='ptg.newLog()'> Add Row </button>
 </div>
 
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
-    <thead>
+    <thead ng-model='ptg.drivers'>
       <tr>
         <td><strong>Week \ Driver</strong></td>
         <td ng-repeat="driver in ptg.drivers | orderBy:'givenName'">{{ driver.givenName }} {{driver.surName}}</td>
       </tr>
     </thead>
-    <tbody>
+    <tbody ng-model='ptg.logs'>
       <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
         <td>
           <span>{{ ptgLog.date | date : formet : shortDate }}</span>

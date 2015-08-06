@@ -44,11 +44,8 @@ module.exports = {
             dateInMs: req.body.dateInMs,
             date: req.body.date
         }).then(function(ptgLog) {
-            
-            
             Drivers.findAll().then(function(drivers) {
                 drivers.forEach(function(driver) {
-                    // Create new driverLog for each driver
                     DriverLogs.create({
                         date: ptgLog.date,
                         dateInMs: ptgLog.dateInMs,
