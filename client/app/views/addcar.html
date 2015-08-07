@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../styles/partials/_addcar.scss">
 
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
 <form novalidate role='form' id='newCarForm'>
     <div class='form-group'>
         <label for='tlcNumber'>TLC Number</label>
@@ -28,7 +29,7 @@
     <button type='submit' class='btn btn-success submitbtn' ng-click='newCarForm.saveCar()'>Submit</button>
      <button type='reset' class='btn btn-danger' ng-click='newCarForm.reset()'>Reset</button>
 </form>
-
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         $('.submitbtn').click(function() {

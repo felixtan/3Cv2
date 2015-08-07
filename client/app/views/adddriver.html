@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="../styles/partials/_adddriver.scss">
 
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
 <form novalidate role='form' id='newDriverForm'>
     <div class='form-group'>
         <label for='givenName'>First Name</label>
@@ -51,7 +52,7 @@
     <button type='submit' class='btn btn-success submitbtn' ng-click='newDriverForm.saveDriver()'>Submit</button>
      <button type='reset' class='btn btn-danger' ng-click='newDriverForm.reset()'>Reset</button>
 </form>
-
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         $('.submitbtn').click(function() {
