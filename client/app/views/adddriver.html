@@ -1,57 +1,58 @@
 <link rel="stylesheet" type="text/css" href="../styles/partials/_adddriver.scss">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-<form novalidate role='form' id='newDriverForm'>
-    <div class='form-group'>
-        <label for='givenName'>First Name</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.givenName' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='surName'>Last Name</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.surName' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='email'>Email</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.email' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='phoneNumber'>Phone Number</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.phoneNumber' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='address'>Address</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.address' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='driversLicenseNum'>Driver's License Number</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.driversLicenseNum' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='payRate'>Pay Rate/Percentage</label>
-        <input type='text' class='form-control' ng-model='newDriverForm.data.payRate' placeholder=''>
-    </div>
-    <div class='form-group'>
-        <label for='gasCard'>Gas Card</label>
-        <select class='form-control' ng-model='newDriverForm.data.gasCard'>
-            <option> - </option>
-            <option ng-repeat='gasCard in newDriverForm.data.gasCards' value='{{ gasCard.id }}'>{{ gasCard.number }}</option>
-        </select>
-    </div>
-    <div class='form-group'>
-        <label for='car'>Car</label>
-        <select class='form-control' ng-model='newDriverForm.data.car'>
-            <option> - </option>
-            <option ng-repeat='car in newDriverForm.cars' value='{{ car.id }}'>{{ car.tlcNumber }}</option>
-        </select>
-    </div>
+    <h2 class='sub-header'>Add a Driver</h2>
+    <form novalidate role='form' id='newDriverForm'>
+        <div class='form-group'>
+            <label for='givenName'>First Name</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.givenName' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='surName'>Last Name</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.surName' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='email'>Email</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.email' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='phoneNumber'>Phone Number</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.phoneNumber' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='address'>Address</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.address' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='driversLicenseNum'>Driver's License Number</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.driversLicenseNum' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='payRate'>Pay Rate/Percentage</label>
+            <input type='text' class='form-control' ng-model='newDriverForm.data.payRate' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='gasCard'>Gas Card</label>
+            <select class='form-control' ng-model='newDriverForm.data.gasCard'>
+                <option> - </option>
+                <option ng-repeat='gasCard in newDriverForm.data.gasCards' value='{{ gasCard.id }}'>{{ gasCard.number }}</option>
+            </select>
+        </div>
+        <div class='form-group'>
+            <label for='car'>Car</label>
+            <select class='form-control' ng-model='newDriverForm.data.car'>
+                <option> - </option>
+                <option ng-repeat='car in newDriverForm.cars' value='{{ car.id }}'>{{ car.tlcNumber }}</option>
+            </select>
+        </div>
 
-    <label for='description'>Description</label>
-    <textarea ng-model='newDriverForm.data.description' type='text' class='form-control' rows='5'>
-    </textarea>
-    <br>
-    <button type='submit' class='btn btn-success submitbtn' ng-click='newDriverForm.saveDriver()'>Submit</button>
-     <button type='reset' class='btn btn-danger' ng-click='newDriverForm.reset()'>Reset</button>
-</form>
+        <label for='description'>Description</label>
+        <textarea ng-model='newDriverForm.data.description' type='text' class='form-control' rows='5'>
+        </textarea>
+        <br>
+        <button type='submit' class='btn btn-success submitbtn' ng-click='newDriverForm.saveDriver()'>Submit</button>
+         <button type='reset' class='btn btn-danger' ng-click='newDriverForm.reset()'>Reset</button>
+    </form>
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
