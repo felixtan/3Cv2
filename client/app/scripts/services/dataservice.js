@@ -60,6 +60,16 @@ angular.module('clientApp')
                   .error(function(err) {
                     console.error(err);
                   });
+      },
+
+      getProspects: function() {
+        return $http.get('/api/prospects')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    console.error(err);
+                  });
       }
     };
   });

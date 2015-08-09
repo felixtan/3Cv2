@@ -1,4 +1,4 @@
-<div class='col-md-5 col-md-offset-2' ng-model='cars'>
+<div class='col-md-5 col-md-offset-2' id='carList' ng-model='cars'>
   <h2 class="sub-header">Cars</h2>
   <div class="table-responsive" ng-repeat='car in cars'>
     <table class="table">
@@ -9,7 +9,7 @@
               <h3 class='car'>{{ car.tlcNumber }}</h3>
               <th>Name</th>
             </thead>
-            <tbody>
+            <tbody id='driverList'>
               <tr ng-repeat='driver in car.Drivers'>
                 <td>{{ driver.givenName }} {{ driver.surName }}</td>
               </tr>
@@ -22,11 +22,33 @@
 </div>
 
 <div class='col-md-5'>
-  <h2 class='sub-header'>Callers</h2>
-  <div class='table-responsive'>
+  <h2 class='sub-header'>Prospects</h2>
+  <div class='table-responsive' ng-repeat='status in prospectStatuses'>
     <table class='table'>
+      <thead>
+        <h3 class='prospect-status'>{{ status }}</h3>
+        <th>Name</th>
+        <th>Notes</th>
+        <th>TLC</th>
+        <th>DMV</th>
+        <th>Points</th>
+        <th>Accidents</th>
+        <th>Shift</th>
+        <th>Address</th>
+        <th>Paperwork</th>
+      </thead>
       <tbody>
-
+        <tr ng-repeat="prospect in prospects | filter:status">
+          <td>{{ prospect.givenName }} {{ prospect.middleInitial }}. {{ prospect.surName }}</td>
+          <td>{{ prospect.description }}</td>
+          <td>{{ prospect.tlc }}</td>
+          <td>{{ prospect.dmv }}</td>
+          <td>{{ prospect.points }}</td>
+          <td>{{ prospect.accidents }}</td>
+          <td>{{ prospect.shift }}</td>
+          <td>{{ prospect.address }}</td>
+          <td>{{ prospect.paperwork }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

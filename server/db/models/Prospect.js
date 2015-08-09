@@ -1,0 +1,73 @@
+'use strict';
+
+/* jshint indent: 2 */
+
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('Prospect', { 
+    status: {
+      type: DataTypes.ENUM('callers', 'interviewed', 'waiting list', 'rejected'),
+      allowNull: false,
+      defaultValue: 'callers'
+    },
+    givenName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    middleInitial: {
+      type: DataTypes.CHAR,
+      allowNull: true
+    },
+    surName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    driversLicenseNum: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    tlc: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    dmv: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    points: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    accidents: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    shift: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    paperwork: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    userId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    }
+  });
+};

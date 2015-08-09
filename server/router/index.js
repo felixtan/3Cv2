@@ -11,10 +11,17 @@ var driverLogs = require('./routes/driverlogs');
 var ptgLogs = require('./routes/ptglogs');
 var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
+var prospect = require('./routes/prospects');
 
 module.exports = function (app) {
-    
-    // EX pass
+    // Prospects
+    app.get('/api/prospects', prospect.getProspects);
+    app.get('/api/prospects/:id', prospect.getProspect);
+    app.post('/api/prospects', prospect.saveProspect);
+    app.put('/api/prospects/:id', prospect.updateProspect);
+    app.delete('/api/prospects/:id', prospect.deleteProspect);
+
+    // EZ pass
     app.get('/api/assets/ezpass', ezPass.get);
     app.post('/api/assets/ezpass', ezPass.save);
     app.delete('/api/assets/ezpass', ezPass.delete);
@@ -45,6 +52,7 @@ module.exports = function (app) {
     app.post('/api/cars', cars.saveCar);
     app.put('/api/cars/:id', cars.updateCar);
     app.delete('/api/cars/:id', cars.deleteCar);
+    app.put('/api/cars', cars.rearrange);   // handles persisting changes to ordering in cars array
 
     // Driver API routes
     app.get('/api/drivers', drivers.getDrivers);

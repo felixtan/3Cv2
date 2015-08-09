@@ -17,7 +17,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'xeditable',
-    'as.sortable'
+    'ng-sortable'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -28,6 +28,9 @@ angular
         resolve: {
           getCarsAndDrivers: function(dataService) {
             return dataService.getAss();
+          },
+          getProspects: function(dataService) {
+            return dataService.getProspects();
           }
         }
       })

@@ -95,15 +95,18 @@ module.exports = {
         });
     },
 
-    disassociateDrivers: function(req, res) {
-        // untested function
-
-        /**
-         * 1. Takes an array of driver ids.
-         * 2. Performs difference operation between array of all driver ids and input array.
-         * 3. Call cars.setDrivers()
-         */
-
-
+    rearrange: function(req, res) {
+        Cars.findAll().then(function(cars) {
+            console.log('before rearrange:', cars);
+            console.log('oldIndex:', req.body.oldIndex - 1);
+            console.log('newIndex:', req.body.newIndex - 1);
+            cars.splice(req.body.newIndex - 1, 0, cars.splice(req.body.oldIndex - 1, 1)[0]);
+            return cars;
+        }).then(function(cars) {
+            console.log('after rearrange:',cars);
+            Cars.update(cars);
+        }).catch(function(err) {
+            console.error(err);
+        });
     }
 };

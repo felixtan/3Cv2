@@ -6,6 +6,7 @@ var Car = models.Car;
 var Driver = models.Driver;
 var driverLog = models.DriverLog;
 var ptgLog = models.PtgLog;
+var Prospects = models.Prospect; 
 
 // Populate the db with fake data
 
@@ -23,22 +24,62 @@ module.exports = {
     },
 
     populate: function() {
-        // sequelize.query('INSERT INTO "Cars" (' +
-        //     '"tlcNumber",' +
-        //     '"licensePlateNumber",' +
-        //     '"mileage",' +
-        //     '"description"' +
-        //     ') VALUES (' +
-        //     'lol,' +
-        //     '"lolol",' +
-        //     '"100",' +
-        //     '"lololol"' +
-        //     ') RETURNING *;',
-        // { model: Car }).then(function(car) {
-        //     console.log('populate query result:', car);
-        // }).catch(function(err) {
-        //     console.error(err);
-        // });
+        // Prospects
+        var prospect1 = {
+                givenName: 'Donald',
+                surName: 'Duck',
+                description: 'Planning to work 50+ hours',
+                tlc: '1 month',
+                dmv: '20',
+                points: '0',
+                accidents: '0', 
+                shift: 'Am/flexible',
+                address: 'Queens corona',
+                status: 'rejected'
+        },
+            prospect2 = {
+                givenName: 'James',
+                middleInitial: 'B',
+                surName: 'Grossweiner',
+                tlc: 'New',
+                dmv: '7',
+                accidents: '2', 
+                shift: 'Pm/flexible',
+                address: '16043 Claude avenue Jamaica'
+        },
+            prospect3 = {
+                givenName: 'Dovran',
+                surName: 'Esenov',
+                address: '1802 ocean pkwy a17'
+        },
+            prospect4 = {
+                givenName: 'Thomas',
+                surName: 'Grube',
+                tlc: '15',
+                points: '0',
+                accidents: '0', 
+                shift: 'Pm',
+                address: 'Harlem',
+                status: 'interviewed'
+        },
+            prospect5 = {
+                givenName: 'Maurice',
+                surName: 'Cloyd',
+                description: 'Planning to work 55+',
+                tlc: '1',
+                dmv: '9',
+                points: '0',
+                accidents: '0', 
+                shift: "Am,pair with gustavo",
+                address: '3245 Fenton avenue',
+                status: 'waiting list'
+        };
+
+        Prospects.create(prospect1);
+        Prospects.create(prospect2);
+        Prospects.create(prospect3);
+        Prospects.create(prospect4);
+        Prospects.create(prospect5);
         
         // Cars
         var car1 = {
