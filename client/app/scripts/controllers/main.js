@@ -8,7 +8,8 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function ($route, $timeout, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
@@ -48,8 +49,8 @@ angular.module('clientApp')
     $scope.filterProspectData = function(id) {
         return $q(function(resolve, reject) {
             // find the prospect 
-            var prospect = $filter('filter')($scope.prospects, function(d) {
-                return d.id === id;
+            var prospect = $filter('filter')($scope.prospects, function(data) {
+                return data.id === id;
             })[0];
             delete prospect.status;
             delete prospect.$$hashKey;
@@ -69,7 +70,16 @@ angular.module('clientApp')
         });
     }
 
-    // Makes lists sortable
+    $scope.getCarInScope = function(id) {
+        return $q(function(resolve, reject) {
+            resolve($filter('filter')($scope.cars, function(car) {
+                return car.id === id;
+            })[0]);
+            reject(new Error('Failed to extract car data for updating the scope.'));
+        });
+    }
+
+    // Makes lists sortable when all ng-repeats are finished
     $scope.$on('repeatFinished', function() {
         $scope.getProspectListElems().then(function(prospectListElems) {
             
@@ -95,8 +105,15 @@ angular.module('clientApp')
                                     prospect.carId = carId;
                                     $http.post('/api/drivers', prospect).then(function(driver) {
                                         console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
+
+                                        // Update the scope
+                                        $scope.getCarInScope(carId).then(function(car) {
+                                            car.Drivers.push(driver.data);
+                                        });
+
                                         $http.delete('/api/prospects/'+id).then(function(data) {
                                             console.log(data.data.msg);
+                                            $route.reload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);
                                         });

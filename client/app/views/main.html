@@ -21,7 +21,7 @@
               <th>Shift</th>
               <th>Address</th>
             </thead>
-            <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}'>
+            <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
               <tr class='dropfix'>
                 <td></td>
                 <td></td>
@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<div class='col-md-5' id='prospect-list'>
+<div class='col-md-5' id='prospect-list' ng-model='prospects'>
   <div class='sub-header'>
     <h2>Prospects</h2>
   </div>

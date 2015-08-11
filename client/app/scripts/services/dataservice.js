@@ -8,18 +8,23 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('dataService', function ($http) {
+  .factory('dataService', function ($http, $q) {
+
+    var deferred;
 
     // Public API here
     return {
       getAss: function () {
-        return $http.get('/api/assignments')
-                  .success(function(data) {
-                    return data;
-                  })
-                  .error(function(err) {    // Need to handle error better
-                    console.error(err);
-                  });
+        var promise = $http.get('/api/assignments');
+        var deferred = deferred || $q.defer();
+
+        promise.then(function(data) {
+          deferred.resolve(data);
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
       },
 
       getDrivers: function () {
