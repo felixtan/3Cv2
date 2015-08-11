@@ -197,6 +197,13 @@ body {
     font-size: 14px;
 }
 
+// separate vertical scroll for cars and prospect lists
+#car-list,
+#prospect-list {
+  height: 85vh;
+  overflow-y: scroll;
+}
+
 // temp fix for can't sort into empty list problem
 .dropfix tr {
   font-size: 0px !important;
@@ -214,3 +221,4 @@ body {
   padding: 0px !important;
   line-height: 0 !important;
 }
+

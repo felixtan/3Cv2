@@ -16,7 +16,7 @@ angular.module('clientApp')
 
     $scope.getCarListElem = function() {
         return $q(function(resolve, reject) {
-            resolve(angular.element('#carList')[0]);
+            resolve(angular.element('#car-list')[0]);
             reject(new Error('Failed to get car list element.'));
         });
     }
@@ -71,4 +71,6 @@ angular.module('clientApp')
             });
         });
     });
+
+    
 });
