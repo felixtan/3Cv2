@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function ($filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
@@ -36,14 +36,36 @@ angular.module('clientApp')
     }
 
     $scope.updateProspectStatus = function(id, newStatus) {
+        $http.put('/api/prospects/' + id, {
+            status: newStatus
+        }).then(function() {
+            console.log('Prospect ' + id + ' now has status ' + newStatus + '.');
+        }, function(err) {
+            console.error(err);
+        });
+    }
+
+    $scope.filterProspectData = function(id) {
         return $q(function(resolve, reject) {
-            $http.put('/api/prospects/' + id, {
-                status: newStatus
-            }).then(function() {
-                console.log('Prospect ' + id + ' now has status ' + newStatus + '.');
-            }, function(err) {
-                console.error(err);
-            });
+            // find the prospect 
+            var prospect = $filter('filter')($scope.prospects, function(d) {
+                return d.id === id;
+            })[0];
+            delete prospect.status;
+            delete prospect.$$hashKey;
+            delete prospect.createdAt;
+            delete prospect.id;
+            delete prospect.updatedAt;
+            delete prospect.userId;
+            resolve(prospect);
+            reject(new Error('Failed to filter prospect data before promoting to driver.'));
+        });
+    }
+
+    $scope.getCarId = function(eventItem) {
+        return $q(function(resolve, reject) {
+            resolve(parseInt(angular.element(eventItem).parent().data('carid')));
+            reject(new Error('Failed to get car id for new driver.'));
         });
     }
 
@@ -59,11 +81,30 @@ angular.module('clientApp')
                     animation: 150,
                     onEnd: function(event) {
                         var id = angular.element(event.item).data('id');
-                        var oldStatus = angular.element(event.item).data('status').toLowerCase();
-                        var newStatus = angular.element(event.item).parent().data('status').toLowerCase();
+                        var toList = angular.element(event.item).parent().data('list');
 
-                        if(newStatus !== oldStatus) {
-                           $scope.updateProspectStatus(id, newStatus); 
+                        if(toList === 'prospect') {
+                            var oldStatus = angular.element(event.item).data('status').toLowerCase();
+                            var newStatus = angular.element(event.item).parent().data('status').toLowerCase();
+                            if(newStatus !== oldStatus){
+                                $scope.updateProspectStatus(id, newStatus); 
+                            }
+                        } else if(toList === 'driver') {
+                            $scope.getCarId(event.item).then(function(carId) {
+                                $scope.filterProspectData(id).then(function(prospect) {
+                                    prospect.carId = carId;
+                                    $http.post('/api/drivers', prospect).then(function(driver) {
+                                        console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
+                                        $http.delete('/api/prospects/'+id).then(function(data) {
+                                            console.log(data.data.msg);
+                                        }, function(err) {
+                                            console.error(err);
+                                        });
+                                    }, function(err) {
+                                        console.error(err);
+                                    });
+                                });
+                            });
                         }
                     }
                 }));

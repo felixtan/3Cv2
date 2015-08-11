@@ -35,14 +35,20 @@ module.exports = {
     saveDriver: function(req, res) {
         Drivers.create({
             givenName: req.body.givenName,
+            middleInitial: req.body.middleInitial,
             surName: req.body.surName,
             driversLicenseNum: req.body.driversLicenseNum,
             phoneNumber: req.body.phoneNumber,
             email: req.body.email,
             address: req.body.address,
-            gasCardNum: req.body.gasCardNum,
-            ezPassNum: req.body.ezPassNum,
-            description: req.body.description
+            tlc: req.body.tlc,
+            dmv: req.body.dmv,
+            points: req.body.points,
+            accidents: req.body.accidents,
+            shift: req.body.shift,
+            paperwork: req.body.paperwork,
+            description: req.body.description,
+            payRate: req.body.payRate
             // userId: req.user.customData._id
         })
         .then(function(driver) {
@@ -84,14 +90,20 @@ module.exports = {
     updateDriver: function(req, res) {
         Drivers.update({
             givenName: req.body.givenName,
+            middleInitial: req.body.middleInitial,
             surName: req.body.surName,
             driversLicenseNum: req.body.driversLicenseNum,
             phoneNumber: req.body.phoneNumber,
             email: req.body.email,
             address: req.body.address,
-            gasCardNum: req.body.gasCardNum,
-            ezPassNum: req.body.ezPassNum,
+            tlc: req.body.tlc,
+            dmv: req.body.dmv,
+            points: req.body.points,
+            accidents: req.body.accidents,
+            shift: req.body.shift,
+            paperwork: req.body.paperwork,
             description: req.body.description,
+            payRate: req.body.payRate
             // userId: req.user.customData._id
         }, {
             where: {
