@@ -1,5 +1,9 @@
 <div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars'>
-  <h2 class="sub-header">Cars</h2>
+  
+  <div class='sub-header'>
+    <h2>Cars</h2>
+  </div>
+  
   <div class="table-responsive car" ng-repeat='car in cars'>
     <table class="table">
       <tbody>
@@ -49,7 +53,9 @@
 </div>
 
 <div class='col-md-5' id='prospect-list'>
-  <h2 class='sub-header'>Prospects</h2>
+  <div class='sub-header'>
+    <h2>Prospects</h2>
+  </div>
   <div class='table-responsive' ng-repeat='status in prospectStatuses'>
     <table class='table'>
       <thead>
@@ -64,7 +70,7 @@
         <th>Shift</th>
         <th>Address</th>
       </thead>
-      <tbody class='prospect-status'>
+      <tbody class='prospect-status' data-status='{{ status }}' >
           <tr class='dropfix'>
             <td></td>
             <td></td>
@@ -76,7 +82,7 @@
             <td></td>
             <td></td>
           </tr>
-          <tr ng-repeat="prospect in prospects | filter:status" repeat-finished>
+          <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
             <td class='drag-handle'>::</td>
             <td>{{ prospect.givenName }} {{ prospect.surName }}</td>
             <td>{{ prospect.description }}</td>

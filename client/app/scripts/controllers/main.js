@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('MainCtrl', function ($q, $http, $scope, getProspects, getCarsAndDrivers) {
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
-    $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting', 'Rejected'];
+    $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
 
     $scope.getCarListElem = function() {
@@ -35,6 +35,18 @@ angular.module('clientApp')
         });
     }
 
+    $scope.updateProspectStatus = function(id, newStatus) {
+        return $q(function(resolve, reject) {
+            $http.put('/api/prospects/' + id, {
+                status: newStatus
+            }).then(function() {
+                console.log('Prospect ' + id + ' now has status ' + newStatus + '.');
+            }, function(err) {
+                console.error(err);
+            });
+        });
+    }
+
     // Makes lists sortable
     $scope.$on('repeatFinished', function() {
         $scope.getProspectListElems().then(function(prospectListElems) {
@@ -45,7 +57,15 @@ angular.module('clientApp')
                     draggable: 'tr',
                     handle: '.drag-handle',
                     animation: 150,
-                    dropOnEmpty: true
+                    onEnd: function(event) {
+                        var id = angular.element(event.item).data('id');
+                        var oldStatus = angular.element(event.item).data('status').toLowerCase();
+                        var newStatus = angular.element(event.item).parent().data('status').toLowerCase();
+
+                        if(newStatus !== oldStatus) {
+                           $scope.updateProspectStatus(id, newStatus); 
+                        }
+                    }
                 }));
             });
 
@@ -71,6 +91,4 @@ angular.module('clientApp')
             });
         });
     });
-
-    
 });

@@ -6,12 +6,12 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Prospect', { 
     status: {
       type: DataTypes.ENUM('callers', 'interviewed', 'waiting list', 'rejected'),
-      allowNull: false,
+      allowNull: true,
       defaultValue: 'callers'
     },
     givenName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     middleInitial: {
       type: DataTypes.CHAR,
@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     surName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     driversLicenseNum: {
       type: DataTypes.STRING,
