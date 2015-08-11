@@ -35,15 +35,17 @@ angular.module('clientApp')
         });
     }
 
+    // Makes lists sortable
     $scope.$on('repeatFinished', function() {
-        $scope.getProspectListElems().then(function(listElems) {
+        $scope.getProspectListElems().then(function(prospectListElems) {
             
-            [].forEach.call(listElems, function(listElem) {
-                $scope.sortableConfigs.push(new Sortable(listElem, {
+            [].forEach.call(prospectListElems, function(prospectListElem) {
+                $scope.sortableConfigs.push(new Sortable(prospectListElem, {
                     group: 'humans',
                     draggable: 'tr',
                     handle: '.drag-handle',
-                    animation: 150
+                    animation: 150,
+                    dropOnEmpty: true
                 }));
             });
 
@@ -51,7 +53,8 @@ angular.module('clientApp')
                 $scope.sortableConfigs.push(new Sortable(carListElem, {
                     draggable: 'div.car',
                     handle: '.drag-handle-car',
-                    animation: 150
+                    animation: 150,
+                    dropOnEmpty: true
                 }));
 
                 $scope.getDriverListElems().then(function(driverListElems) {
@@ -60,7 +63,8 @@ angular.module('clientApp')
                             group: 'humans',
                             draggable: 'tr',
                             handle: '.drag-handle',
-                            animation: 150
+                            animation: 150,
+                            dropOnEmpty: true
                         }));
                     }); 
                 });

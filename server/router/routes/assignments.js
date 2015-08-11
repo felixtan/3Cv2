@@ -21,11 +21,11 @@ module.exports = {
                 if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
                     car.dataValues.Drivers.forEach(function(driver) {
                         delete driver.dataValues.Assignment;
-                        delete driver.dataValues.driversLicenseNum;
-                        delete driver.dataValues.phoneNumber;
-                        delete driver.dataValues.email;
-                        delete driver.dataValues.address;
-                        delete driver.dataValues.description;
+                        // delete driver.dataValues.driversLicenseNum;
+                        // delete driver.dataValues.phoneNumber;
+                        // delete driver.dataValues.email;
+                        // delete driver.dataValues.address;
+                        // delete driver.dataValues.description;
                         delete driver.dataValues.userId;
                         delete driver.dataValues.createdAt;
                         delete driver.dataValues.updatedAt;
@@ -44,11 +44,11 @@ module.exports = {
         Drivers.findAll().then(function(drivers) {
             var minimizedData = drivers;
             minimizedData.forEach(function(driver) {
-                delete driver.dataValues.driversLicenseNum;
-                delete driver.dataValues.phoneNumber;
-                delete driver.dataValues.email;
+                // delete driver.dataValues.driversLicenseNum;
+                // delete driver.dataValues.phoneNumber;
+                // delete driver.dataValues.email;
                 delete driver.dataValues.address;
-                delete driver.dataValues.description;
+                // delete driver.dataValues.description;
                 delete driver.dataValues.userId;
                 delete driver.dataValues.createdAt;
                 delete driver.dataValues.updatedAt;

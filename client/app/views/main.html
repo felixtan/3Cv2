@@ -18,6 +18,17 @@
               <th>Address</th>
             </thead>
             <tbody class='driver-list'>
+              <tr class='dropfix'>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
               <tr ng-repeat='driver in car.Drivers'>
                 <td class='drag-handle'>::</td>
                 <td>{{ driver.givenName }} {{ driver.surName }}</td>
@@ -54,6 +65,17 @@
         <th>Address</th>
       </thead>
       <tbody class='prospect-status'>
+          <tr class='dropfix'>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
           <tr ng-repeat="prospect in prospects | filter:status" repeat-finished>
             <td class='drag-handle'>::</td>
             <td>{{ prospect.givenName }} {{ prospect.surName }}</td>
