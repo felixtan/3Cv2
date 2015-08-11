@@ -63,6 +63,7 @@ angular.module('clientApp')
         });
     }
 
+    // Get id of car when a driver or prospect is sorted into it
     $scope.getCarId = function(eventItem) {
         return $q(function(resolve, reject) {
             resolve(parseInt(angular.element(eventItem).parent().data('carid')));
@@ -70,6 +71,7 @@ angular.module('clientApp')
         });
     }
 
+    // Get the car a driver/prospect is reassigned/assigned to
     $scope.getCarInScope = function(id) {
         return $q(function(resolve, reject) {
             resolve($filter('filter')($scope.cars, function(car) {
@@ -83,6 +85,7 @@ angular.module('clientApp')
     $scope.$on('repeatFinished', function() {
         $scope.getProspectListElems().then(function(prospectListElems) {
             
+            // Embue prospect objects with sortability across statuses and to car list
             [].forEach.call(prospectListElems, function(prospectListElem) {
                 $scope.sortableConfigs.push(new Sortable(prospectListElem, {
                     group: 'humans',
@@ -100,17 +103,11 @@ angular.module('clientApp')
                                 $scope.updateProspectStatus(id, newStatus); 
                             }
                         } else if(toList === 'driver') {
-                            $scope.getCarId(event.item).then(function(carId) {
-                                $scope.filterProspectData(id).then(function(prospect) {
+                            $scope.filterProspectData(id).then(function(prospect) {
+                                $scope.getCarId(event.item).then(function(carId) {
                                     prospect.carId = carId;
                                     $http.post('/api/drivers', prospect).then(function(driver) {
                                         console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
-
-                                        // Update the scope
-                                        $scope.getCarInScope(carId).then(function(car) {
-                                            car.Drivers.push(driver.data);
-                                        });
-
                                         $http.delete('/api/prospects/'+id).then(function(data) {
                                             console.log(data.data.msg);
                                             $route.reload();    // Temp fix for reloading the view so the UI is accurate
@@ -120,6 +117,7 @@ angular.module('clientApp')
                                     }, function(err) {
                                         console.error(err);
                                     });
+
                                 });
                             });
                         }
