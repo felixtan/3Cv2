@@ -16,8 +16,6 @@ angular.module('clientApp')
 
     const oneWeekInMs = 604800000;
 
-    console.log( this.logs);
-
     this.newLog = function() {
         var newDateInMs = this.mostRecentDateInMs + oneWeekInMs; 
         var date = new Date(newDateInMs);

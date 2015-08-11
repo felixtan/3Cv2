@@ -183,3 +183,16 @@ body {
 .car {
   padding-left: 8px;
 }
+
+.drag-handle {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    font-weight: lighter !important;
+}
+
+.drag-handle-car {
+    cursor: move;
+    cursor: -webkit-grabbing;
+    font-weight: lighter !important;
+    font-size: 14px;
+}

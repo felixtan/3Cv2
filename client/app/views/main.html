@@ -1,17 +1,33 @@
 <div class='col-md-5 col-md-offset-2' id='carList' ng-model='cars'>
   <h2 class="sub-header">Cars</h2>
-  <div class="table-responsive" ng-repeat='car in cars'>
+  <div class="table-responsive car" ng-repeat='car in cars'>
     <table class="table">
       <tbody>
         <div class="table-responsive">
           <table class="table">
             <thead>
-              <h3 class='car'>{{ car.tlcNumber }}</h3>
+              <h3><span class='drag-handle-car'>::</span> {{ car.tlcNumber }}</h3>
+              <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
               <th>Name</th>
+              <th>Notes</th>
+              <th>TLC</th>
+              <th>DMV</th>
+              <th>Points</th>
+              <th>Accidents</th>
+              <th>Shift</th>
+              <th>Address</th>
             </thead>
-            <tbody id='driverList'>
+            <tbody class='driver-list'>
               <tr ng-repeat='driver in car.Drivers'>
+                <td class='drag-handle'>::</td>
                 <td>{{ driver.givenName }} {{ driver.surName }}</td>
+                <td>{{ driver.description }}</td>
+                <td>{{ driver.tlc }}</td>
+                <td>{{ driver.dmv }}</td>
+                <td>{{ driver.points }}</td>
+                <td>{{ driver.accidents }}</td>
+                <td>{{ driver.shift }}</td>
+                <td>{{ driver.address }}</td>
               </tr>
             </tbody>
           </table>
@@ -21,12 +37,13 @@
   </div>
 </div>
 
-<div class='col-md-5'>
+<div class='col-md-5' id='prospects'>
   <h2 class='sub-header'>Prospects</h2>
   <div class='table-responsive' ng-repeat='status in prospectStatuses'>
     <table class='table'>
       <thead>
-        <h3 class='prospect-status'>{{ status }}</h3>
+        <h3>{{ status }}</h3>
+        <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
         <th>Name</th>
         <th>Notes</th>
         <th>TLC</th>
@@ -35,20 +52,19 @@
         <th>Accidents</th>
         <th>Shift</th>
         <th>Address</th>
-        <th>Paperwork</th>
       </thead>
-      <tbody>
-        <tr ng-repeat="prospect in prospects | filter:status">
-          <td>{{ prospect.givenName }} {{ prospect.middleInitial }}. {{ prospect.surName }}</td>
-          <td>{{ prospect.description }}</td>
-          <td>{{ prospect.tlc }}</td>
-          <td>{{ prospect.dmv }}</td>
-          <td>{{ prospect.points }}</td>
-          <td>{{ prospect.accidents }}</td>
-          <td>{{ prospect.shift }}</td>
-          <td>{{ prospect.address }}</td>
-          <td>{{ prospect.paperwork }}</td>
-        </tr>
+      <tbody class='prospect-status'>
+          <tr ng-repeat="prospect in prospects | filter:status" repeat-finished>
+            <td class='drag-handle'>::</td>
+            <td>{{ prospect.givenName }} {{ prospect.surName }}</td>
+            <td>{{ prospect.description }}</td>
+            <td>{{ prospect.tlc }}</td>
+            <td>{{ prospect.dmv }}</td>
+            <td>{{ prospect.points }}</td>
+            <td>{{ prospect.accidents }}</td>
+            <td>{{ prospect.shift }}</td>
+            <td>{{ prospect.address }}</td>
+          </tr>
       </tbody>
     </table>
   </div>

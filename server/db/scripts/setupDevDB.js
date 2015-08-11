@@ -83,19 +83,19 @@ module.exports = {
         
         // Cars
         var car1 = {
-                tlcNumber: '1A10',
+                tlcNumber: 'T646853C',
                 licensePlateNumber: 'FUJ 5993',
                 mileage: 12923,
                 description: 'lorem ipsum'
         },
             car2 = {
-                tlcNumber: '2C51',
+                tlcNumber: 'T627067C',
                 licensePlateNumber: 'GPJ 6478',
                 mileage: 14081,
                 description: 'lorem ipsum'      
         },
             car3 = {
-                tlcNumber: '8N32',
+                tlcNumber: 'T657227C',
                 licensePlateNumber: 'FLJ 6290',
                 mileage: 120461,
                 description: 'lorem ipsum' 
@@ -110,7 +110,7 @@ module.exports = {
                 email: 'jdoe@gmail.com',
                 address: '4703 Bayberry Drive Staunton, VA 24401',
                 payRate: '40',
-                description: 'lorem ipsum'
+                description: 'drove T627066 1/6/15'
         },  
             driver2 = {
                 givenName: 'Seymour',
@@ -120,7 +120,10 @@ module.exports = {
                 email: 'sbutz@gmail.com',
                 address: '6774 North Avenue Augusta, GA 30906',
                 payRate: '50',
-                description: 'lorem ipsum'
+                points: '0',
+                dmv: '15',
+                tlc: '3',
+                description: 'can start 4/24/15'
         },
             driver3 = {
                 givenName: 'Max',
@@ -130,7 +133,10 @@ module.exports = {
                 email: 'mpowers@gmail.com',
                 address: '8889 Lawrence Street Owatonna, MN 55060',
                 payRate: '60',
-                description: 'lorem ipsum'
+                tlc: '2 months',
+                dmv: '22',
+                points: '0',
+                description: 'has ticket for 60'
         };
 
 

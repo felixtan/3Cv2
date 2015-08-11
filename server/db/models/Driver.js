@@ -4,41 +4,69 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Driver', { 
+    payRate: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     givenName: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
+    },
+    middleInitial: {
+      type: DataTypes.CHAR,
+      allowNull: true
     },
     surName: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     driversLicenseNum: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
+    },
+    tlc: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    dmv: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    points: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    accidents: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    shift: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    paperwork: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     userId: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    payRate: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: true,
+      allowNull: true
     }
   });
 };
