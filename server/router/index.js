@@ -41,9 +41,10 @@ module.exports = function (app) {
     app.post('/api/logs/drivers/:id', driverLogs.saveDriverLog);
     app.put('/api/logs/drivers/:id', driverLogs.updateDriverLog);
 
-    // Dashboard/Main UI
+    // Assignments
     app.get('/api/assignments', assignments.getAss);
     app.get('/api/assignments/drivers', assignments.getDrivers);
+    app.put('/api/assignments/drivers/:id', assignments.reassignDriver);
     app.get('/api/assignments/cars', assignments.getCars);
 
     // Car API routes

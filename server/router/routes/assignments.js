@@ -76,8 +76,21 @@ module.exports = {
             res.json(minimizedData);
         })
         .catch(function(err) {
-            console.error(err);
             res.status(500).json({ error: err });
+        });
+    },
+
+    reassignDriver: function(req, res) {
+        Drivers.findById(req.params.id).then(function(driver) {
+            driver.removeCar([req.body.oldCar]).then(function() {
+                driver.addCar([req.body.newCar]).then(function() {
+                    console.log('Driver ' + driver.givenName + ' ' + driver.surName + ' is reassigned to car ' + req.body.newCar + '.');
+                }, function(err) {
+                    console.error(err);
+                });
+            }, function(err) {
+                console.error(err);
+            });
         });
     }
 }

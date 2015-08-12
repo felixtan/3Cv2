@@ -81,6 +81,17 @@ angular.module('clientApp')
         });
     }
 
+    $scope.updateDriverAssignment = function(driverId, oldCar, newCar) {
+        $http.put('/api/assignments/drivers/' + driverId, {
+            oldCar: oldCar,
+            newCar: newCar
+        }).then(function(data) {
+            console.log(data.data.msg);
+        }).then(function(err) {
+            console.error(err);
+        });
+    }
+
     // Makes lists sortable when all ng-repeats are finished
     $scope.$on('repeatFinished', function() {
         $scope.getProspectListElems().then(function(prospectListElems) {
@@ -107,9 +118,9 @@ angular.module('clientApp')
                                 $scope.getCarId(event.item).then(function(carId) {
                                     prospect.carId = carId;
                                     $http.post('/api/drivers', prospect).then(function(driver) {
-                                        console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
-                                        $http.delete('/api/prospects/'+id).then(function(data) {
-                                            console.log(data.data.msg);
+                                        // console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
+                                        $http.delete('/api/prospects/'+id).then(function() {
+                                            // console.log(data.data.msg);
                                             $route.reload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);
@@ -124,15 +135,28 @@ angular.module('clientApp')
                     }
                 }));
             });
-
+            
+            // Embue car objects with sortability across list
             $scope.getCarListElem().then(function(carListElem) {
                 $scope.sortableConfigs.push(new Sortable(carListElem, {
                     draggable: 'div.car',
                     handle: '.drag-handle-car',
                     animation: 150,
-                    dropOnEmpty: true
+                    store: {
+                        get: function(sortable) {
+                            var order = localStorage.getItem(sortable.options.group);
+                            console.log(order);
+                            return order ? order.split('|') : [];
+                        },
+                        set: function(sortable) {
+                            var order = sortable.toArray();
+                            console.log(order);
+                            localStorage.setItem(sortable.options.group, order.join('|'));
+                        }
+                    }
                 }));
 
+                // Embue driver objects with sortability across cars and to prospect list
                 $scope.getDriverListElems().then(function(driverListElems) {
                     [].forEach.call(driverListElems, function(driverListElem) {
                         $scope.sortableConfigs.push(new Sortable(driverListElem, {
@@ -140,7 +164,21 @@ angular.module('clientApp')
                             draggable: 'tr',
                             handle: '.drag-handle',
                             animation: 150,
-                            dropOnEmpty: true
+                            onEnd: function(event) {
+                                var id = angular.element(event.item).data('id');
+                                var toList = angular.element(event.item).parent().data('list');
+
+                                if(toList === 'driver') {
+                                    var oldCar = angular.element(event.item).data('currentcarid');
+                                    var newCar = angular.element(event.item).parent().data('carid');
+
+                                    if(oldCar !== newCar) {
+                                        $scope.updateDriverAssignment(id, oldCar, newCar);
+                                    }
+                                } else if(toList === 'prospect') {
+
+                                }
+                            }
                         }));
                     }); 
                 });

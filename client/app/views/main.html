@@ -33,7 +33,7 @@
                 <td></td>
                 <td></td>
               </tr>
-              <tr ng-repeat='driver in car.Drivers'>
+              <tr ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
                 <td class='drag-handle'>::</td>
                 <td>{{ driver.givenName }} {{ driver.surName }}</td>
                 <td>{{ driver.description }}</td>
