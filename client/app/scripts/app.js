@@ -40,7 +40,7 @@ angular
         controller: 'AddcarCtrl',
         controllerAs: 'newCarForm',
         resolve: {
-          addCarViewData: function(dataService) {
+          getDrivers: function(dataService) {
             return dataService.getDrivers();
           }
         }

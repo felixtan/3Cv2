@@ -46,6 +46,7 @@ module.exports = function (app) {
     app.get('/api/assignments/drivers', assignments.getDrivers);
     app.put('/api/assignments/drivers/:id', assignments.reassignDriver);
     app.get('/api/assignments/cars', assignments.getCars);
+    app.post('/api/assignments/driver=:driverId/car=:carId', assignments.assign);
 
     // Car API routes
     app.get('/api/cars', cars.getCars);

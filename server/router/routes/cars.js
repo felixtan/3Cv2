@@ -35,7 +35,7 @@ module.exports = {
             tlcNumber: req.body.tlcNumber,
             licensePlateNumber: req.body.licensePlateNumber,
             mileage: req.body.mileage,
-            oilChangeRequired: false,
+            // oilChangeRequired: false,
             // userId: req.user.customData._id,
             description: req.body.description
         })
@@ -44,13 +44,16 @@ module.exports = {
              * If driverId is defined, then associate the new car with
              * the driver.
              */ 
-            if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
-                car.addDriver([req.body.driverId]).then(function() {
-                    console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
-                });    
-            }
 
-            res.json(car.dataValues);
+            // This function was moved to carFormModalInstanceCtrl in the frontend
+
+            // if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
+            //     car.addDriver([req.body.driverId]).then(function() {
+            //         console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
+            //     });    
+            // }
+
+            res.json(car);
         })
         .catch(function(err) {
             console.error(err);

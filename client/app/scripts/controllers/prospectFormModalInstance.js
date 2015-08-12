@@ -8,9 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('prospectFormModalInstanceCtrl', function ($http, $route, $scope, $modalInstance, items) {
-    $scope.items = items;
-
+  .controller('prospectFormModalInstanceCtrl', function ($http, $route, $scope, $modalInstance) {
     $scope.formData = {};
 
       $scope.submit = function () {

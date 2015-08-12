@@ -92,5 +92,18 @@ module.exports = {
                 console.error(err);
             });
         });
+    },
+
+    assign: function(req, res) {
+        Drivers.findById(req.params.driverId).then(function(driver) {
+            driver.addCar([req.params.carId]).then(function(data) {
+                console.log('Car ' + req.params.carId + ' is associated with driver ' + req.params.driverId + '.');
+                res.json(data);
+            }, function(err) {
+                    res.status(500).json({ error: err });
+            });
+        }, function(err) {
+                res.status(500).json({ error: err });
+        });
     }
 }

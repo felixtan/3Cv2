@@ -28,13 +28,16 @@ angular.module('clientApp')
       },
 
       getDrivers: function () {
-       return $http.get('/api/assignments/drivers')
-                  .success(function(data) {
-                    return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
-                  });
+        var promise = $http.get('/api/assignments/drivers');
+        var deferred = deferred || $q.defer();
+
+        promise.then(function(data) {
+          deferred.resolve(data);
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
       },
 
       getCars: function () {
