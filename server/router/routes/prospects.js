@@ -32,7 +32,7 @@ module.exports = {
 
     saveProspect: function(req, res) {
         Prospects.create({
-            staus: req.body.status,
+            status: req.body.status,
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
             surName: req.body.surName,

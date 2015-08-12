@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($route, $timeout, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function ($modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
 
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
@@ -141,19 +141,19 @@ angular.module('clientApp')
                 $scope.sortableConfigs.push(new Sortable(carListElem, {
                     draggable: 'div.car',
                     handle: '.drag-handle-car',
-                    animation: 150,
-                    store: {
-                        get: function(sortable) {
-                            var order = localStorage.getItem(sortable.options.group);
-                            console.log(order);
-                            return order ? order.split('|') : [];
-                        },
-                        set: function(sortable) {
-                            var order = sortable.toArray();
-                            console.log(order);
-                            localStorage.setItem(sortable.options.group, order.join('|'));
-                        }
-                    }
+                    animation: 150 
+                    // store: {
+                    //     get: function(sortable) {
+                    //         var order = localStorage.getItem(sortable.options.group);
+                    //         console.log(order);
+                    //         return order ? order.split('|') : [];
+                    //     },
+                    //     set: function(sortable) {
+                    //         var order = sortable.toArray();
+                    //         console.log(order);
+                    //         localStorage.setItem(sortable.options.group, order.join('|'));
+                    //     }
+                    // }
                 }));
 
                 // Embue driver objects with sortability across cars and to prospect list

@@ -222,5 +222,7 @@ body {
   line-height: 0 !important;
 }
 
+// Required for angular-ui-bootstrap
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 

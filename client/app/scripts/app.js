@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'xeditable',
-    'ng-sortable'
+    'ng-sortable',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
