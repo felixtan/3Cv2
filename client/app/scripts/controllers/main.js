@@ -52,6 +52,15 @@ angular.module('clientApp')
             var prospect = $filter('filter')($scope.prospects, function(data) {
                 return data.id === id;
             })[0];
+            
+            var removeWhiteSpace = function(str) {
+                return str.replace(/\s/g, '');
+            };
+
+            if(prospect.middleInitial) {
+                prospect.middleInitial = removeWhiteSpace(prospect.middleInitial);    
+            }
+            
             delete prospect.status;
             delete prospect.$$hashKey;
             delete prospect.createdAt;
@@ -117,10 +126,11 @@ angular.module('clientApp')
                             $scope.filterProspectData(id).then(function(prospect) {
                                 $scope.getCarId(event.item).then(function(carId) {
                                     prospect.carId = carId;
+                                    console.log('prospect being promoted:',prospect);
                                     $http.post('/api/drivers', prospect).then(function(driver) {
-                                        // console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
-                                        $http.delete('/api/prospects/'+id).then(function() {
-                                            // console.log(data.data.msg);
+                                        console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
+                                        $http.delete('/api/prospects/'+id).then(function(data) {
+                                            console.log(data.data.msg);
                                             $route.reload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);
@@ -128,7 +138,6 @@ angular.module('clientApp')
                                     }, function(err) {
                                         console.error(err);
                                     });
-
                                 });
                             });
                         }

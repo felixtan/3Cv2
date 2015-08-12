@@ -57,7 +57,7 @@ module.exports = {
              * the car.
              */ 
             if(req.body.carId !== null && typeof req.body.carId !== 'undefined') {
-                driver.setCar([req.body.carId]).then(function() {
+                driver.addCar([req.body.carId]).then(function() {
                     console.log('Driver ' + driver.id + ' is associated with Car ' + req.body.carId);
                 });    
             }
