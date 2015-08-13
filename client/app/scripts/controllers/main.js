@@ -10,10 +10,45 @@
 angular.module('clientApp')
   .controller('MainCtrl', function ($modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
 
+    $scope.carListCollapsed = false;
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
+
+    // submit xeditable row form by pressing enter
+    // will then call updateDriver
+    $scope.keypress = function(e, form) {
+        if (e.which === 13) {
+            form.$submit();
+        }
+    };
+
+    $scope.updateDriver = function(driver) {
+        var name = driver.name.split(/[ .]+/);
+        if(name.length === 3) {
+            driver.givenName = name[0];
+            driver.middleInitial = name[1];
+            driver.surName = name[2];  
+            delete driver.name;        
+            $http.put('/api/drivers/'+driver.id, driver).then(function() {
+                $route.reload();
+            }, function(err) {
+                console.error(err);
+            });
+        } else if(name.length === 2) {
+            driver.givenName = name[0];
+            driver.surName = name[1];          
+            delete driver.name;
+            $http.put('/api/drivers/'+driver.id, driver).then(function() {
+                $route.reload();
+            }, function(err) {
+                console.error(err);
+            });
+        } else {
+            console.log('wtf, driver.name is fucked');
+        }
+    }
 
     $scope.getCarListElem = function() {
         return $q(function(resolve, reject) {

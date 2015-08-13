@@ -19,9 +19,9 @@
         <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
           <td>
             <span>{{ ptgLog.date | date : formet : shortDate }}</span>
-              <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
-                Edit
-              </button>
+            <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
+              Edit
+            </button>
             <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
               <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
                 Save
@@ -29,7 +29,7 @@
               <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
                 Cancel
               </button>
-          </form>
+            </form>
           </td>
           <td class='driver-log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
             

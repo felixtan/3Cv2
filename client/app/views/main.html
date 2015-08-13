@@ -1,9 +1,9 @@
-<div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars'>
+<!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
+<div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
   <h2 class='sub-header'>Cars</h2>
 
   <div class='row'>
     <div class='col-md-5 car-actions' ng-controller="carFormModalCtrl">
-      
       <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
     </div>
   </div>
@@ -15,7 +15,7 @@
           <table class="table">
             <thead>
               <h3><span class='drag-handle-car'>::</span> {{ car.tlcNumber }}</h3>
-              <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
+              <th></th>
               <th>Name</th>
               <th>Notes</th>
               <th>TLC</th>
@@ -37,16 +37,54 @@
                 <td></td>
                 <td></td>
               </tr>
-              <tr ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
-                <td class='drag-handle'>::</td>
-                <td>{{ driver.givenName }} {{ driver.surName }}</td>
-                <td>{{ driver.description }}</td>
-                <td>{{ driver.tlc }}</td>
-                <td>{{ driver.dmv }}</td>
-                <td>{{ driver.points }}</td>
-                <td>{{ driver.accidents }}</td>
-                <td>{{ driver.shift }}</td>
-                <td>{{ driver.address }}</td>
+              <tr class='driver-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
+                <td>
+                  <ul class='driver-row-actions'>
+                    <li class='drag-handle'>::</li>
+                    <li class='filler'> </li>
+                    <li type='button' class='fa fa-pencil-square-o' ng-click='rowForm.$show()' ng-show='!rowForm.$visible'>
+                    </li>  
+                  </ul>
+                </td>
+                <td>
+                  <span editable-text='driver.name' e-name='name' e-form='rowForm' onaftersave='updateDriver(driver)' e-ng-keypress="keypress($event, rowForm)">
+                    {{ driver.name }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.description' e-name='description' e-form='rowForm'>{{ driver.description }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.tlc' e-name='tlc' e-form='rowForm'>
+                    {{ driver.tlc }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.dmv' e-name='dmv' e-form='rowForm'>
+                    {{ driver.dmv }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.points' e-name='points' e-form='rowForm'>
+                    {{ driver.points }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.accidents' e-name='accidents' e-form='rowForm'>
+                    {{ driver.accidents }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.shift' e-name='shift' e-form='rowForm'>
+                    {{ driver.shift }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.address' e-name='address' e-form='rowForm'>
+                    {{ driver.address }}
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>

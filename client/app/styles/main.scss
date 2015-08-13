@@ -225,4 +225,12 @@ body {
 // Required for angular-ui-bootstrap
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.driver-row-actions {
+  list-style-type: none;
+  padding-left: 0px;
+}
 
+.editable-empty {
+  font-style: normal !important;
+  color: #000 !important; 
+}
