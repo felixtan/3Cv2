@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     middleInitial: {
-      type: DataTypes.CHAR,
+      type: DataTypes.STRING(1),
       allowNull: true
     },
     surName: {

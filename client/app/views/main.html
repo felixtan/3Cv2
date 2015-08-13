@@ -42,46 +42,46 @@
                   <ul class='driver-row-actions'>
                     <li class='drag-handle'>::</li>
                     <li class='filler'> </li>
-                    <li type='button' class='fa fa-pencil-square-o' ng-click='rowForm.$show()' ng-show='!rowForm.$visible'>
+                    <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show='!driverRowForm.$visible'>
                     </li>  
                   </ul>
                 </td>
                 <td>
-                  <span editable-text='driver.name' e-name='name' e-form='rowForm' onaftersave='updateDriver(driver)' e-ng-keypress="keypress($event, rowForm)">
+                  <span editable-text='driver.name' e-name='name' e-form='driverRowForm' onaftersave='updateRow(driver)' e-ng-keypress="keypress($event, driverRowForm)">
                     {{ driver.name }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.description' e-name='description' e-form='rowForm'>{{ driver.description }}
+                  <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.tlc' e-name='tlc' e-form='rowForm'>
+                  <span editable-text='driver.tlc' e-name='tlc' e-form='driverRowForm'>
                     {{ driver.tlc }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.dmv' e-name='dmv' e-form='rowForm'>
+                  <span editable-text='driver.dmv' e-name='dmv' e-form='driverRowForm'>
                     {{ driver.dmv }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.points' e-name='points' e-form='rowForm'>
+                  <span editable-text='driver.points' e-name='points' e-form='driverRowForm'>
                     {{ driver.points }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.accidents' e-name='accidents' e-form='rowForm'>
+                  <span editable-text='driver.accidents' e-name='accidents' e-form='driverRowForm'>
                     {{ driver.accidents }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.shift' e-name='shift' e-form='rowForm'>
+                  <span editable-text='driver.shift' e-name='shift' e-form='driverRowForm'>
                     {{ driver.shift }}
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.address' e-name='address' e-form='rowForm'>
+                  <span editable-text='driver.address' e-name='address' e-form='driverRowForm'>
                     {{ driver.address }}
                   </span>
                 </td>
@@ -129,15 +129,54 @@
             <td></td>
           </tr>
           <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
-            <td class='drag-handle'>::</td>
-            <td>{{ prospect.givenName }} {{ prospect.surName }}</td>
-            <td>{{ prospect.description }}</td>
-            <td>{{ prospect.tlc }}</td>
-            <td>{{ prospect.dmv }}</td>
-            <td>{{ prospect.points }}</td>
-            <td>{{ prospect.accidents }}</td>
-            <td>{{ prospect.shift }}</td>
-            <td>{{ prospect.address }}</td>
+            <td>
+              <ul class='driver-row-actions'>
+              <li class='drag-handle'>::</li>
+              <li class='filler'> </li>
+              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show='!prospectRowForm.$visible'>
+              </li>  
+            </ul>
+            </td>
+            <td>
+              <span editable-text='prospect.name' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
+                {{ prospect.name }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.description' e-name='description' e-form='prospectRowForm'>
+                {{ prospect.description }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.tlc' e-name='tlc' e-form='prospectRowForm'>
+                {{ prospect.tlc }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.dmv' e-name='dmv' e-form='prospectRowForm'>
+                {{ prospect.dmv }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.points' e-name='points' e-form='prospectRowForm'>
+                {{ prospect.points }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.accidents' e-name='accidents' e-form='prospectRowForm'>
+                {{ prospect.accidents }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.shift' e-name='shift' e-form='prospectRowForm'>
+                {{ prospect.shift }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.address' e-name='address' e-form='prospectRowForm'>
+                {{ prospect.address }}
+              </span>
+            </td>
           </tr>
       </tbody>
     </table>

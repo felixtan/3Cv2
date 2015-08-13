@@ -24,29 +24,35 @@ angular.module('clientApp')
         }
     };
 
-    $scope.updateDriver = function(driver) {
-        var name = driver.name.split(/[ .]+/);
+    $scope.updateRow = function(obj) {
+        var name = obj.name.split(/[ .]+/);
         if(name.length === 3) {
-            driver.givenName = name[0];
-            driver.middleInitial = name[1];
-            driver.surName = name[2];  
-            delete driver.name;        
-            $http.put('/api/drivers/'+driver.id, driver).then(function() {
+            obj.givenName = name[0];
+            obj.middleInitial = name[1];
+            obj.surName = name[2];  
+            delete obj.name;        
+        } else if(name.length === 2) {
+            obj.givenName = name[0];
+            obj.surName = name[1];          
+            delete obj.name;
+        } else {
+            console.log('obj.name is fucked');
+        }
+
+        if(obj.status) {
+            $http.put('/api/prospects/'+obj.id, obj).then(function() {
                 $route.reload();
             }, function(err) {
                 console.error(err);
             });
-        } else if(name.length === 2) {
-            driver.givenName = name[0];
-            driver.surName = name[1];          
-            delete driver.name;
-            $http.put('/api/drivers/'+driver.id, driver).then(function() {
+        } else if(obj.payRate) {
+            $http.put('/api/drivers/'+obj.id, obj).then(function() {
                 $route.reload();
             }, function(err) {
                 console.error(err);
             });
         } else {
-            console.log('wtf, driver.name is fucked');
+            console.log("wtf is it?", obj);
         }
     }
 

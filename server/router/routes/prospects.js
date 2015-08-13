@@ -7,7 +7,20 @@ module.exports = {
 
     getProspects: function(req, res) {
         Prospects.findAll().then(function(prospects) {
-            res.json(prospects);
+            var minimizedData = prospects;
+            minimizedData.forEach(function(prospect) {
+                // combine names
+                if(prospect.dataValues.middleInitial) {
+                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.middleInitial + '. ' + prospect.dataValues.surName;    
+                } else {
+                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.surName;
+                }
+                
+                delete prospect.dataValues.givenName;
+                delete prospect.dataValues.surName;
+                delete prospect.dataValues.middleInitial;
+            });
+            res.json(minimizedData);
         })
         .catch(function(err) {
             console.error(err);
