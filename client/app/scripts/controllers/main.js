@@ -187,7 +187,7 @@ angular.module('clientApp')
             // Embue prospect objects with sortability across statuses and to car list
             [].forEach.call(prospectListElems, function(prospectListElem) {
                 $scope.sortableConfigs.push(new Sortable(prospectListElem, {
-                    group: 'humans',
+                    group: 'prospects',
                     draggable: 'tr',
                     handle: '.drag-handle',
                     animation: 150,
@@ -227,6 +227,7 @@ angular.module('clientApp')
             // Embue car objects with sortability across list
             $scope.getCarListElem().then(function(carListElem) {
                 $scope.sortableConfigs.push(new Sortable(carListElem, {
+                    group: 'cars',
                     draggable: 'div.car',
                     handle: '.drag-handle-car',
                     animation: 150 
@@ -236,7 +237,10 @@ angular.module('clientApp')
                 $scope.getDriverListElems().then(function(driverListElems) {
                     [].forEach.call(driverListElems, function(driverListElem) {
                         $scope.sortableConfigs.push(new Sortable(driverListElem, {
-                            group: 'humans',
+                            group: {
+                                name: 'drivers',
+                                put: ['prospects', 'drivers']
+                            },
                             draggable: 'tr',
                             handle: '.drag-handle',
                             animation: 150,
