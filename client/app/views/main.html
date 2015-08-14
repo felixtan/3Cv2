@@ -1,4 +1,5 @@
 <!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
+{{ payRate }}
 <div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
   <h2 class='sub-header'>Cars</h2>
 
@@ -289,5 +290,26 @@
       <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
       <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
       <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>
+
+<!-- Pay rate modal view -->
+<!-- TODO: put it in a different file -->
+<script type="text/ng-template" id="payRateModal">
+  <div class='modal-header'>
+    <h3 class="modal-title">Enter Pay Rate</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+  </div>
+  <div class='modal-body'>
+    <form novalidate role='form' id='payRateForm'>
+      <div class='form-group'>
+        <label for='payRate'>Pay Rate (%)</label>
+        <input type='text' class='form-control' ng-model='payRate'>
+      </div>
+    </form>
+  </div>
+  <div class='modal-footer'>
+    <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
   </div>
 </script>

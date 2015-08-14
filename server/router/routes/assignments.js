@@ -13,9 +13,9 @@ module.exports = {
             minimizedData.forEach(function(car) {
                 delete car.dataValues.updatedAt;
                 delete car.dataValues.createdAt;
-                delete car.dataValues.licensePlateNumber;
-                delete car.dataValues.mileage;
-                delete car.dataValues.description;
+                // delete car.dataValues.licensePlateNumber;
+                // delete car.dataValues.mileage;
+                // delete car.dataValues.description;
                 delete car.dataValues.userId;
                 
                 if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
@@ -43,6 +43,7 @@ module.exports = {
                     });   
                 }
             });
+            console.log(minimizedData.dataValues);
             res.json(minimizedData);
         })
         .catch(function(err) {

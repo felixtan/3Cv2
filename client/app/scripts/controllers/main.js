@@ -16,6 +16,8 @@ angular.module('clientApp')
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
 
+    console.log($scope.cars);
+
     // submit xeditable row form by pressing enter
     // will then call updateDriver
     $scope.keypress = function(e, form) {
@@ -24,36 +26,46 @@ angular.module('clientApp')
         }
     };
 
-    $scope.updateRow = function(obj) {
-        var name = obj.name.split(/[ .]+/);
-        if(name.length === 3) {
-            obj.givenName = name[0];
-            obj.middleInitial = name[1];
-            obj.surName = name[2];  
-            delete obj.name;        
-        } else if(name.length === 2) {
-            obj.givenName = name[0];
-            obj.surName = name[1];          
+    // Input: name string
+    // Output: object with givenName, middleInitial, and surName properties
+    var parseName = function(obj) {
+        return $q(function(resolve, reject) {
+            var name = obj.name.split(/[ .]+/);
             delete obj.name;
-        } else {
-            console.log('obj.name is fucked');
-        }
+            if(name.length === 3) {
+                obj.givenName = name[0];
+                obj.middleInitial = name[1];
+                obj.surName = name[2];  
+            } else if(name.length === 2) {
+                obj.givenName = name[0];
+                obj.surName = name[1];          
+            } 
 
-        if(obj.status) {
-            $http.put('/api/prospects/'+obj.id, obj).then(function() {
-                $route.reload();
+            resolve(obj);
+            reject(new Error('obj.name is fucked'));
+        });
+    }
+
+    $scope.updateRow = function(obj) {
+        parseName(obj).then(function(objNameParsed) {
+            if(objNameParsed.status) {
+                var promise = $http.put('/api/prospects/'+objNameParsed.id, objNameParsed);
+            } else if(objNameParsed.payRate) {
+                var promise = $http.put('/api/drivers/'+objNameParsed.id, objNameParsed);
+            }
+
+            var deferred = deferred || $q.defer();
+
+            promise.then(function(data) {
+                deferred.resolve(data);
             }, function(err) {
-                console.error(err);
+                deferred.reject(err);
             });
-        } else if(obj.payRate) {
-            $http.put('/api/drivers/'+obj.id, obj).then(function() {
-                $route.reload();
-            }, function(err) {
-                console.error(err);
-            });
-        } else {
-            console.log("wtf is it?", obj);
-        }
+
+            return deferred.promise;
+        }, function(err) {
+            return new Error('Error updating dashboard row.');
+        });
     }
 
     $scope.getCarListElem = function() {
@@ -87,29 +99,38 @@ angular.module('clientApp')
         });
     }
 
+    var removeWhiteSpace = function(str) {
+        return str.replace(/\s/g, '');
+    };
+
+    // Input: prospect with single name property
+    // Output: prospect with three name properties less any property not needed for post method
     $scope.filterProspectData = function(id) {
         return $q(function(resolve, reject) {
-            // find the prospect 
-            var prospect = $filter('filter')($scope.prospects, function(data) {
-                return data.id === id;
-            })[0];
-            
-            var removeWhiteSpace = function(str) {
-                return str.replace(/\s/g, '');
-            };
+            $modal.open({
+                templateUrl: 'payRateModal',
+                controller: 'payRateModalInstanceCtrl'
+            }).result.then(function(payRate) {
+                
+                var prospect = $filter('filter')($scope.prospects, function(data) {
+                    return data.id === id;
+                })[0];
 
-            if(prospect.middleInitial) {
-                prospect.middleInitial = removeWhiteSpace(prospect.middleInitial);    
-            }
-            
-            delete prospect.status;
-            delete prospect.$$hashKey;
-            delete prospect.createdAt;
-            delete prospect.id;
-            delete prospect.updatedAt;
-            delete prospect.userId;
-            resolve(prospect);
-            reject(new Error('Failed to filter prospect data before promoting to driver.'));
+                parseName(prospect).then(function(parsedNameProspect) {
+                    parsedNameProspect.payRate = payRate;
+                    delete prospect.status;
+                    delete prospect.$$hashKey;
+                    delete prospect.createdAt;
+                    delete prospect.id;
+                    delete prospect.updatedAt;
+                    delete prospect.userId;
+
+                    resolve(prospect);
+                    reject(new Error('Failed to filter prospect data before promoting to driver.'));
+                });
+            }, function(err) {
+                console.error(err);
+            });
         });
     }
 
@@ -192,18 +213,6 @@ angular.module('clientApp')
                     draggable: 'div.car',
                     handle: '.drag-handle-car',
                     animation: 150 
-                    // store: {
-                    //     get: function(sortable) {
-                    //         var order = localStorage.getItem(sortable.options.group);
-                    //         console.log(order);
-                    //         return order ? order.split('|') : [];
-                    //     },
-                    //     set: function(sortable) {
-                    //         var order = sortable.toArray();
-                    //         console.log(order);
-                    //         localStorage.setItem(sortable.options.group, order.join('|'));
-                    //     }
-                    // }
                 }));
 
                 // Embue driver objects with sortability across cars and to prospect list
