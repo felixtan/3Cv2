@@ -1,5 +1,5 @@
 <!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
-{{ payRate }}
+
 <div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
   <h2 class='sub-header'>Cars</h2>
 
@@ -40,15 +40,25 @@
               </tr>
               <tr class='driver-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
                 <td>
-                  <ul class='driver-row-actions'>
-                    <li class='drag-handle'>::</li>
+                  <ul class='row-actions'>
+                    <li class='drag-handle' ng-show='!driverRowForm.$visible'>::</li>
                     <li class='filler'> </li>
                     <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show='!driverRowForm.$visible'>
-                    </li>  
+                    </li>
+                    <li>
+                      <form editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
+                        <button class='btn btn-xs btn-warning' type='submit' ng-disabled='driverRowForm.$waiting'>
+                          &#10003;
+                        </button>
+                        <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(driver)'>
+                          &times;
+                        </button>
+                      </form>
+                    </li>
                   </ul>
                 </td>
                 <td>
-                  <span editable-text='driver.name' e-name='name' e-form='driverRowForm' onaftersave='updateRow(driver)' e-ng-keypress="keypress($event, driverRowForm)">
+                  <span editable-text='driver.name' buttons='no' e-name='name' e-form='driverRowForm' onaftersave='updateRow(driver)' e-ng-keypress="keypress($event, driverRowForm)">
                     {{ driver.name }}
                   </span>
                 </td>
@@ -131,15 +141,25 @@
           </tr>
           <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
             <td>
-              <ul class='driver-row-actions'>
-              <li class='drag-handle'>::</li>
+              <ul class='row-actions'>
+              <li class='drag-handle' ng-show='!prospectRowForm.$visible'>::</li>
               <li class='filler'> </li>
               <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show='!prospectRowForm.$visible'>
               </li>  
+              <li>
+                <form editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>
+                  <button class='btn btn-xs btn-warning' type='submit' ng-disabled='prospectRowForm.$waiting'>
+                    &#10003;
+                  </button>
+                  <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(prospect)'>
+                    &times;
+                  </button>
+                </form>
+              </li>
             </ul>
             </td>
             <td>
-              <span editable-text='prospect.name' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
+              <span editable-text='prospect.name' buttons='no' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
                 {{ prospect.name }}
               </span>
             </td>

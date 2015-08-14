@@ -88,6 +88,7 @@ module.exports = {
     },
 
     updateDriver: function(req, res) {
+        console.log(req.body);
         Drivers.update({
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,

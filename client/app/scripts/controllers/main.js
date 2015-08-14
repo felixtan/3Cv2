@@ -16,8 +16,6 @@ angular.module('clientApp')
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
 
-    console.log($scope.cars);
-
     // submit xeditable row form by pressing enter
     // will then call updateDriver
     $scope.keypress = function(e, form) {
@@ -53,11 +51,12 @@ angular.module('clientApp')
             } else if(objNameParsed.payRate) {
                 var promise = $http.put('/api/drivers/'+objNameParsed.id, objNameParsed);
             }
-
+            // console.log(obj);
             var deferred = deferred || $q.defer();
 
             promise.then(function(data) {
                 deferred.resolve(data);
+                $route.reload();
             }, function(err) {
                 deferred.reject(err);
             });
@@ -65,6 +64,23 @@ angular.module('clientApp')
             return deferred.promise;
         }, function(err) {
             return new Error('Error updating dashboard row.');
+        });
+    }
+
+    $scope.deleteRow = function(obj) {
+        if(obj.payRate) {
+            var type = 'driver';
+        } else if(obj.status) {
+            var type = 'prospect';
+        } else {
+            console.error('Failed to delete.', obj);
+        }
+
+        $http.delete('/api/' + type + 's/' + obj.id).then(function(data) {
+            console.log('Deleted ' + type + '.');
+            $route.reload();
+        }, function(err) {
+            console.error(err);
         });
     }
 
@@ -98,10 +114,6 @@ angular.module('clientApp')
             console.error(err);
         });
     }
-
-    var removeWhiteSpace = function(str) {
-        return str.replace(/\s/g, '');
-    };
 
     // Input: prospect with single name property
     // Output: prospect with three name properties less any property not needed for post method
@@ -165,6 +177,11 @@ angular.module('clientApp')
 
     // Makes lists sortable when all ng-repeats are finished
     $scope.$on('repeatFinished', function() {
+
+        // NOT WORKING
+        // remove default save and cancel buttons from xeditable row
+        angular.element('.editable-buttons').remove();
+
         $scope.getProspectListElems().then(function(prospectListElems) {
             
             // Embue prospect objects with sortability across statuses and to car list
