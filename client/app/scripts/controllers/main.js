@@ -19,6 +19,8 @@ angular.module('clientApp')
     // submit xeditable row form by pressing enter
     // will then call updateDriver
     $scope.keypress = function(e, form) {
+        console.log(e);
+        console.log(form);
         if (e.which === 13) {
             form.$submit();
         }
