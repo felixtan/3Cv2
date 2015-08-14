@@ -35,7 +35,7 @@ module.exports = {
             tlcNumber: req.body.tlcNumber,
             licensePlateNumber: req.body.licensePlateNumber,
             mileage: req.body.mileage,
-            oilChangeRequired: false,
+            // oilChangeRequired: false,
             // userId: req.user.customData._id,
             description: req.body.description
         })
@@ -44,13 +44,16 @@ module.exports = {
              * If driverId is defined, then associate the new car with
              * the driver.
              */ 
-            if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
-                car.addDriver([req.body.driverId]).then(function() {
-                    console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
-                });    
-            }
 
-            res.json(car.dataValues);
+            // This function was moved to carFormModalInstanceCtrl in the frontend
+
+            // if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
+            //     car.addDriver([req.body.driverId]).then(function() {
+            //         console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
+            //     });    
+            // }
+
+            res.json(car);
         })
         .catch(function(err) {
             console.error(err);
@@ -95,15 +98,18 @@ module.exports = {
         });
     },
 
-    disassociateDrivers: function(req, res) {
-        // untested function
-
-        /**
-         * 1. Takes an array of driver ids.
-         * 2. Performs difference operation between array of all driver ids and input array.
-         * 3. Call cars.setDrivers()
-         */
-
-
+    rearrange: function(req, res) {
+        Cars.findAll().then(function(cars) {
+            console.log('before rearrange:', cars);
+            console.log('oldIndex:', req.body.oldIndex - 1);
+            console.log('newIndex:', req.body.newIndex - 1);
+            cars.splice(req.body.newIndex - 1, 0, cars.splice(req.body.oldIndex - 1, 1)[0]);
+            return cars;
+        }).then(function(cars) {
+            console.log('after rearrange:',cars);
+            Cars.update(cars);
+        }).catch(function(err) {
+            console.error(err);
+        });
     }
 };

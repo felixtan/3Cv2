@@ -1,15 +1,26 @@
 'use strict';
 
 var models = require('../../db/models');
-var Drivers = models.Driver;
-var DriverLog = models.DriverLog;
-var PtgLogs = models.PtgLog;
+var Prospects = models.Prospect;
 
 module.exports = {
 
-    getDrivers: function(req, res) {
-        Drivers.findAll().then(function(drivers) {
-            res.json(drivers);
+    getProspects: function(req, res) {
+        Prospects.findAll().then(function(prospects) {
+            var minimizedData = prospects;
+            minimizedData.forEach(function(prospect) {
+                // combine names
+                if(prospect.dataValues.middleInitial) {
+                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.middleInitial + '. ' + prospect.dataValues.surName;    
+                } else {
+                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.surName;
+                }
+                
+                delete prospect.dataValues.givenName;
+                delete prospect.dataValues.surName;
+                delete prospect.dataValues.middleInitial;
+            });
+            res.json(minimizedData);
         })
         .catch(function(err) {
             console.error(err);
@@ -17,13 +28,13 @@ module.exports = {
         });
     },
 
-    getDriver: function(req, res) {
-        Drivers.findById(req.params.id).then(function(driver) {
-            if(!driver) {
+    getProspect: function(req, res) {
+        Prospects.findById(req.params.id).then(function(prospect) {
+            if(!prospect) {
                 res.status(404).json({ error: 'Resource not found.' });
-                console.log('Driver not found.');
+                console.log('Prospect not found.');
             } else {
-                res.json(driver.dataValues);
+                res.json(prospect.dataValues);
             }
         })
         .catch(function(err) {
@@ -32,8 +43,9 @@ module.exports = {
         });
     },
 
-    saveDriver: function(req, res) {
-        Drivers.create({
+    saveProspect: function(req, res) {
+        Prospects.create({
+            status: req.body.status,
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
             surName: req.body.surName,
@@ -47,39 +59,11 @@ module.exports = {
             accidents: req.body.accidents,
             shift: req.body.shift,
             paperwork: req.body.paperwork,
-            description: req.body.description,
-            payRate: req.body.payRate
+            description: req.body.description
             // userId: req.user.customData._id
         })
-        .then(function(driver) {
-            /**
-             * If carId is defined, then associate the new driver with
-             * the car.
-             */ 
-            if(req.body.carId !== null && typeof req.body.carId !== 'undefined') {
-                driver.addCar([req.body.carId]).then(function() {
-                    console.log('Driver ' + driver.id + ' is associated with Car ' + req.body.carId);
-                });    
-            }
-
-            /**
-             * Create driver logs
-             */
-            PtgLogs.findAll().then(function(ptgLogs) {
-                ptgLogs.forEach(function(ptgLog) {
-                    DriverLog.create({
-                        date: ptgLog.date,
-                        dateInMs: ptgLog.dateInMs,
-                        givenName: driver.givenName,
-                        surName: driver.surName
-                    }).then(function(driverLog) {
-                        driver.addLog([driverLog.id]);
-                        ptgLog.addDriverLog([driverLog.id]);
-                    });
-                });
-            }).then(function() {
-                res.json(driver);
-            });
+        .then(function(prospect) {
+            res.json(prospect);
         })
         .catch(function(err) {
             console.error(err);
@@ -87,9 +71,9 @@ module.exports = {
         });
     },
 
-    updateDriver: function(req, res) {
-        console.log(req.body);
-        Drivers.update({
+    updateProspect: function(req, res) {
+        Prospects.update({
+            status: req.body.status,
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
             surName: req.body.surName,
@@ -103,8 +87,7 @@ module.exports = {
             accidents: req.body.accidents,
             shift: req.body.shift,
             paperwork: req.body.paperwork,
-            description: req.body.description,
-            payRate: req.body.payRate
+            description: req.body.description
             // userId: req.user.customData._id
         }, {
             where: {
@@ -112,7 +95,7 @@ module.exports = {
             }
         })
         .then(function() {
-            res.status(200).json({ msg: 'Update driver where id = ' + req.params.id });
+            res.status(200).json({ msg: 'Update prospect where id = ' + req.params.id });
         })
         .catch(function(err) {
             console.error(err);
@@ -120,15 +103,15 @@ module.exports = {
         });
     },
 
-    deleteDriver: function(req, res) {
-        Drivers.destroy({
+    deleteProspect: function(req, res) {
+        Prospects.destroy({
             where: {
                 id: req.params.id
                 // userId: req.user.customData._id
             }
         })
         .then(function() {
-            res.status(200).json({ msg: 'Deleted driver where id = ' + req.params.id });
+            res.status(200).json({ msg: 'Deleted prospect where id = ' + req.params.id });
         })
         .catch(function(err) {
             console.error(err);

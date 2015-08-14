@@ -16,27 +16,16 @@ angular.module('clientApp')
 
     const oneWeekInMs = 604800000;
 
-    console.log( this.logs);
-
-     this.newLog = function() {
+    this.newLog = function() {
         var newDateInMs = this.mostRecentDateInMs + oneWeekInMs; 
         var date = new Date(newDateInMs);
-        // var id = this.logs.length + 1;
-
-        // var newLog = {
-        //     id: id,
-        //     dateInMs: newDateInMs,
-        //     date: date
-        // };
-
-        // this.logs.push(newLog);
 
         $http.post('/api/logs/ptg', {
             dateInMs: newDateInMs,
             date: date
         }).then(function() {
             console.log('New PTG log created.');
-            setTimeout(function() { $route.reload(); }, 200);
+            setTimeout(function() { $route.reload(); }, 1000);
         }).catch(function(err) {
             console.error(err);
         });

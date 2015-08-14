@@ -1,80 +1,81 @@
 <link rel="stylesheet" href="styles/partials/_ptg.css">
 
-<h1 class="page-header">Driver Payout Record</h1>
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
+  <h1 class="page-header">Driver Payout Record</h1>
 
-<div class='sub-header'>
-  <button class='btn btn-success' ng-click='ptg.newLog()'> Add Row </button>
-</div>
+  <div class='sub-header'>
+    <button class='btn btn-success' ng-click='ptg.newLog()'> Add Row </button>
+  </div>
 
-<div class="table-responsive">
-  <table class="table table-bordered table-striped table-hover">
-    <thead ng-model='ptg.drivers'>
-      <tr>
-        <td><strong>Week \ Driver</strong></td>
-        <td ng-repeat="driver in ptg.drivers | orderBy:'givenName'">{{ driver.givenName }} {{driver.surName}}</td>
-      </tr>
-    </thead>
-    <tbody ng-model='ptg.logs'>
-      <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
-        <td>
-          <span>{{ ptgLog.date | date : formet : shortDate }}</span>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead ng-model='ptg.drivers'>
+        <tr>
+          <td><strong>Week \ Driver</strong></td>
+          <td ng-repeat="driver in ptg.drivers | orderBy:'givenName'">{{ driver.givenName }} {{driver.surName}}</td>
+        </tr>
+      </thead>
+      <tbody ng-model='ptg.logs'>
+        <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
+          <td>
+            <span>{{ ptgLog.date | date : formet : shortDate }}</span>
             <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
               Edit
             </button>
-          <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
-            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
-              Save
-            </button>
-            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
-              Cancel
-            </button>
-        </form>
-        </td>
-        <td class='driver-log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
-          
-          <!-- editable driver log (text with validation) -->
-          <ul class='driver-logs'>
-            <li>
-              <p ng-show='rowform.$visible'>Uber: $</p>
-              <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='ptg.updateLog(driver)' e-required>
-                Uber: ${{ driver.uberRevenue || ' ' }}
-              </span>
-            </li>
-            <li>
-              <p ng-show='rowform.$visible'>Tolls: $</p>
-              <span editable-text='driver.tollCosts' e-name='tollCosts' e-form='rowform' e-required>
-                Tolls: ${{ driver.tollCosts || ' ' }}
-              </span>
-            </li>
-            <li>
-              <p ng-show='rowform.$visible'>Gas: $</p>
-              <span editable-text='driver.gasCosts' e-name='gasCosts' e-form='rowform' e-required>
-                Gas: ${{ driver.gasCosts || ' ' }}
-              </span>
-            </li>
-            <li>
-              <p ng-show='rowform.$visible'>Deposit: $</p>
-              <span editable-text='driver.deposit' e-name='deposit' e-form='rowform' e-required>
-                Deposit: ${{ driver.deposit || ' ' }}
-              </span>
-            </li>
-            <li>
-              <p ng-show='rowform.$visible'>Hours:</p>
-              <span editable-text='driver.hours' e-name='hours' e-form='rowform' e-required>
-                Hours: {{ driver.hours || ' ' }}
-              </span>
-            </li>
-            <li>
-              <p ng-show='rowform.$visible'>Acceptance: %</p>
-              <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowform' e-required>
-                Acceptance: {{ driver.acceptRate || ' ' }}%
-              </span>              
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
+              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+                Save
+              </button>
+              <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
+                Cancel
+              </button>
+            </form>
+          </td>
+          <td class='driver-log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
+            
+            <!-- editable driver log (text with validation) -->
+            <ul class='driver-logs'>
+              <li>
+                <p ng-show='rowform.$visible'>Uber: $</p>
+                <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='ptg.updateLog(driver)' e-required>
+                  Uber: ${{ driver.uberRevenue || ' ' }}
+                </span>
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Tolls: $</p>
+                <span editable-text='driver.tollCosts' e-name='tollCosts' e-form='rowform' e-required>
+                  Tolls: ${{ driver.tollCosts || ' ' }}
+                </span>
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Gas: $</p>
+                <span editable-text='driver.gasCosts' e-name='gasCosts' e-form='rowform' e-required>
+                  Gas: ${{ driver.gasCosts || ' ' }}
+                </span>
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Deposit: $</p>
+                <span editable-text='driver.deposit' e-name='deposit' e-form='rowform' e-required>
+                  Deposit: ${{ driver.deposit || ' ' }}
+                </span>
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Hours:</p>
+                <span editable-text='driver.hours' e-name='hours' e-form='rowform' e-required>
+                  Hours: {{ driver.hours || ' ' }}
+                </span>
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Acceptance: %</p>
+                <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowform' e-required>
+                  Acceptance: {{ driver.acceptRate || ' ' }}%
+                </span>              
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
 <!-- ng-repeat="driverLog in ptgLog.DriverLogs | orderBy:'driverLog.givenName'" -->

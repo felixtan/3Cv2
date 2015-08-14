@@ -16,7 +16,9 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'xeditable'
+    'xeditable',
+    'ng-sortable',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -25,8 +27,11 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
-          mainViewData: function(dataService) {
+          getCarsAndDrivers: function(dataService) {
             return dataService.getAss();
+          },
+          getProspects: function(dataService) {
+            return dataService.getProspects();
           }
         }
       })
@@ -35,7 +40,7 @@ angular
         controller: 'AddcarCtrl',
         controllerAs: 'newCarForm',
         resolve: {
-          addCarViewData: function(dataService) {
+          getDrivers: function(dataService) {
             return dataService.getDrivers();
           }
         }

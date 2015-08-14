@@ -6,6 +6,7 @@ var Car = models.Car;
 var Driver = models.Driver;
 var driverLog = models.DriverLog;
 var ptgLog = models.PtgLog;
+var Prospects = models.Prospect; 
 
 // Populate the db with fake data
 
@@ -23,38 +24,78 @@ module.exports = {
     },
 
     populate: function() {
-        // sequelize.query('INSERT INTO "Cars" (' +
-        //     '"tlcNumber",' +
-        //     '"licensePlateNumber",' +
-        //     '"mileage",' +
-        //     '"description"' +
-        //     ') VALUES (' +
-        //     'lol,' +
-        //     '"lolol",' +
-        //     '"100",' +
-        //     '"lololol"' +
-        //     ') RETURNING *;',
-        // { model: Car }).then(function(car) {
-        //     console.log('populate query result:', car);
-        // }).catch(function(err) {
-        //     console.error(err);
-        // });
+        // Prospects
+        var prospect1 = {
+                givenName: 'Donald',
+                surName: 'Duck',
+                description: 'Planning to work 50+ hours',
+                tlc: '1 month',
+                dmv: '20',
+                points: '0',
+                accidents: '0', 
+                shift: 'Am/flexible',
+                address: 'Queens corona',
+                status: 'rejected'
+        },
+            prospect2 = {
+                givenName: 'James',
+                middleInitial: 'B',
+                surName: 'Grossweiner',
+                tlc: 'New',
+                dmv: '7',
+                accidents: '2', 
+                shift: 'Pm/flexible',
+                address: '16043 Claude avenue Jamaica'
+        },
+            prospect3 = {
+                givenName: 'Dovran',
+                surName: 'Esenov',
+                address: '1802 ocean pkwy a17'
+        },
+            prospect4 = {
+                givenName: 'Thomas',
+                surName: 'Grube',
+                tlc: '15',
+                points: '0',
+                accidents: '0', 
+                shift: 'Pm',
+                address: 'Harlem',
+                status: 'interviewed'
+        },
+            prospect5 = {
+                givenName: 'Maurice',
+                surName: 'Cloyd',
+                description: 'Planning to work 55+',
+                tlc: '1',
+                dmv: '9',
+                points: '0',
+                accidents: '0', 
+                shift: "Am,pair with gustavo",
+                address: '3245 Fenton avenue',
+                status: 'waiting list'
+        };
+
+        Prospects.create(prospect1);
+        Prospects.create(prospect2);
+        Prospects.create(prospect3);
+        Prospects.create(prospect4);
+        Prospects.create(prospect5);
         
         // Cars
         var car1 = {
-                tlcNumber: '1A10',
+                tlcNumber: 'T646853C',
                 licensePlateNumber: 'FUJ 5993',
                 mileage: 12923,
                 description: 'lorem ipsum'
         },
             car2 = {
-                tlcNumber: '2C51',
+                tlcNumber: 'T627067C',
                 licensePlateNumber: 'GPJ 6478',
                 mileage: 14081,
                 description: 'lorem ipsum'      
         },
             car3 = {
-                tlcNumber: '8N32',
+                tlcNumber: 'T657227C',
                 licensePlateNumber: 'FLJ 6290',
                 mileage: 120461,
                 description: 'lorem ipsum' 
@@ -69,7 +110,7 @@ module.exports = {
                 email: 'jdoe@gmail.com',
                 address: '4703 Bayberry Drive Staunton, VA 24401',
                 payRate: '40',
-                description: 'lorem ipsum'
+                description: 'drove T627066 1/6/15'
         },  
             driver2 = {
                 givenName: 'Seymour',
@@ -79,7 +120,10 @@ module.exports = {
                 email: 'sbutz@gmail.com',
                 address: '6774 North Avenue Augusta, GA 30906',
                 payRate: '50',
-                description: 'lorem ipsum'
+                points: '0',
+                dmv: '15',
+                tlc: '3',
+                description: 'can start 4/24/15'
         },
             driver3 = {
                 givenName: 'Max',
@@ -89,7 +133,10 @@ module.exports = {
                 email: 'mpowers@gmail.com',
                 address: '8889 Lawrence Street Owatonna, MN 55060',
                 payRate: '60',
-                description: 'lorem ipsum'
+                tlc: '2 months',
+                dmv: '22',
+                points: '0',
+                description: 'has ticket for 60'
         };
 
 

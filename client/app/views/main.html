@@ -1,22 +1,335 @@
-<h1 class="page-header">Dashboard</h1>
+<!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
 
-<h2 class="sub-header">Cars</h2>
-<div class="table-responsive" ng-repeat='car in main.cars'>
-  <table class="table">
-    <tbody>
-      <div class="table-responsive">
-        <table class="table">
-          <h4>{{ car.tlcNumber }}</h4>
-          <thead>
-            <th>Name</th>
-          </thead>
-          <tbody>
-            <tr ng-repeat='driver in car.Drivers'>
-              <td>{{ driver.givenName }} {{ driver.surName }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </tbody>
-  </table>
+<div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
+  <h2 class='sub-header'>Cars</h2>
+
+  <div class='row'>
+    <div class='col-md-5 car-actions' ng-controller="carFormModalCtrl">
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
+    </div>
+  </div>
+
+  <div class="table-responsive car" ng-repeat='car in cars'>
+    <table class="table">
+      <tbody>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <h3><span class='drag-handle-car'>::</span> {{ car.tlcNumber }}</h3>
+              <th></th>
+              <th>Name</th>
+              <th>Notes</th>
+              <th>TLC</th>
+              <th>DMV</th>
+              <th>Points</th>
+              <th>Accidents</th>
+              <th>Shift</th>
+              <th>Address</th>
+            </thead>
+            <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
+              <tr class='dropfix'>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class='driver-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
+                <td>
+                  <ul class='row-actions'>
+                    <li class='drag-handle' ng-show='!driverRowForm.$visible'>::</li>
+                    <li class='filler'> </li>
+                    <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show='!driverRowForm.$visible'>
+                    </li>
+                    <li>
+                      <form editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
+                        <button class='btn btn-xs btn-warning' type='submit' ng-disabled='driverRowForm.$waiting'>
+                          &#10003;
+                        </button>
+                        <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(driver)'>
+                          &times;
+                        </button>
+                      </form>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span editable-text='driver.name' buttons='no' e-name='name' e-form='driverRowForm' onaftersave='updateRow(driver)' e-ng-keypress="keypress($event, driverRowForm)">
+                    {{ driver.name }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.tlc' e-name='tlc' e-form='driverRowForm'>
+                    {{ driver.tlc }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.dmv' e-name='dmv' e-form='driverRowForm'>
+                    {{ driver.dmv }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.points' e-name='points' e-form='driverRowForm'>
+                    {{ driver.points }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.accidents' e-name='accidents' e-form='driverRowForm'>
+                    {{ driver.accidents }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.shift' e-name='shift' e-form='driverRowForm'>
+                    {{ driver.shift }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.address' e-name='address' e-form='driverRowForm'>
+                    {{ driver.address }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<div class='col-md-5' id='prospect-list' ng-model='prospects'>
+  <h2 class='sub-header'>Prospects</h2>
+  <div class='row'>
+    <div class='col-md-5 prospect-actions' ng-controller="prospectFormModalCtrl">
+      
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
+    </div>
+  </div>
+  <div class='table-responsive' ng-repeat='status in prospectStatuses'>
+    <table class='table'>
+      <thead>
+        <h3>{{ status }}</h3>
+        <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
+        <th>Name</th>
+        <th>Notes</th>
+        <th>TLC</th>
+        <th>DMV</th>
+        <th>Points</th>
+        <th>Accidents</th>
+        <th>Shift</th>
+        <th>Address</th>
+      </thead>
+      <tbody class='prospect-status' data-status='{{ status }}' data-list='prospect'>
+          <tr class='dropfix'>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
+            <td>
+              <ul class='row-actions'>
+              <li class='drag-handle' ng-show='!prospectRowForm.$visible'>::</li>
+              <li class='filler'> </li>
+              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show='!prospectRowForm.$visible'>
+              </li>  
+              <li>
+                <form editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>
+                  <button class='btn btn-xs btn-warning' type='submit' ng-disabled='prospectRowForm.$waiting'>
+                    &#10003;
+                  </button>
+                  <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(prospect)'>
+                    &times;
+                  </button>
+                </form>
+              </li>
+            </ul>
+            </td>
+            <td>
+              <span editable-text='prospect.name' buttons='no' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
+                {{ prospect.name }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.description' e-name='description' e-form='prospectRowForm'>
+                {{ prospect.description }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.tlc' e-name='tlc' e-form='prospectRowForm'>
+                {{ prospect.tlc }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.dmv' e-name='dmv' e-form='prospectRowForm'>
+                {{ prospect.dmv }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.points' e-name='points' e-form='prospectRowForm'>
+                {{ prospect.points }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.accidents' e-name='accidents' e-form='prospectRowForm'>
+                {{ prospect.accidents }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.shift' e-name='shift' e-form='prospectRowForm'>
+                {{ prospect.shift }}
+              </span>
+            </td>
+            <td>
+              <span editable-text='prospect.address' e-name='address' e-form='prospectRowForm'>
+                {{ prospect.address }}
+              </span>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Prospect form modal view -->
+<!-- TODO: put it in a different file -->
+<script type="text/ng-template" id="newprospectformmodal">
+  <div class="modal-header">
+      <h3 class="modal-title">Add Caller</h3>
+      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+  </div>
+  <div class="modal-body">
+    <form novalidate role='form' id='newProspectForm'>
+      <div class='form-group'>
+        <label for='givenName'>First</label>
+        <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
+      </div>
+      <div class='form-group'>
+        <label for='surName'>Last</label>
+        <input type='text' class='form-control' ng-model='formData.surName' placeholder='Doe'>
+      </div>
+      <div class='form-group'>
+            <label for='email'>Email</label>
+            <input type='text' class='form-control' ng-model='formData.email' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='phoneNumber'>Phone Number</label>
+            <input type='text' class='form-control' ng-model='formData.phoneNumber' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='address'>Address</label>
+            <input type='text' class='form-control' ng-model='formData.address' placeholder=''>
+        </div>
+        <div class='form-group'>
+            <label for='driversLicenseNum'>Driver License Number</label>
+            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder=''>
+        </div>
+        <div class='form-group'>
+          <label for='tlc'>TLC</label>
+          <input type='text' class='form-control' ng-model='formData.tlc'>
+        </div>
+        <div class='form-group'>
+          <label for='dmv'>DMV</label>
+          <input type='text' class='form-control' ng-model='formData.dmv'>
+        </div>
+        <div class='form-group'>
+          <label for='points'>Points</label>
+          <input type='text' class='form-control' ng-model='formData.points'>
+        </div>
+        <div class='form-group'>
+          <label for='accidents'>Accidents</label>
+          <input type='text' class='form-control' ng-model='formData.accidents'>
+        </div>
+        <div class='form-group'>
+          <label for='shift'>Shift</label>
+          <input type='text' class='form-control' ng-model='formData.shift'>
+        </div>
+        <div class='form-group'>
+          <label for='paperwork'>Paperwork</label>
+          <input type='text' class='form-control' ng-model='formData.paperwork'>
+        </div>
+        <label for='description'>Description</label>
+        <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
+        </textarea>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>
+
+<!-- Car form modal view -->
+<!-- TODO: put it in a different file -->
+<script type="text/ng-template" id="carformmodal">
+  <div class="modal-header">
+      <h3 class="modal-title">Add Car</h3>
+      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+  </div>
+  <div class="modal-body">
+    <form novalidate role='form' id='newCarForm'>
+      <div class='form-group'>
+        <label for='tlcNumber'>TLC Number</label>
+        <input type='text' class='form-control' ng-model='formData.tlcNumber'>
+      </div>
+      <div class='form-group'>
+        <label for='licensePlateNumber'>License Plate Number</label>
+        <input type='text' class='form-control' ng-model='formData.licensePlateNumber'>
+      </div>
+      <div class='form-group'>
+            <label for='mileage'>Mileage</label>
+            <input type='text' class='form-control' ng-model='formData.mileage' placeholder=''>
+      </div>
+      <div class='form-group'>
+        <label for='driver'>Driver</label>
+        <select class='form-control' ng-model='formData.driverId' placeholder='Select Driver'>
+            <option> - </option>
+            <option ng-repeat='driver in drivers' value='{{ driver.id }}'>{{ driver.givenName }} {{ driver.surName }}</option>
+        </select>
+      </div>
+      <label for='description'>Description</label>
+      <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
+      </textarea>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>
+
+<!-- Pay rate modal view -->
+<!-- TODO: put it in a different file -->
+<script type="text/ng-template" id="payRateModal">
+  <div class='modal-header'>
+    <h3 class="modal-title">Enter Pay Rate</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+  </div>
+  <div class='modal-body'>
+    <form novalidate role='form' id='payRateForm'>
+      <div class='form-group'>
+        <label for='payRate'>Pay Rate (%)</label>
+        <input type='text' class='form-control' ng-model='payRate'>
+      </div>
+    </form>
+  </div>
+  <div class='modal-footer'>
+    <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>

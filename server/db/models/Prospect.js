@@ -3,10 +3,11 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Driver', { 
-    payRate: {
-      type: DataTypes.STRING,
-      allowNull: true
+  return sequelize.define('Prospect', { 
+    status: {
+      type: DataTypes.ENUM('callers', 'interviewed', 'waiting list', 'rejected'),
+      allowNull: true,
+      defaultValue: 'callers'
     },
     givenName: {
       type: DataTypes.STRING,
@@ -62,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     userId: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
