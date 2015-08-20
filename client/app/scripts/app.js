@@ -94,10 +94,10 @@ angular
           }
         }
       })
-      .when('/car-status', {
-        templateUrl: 'views/carStatusLogs.html',
-        controller: 'carStatusLogsCtrl',
-        controllerAs: 'carLogs',
+      .when('/maintenance', {
+        templateUrl: 'views/maintenanceLogs.html',
+        controller: 'maintenanceLogsCtrl',
+        controllerAs: 'maintenance',
         resolve: {
           getCarsWithLogs: function(dataService) {
             return dataService.getCarsWithLogs();

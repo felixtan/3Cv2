@@ -32,8 +32,8 @@ module.exports = {
 
             var finalData = data;
 
-            PtgLogs.max('dateInMs').then(function(mostRecentDataInMs) {
-                finalData.mostRecentDataInMs = mostRecentDataInMs;
+            PtgLogs.max('dateInMs').then(function(mostRecentDateInMs) {
+                finalData.mostRecentDateInMs = mostRecentDateInMs;
                 res.json(finalData);
             });
 
@@ -41,27 +41,56 @@ module.exports = {
     },
 
     createLogs: function(req, res) {
-        PtgLogs.create({
-            date: req.body.date,
-            dateInMs: req.body.dateInMs
+        console.log('req.body', req.body);
+        PtgLogs.findAll({ 
+            where: {
+                dateInMs: req.body.dateInMs
+            }
         }).then(function(ptgLog) {
-            Car.findAll().then(function(cars) {
-                cars.forEach(function(car) {
-                    CarLogs.create({
-                        dateInMs: req.body.dateInMs,
-                        date: req.body.date,
-                        tlcNumber: car.tlcNumber
-                    }).then(function(carLog) {
-                        car.addMaintenanceLog([carLog.id]);
-                        ptgLog.addCarLog([carLog.id]);
-                    });
+            if(ptgLog.length === 0) {
+                console.log('it does not exist yet');
+                PtgLogs.create({
+                    date: req.body.date,
+                    dateInMs: req.body.dateInMs
+                }).then(function(newPtgLog) {
+                    Cars.findAll().then(function(cars) {
+                        cars.forEach(function(car) {
+                            CarLogs.create({
+                                dateInMs: req.body.dateInMs,
+                                date: req.body.date,
+                                tlcNumber: car.tlcNumber
+                            }).then(function(carLog) {
+                                car.addMaintenanceLog([carLog.id]);
+                                newPtgLog.addCarLog([carLog.id]);
+                            });
+                        });
+                    })
+                    .then(function() {
+                        res.json(newPtgLog);
+                    }).catch(function(err) {
+                        console.error(err);
+                    });   
                 });
-            })
-            .then(function() {
-                res.json(ptgLog);
-            }).catch(function(err) {
-                console.error(err);
-            });
+            } else {
+                console.log('it exists');
+                Cars.findAll().then(function(cars) {
+                    cars.forEach(function(car) {
+                        CarLogs.create({
+                            dateInMs: req.body.dateInMs,
+                            date: req.body.date,
+                            tlcNumber: car.tlcNumber
+                        }).then(function(carLog) {
+                            car.addMaintenanceLog([carLog.id]);
+                            ptgLog.addCarLog([carLog.id]);
+                        });
+                    });
+                })
+                .then(function() {
+                    res.json(ptgLog);
+                }).catch(function(err) {
+                    console.error(err);
+                });   
+            }
         });
     }
 }

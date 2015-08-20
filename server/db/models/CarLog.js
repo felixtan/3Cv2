@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         tlcNumber: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         mileage: {
             type: DataTypes.INTEGER,

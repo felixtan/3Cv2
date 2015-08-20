@@ -17,8 +17,10 @@ var carLogs = require('./routes/carLogs');
 module.exports = function (app) {
 
     // Car status logs
-    app.get('/api/logs/car-status', carLogs.getLogs);
-    app.post('/api/logs/car-status', carLogs.createLogs);
+    app.get('/api/logs/cars', carLogs.getLogs);
+    // app.get('/api/logs/cars/:id', carLogs.getLog);
+    app.post('/api/logs/cars', carLogs.createLogs);
+    // app.put('/api/logs/cars/:id', carLogs.updateLog);
 
     // Prospects
     app.get('/api/prospects', prospect.getProspects);

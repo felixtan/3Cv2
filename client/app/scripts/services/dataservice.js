@@ -81,7 +81,7 @@ angular.module('clientApp')
       },
 
       getCarsWithLogs: function() {
-        return $http.get('/api/logs/car-status')
+        return $http.get('/api/logs/cars')
                   .success(function(data) {
                     return data;
                   })
