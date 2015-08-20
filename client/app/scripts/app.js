@@ -63,7 +63,7 @@ angular
         controller: 'PtgCtrl',
         controllerAs: 'ptg',
         resolve: {
-          ptgViewData: function(dataService) {
+          getPtgLogs: function(dataService) {
             return dataService.getPtgLogs();
           },
           basicDriverData: function(dataService) {
@@ -91,6 +91,19 @@ angular
           },
           getDrivers: function(dataService) {
             return dataService.getDrivers();
+          }
+        }
+      })
+      .when('/car-status', {
+        templateUrl: 'views/carStatusLogs.html',
+        controller: 'carStatusLogsCtrl',
+        controllerAs: 'carLogs',
+        resolve: {
+          getCarsWithLogs: function(dataService) {
+            return dataService.getCarsWithLogs();
+          },
+          basicCarData: function(dataService) {
+            return dataService.getCars();
           }
         }
       })

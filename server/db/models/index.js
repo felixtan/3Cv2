@@ -18,8 +18,14 @@ fs.readdirSync(__dirname).filter(function(file) {
 // Model relations
 db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
 db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
-db.Driver.belongsToMany(db.DriverLog, { as: 'Logs', through: 'Driver_DriverLogs' });
+
+// PTG
+db.Driver.belongsToMany(db.DriverLog, { as: 'PtgLogs', through: 'Driver_DriverLogs' });
 db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
+
+// Car Maintenance
+db.Car.belongsToMany(db.CarLog, { as: 'MaintenanceLogs', through: 'Car_CarLogs' });
+db.PtgLog.belongsToMany(db.CarLog, { through: 'Ptg_CarLogs' });
 
 // trying n:m relationship for flexibility
 // db.GasCard.belongsToMany(db.Driver, { through: 'DriverAssets' });

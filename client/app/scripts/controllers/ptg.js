@@ -8,10 +8,10 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PtgCtrl', function ($route, ptgViewData, basicDriverData, $http) {
+  .controller('PtgCtrl', function ($route, getPtgLogs, basicDriverData, $http) {
 
-    this.logs = ptgViewData.data.logs; 
-    this.mostRecentDateInMs = ptgViewData.data.mostRecentDateInMs;
+    this.logs = getPtgLogs.data.logs; 
+    this.mostRecentDateInMs = getPtgLogs.data.mostRecentDateInMs;
     this.drivers = basicDriverData.data;
 
     const oneWeekInMs = 604800000;

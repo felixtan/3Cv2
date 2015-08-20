@@ -12,13 +12,13 @@
       <thead ng-model='ptg.drivers'>
         <tr>
           <td><strong>Week \ Driver</strong></td>
-          <td ng-repeat="driver in ptg.drivers | orderBy:'givenName'">{{ driver.givenName }} {{driver.surName}}</td>
+          <td ng-repeat="driver in ptg.drivers | orderBy:'id'">{{ driver.givenName }} {{driver.surName}}</td>
         </tr>
       </thead>
       <tbody ng-model='ptg.logs'>
         <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
           <td>
-            <span>{{ ptgLog.date | date : formet : shortDate }}</span>
+            <span>{{ ptgLog.date | date : format : shortDate }}</span>
             <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
               Edit
             </button>
@@ -31,10 +31,10 @@
               </button>
             </form>
           </td>
-          <td class='driver-log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'givenName'">
+          <td class='log-tablecell' ng-repeat="driver in ptgLog.DriverLogs | orderBy:'driverId'">
             
             <!-- editable driver log (text with validation) -->
-            <ul class='driver-logs'>
+            <ul class='log'>
               <li>
                 <p ng-show='rowform.$visible'>Uber: $</p>
                 <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='ptg.updateLog(driver)' e-required>

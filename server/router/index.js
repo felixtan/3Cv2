@@ -12,8 +12,14 @@ var ptgLogs = require('./routes/ptglogs');
 var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
 var prospect = require('./routes/prospects');
+var carLogs = require('./routes/carLogs');
 
 module.exports = function (app) {
+
+    // Car status logs
+    app.get('/api/logs/car-status', carLogs.getLogs);
+    app.post('/api/logs/car-status', carLogs.createLogs);
+
     // Prospects
     app.get('/api/prospects', prospect.getProspects);
     app.get('/api/prospects/:id', prospect.getProspect);

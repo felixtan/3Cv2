@@ -7,6 +7,7 @@ var Driver = models.Driver;
 var driverLog = models.DriverLog;
 var ptgLog = models.PtgLog;
 var Prospects = models.Prospect; 
+var CarLog = models.CarLog;
 
 // Populate the db with fake data
 
@@ -139,9 +140,34 @@ module.exports = {
                 description: 'has ticket for 60'
         };
 
+        /* LOGS */ 
+        var d = new Date('July 27 2015');
+        var dateInMs = d.getTime();
+
+        // Car status logs
+        var car1_log = {
+                date: d,
+                dateInMs: dateInMs,
+                tlcNumber: car1.tlcNumber,
+                mileage: car1.mileage,
+                note: "Added too much air, told him to release air"
+        },
+            car2_log = {
+                date: d,
+                dateInMs: dateInMs,
+                tlcNumber: car2.tlcNumber,
+                mileage: car2.mileage,
+                note: 'Left side back door damage below handle 6 inches below '
+        },
+            car3_log = {
+                date: d,
+                dateInMs: dateInMs,
+                tlcNumber: car3.tlcNumber,
+                mileage: car3.mileage,
+                note: 'back right fender needs fixing'
+        };
 
         // Driver logs
-        var d = new Date('July 27 2015');
         var driver1_log = {
                 date: d,
                 dateInMs: d.getTime(),
@@ -173,65 +199,84 @@ module.exports = {
                 acceptRate: 81
         };
 
-
         // PTG Logs
         var ptgLog1 = {
             date: d,
-            dateInMs: d.getTime()
+            dateInMs: dateInMs
         };
 
+        // Push the logs
         ptgLog.create(ptgLog1).then(function(ptgLog) {
 
             Car.create(car1).then(function(car1) {
 
-                Driver.create(driver1).then(function(driver) {
-
-                    driver.addCar([car1.id]);
-                    driver1_log.driverId = driver.id;
-                    driver1_log.givenName = driver.givenName;    
-                    driver1_log.surName = driver.surName;
-                    
-                    driverLog.create(driver1_log).then(function(log) {
-                        driver.addLog([log.id]);
-                        ptgLog.addDriverLog([log.id]);
-                    });
+                CarLog.create(car1_log).then(function(carLog) {
                 
-                });
+                    Driver.create(driver1).then(function(driver1) {
+
+                        driver1.addCar([car1.id]);
+                        driver1_log.driverId = driver1.id;
+                        driver1_log.givenName = driver1.givenName;    
+                        driver1_log.surName = driver1.surName;
+                        
+                        driverLog.create(driver1_log).then(function(driverLog) {
+                            driver1.addPtgLog([driverLog.id]);
+                            ptgLog.addDriverLog([driverLog.id]);
+
+                            car1.addMaintenanceLog([carLog.id]);
+                            ptgLog.addCarLog([carLog.id]);
+                        });
+                    
+                    });
+                });         
 
             }).then(function() {
 
                 Car.create(car2).then(function(car2) {
 
-                    Driver.create(driver2).then(function(driver2) {
+                    CarLog.create(car2_log).then(function(carLog) {
 
-                        driver2_log.driverId = driver2.id;
-                        driver2_log.givenName = driver2.givenName;
-                        driver2_log.surName = driver2.surName;
+                        Driver.create(driver2).then(function(driver2) {
 
-                        driverLog.create(driver2_log).then(function(log) {
-                            driver2.addLog([log.id]);
-                            ptgLog.addDriverLog([log.id]);
-                        });
+                            driver2_log.driverId = driver2.id;
+                            driver2_log.givenName = driver2.givenName;
+                            driver2_log.surName = driver2.surName;
 
-                        Driver.create(driver3).then(function(driver3) {
-                            
-                            driver2.addCar([car2.id]);
-                            driver3.addCar([car2.id]);
+                            driverLog.create(driver2_log).then(function(driverLog) {
+                                driver2.addPtgLog([driverLog.id]);
+                                ptgLog.addDriverLog([driverLog.id]);
 
-                            driver3_log.driverId = driver3.id;
-                            driver3_log.givenName = driver3.givenName;
-                            driver3_log.surName = driver3.surName;
-                            
-                            driverLog.create(driver3_log).then(function(log) {
-                                driver3.addLog([log.id]);
-                                ptgLog.addDriverLog([log.id]);
+                                ptgLog.addCarLog([carLog.id]);
                             });
-                        });
 
+                            Driver.create(driver3).then(function(driver3) {
+                                
+                                driver2.addCar([car2.id]);
+                                driver3.addCar([car2.id]);
+
+                                driver3_log.driverId = driver3.id;
+                                driver3_log.givenName = driver3.givenName;
+                                driver3_log.surName = driver3.surName;
+                                
+                                driverLog.create(driver3_log).then(function(driverLog) {
+                                    driver3.addPtgLog([driverLog.id]);
+                                    ptgLog.addDriverLog([driverLog.id]);
+
+                                    car2.addMaintenanceLog([carLog.id]);
+                                    ptgLog.addCarLog([carLog.id]);
+                                });
+                            });
+
+                        });
                     });
 
                 }).then(function() {
-                    Car.create(car3);
+                    Car.create(car3).then(function(car3) {
+                        CarLog.create(car3_log).then(function(carLog) {
+                            car3.addMaintenanceLog([carLog.id]);
+                            ptgLog.addCarLog([carLog.id]);
+                        });
+                    });
                 });
             });
         }).then(function() {

@@ -34,7 +34,7 @@ module.exports = {
 
             PtgLogs.max("dateInMs").then(function(mostRecentDateInMs) {
                 finalData.mostRecentDateInMs = mostRecentDateInMs;
-                res.json(data);
+                res.json(finalData);
             });
         });
     },
@@ -52,7 +52,7 @@ module.exports = {
                         givenName: driver.givenName,
                         surName: driver.surName
                     }).then(function(driverLog) {
-                        driver.addLog([driverLog.id]);
+                        driver.addPtgLog([driverLog.id]);
                         ptgLog.addDriverLog([driverLog.id]);
                     });
                 });

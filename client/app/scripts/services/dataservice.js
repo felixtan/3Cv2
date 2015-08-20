@@ -78,6 +78,16 @@ angular.module('clientApp')
                   .error(function(err) {
                     console.error(err);
                   });
+      },
+
+      getCarsWithLogs: function() {
+        return $http.get('/api/logs/car-status')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    console.error(err);
+                  });
       }
     };
   });
