@@ -16,6 +16,18 @@ angular.module('clientApp')
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
 
+    // oil changed
+    this.oilChanged = function(carId) {
+        $http.put('/api/cars/' + carId, {
+            oilChangeRequired: false
+        }).then(function() {
+            console.log('Car ' + carId + ' oil changed.');
+            $route.reload();
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }
+
     // submit xeditable row form by pressing enter
     // will then call updateDriver
     $scope.keypress = function(e, form) {
