@@ -15,7 +15,7 @@
         <div class="table-responsive">
           <table class="table">
             <thead>
-              <h3><span class='drag-handle-car'>::</span> {{ car.tlcNumber }}</h3>
+              <h3 ng-class="{'bg-danger' : car.oilChangeRequired}"><span class='drag-handle-car'>::</span> {{ car.tlcNumber }}</h3>
               <th></th>
               <th>Name</th>
               <th>Notes</th>

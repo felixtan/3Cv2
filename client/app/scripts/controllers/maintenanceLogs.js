@@ -33,7 +33,8 @@ angular.module('clientApp')
     this.updateLog = function(car) {
         $http.put('/api/logs/cars/' + car.id, {
             mileage: car.mileage,
-            note: car.note
+            note: car.note,
+            tlcNumber: car.tlcNumber
         }).success(function(data) {
             console.log('Maintenance log updated.');
         }).error(function(err) {

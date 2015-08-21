@@ -47,18 +47,25 @@ module.exports = {
     },
 
     updateLog: function(req, res) {
-        CarLogs.update({
-            mileage: req.body.mileage,
-            note: req.body.note
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(function() {
-            res.status(200).json({ msg: 'Updated log for car ' + req.params.id });
-        })
-        .catch(function(err) {
+        CarLogs.max("mileage", { where: { tlcNumber: req.body.tlcNumber } }).then(function(previouslyCheckedMileage) {
+            // check if car needs oil change
+            // TODO: user should be able to set thresholdMileage
+            var thresholdMileage = 10000;
+            var oilChangeRequired = (req.body.mileage - previouslyCheckedMileage >= thresholdMileage) || false;
+            Cars.update({
+                mileage: req.body.mileage,
+                oilChangeRequired: oilChangeRequired
+            }, {
+                where: {
+                    tlcNumber: req.body.tlcNumber 
+                }
+            }).then(function() {
+                res.status(200).json({ msg: 'Updated log for car ' + req.params.id });    
+            }).catch(function(err) {
+                console.error(err);
+                // res.status(500).json({ error: err });    
+            });
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });
