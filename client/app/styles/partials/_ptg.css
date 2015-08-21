@@ -16,3 +16,8 @@ ul.log {
     border-color: #3e7cb4;
 }
 /* Overrides xeditable css */
+
+/* maintenance log uniform width */
+.li-notes {
+    /*max-width: 80%;*/
+}
