@@ -99,8 +99,8 @@ angular
         controller: 'maintenanceLogsCtrl',
         controllerAs: 'maintenance',
         resolve: {
-          getCarsWithLogs: function(dataService) {
-            return dataService.getCarsWithLogs();
+          getMaintenanceLogs: function(dataService) {
+            return dataService.getMaintenanceLogs();
           },
           basicCarData: function(dataService) {
             return dataService.getCars();

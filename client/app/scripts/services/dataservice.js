@@ -80,8 +80,8 @@ angular.module('clientApp')
                   });
       },
 
-      getCarsWithLogs: function() {
-        return $http.get('/api/logs/cars')
+      getMaintenanceLogs: function() {
+        return $http.get('/api/logs/maintenance')
                   .success(function(data) {
                     return data;
                   })

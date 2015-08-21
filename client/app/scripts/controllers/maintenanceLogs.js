@@ -8,9 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('maintenanceLogsCtrl', function ($route, $http, getCarsWithLogs, basicCarData) {
-    this.logs = getCarsWithLogs.data.logs;
-    this.mostRecentDateInMs = getCarsWithLogs.data.mostRecentDateInMs;
+  .controller('maintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
+    this.logs = getMaintenanceLogs.data.logs;
+    this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
     this.cars = basicCarData.data;
     // console.log(getCarsWithLogs.data);
     const oneWeekInMs = 604800000;
@@ -19,7 +19,7 @@ angular.module('clientApp')
         var newDateInMs = this.mostRecentDateInMs + oneWeekInMs;
         var date = new Date(newDateInMs);
 
-        $http.post('/api/logs/cars', {
+        $http.post('/api/logs/maintenance', {
             date: date,
             dateInMs: newDateInMs
         }).then(function() {

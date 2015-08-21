@@ -1,97 +1,49 @@
 'use strict';
 
 var models = require('../../db/models');
-var sequelize = models.sequelize;
-var PtgLogs = models.PtgLog;
 var CarLogs = models.CarLog;
 var Cars = models.Car;
 
 module.exports = {
     getLogs: function(req, res) {
-        PtgLogs.findAll({ order: '"dateInMs"', include: CarLogs }).then(function(logs) {
-            
-            var minimizedData = {};
-            minimizedData.logs = logs;
-
-            minimizedData.logs.forEach(function(log) {
-                
-                delete log.dataValues.updatedAt;
-                delete log.dataValues.createdAt;
-
-                log.dataValues.CarLogs.forEach(function(carLog) {
-                    delete carLog.dataValues.updatedAt;
-                    delete carLog.dataValues.createdAt;
-                    delete carLog.dataValues.Ptg_CarLogs;
-                });
-
-            });
-
-            return minimizedData;
-
-        }).then(function(data) {
-
-            var finalData = data;
-
-            PtgLogs.max('dateInMs').then(function(mostRecentDateInMs) {
-                finalData.mostRecentDateInMs = mostRecentDateInMs;
-                res.json(finalData);
-            });
-
+        Cars.findAll({ include: CarLog }).then(function(cars) {
+            res.json(cars);
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
         });
     },
 
-    createLogs: function(req, res) {
-        console.log('req.body', req.body);
-        PtgLogs.findAll({ 
+    getLog: function(req, res) {
+        CarLog.findAll({ 
             where: {
-                dateInMs: req.body.dateInMs
-            }
-        }).then(function(ptgLog) {
-            if(ptgLog.length === 0) {
-                console.log('it does not exist yet');
-                PtgLogs.create({
-                    date: req.body.date,
-                    dateInMs: req.body.dateInMs
-                }).then(function(newPtgLog) {
-                    Cars.findAll().then(function(cars) {
-                        cars.forEach(function(car) {
-                            CarLogs.create({
-                                dateInMs: req.body.dateInMs,
-                                date: req.body.date,
-                                tlcNumber: car.tlcNumber
-                            }).then(function(carLog) {
-                                car.addMaintenanceLog([carLog.id]);
-                                newPtgLog.addCarLog([carLog.id]);
-                            });
-                        });
-                    })
-                    .then(function() {
-                        res.json(newPtgLog);
-                    }).catch(function(err) {
-                        console.error(err);
-                    });   
-                });
-            } else {
-                console.log('it exists');
-                Cars.findAll().then(function(cars) {
-                    cars.forEach(function(car) {
-                        CarLogs.create({
-                            dateInMs: req.body.dateInMs,
-                            date: req.body.date,
-                            tlcNumber: car.tlcNumber
-                        }).then(function(carLog) {
-                            car.addMaintenanceLog([carLog.id]);
-                            ptgLog.addCarLog([carLog.id]);
-                        });
-                    });
-                })
-                .then(function() {
-                    res.json(ptgLog);
-                }).catch(function(err) {
-                    console.error(err);
-                });   
-            }
+                carId: req.params.id
+            } 
+        })
+        .then(function(logs) {
+            res.json(logs);
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
         });
+    },
+
+    createLog: function(req, res) {
+        CarLogs.create({
+            tlcNumber: req.body.tlcNumber,
+            note: req.body.note
+        }).then(function(log) {
+            Car.addCarLog([log.id]).then(function() {
+                console.log('Car ' + req.params.id + ' has new log.');
+                res.json(log.dataValues);
+            });
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });   
     },
 
     updateLog: function(req, res) {
@@ -105,6 +57,22 @@ module.exports = {
         })
         .then(function() {
             res.status(200).json({ msg: 'Updated log for car ' + req.params.id });
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });
+    },
+
+    deleteLog: function(req, res) {
+        CarLogs.destroy({
+            where: {
+                carId: req.params.id,
+                id: req.body.carLogId
+            }
+        })
+        .then(function() {
+            res.status(200).json({ msg: 'Deleted car log.' });
         })
         .catch(function(err) {
             console.error(err);

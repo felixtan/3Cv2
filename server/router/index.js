@@ -13,15 +13,19 @@ var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
 var prospect = require('./routes/prospects');
 var carLogs = require('./routes/carLogs');
+var maintenanceLogs = require('./routes/maintenanceLogs');
 
 module.exports = function (app) {
 
-    // Car status logs
+    // Car logs
     app.get('/api/logs/cars', carLogs.getLogs);
-    // app.get('/api/logs/cars/:id', carLogs.getLog);
-    app.post('/api/logs/cars', carLogs.createLogs);
-    // app.put('/api/logs/cars/:id', carLogs.updateLog);
+    app.get('/api/logs/cars/:id', carLogs.getLog);
+    app.post('/api/logs/cars/:id', carLogs.createLog);
     app.put('/api/logs/cars/:id', carLogs.updateLog);
+
+    // Maintenance logs
+    app.get('/api/logs/maintenance', maintenanceLogs.getLogs);
+    app.post('/api/logs/maintenance', maintenanceLogs.createLogs);
 
     // Prospects
     app.get('/api/prospects', prospect.getProspects);

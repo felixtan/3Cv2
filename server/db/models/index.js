@@ -25,7 +25,7 @@ db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
 
 // Car Maintenance
 db.Car.belongsToMany(db.CarLog, { as: 'MaintenanceLogs', through: 'Car_CarLogs' });
-db.PtgLog.belongsToMany(db.CarLog, { through: 'Ptg_CarLogs' });
+db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
 
 // trying n:m relationship for flexibility
 // db.GasCard.belongsToMany(db.Driver, { through: 'DriverAssets' });
