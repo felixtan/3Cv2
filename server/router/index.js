@@ -21,6 +21,7 @@ module.exports = function (app) {
     // app.get('/api/logs/cars/:id', carLogs.getLog);
     app.post('/api/logs/cars', carLogs.createLogs);
     // app.put('/api/logs/cars/:id', carLogs.updateLog);
+    app.put('/api/logs/cars/:id', carLogs.updateLog);
 
     // Prospects
     app.get('/api/prospects', prospect.getProspects);

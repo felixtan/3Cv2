@@ -92,5 +92,23 @@ module.exports = {
                 });   
             }
         });
+    },
+
+    updateLog: function(req, res) {
+        CarLogs.update({
+            mileage: req.body.mileage,
+            note: req.body.note
+        }, {
+            where: {
+                id: req.params.id
+            }
+        })
+        .then(function() {
+            res.status(200).json({ msg: 'Updated log for car ' + req.params.id });
+        })
+        .catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });
     }
 }

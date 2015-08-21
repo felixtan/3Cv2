@@ -20,15 +20,32 @@
             <tbody ng-model='maintenance.logs'>
                 <tr ng-repeat="log in maintenance.logs | orderBy:'-dateInMs'">
                     <td>
-                        {{ log.date | date : format : shortDate }}
+                        <span>{{ log.date | date : format : shortDate }}</span>
+                        <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
+                            Edit
+                        </button>
+                        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
+                          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+                            Save
+                          </button>
+                          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
+                            Cancel
+                          </button>
+                        </form>
                     </td>
                     <td class='log-tablecell' ng-repeat="car in log.CarLogs | orderBy:'id'">
                         <ul class='log'>
                             <li>
-                                Mileage: {{ car.mileage }}
+                                <p ng-show='rowform.$visible'>Mileage: </p>
+                                <span editable-text='car.mileage' e-name='mileage' e-form='rowform' onaftersave='maintenance.updateLog(car)' e-required>
+                                    Mileage: {{ car.mileage || ' ' }}
+                                </span>
                             </li>
                             <li>
-                                Notes: {{ car.note }}
+                                <p ng-show='rowform.$visible'>Notes: </p>
+                                <span editable-textarea='car.note' e-name='note' e-form='rowform' e-required>
+                                    Notes: {{ car.note || ' '}}
+                                </span>
                             </li>
                         </ul>
                     </td>
