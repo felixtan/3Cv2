@@ -8,11 +8,11 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('maintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
+  .controller('maintenanceLogsCtrl', function (route, $http, getMaintenanceLogs, basicCarData) {
     this.logs = getMaintenanceLogs.data.logs;
     this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
     this.cars = basicCarData.data;
-    // console.log(getCarsWithLogs.data);
+
     const oneWeekInMs = 604800000;
 
     this.newLog = function() {

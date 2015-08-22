@@ -3,19 +3,31 @@
 var models = require('../../db/models');
 var GasCard = models.GasCard;
 var Driver = models.Driver;
+var GasCardAssignments = models.GasCardAssignment;
 
 module.exports = {
-    get: function(req, res) {
-        GasCard.findAll().then(function(cards) {
-            res.json(cards);
-        })
-        .catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
+    getAll: function(req, res) {
+        GasCardAssignments.findAll().then(function(assignments) {
+            GasCard.findAll({ include: Driver }).then(function(cards) {
+                // console.log(cards);
+                var minimizedData = {};
+                minimizedData = cards;
+
+                minimizedData.forEach(function(card) {
+                    delete card.dataValues.createdAt;
+                    delete card.dataValues.updatedAt;
+                });
+
+                res.json(minimizedData);
+            })
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
+            });
         });
     },
 
-    save: function(req, res) {
+    create: function(req, res) {
         GasCard.create({
             number: req.body.number
         }).then(function(card) {

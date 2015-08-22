@@ -8,8 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function (getGasCards, $modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
 
+    $scope.gasCards = getGasCards.data;
     $scope.carListCollapsed = false;
     $scope.cars = getCarsAndDrivers.data;
     $scope.prospects = getProspects.data;
@@ -60,6 +61,7 @@ angular.module('clientApp')
 
     $scope.updateRow = function(obj) {
         parseName(obj).then(function(objNameParsed) {
+            console.log(objNameParsed);
             if(objNameParsed.status) {
                 var promise = $http.put('/api/prospects/'+objNameParsed.id, objNameParsed);
             } else if(objNameParsed.payRate) {
@@ -70,7 +72,7 @@ angular.module('clientApp')
 
             promise.then(function(data) {
                 deferred.resolve(data);
-                $route.reload();
+                setTimeout(function() { $route.reload(); }, 100);
             }, function(err) {
                 deferred.reject(err);
             });

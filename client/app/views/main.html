@@ -28,8 +28,9 @@
               </h3>
               <th></th>
               <th>Name</th>
-              <th>Notes</th>
+              <th>Gas Card</th>
               <th>TLC</th>
+              <th>Notes</th>
               <th>DMV</th>
               <th>Points</th>
               <th>Accidents</th>
@@ -38,6 +39,7 @@
             </thead>
             <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
               <tr class='dropfix'>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -58,10 +60,10 @@
                     <li>
                       <form editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
                         <button class='btn btn-xs btn-warning' type='submit' ng-disabled='driverRowForm.$waiting'>
-                          &#10003;
+                          Save
                         </button>
                         <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(driver)'>
-                          &times;
+                          Del
                         </button>
                       </form>
                     </li>
@@ -73,12 +75,19 @@
                   </span>
                 </td>
                 <td>
-                  <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
+                  <span editable-select='driver.gasCardId' e-ng-options='card.id as card.number for card in gasCards' e-form='driverRowForm'>
+                  </span>
+                  <span ng-show='!driverRowForm.$visible'>
+                    {{ driver.GasCards[0].number }}
                   </span>
                 </td>
                 <td>
                   <span editable-text='driver.tlc' e-name='tlc' e-form='driverRowForm'>
                     {{ driver.tlc }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
                   </span>
                 </td>
                 <td>
@@ -129,8 +138,8 @@
         <h3>{{ status }}</h3>
         <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
         <th>Name</th>
-        <th>Notes</th>
         <th>TLC</th>
+        <th>Notes</th>
         <th>DMV</th>
         <th>Points</th>
         <th>Accidents</th>
@@ -174,13 +183,13 @@
               </span>
             </td>
             <td>
-              <span editable-text='prospect.description' e-name='description' e-form='prospectRowForm'>
-                {{ prospect.description }}
+              <span editable-text='prospect.tlc' e-name='tlc' e-form='prospectRowForm'>
+                {{ prospect.tlc }}
               </span>
             </td>
             <td>
-              <span editable-text='prospect.tlc' e-name='tlc' e-form='prospectRowForm'>
-                {{ prospect.tlc }}
+              <span editable-text='prospect.description' e-name='description' e-form='prospectRowForm'>
+                {{ prospect.description }}
               </span>
             </td>
             <td>

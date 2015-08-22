@@ -37,9 +37,12 @@ db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
 // db.Driver.hasMany(db.GasCard);
 // db.Driver.hasMany(db.EzPass);
 
-db.GasCard.hasMany(db.GasCardLog);
+// Driver assets
+db.GasCard.belongsToMany(db.GasCardLog, { as: 'Log', through: 'GasCard_GasCardLogs' });
 db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignment' });
 db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignment' });
+db.EzPass.belongsToMany(db.EzPassLog, { as: 'Log', through: 'GasCardAssignment' });
+db.Driver.belongsToMany(db.EzPass, { through: 'EzPassAssignment' });
 
 Object.keys(db).forEach(function(modelName) {
  if ("associate" in db[modelName]) {

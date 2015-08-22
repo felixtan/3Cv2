@@ -9,6 +9,8 @@ var ptgLog = models.PtgLog;
 var Prospects = models.Prospect; 
 var CarLog = models.CarLog;
 var maintenanceLog = models.MaintenanceLog;
+var EzPass = models.EzPass;
+var GasCard = models.GasCard;
 
 // Populate the db with fake data
 module.exports = {
@@ -211,6 +213,43 @@ module.exports = {
             dateInMs: dateInMs
         };
 
+        // Assets
+        var ezPass1 = {
+                number: '00809549650'
+        },
+            ezPass2 = {
+                number: '00809320883'
+        },
+            ezPass3 = {
+                number: '00809531889'
+        },
+            ezPass4 = {
+                number: '00807409342'
+        };
+
+        EzPass.create(ezPass1);
+        EzPass.create(ezPass2);
+        EzPass.create(ezPass3);
+        EzPass.create(ezPass4);
+
+        var gasCard1 = {
+                number: 'Driver 26 (2336)'
+        },
+            gasCard2 = {
+                number: 'Driver 17 (2278)'
+        },
+            gasCard3 = {
+                number: 'Driver 3 (0165)'
+        },
+            gasCard4 = {
+                number: 'Driver 30 (8961)'
+        };
+
+        GasCard.create(gasCard1);
+        GasCard.create(gasCard2);
+        GasCard.create(gasCard3);
+        GasCard.create(gasCard4);
+
         // Push the logs
         ptgLog.create(ptgLog1).then(function(ptgLog) {
 
@@ -224,6 +263,7 @@ module.exports = {
                     
                         Driver.create(driver1).then(function(driver1) {
 
+                            driver1.addGasCard([1]);
                             driver1.addCar([car1.id]);
                             driver1_log.driverId = driver1.id;
                             driver1_log.givenName = driver1.givenName;    
@@ -290,7 +330,9 @@ module.exports = {
             });
 
         }).then(function() {
+
             console.log('Finished populating the development database.');    
+
         });
     }
 }

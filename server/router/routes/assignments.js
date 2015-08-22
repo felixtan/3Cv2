@@ -3,12 +3,21 @@
 var models = require('../../db/models');
 var Cars = models.Car;
 var Drivers = models.Driver;
+var GasCards = models.GasCard;
 
 module.exports = {
 
     // Eager loading of cars and drivers
     getAss: function(req, res) {    
-        Cars.findAll({ include: Drivers }).then(function(cars) {
+        Cars.findAll({ 
+            include: 
+                { 
+                    model: Drivers, 
+                    include: { 
+                        model: GasCards
+                    }
+                }
+            }).then(function(cars) {
             var minimizedData = cars;
             minimizedData.forEach(function(car) {
                 delete car.dataValues.updatedAt;
@@ -20,6 +29,12 @@ module.exports = {
                 
                 if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
                     car.dataValues.Drivers.forEach(function(driver) {
+
+                        driver.GasCards.forEach(function(gasCard) {
+                            delete gasCard.dataValues.GasCardAssignment;
+                            delete gasCard.dataValues.createdAt;
+                            delete gasCard.dataValues.updatedAt;
+                        });
 
                         // combine names
                         if(driver.dataValues.middleInitial) {

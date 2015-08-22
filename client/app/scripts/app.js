@@ -32,6 +32,9 @@ angular
           },
           getProspects: function(dataService) {
             return dataService.getProspects();
+          },
+          getGasCards: function(dataService) {
+            return dataService.getGasCards();
           }
         }
       })

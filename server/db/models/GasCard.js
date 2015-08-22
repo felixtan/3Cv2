@@ -4,9 +4,13 @@
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('GasCard', {
-        number: {
+        name: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        number: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     });
 };

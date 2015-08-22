@@ -40,8 +40,8 @@ module.exports = function (app) {
     app.delete('/api/assets/ezpass', ezPass.delete);
 
     // Gas cards
-    app.get('/api/assets/gas-cards', gasCards.get);
-    app.post('/api/assets/gas-cards', gasCards.save);
+    app.get('/api/assets/gas-cards', gasCards.getAll);
+    app.post('/api/assets/gas-cards', gasCards.create);
     app.delete('/api/assets/gas-cards', gasCards.delete);
 
     // PTG logs

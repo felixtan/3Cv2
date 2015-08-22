@@ -3,7 +3,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('GasCardLog', {
+    return sequelize.define('EzPassLog', {
         driverId: {
             type: DataTypes.INTEGER,
             allowNull: false

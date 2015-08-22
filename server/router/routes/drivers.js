@@ -88,7 +88,6 @@ module.exports = {
     },
 
     updateDriver: function(req, res) {
-        console.log(req.body);
         Drivers.update({
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
@@ -112,6 +111,12 @@ module.exports = {
             }
         })
         .then(function() {
+            if(req.body.gasCardId) {
+                Drivers.findById(req.params.id).then(function(driver) {
+                    driver.setGasCards([req.body.gasCardId]);
+                });
+            }
+
             res.status(200).json({ msg: 'Update driver where id = ' + req.params.id });
         })
         .catch(function(err) {
