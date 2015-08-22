@@ -70,6 +70,16 @@ angular.module('clientApp')
                   });
       },
 
+      getEzPasses: function() {
+        return $http.get('/api/assets/ez-passes')
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    console.error(err);
+                  });
+      },
+
       getProspects: function() {
         return $http.get('/api/prospects')
                   .success(function(data) {

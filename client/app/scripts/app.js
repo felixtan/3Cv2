@@ -35,6 +35,9 @@ angular
           },
           getGasCards: function(dataService) {
             return dataService.getGasCards();
+          },
+          getEzPasses: function(dataService) {
+            return dataService.getEzPasses();
           }
         }
       })

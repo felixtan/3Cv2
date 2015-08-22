@@ -35,9 +35,9 @@ module.exports = function (app) {
     app.delete('/api/prospects/:id', prospect.deleteProspect);
 
     // EZ pass
-    app.get('/api/assets/ezpass', ezPass.get);
-    app.post('/api/assets/ezpass', ezPass.save);
-    app.delete('/api/assets/ezpass', ezPass.delete);
+    app.get('/api/assets/ez-passes', ezPass.getAll);
+    app.post('/api/assets/ez-passes', ezPass.create);
+    app.delete('/api/assets/ez-passes', ezPass.delete);
 
     // Gas cards
     app.get('/api/assets/gas-cards', gasCards.getAll);

@@ -5,9 +5,18 @@ var EzPass = models.EzPass;
 var Driver = models.Driver;
 
 module.exports = {
-    get: function(req, res) {
-        EzPass.findAll().then(function(passes) {
-            res.json(passes);
+    getAll: function(req, res) {
+        EzPass.findAll({ include: Driver }).then(function(passes) {
+
+            var minimizedData = {};
+            minimizedData = passes;
+
+            minimizedData.forEach(function(pass) {
+                delete pass.dataValues.createdAt;
+                delete pass.dataValues.updateAt;
+            });
+
+            res.json(minimizedData);
         })
         .catch(function(err) {
             console.error(err);
@@ -15,7 +24,7 @@ module.exports = {
         });
     },
 
-    save: function(req, res) {
+    create: function(req, res) {
         EzPass.create({
             number: req.body.number
         }).then(function(pass) {

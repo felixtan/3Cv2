@@ -111,11 +111,16 @@ module.exports = {
             }
         })
         .then(function() {
-            if(req.body.gasCardId) {
-                Drivers.findById(req.params.id).then(function(driver) {
+            
+            Drivers.findById(req.params.id).then(function(driver) {
+                if(req.body.gasCardId) {
                     driver.setGasCards([req.body.gasCardId]);
-                });
-            }
+                }
+
+                if(req.body.ezPassId) {
+                    driver.setEzPasses([req.body.ezPassId]);
+                }
+            });
 
             res.status(200).json({ msg: 'Update driver where id = ' + req.params.id });
         })

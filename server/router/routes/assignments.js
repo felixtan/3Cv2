@@ -4,6 +4,7 @@ var models = require('../../db/models');
 var Cars = models.Car;
 var Drivers = models.Driver;
 var GasCards = models.GasCard;
+var EzPasses = models.EzPass;
 
 module.exports = {
 
@@ -13,9 +14,11 @@ module.exports = {
             include: 
                 { 
                     model: Drivers, 
-                    include: { 
+                    include: [{ 
                         model: GasCards
-                    }
+                    }, {
+                        model: EzPasses
+                    }]
                 }
             }).then(function(cars) {
             var minimizedData = cars;

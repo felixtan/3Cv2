@@ -29,6 +29,7 @@
               <th></th>
               <th>Name</th>
               <th>Gas Card</th>
+              <th>EZ Pass</th>
               <th>TLC</th>
               <th>Notes</th>
               <th>DMV</th>
@@ -39,6 +40,7 @@
             </thead>
             <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
               <tr class='dropfix'>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -79,6 +81,13 @@
                   </span>
                   <span ng-show='!driverRowForm.$visible'>
                     {{ driver.GasCards[0].number }}
+                  </span>
+                </td>
+                <td>
+                  <span editable-select='driver.ezPassId' e-ng-options='pass.id as pass.number for pass in ezPasses' e-form='driverRowForm'>
+                  </span>
+                  <span ng-show='!driverRowForm.$visible'>
+                    {{ driver.EzPasses[0].number }}
                   </span>
                 </td>
                 <td>
