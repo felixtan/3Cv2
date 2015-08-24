@@ -11,8 +11,8 @@ describe('Service: dataService', function () {
     dataService = _dataService_;
   }));
 
-  it('should do something', function () {
-    expect(!!dataService).toBe(true);
-  });
+  // it('should do something', function () {
+  //   expect(!!dataService).toBe(true);
+  // });
 
 });

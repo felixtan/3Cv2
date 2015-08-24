@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('payRateModalCtrl', function ($scope, $modal) {
+  .controller('PayRateModalCtrl', function ($scope, $modal) {
     $scope.animationsEnabled = true;
     // $scope.payRate = " ";
 
@@ -17,7 +17,7 @@ angular.module('clientApp')
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'payRateModal',
-            controller: 'payRateModalInstanceCtrl',
+            controller: 'PayRateModalInstanceCtrl',
             size: size
         });
 

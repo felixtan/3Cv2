@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('carFormModalCtrl', function ($scope, $modal, dataService) {
+  .controller('CarFormModalCtrl', function ($scope, $modal, dataService) {
     $scope.formData = {};
 
     $scope.animationsEnabled = true;
@@ -18,7 +18,7 @@ angular.module('clientApp')
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'carformmodal',
-            controller: 'carFormModalInstanceCtrl',
+            controller: 'CarFormModalInstanceCtrl',
             size: size,
             resolve: {
                 getDrivers: function(dataService) {

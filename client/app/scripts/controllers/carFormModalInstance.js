@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('carFormModalInstanceCtrl', function (getDrivers, $http, $route, $scope, $modalInstance) {
+  .controller('CarFormModalInstanceCtrl', function (getDrivers, $http, $route, $scope, $modalInstance) {
     $scope.formData = {};
     $scope.drivers = getDrivers.data;
 

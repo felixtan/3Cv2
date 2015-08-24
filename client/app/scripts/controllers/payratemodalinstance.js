@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('payRateModalInstanceCtrl', function ($scope, $modalInstance) {
+  .controller('PayRateModalInstanceCtrl', function ($scope, $modalInstance) {
     document.onkeypress = function (e) {
         e = e || window.event;
         // use e.keyCode

@@ -41,16 +41,6 @@ angular
           }
         }
       })
-      .when('/add-car', {
-        templateUrl: 'views/addcar.html',
-        controller: 'AddcarCtrl',
-        controllerAs: 'newCarForm',
-        resolve: {
-          getDrivers: function(dataService) {
-            return dataService.getDrivers();
-          }
-        }
-      })
       .when('/add-driver', {
         templateUrl: 'views/adddriver.html',
         controller: 'AddDriverCtrl',
@@ -102,7 +92,7 @@ angular
       })
       .when('/maintenance', {
         templateUrl: 'views/maintenanceLogs.html',
-        controller: 'maintenanceLogsCtrl',
+        controller: 'MaintenanceLogsCtrl',
         controllerAs: 'maintenance',
         resolve: {
           getMaintenanceLogs: function(dataService) {

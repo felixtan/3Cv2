@@ -1,23 +1,19 @@
 'use strict';
 
-describe('Controller: AdddriverCtrl', function () {
+describe('Controller: AddDriverCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var AdddriverCtrl,
+  var AddDriverCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    AdddriverCtrl = $controller('AdddriverCtrl', {
+    AddDriverCtrl = $controller('AddDriverCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(AdddriverCtrl.awesomeThings.length).toBe(3);
-  });
 });

@@ -12,9 +12,9 @@ describe('Directive: repeatFinished', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<repeat-finished></repeat-finished>');
-    element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the repeatFinished directive');
-  }));
+  // it('should make hidden element visible', inject(function ($compile) {
+  //   element = angular.element('<repeat-finished></repeat-finished>');
+  //   element = $compile(element)(scope);
+  //   expect(element.text()).toBe('this is the repeatFinished directive');
+  // }));
 });

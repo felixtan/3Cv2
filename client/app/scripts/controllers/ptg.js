@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc function
  * @name clientApp.controller:PtgCtrl
@@ -14,6 +12,7 @@ angular.module('clientApp')
     this.mostRecentDateInMs = getPtgLogs.data.mostRecentDateInMs;
     this.drivers = basicDriverData.data;
 
+    // causes error when 'use strict'
     const oneWeekInMs = 604800000;
 
     this.newLog = function() {

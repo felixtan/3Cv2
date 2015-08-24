@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc function
  * @name clientApp.controller:CarstatuslogsCtrl
@@ -8,11 +6,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('maintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
+  .controller('MaintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
     this.logs = getMaintenanceLogs.data.logs;
     this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
     this.cars = basicCarData.data;
 
+    // causes error when 'use strict'
     const oneWeekInMs = 604800000;
 
     this.newLog = function() {

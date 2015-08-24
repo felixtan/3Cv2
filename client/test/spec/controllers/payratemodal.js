@@ -1,23 +1,19 @@
 'use strict';
 
-describe('Controller: PayratemodalCtrl', function () {
+describe('Controller: PayRateModalCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var PayratemodalCtrl,
+  var PayRateModalCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    PayratemodalCtrl = $controller('PayratemodalCtrl', {
+    PayRateModalCtrl = $controller('PayRateModalCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(PayratemodalCtrl.awesomeThings.length).toBe(3);
-  });
 });

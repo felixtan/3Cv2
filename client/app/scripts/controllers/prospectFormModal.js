@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('prospectFormModalCtrl', function ($scope, $modal) {
+  .controller('ProspectFormModalCtrl', function ($scope, $modal) {
     $scope.formData = {};
 
     $scope.animationsEnabled = true;
@@ -18,7 +18,7 @@ angular.module('clientApp')
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
             templateUrl: 'newprospectformmodal',
-            controller: 'prospectFormModalInstanceCtrl',
+            controller: 'ProspectFormModalInstanceCtrl',
             size: size,
             resolve: {
                 items: function () {
