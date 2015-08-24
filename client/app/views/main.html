@@ -1,7 +1,27 @@
 <!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
 
-<div class='col-md-5 col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
-  <h2 class='sub-header'>Cars</h2>
+<!-- Collapsed car list becomes a button -->
+<div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='carListCollapsed' ng-click='carListCollapsed = !carListCollapsed' type='button'>
+  <div class='row row-collapsed'>
+    <p class='fa fa-caret-right fa-3x btn-expand'></p>
+  </div>
+</div>
+
+<!-- Collapsed prospect list becomes a button -->
+<div class='col-md-offset-11 col-md-1 col-collapsed' ng-show='prospectListCollapsed' ng-click='prospectListCollapsed = !prospectListCollapsed' type='button'>
+  <div class='row row-collapsed'>
+    <p class='fa fa-caret-left fa-3x btn-expand'></p>
+  </div>
+</div>
+
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
+  
+  <h2 class='sub-header'>
+    Cars
+    <span class='btn-collapse' ng-show='!prospectListCollapsed'>
+      <i class='fa fa-caret-left btn-collapse' type='button' ng-click='carListCollapsed = !carListCollapsed'></i>
+    </span>
+  </h2>  
 
   <div class='row'>
     <div class='col-md-5 car-actions' ng-controller="carFormModalCtrl">
@@ -57,7 +77,7 @@
                   <ul class='row-actions'>
                     <li class='drag-handle' ng-show='!driverRowForm.$visible'>::</li>
                     <li class='filler'> </li>
-                    <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show='!driverRowForm.$visible'>
+                    <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show="!driverRowForm.$visible && prospectListCollapsed">
                     </li>
                     <li>
                       <form editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
@@ -133,8 +153,13 @@
   </div>
 </div>
 
-<div class='col-md-5' id='prospect-list' ng-model='prospects'>
-  <h2 class='sub-header'>Prospects</h2>
+<div ng-class="{ 'col-md-offset-3' : carListCollapsed, 'col-md-9' : carListCollapsed, 'col-md-5' : !carListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed'>
+  <h2 class='sub-header'>
+    Prospects
+    <span class='btn-collapse' ng-show='!carListCollapsed'>
+      <i class='fa fa-caret-right' type='button' ng-click='prospectListCollapsed = !prospectListCollapsed'></i>
+    </span>
+  </h2>
   <div class='row'>
     <div class='col-md-5 prospect-actions' ng-controller="prospectFormModalCtrl">
       
@@ -145,7 +170,7 @@
     <table class='table'>
       <thead>
         <h3>{{ status }}</h3>
-        <th><!-- <i class='fa fa-pencil-square-o'></i> --></th>
+        <th></th>
         <th>Name</th>
         <th>TLC</th>
         <th>Notes</th>
@@ -172,7 +197,7 @@
               <ul class='row-actions'>
               <li class='drag-handle' ng-show='!prospectRowForm.$visible'>::</li>
               <li class='filler'> </li>
-              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show='!prospectRowForm.$visible'>
+              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show="!prospectRowForm.$visible && carListCollapsed">
               </li>  
               <li>
                 <form editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>

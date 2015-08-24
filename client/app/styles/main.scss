@@ -244,3 +244,24 @@ body {
 .car-header {
   display: inline;
 }
+
+// collapse buttons (carets) on two column view
+.btn-collapse {
+  float: right;
+}
+
+.col-collapsed {
+  position: absolute;
+  height: 100%;
+  text-align: center;
+}
+
+.col-collapsed:hover {
+  background-color: #f9f9f9;
+}
+
+.row-collapsed {
+  // so that the expand-button stays fixed to middle of viewport height
+  position: relative;
+  margin-top: 50vh;
+}
