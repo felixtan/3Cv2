@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2' id='car-list' ng-model='cars' collapse='carListCollapsed'>
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='carListCollapsed'>
   
   <h2 class='sub-header'>
     Cars
@@ -153,7 +153,7 @@
   </div>
 </div>
 
-<div ng-class="{ 'col-md-offset-3' : carListCollapsed, 'col-md-9' : carListCollapsed, 'col-md-5' : !carListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed'>
+<div ng-class="{ 'col-md-offset-3' : carListCollapsed, 'col-md-9' : carListCollapsed, 'col-md-5' : !carListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible'>
   <h2 class='sub-header'>
     Prospects
     <span class='btn-collapse' ng-show='!carListCollapsed'>

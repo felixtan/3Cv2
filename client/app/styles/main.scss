@@ -266,6 +266,12 @@ body {
   margin-top: 50vh;
 }
 
+// Disable animation in order to get rid of ugly animation lag
+// TODO: add smoother animations in future release
+.col-collapsible.collapsing {
+  transition-duration: 0.0125s;
+}
+
 // for horizontal collapse directive
 .collapsing-width {
   position: relative;
