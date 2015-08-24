@@ -50,13 +50,13 @@
               <th>Name</th>
               <th>Gas Card</th>
               <th>EZ Pass</th>
-              <th>TLC</th>
+              <th ng-show='prospectListCollapsed'>TLC</th>
               <th>Notes</th>
-              <th>DMV</th>
-              <th>Points</th>
-              <th>Accidents</th>
+              <th ng-show='prospectListCollapsed'>DMV</th>
+              <th ng-show='prospectListCollapsed'>Points</th>
+              <th ng-show='prospectListCollapsed'>Accidents</th>
               <th>Shift</th>
-              <th>Address</th>
+              <th ng-show='prospectListCollapsed'>Address</th>
             </thead>
             <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
               <tr class='dropfix'>
@@ -110,7 +110,7 @@
                     {{ driver.EzPasses[0].number }}
                   </span>
                 </td>
-                <td>
+                <td ng-show='prospectListCollapsed'>
                   <span editable-text='driver.tlc' e-name='tlc' e-form='driverRowForm'>
                     {{ driver.tlc }}
                   </span>
@@ -119,17 +119,17 @@
                   <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
                   </span>
                 </td>
-                <td>
+                <td ng-show='prospectListCollapsed'>
                   <span editable-text='driver.dmv' e-name='dmv' e-form='driverRowForm'>
                     {{ driver.dmv }}
                   </span>
                 </td>
-                <td>
+                <td ng-show='prospectListCollapsed'>
                   <span editable-text='driver.points' e-name='points' e-form='driverRowForm'>
                     {{ driver.points }}
                   </span>
                 </td>
-                <td>
+                <td ng-show='prospectListCollapsed'>
                   <span editable-text='driver.accidents' e-name='accidents' e-form='driverRowForm'>
                     {{ driver.accidents }}
                   </span>
@@ -139,7 +139,7 @@
                     {{ driver.shift }}
                   </span>
                 </td>
-                <td>
+                <td ng-show='prospectListCollapsed'>
                   <span editable-text='driver.address' e-name='address' e-form='driverRowForm'>
                     {{ driver.address }}
                   </span>
