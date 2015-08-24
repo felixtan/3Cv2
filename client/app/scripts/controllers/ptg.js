@@ -40,7 +40,7 @@ angular.module('clientApp')
             hours: driver.hours,
             acceptRate: driver.acceptRate,
             payout: driver.payout
-        }).success(function(data) {
+        }).success(function() {
             console.log('PTG log updated.');
         }).error(function(err) {
             console.error(err);

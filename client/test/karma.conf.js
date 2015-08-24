@@ -33,8 +33,6 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/Sortable/Sortable.js',
       'bower_components/Sortable/ng-sortable.js',
-      'bower_components/Sortable/knockout-sortable.js',
-      'bower_components/Sortable/react-sortable-mixin.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower

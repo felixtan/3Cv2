@@ -38,5 +38,5 @@ angular.module('clientApp')
 
       $scope.close = function () {
         $modalInstance.dismiss('cancel');
-      }
+      };
   });

@@ -28,7 +28,7 @@ angular.module('clientApp')
         }).catch(function(err) {
             console.log(err);
         });
-    }
+    };
 
     // submit xeditable row form by pressing enter
     // will then call updateDriver
@@ -58,18 +58,18 @@ angular.module('clientApp')
             resolve(obj);
             reject(new Error('obj.name is fucked'));
         });
-    }
+    };
 
     $scope.updateRow = function(obj) {
         parseName(obj).then(function(objNameParsed) {
-            console.log(objNameParsed);
-            if(objNameParsed.status) {
-                var promise = $http.put('/api/prospects/'+objNameParsed.id, objNameParsed);
-            } else if(objNameParsed.payRate) {
-                var promise = $http.put('/api/drivers/'+objNameParsed.id, objNameParsed);
-            }
-            // console.log(obj);
+            var promise = {};
             var deferred = deferred || $q.defer();
+
+            if(objNameParsed.status) {
+                promise = $http.put('/api/prospects/'+objNameParsed.id, objNameParsed);
+            } else if(objNameParsed.payRate) {
+                promise = $http.put('/api/drivers/'+objNameParsed.id, objNameParsed);
+            }
 
             promise.then(function(data) {
                 deferred.resolve(data);
@@ -80,47 +80,49 @@ angular.module('clientApp')
 
             return deferred.promise;
         }, function(err) {
-            return new Error('Error updating dashboard row.');
+            return new Error({ error: err, msg: 'Error updating dashboard row.' });
         });
-    }
+    };
 
     $scope.deleteRow = function(obj) {
+        var type = '';
+
         if(obj.payRate) {
-            var type = 'driver';
+            type = 'driver';
         } else if(obj.status) {
-            var type = 'prospect';
+            type = 'prospect';
         } else {
             console.error('Failed to delete.', obj);
         }
 
         $http.delete('/api/' + type + 's/' + obj.id).then(function(data) {
-            console.log('Deleted ' + type + '.');
+            console.log(data.msg);
             $route.reload();
         }, function(err) {
             console.error(err);
         });
-    }
+    };
 
     $scope.getCarListElem = function() {
         return $q(function(resolve, reject) {
             resolve(angular.element('#car-list')[0]);
             reject(new Error('Failed to get car list element.'));
         });
-    }
+    };
 
     $scope.getProspectListElems = function() {
         return $q(function(resolve, reject) {
             resolve(angular.element('.prospect-status'));
             reject(new Error('Failed to get list elements.'));
         });
-    }
+    };
 
     $scope.getDriverListElems = function() {
         return $q(function(resolve, reject) {
             resolve(angular.element('.driver-list'));
             reject(new Error('Failed to get driver list elements.'));
         });
-    }
+    };
 
     $scope.updateProspectStatus = function(id, newStatus) {
         $http.put('/api/prospects/' + id, {
@@ -130,7 +132,7 @@ angular.module('clientApp')
         }, function(err) {
             console.error(err);
         });
-    }
+    };
 
     // Input: prospect with single name property
     // Output: prospect with three name properties less any property not needed for post method
@@ -161,7 +163,7 @@ angular.module('clientApp')
                 console.error(err);
             });
         });
-    }
+    };
 
     // Get id of car when a driver or prospect is sorted into it
     $scope.getCarId = function(eventItem) {
@@ -169,7 +171,7 @@ angular.module('clientApp')
             resolve(parseInt(angular.element(eventItem).parent().data('carid')));
             reject(new Error('Failed to get car id for new driver.'));
         });
-    }
+    };
 
     // Get the car a driver/prospect is reassigned/assigned to
     $scope.getCarInScope = function(id) {
@@ -179,7 +181,7 @@ angular.module('clientApp')
             })[0]);
             reject(new Error('Failed to extract car data for updating the scope.'));
         });
-    }
+    };
 
     $scope.updateDriverAssignment = function(driverId, oldCar, newCar) {
         $http.put('/api/assignments/drivers/' + driverId, {
@@ -190,7 +192,7 @@ angular.module('clientApp')
         }).then(function(err) {
             console.error(err);
         });
-    }
+    };
 
     // Makes lists sortable when all ng-repeats are finished
     $scope.$on('repeatFinished', function() {

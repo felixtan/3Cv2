@@ -29,7 +29,7 @@ angular.module('clientApp')
         })
         .success(function(data) {
             // TODO: create modal popup telling the user 
-            console.log('New driver saved.');
+            console.log('New driver saved.', data);
         })
         .error(function(err) {
             console.error(err);

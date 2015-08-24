@@ -12,5 +12,5 @@ angular.module('clientApp')
         if(scope.$last && scope.status === scope.prospectStatuses[scope.prospectStatuses.length-1]) {
             scope.$emit('repeatFinished');
         }
-    }
+    };
   });

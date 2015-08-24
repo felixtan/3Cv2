@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('maintenanceLogsCtrl', function (route, $http, getMaintenanceLogs, basicCarData) {
+  .controller('maintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
     this.logs = getMaintenanceLogs.data.logs;
     this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
     this.cars = basicCarData.data;
@@ -35,7 +35,7 @@ angular.module('clientApp')
             mileage: car.mileage,
             note: car.note,
             tlcNumber: car.tlcNumber
-        }).success(function(data) {
+        }).success(function() {
             console.log('Maintenance log updated.');
         }).error(function(err) {
             console.error(err);
