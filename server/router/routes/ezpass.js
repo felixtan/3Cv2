@@ -28,9 +28,7 @@ module.exports = {
         EzPass.create({
             number: req.body.number
         }).then(function(pass) {
-            Driver.findById(req.body.driverId).then(function(driver) {
-                driver.addEzPass([pass.id]);
-            });
+           res.json(pass);
             // pass.addDriver([req.body.driverId]);
         }).catch(function(err) {
             console.error(err);

@@ -37,6 +37,7 @@ angular.module('clientApp')
       };
 
       $scope.close = function () {
+        $route.reload();
         $modalInstance.dismiss('cancel');
       };
   });

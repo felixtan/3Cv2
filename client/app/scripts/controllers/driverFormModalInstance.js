@@ -29,7 +29,7 @@ angular.module('clientApp')
       };
 
       $scope.close = function () {
-        $modalInstance.dismiss('cancel');
         $route.reset();
+        $modalInstance.dismiss('cancel');
       };
   });

@@ -59,7 +59,7 @@
             <li><a href='#/pay-toll-gas' class='fa fa-table'> PTG</a></li>
             <li><a href="#/maintenance" class='fa fa-wrench'> Maintenance</a></li>
             <li><a type='button' ng-controller='DriverFormModalCtrl' class='fa fa-user' data-toggle='modal' ng-click='open(lg)'> +Driver</a></li>
-            <li><a href="#/add-card" class='fa fa-credit-card'> +Card</a></li>
+            <li><a type='button' ng-controller='CardFormModalCtrl' class='fa fa-credit-card' data-toggle='modal' ng-click='open(lg)'> +Card</a></li>
           </ul>
         </div>
 
@@ -108,10 +108,8 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/services/dataservice.js"></script>
-        <script src="scripts/controllers/adddriver.js"></script>
         <script src="scripts/controllers/ptg.js"></script>
         <script src="scripts/services/ptglogsettingsservice.js"></script>
-        <script src="scripts/controllers/addcard.js"></script>
         <script src="scripts/directives/repeatfinished.js"></script>
         <script src="scripts/controllers/prospectFormModal.js"></script>
         <script src="scripts/controllers/prospectFormModalInstance.js"></script>
@@ -122,6 +120,8 @@
         <script src="scripts/controllers/maintenanceLogs.js"></script>
         <script src="scripts/controllers/driverFormModal.js"></script>
         <script src="scripts/controllers/driverFormModalInstance.js"></script>
+        <script src="scripts/controllers/cardformmodal.js"></script>
+        <script src="scripts/controllers/cardformmodalinstance.js"></script>
         <!-- endbuild -->
 
     <!-- Applies css to side nav active page element -->

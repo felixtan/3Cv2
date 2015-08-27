@@ -257,11 +257,44 @@
   </div>
 </div>
 
-<!-- Prospect form modal view -->
+<!-- Card form modal view -->
+<!-- TODO: put it in a different file -->
+<script type="text/ng-template" id="cardformmodal">
+  <div class="modal-header">
+      <h3 class="modal-title">Add Card</h3>
+      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+  </div>
+  <div class='modal-body'>
+    <form novalidate role='form' id='newCardForm'>
+      <div class='form-group'>
+        <label for='type'>Type</label>
+        <select class='form-control' ng-model='formData.type'>
+            <option> - </option>
+            <option ng-repeat='type in typeNames' value='{{ type }}'>{{ type }} </option>
+        </select>
+      </div>
+      <div class='form-group'>
+          <label for='number'>Number</label>
+          <input type='text' class='form-control' ng-model='formData.number' placeholder=''>
+      </div>
+      <div class='form-group' ng-show="formData.type === 'Gas Card'">
+          <label for='name'>Name</label>
+          <input type='text' class='form-control' ng-model='formData.name' placeholder=''>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>
+
+<!-- Driver form modal view -->
 <!-- TODO: put it in a different file -->
 <script type="text/ng-template" id="driverformmodal">
   <div class="modal-header">
-      <h3 class="modal-title">Add Caller</h3>
+      <h3 class="modal-title">Add Driver</h3>
       <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
   </div>
   <div class="modal-body">

@@ -28,10 +28,7 @@ module.exports = {
         GasCard.create({
             number: req.body.number
         }).then(function(card) {
-            Driver.findById(req.body.driverId).then(function(driver) {
-                driver.addGasCard([card.id]);
-            });
-            // card.addDriver([req.body.driverId]);
+            res.json(card);
         }).catch(function(err) {
             console.error(err);
         });
