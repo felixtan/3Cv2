@@ -270,7 +270,7 @@ module.exports = {
                             driver1_log.surName = driver1.surName;
                             
                             driverLog.create(driver1_log).then(function(driverLog) {
-                                driver1.addPtgLog([driverLog.id]);
+                                driver1.addLog([driverLog.id]);
                                 ptgLog.addDriverLog([driverLog.id]);
                                 
                                 car1.addMaintenanceLog([carLog.id]);
@@ -294,7 +294,7 @@ module.exports = {
                                 driver2_log.surName = driver2.surName;
 
                                 driverLog.create(driver2_log).then(function(driverLog) {
-                                    driver2.addPtgLog([driverLog.id]);
+                                    driver2.addLog([driverLog.id]);
                                     ptgLog.addDriverLog([driverLog.id]);
                                 });
 
@@ -308,7 +308,7 @@ module.exports = {
                                     driver3_log.surName = driver3.surName;
                                     
                                     driverLog.create(driver3_log).then(function(driverLog) {
-                                        driver3.addPtgLog([driverLog.id]);
+                                        driver3.addLog([driverLog.id]);
                                         ptgLog.addDriverLog([driverLog.id]);
                                         
                                         car2.addMaintenanceLog([carLog.id]);

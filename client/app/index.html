@@ -58,8 +58,8 @@
             <li><a href="#/"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
             <li><a href='#/pay-toll-gas' class='fa fa-table'> PTG</a></li>
             <li><a href="#/maintenance" class='fa fa-wrench'> Maintenance</a></li>
-            <li><a href="#/add-driver" class='fa fa-user-plus'> New Driver</a></li>
-            <li><a href="#/add-card" class='fa fa-credit-card'> New Card</a></li>
+            <li><a type='button' ng-controller='DriverFormModalCtrl' class='fa fa-user' data-toggle='modal' ng-click='open(lg)'> +Driver</a></li>
+            <li><a href="#/add-card" class='fa fa-credit-card'> +Card</a></li>
           </ul>
         </div>
 
@@ -120,6 +120,8 @@
         <script src="scripts/controllers/payratemodal.js"></script>
         <script src="scripts/controllers/payratemodalinstance.js"></script>
         <script src="scripts/controllers/maintenanceLogs.js"></script>
+        <script src="scripts/controllers/driverFormModal.js"></script>
+        <script src="scripts/controllers/driverFormModalInstance.js"></script>
         <!-- endbuild -->
 
     <!-- Applies css to side nav active page element -->

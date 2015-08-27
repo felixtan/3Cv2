@@ -33,6 +33,7 @@ module.exports = {
     },
 
     saveDriver: function(req, res) {
+        console.log('driver:', req.body);
         Drivers.create({
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,

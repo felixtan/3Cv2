@@ -20,7 +20,7 @@ db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
 db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
 
 // PTG
-db.Driver.belongsToMany(db.DriverLog, { as: 'PtgLogs', through: 'Driver_Logs' });
+db.Driver.belongsToMany(db.DriverLog, { as: 'Log', through: 'Driver_Logs' });
 db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_Logs' });
 
 // Car Maintenance
