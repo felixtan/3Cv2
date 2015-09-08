@@ -26,7 +26,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" if-user>
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -53,7 +53,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar" if-user>
           <ul class="nav nav-sidebar">
             <li><a href="#/"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
             <li><a href='#/pay-toll-gas' class='fa fa-table'> PTG</a></li>
@@ -63,8 +63,8 @@
           </ul>
         </div>
 
-        <div ng-view="">
-      
+        <div ui-view>
+
         </div>
         <!-- ngView -->
       </div>
@@ -89,17 +89,20 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/Sortable/Sortable.js"></script>
     <script src="bower_components/Sortable/ng-sortable.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
+    <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -122,6 +125,11 @@
         <script src="scripts/controllers/driverFormModalInstance.js"></script>
         <script src="scripts/controllers/cardformmodal.js"></script>
         <script src="scripts/controllers/cardformmodalinstance.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/register.js"></script>
+        <script src="scripts/controllers/emailverification.js"></script>
+        <script src="scripts/controllers/passwordreset.js"></script>
+        <script src="scripts/controllers/passwordresetrequest.js"></script>
         <!-- endbuild -->
 
     <!-- Applies css to side nav active page element -->

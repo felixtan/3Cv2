@@ -1,4 +1,5 @@
 var express = require('express');
+var stormpathExpressSdk = require('stormpath-sdk-express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -11,8 +12,15 @@ var app = express();
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// stormpath
+var spMiddleware = stormpathExpressSdk.createMiddleware({
+  appHref: process.env.HOME + '/.stormpath/apiKey.href',
+  apiKeyId: '590ZNNR68BJ6Z0BSJSGOT7NQ5',
+  apiKeySecret: process.env.HOME + '/.stormpath/apiKey.secret'
+});
 
 // development error handler
 // will print stacktrace
@@ -48,6 +56,10 @@ if(app.get('env') === 'production') {
     });
   });
 }
+
+// attach stormpath routes
+spMiddleware.attachDefaults(app);
+// app.use(spMiddleware.authenticate);
 
 app.set('models', require('./db/models'));
 
