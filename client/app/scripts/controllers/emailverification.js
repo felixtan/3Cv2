@@ -9,9 +9,4 @@
  */
 angular.module('clientApp')
   .controller('EmailverificationCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
   });

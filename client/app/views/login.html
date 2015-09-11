@@ -1,12 +1,12 @@
-<div class='container' if-not-user ng-class="{active: isActive('/login')}">
+<div class='container'>
     <div class='row'>
         <div class='col-xs-12'>
             <h3>Login</h3>
             <hr>
         </div>
     </div>
-    <div sp-login-form post-login-state='main'></div>
-
+    <div sp-login-form template-url='/views/customlogintpl.html'></div>
+    
     <div class='row'>
         <div class='col-xs-12'>
             <h5>Don't have an account?</h5>

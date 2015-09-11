@@ -37,7 +37,7 @@ angular
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl' 
     })
-    .state('emailverification', {
+    .state('emailVerification', {
         url: '/register/verify?sptoken',
         templateUrl: 'views/emailverification.html',
         controller: 'EmailverificationCtrl'
@@ -57,6 +57,9 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
+        sp: {
+          waitForUser: true
+        },
         resolve: {
           getCarsAndDrivers: function(dataService) {
             return dataService.getAss();
@@ -78,6 +81,7 @@ angular
     $stormpath.uiRouter({
       loginState: 'login',
       defaultPostLoginState: 'main',
+      forbiddenState: 'forbidden'
     });
   });
   
