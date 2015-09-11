@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
+app.set('models', require('./db/models'));
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -16,10 +18,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // stormpath
+var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
 var spMiddleware = stormpathExpressSdk.createMiddleware({
-  appHref: process.env.HOME + '/.stormpath/apiKey.href',
-  apiKeyId: '590ZNNR68BJ6Z0BSJSGOT7NQ5',
-  apiKeySecret: process.env.HOME + '/.stormpath/apiKey.secret'
+  appHref: apiKey.href,
+  apiKeyId: apiKey.id,
+  apiKeySecret: apiKey.secret
 });
 
 // development error handler
@@ -59,9 +62,7 @@ if(app.get('env') === 'production') {
 
 // attach stormpath routes
 spMiddleware.attachDefaults(app);
-// app.use(spMiddleware.authenticate);
-
-app.set('models', require('./db/models'));
+app.use(spMiddleware.authenticate);
 
 // Includes all routes
 var router = require('./router')(app);

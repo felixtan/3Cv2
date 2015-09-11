@@ -38,6 +38,8 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "angular-ui-router": "^0.2.15"
+    "angular-ui-router": "^0.2.15",
+    "express": "^4.13.3",
+    "stormpath-sdk-express": "^0.4.10"
   }
 }

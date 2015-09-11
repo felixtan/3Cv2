@@ -51,13 +51,33 @@ angular
         url: '/password/reset',
         templateUrl: 'views/passwordreset.html',
         controller: 'PasswordResetCtrl'
+    })
+    .state('main', {
+        url: '/',
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl',
+        controllerAs: 'main',
+        resolve: {
+          getCarsAndDrivers: function(dataService) {
+            return dataService.getAss();
+          },
+          getProspects: function(dataService) {
+            return dataService.getProspects();
+          },
+          getGasCards: function(dataService) {
+            return dataService.getGasCards();
+          },
+          getEzPasses: function(dataService) {
+            return dataService.getEzPasses();
+          }
+        }
     });
   })
   .run(function(editableOptions, $stormpath) {
     editableOptions.theme = 'bs3';
     $stormpath.uiRouter({
       loginState: 'login',
-      defaultPostLoginState: 'main'
+      defaultPostLoginState: 'main',
     });
   });
   
