@@ -14,6 +14,4 @@ angular.module('clientApp')
       'AngularJS',
       'Karma'
     ];
-
-    console.log($state.current.name);
   });

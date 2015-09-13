@@ -41,8 +41,8 @@
           <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="#/">Dashboard</a></li> -->
             <!-- <li><a href="#/settings">Settings</a></li> -->
-            <li if-user ng-class="{active: isActive('/logout')}">
-              <a ui-sref="login" sp-logout>Logout</a>
+            <li>
+              <a sp-logout ui-sref="logout">Logout</a>
             </li>
             <!-- <li><a href="#/">Help</a></li> -->
           </ul>
@@ -129,9 +129,9 @@
         <script src="scripts/controllers/cardformmodalinstance.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/register.js"></script>
-        <script src="scripts/controllers/emailverification.js"></script>
         <script src="scripts/controllers/passwordreset.js"></script>
         <script src="scripts/controllers/passwordresetrequest.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
         <!-- endbuild -->
 
     <!-- Applies css to side nav active page element -->
@@ -143,6 +143,18 @@
             $(this).addClass('active');
           }
         });
+      });
+    </script>
+
+    <!-- For some reason stormpath doesn't redirect to /login when / is accessed and user is not logged in -->
+    <script type="text/javascript">
+      $(window).load(function() {
+        var origin = window.location.origin;
+        var hash = window.location.hash;
+        var url = origin + '/' + hash;
+        if($('nav').hasClass('ng-hide') && (url === origin + '/#/')) {
+          window.location.replace(origin + '/#/login');
+        }
       });
     </script>
 </body>

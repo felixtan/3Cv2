@@ -32,15 +32,15 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
     })
+    .state('logout', {
+        url: '/logout',
+        templateUrl: 'views/logout.html',
+        controller: 'LogoutCtrl'
+    })
     .state('register', {
         url: '/register',
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl' 
-    })
-    .state('emailVerification', {
-        url: '/register/verify?sptoken',
-        templateUrl: 'views/emailverification.html',
-        controller: 'EmailverificationCtrl'
     })
     .state('passwordResetRequest', {
         url: '/password/requestReset',
@@ -57,9 +57,6 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
-        sp: {
-          waitForUser: true
-        },
         resolve: {
           getCarsAndDrivers: function(dataService) {
             return dataService.getAss();
@@ -74,6 +71,33 @@ angular
             return dataService.getEzPasses();
           }
         }
+    })
+    .state('ptg', {
+        url: '/pay-toll-gas',
+        templateUrl: 'views/ptg.html',
+        controller: 'PtgCtrl',
+        controllerAs: 'ptg',
+        resolve: {
+          getPtgLogs: function(dataService) {
+            return dataService.getPtgLogs();
+          },
+          basicDriverData: function(dataService) {
+            return dataService.getDrivers();
+          }
+        }
+    })
+    .state('maintenance', {
+        url: '/maintenance',
+        templateUrl: 'views/maintenanceLogs.html',
+        controllerAs: 'maintenance',
+        resolve: {
+          getMaintenanceLogs: function(dataService) {
+            return dataService.getMaintenanceLogs();
+          },
+          basicCarData: function(dataService) {
+            return dataService.getCars();
+          }
+        }
     });
   })
   .run(function(editableOptions, $stormpath) {
@@ -81,10 +105,11 @@ angular
     $stormpath.uiRouter({
       loginState: 'login',
       defaultPostLoginState: 'main',
-      forbiddenState: 'forbidden'
+      forbiddenState: 'login',
+      autoRedirect: true
     });
   });
-  
+
 // $routeProvider
     //   .when('/', {
     //     templateUrl: 'views/main.html',
@@ -172,6 +197,11 @@ angular
     //     controller: 'LoginCtrl',
     //     controllerAs: 'login'
     //   })
+    // .when('/logout', {
+    //   templateUrl: 'views/logout.html',
+    //   controller: 'LogoutCtrl',
+    //   controllerAs: 'logout'
+    // })
     //   .otherwise({
     //     redirectTo: '/login'
     //   });

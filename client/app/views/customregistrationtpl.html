@@ -1,12 +1,9 @@
-<div class="row">
-    <div>
-        <p id='postRegistrationAlert' class="alert bg-success" ng-show='creating || created'>
-            Your account has been created. Please check your email for a verification link.
-        </p>
-    </div>
-</div>
 
 <div class="col-xs-12">
+    <p id='postRegistrationAlert' class="alert bg-success" ng-show='creating || created'>
+        Your account has been created. <a ui-sref='login'><strong>Login here</strong></a>.
+    </p>
+
     <form class="form-horizontal" ng-hide='creating || (created && !authenticating)' ng-submit='submit()' style>
         <div class="form-group">
             <label class="col-xs-12 col-sm-4 control-label" for="spFirstName">First
@@ -60,7 +57,7 @@
             <div class="col-sm-offset-4 col-sm-4">
                 <p class="alert alert-danger ng-binding ng-hide" ng-show='error' ng-bind='error'></p>
                 <button class="btn btn-success" type="submit" ng-disabled='creating'>
-                    <!-- <a ui-sref='emailVerification'> -->
+                    <!-- <a ui-sref='login'> -->
                         Register
                     <!-- </a> -->
                 </button>

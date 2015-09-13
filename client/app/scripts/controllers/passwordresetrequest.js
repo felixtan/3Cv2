@@ -8,10 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PasswordresetrequestCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('PasswordResetRequestCtrl', function () {
+    console.log(angular.element('button'));
+    // button.removeClass('btn-primary');
+    angular.element('button').addClass('btn-success');
+    
   });
