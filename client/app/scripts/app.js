@@ -21,7 +21,8 @@ angular
     'ui.bootstrap',
     'stormpath',
     'stormpath.templates',
-    'ui.router'
+    'ui.router',
+    'ngMessages'
   ])
   .config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/login');
@@ -89,6 +90,7 @@ angular
     .state('maintenance', {
         url: '/maintenance',
         templateUrl: 'views/maintenanceLogs.html',
+        controller: 'MaintenanceLogsCtrl',
         controllerAs: 'maintenance',
         resolve: {
           getMaintenanceLogs: function(dataService) {
