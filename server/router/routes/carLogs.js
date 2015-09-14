@@ -3,10 +3,21 @@
 var models = require('../../db/models');
 var CarLogs = models.CarLog;
 var Cars = models.Car;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
     getLogs: function(req, res) {
-        Cars.findAll({ include: CarLog }).then(function(cars) {
+        Cars.findAll({ 
+            where: {
+                organization: getUserId(req)
+            },
+            include: [{
+                model: CarLogs,
+                where: {
+                    organization: getUserId(req)
+                }
+            }]
+        }).then(function(cars) {
             res.json(cars);
         })
         .catch(function(err) {
@@ -16,12 +27,7 @@ module.exports = {
     },
 
     getLog: function(req, res) {
-        CarLog.findAll({ 
-            where: {
-                carId: req.params.id
-            } 
-        })
-        .then(function(logs) {
+        CarLogs.findById(req.params.id).then(function(logs) {
             res.json(logs);
         })
         .catch(function(err) {
@@ -33,7 +39,8 @@ module.exports = {
     createLog: function(req, res) {
         CarLogs.create({
             tlcNumber: req.body.tlcNumber,
-            note: req.body.note
+            note: req.body.note,
+            organization: getUserId(req)
         }).then(function(log) {
             Car.addCarLog([log.id]).then(function() {
                 console.log('Car ' + req.params.id + ' has new log.');
@@ -57,7 +64,8 @@ module.exports = {
                 oilChangeRequired: oilChangeRequired
             }, {
                 where: {
-                    tlcNumber: req.body.tlcNumber 
+                    tlcNumber: req.body.tlcNumber,
+                    organization: getUserId(req)
                 }
             }).then(function() {
                 res.status(200).json({ msg: 'Updated log for car ' + req.params.id });    

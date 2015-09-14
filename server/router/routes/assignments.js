@@ -5,73 +5,85 @@ var Cars = models.Car;
 var Drivers = models.Driver;
 var GasCards = models.GasCard;
 var EzPasses = models.EzPass;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
-
     // Eager loading of cars and drivers
-    getAss: function(req, res) {    
-        Cars.findAll({ 
-            include: 
-                { 
+    getAss: function(req, res) { 
+        getUserId(req).then(function(organizationId) {
+            Cars.findAll({ 
+                where: { organization: organizationId },
+                include: [{ 
                     model: Drivers, 
+                    where: { organization: organizationId }, 
+                    required: false, 
                     include: [{ 
-                        model: GasCards
-                    }, {
-                        model: EzPasses
+                        model: GasCards,
+                        where: { organization: organizationId },
+                        required: false
+                    } , { 
+                        model: EzPasses,
+                        where: { organization: organizationId },
+                        required: false
                     }]
-                }
+                }]
             }).then(function(cars) {
-            var minimizedData = cars;
-            minimizedData.forEach(function(car) {
-                delete car.dataValues.updatedAt;
-                delete car.dataValues.createdAt;
-                // delete car.dataValues.licensePlateNumber;
-                // delete car.dataValues.mileage;
-                // delete car.dataValues.description;
-                delete car.dataValues.userId;
-                
-                if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
-                    car.dataValues.Drivers.forEach(function(driver) {
+                var minimizedData = cars;
+                minimizedData.forEach(function(car) {
+                    delete car.dataValues.updatedAt;
+                    delete car.dataValues.createdAt;
+                    // delete car.dataValues.licensePlateNumber;
+                    // delete car.dataValues.mileage;
+                    // delete car.dataValues.description;
+                    
+                    if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
+                        car.dataValues.Drivers.forEach(function(driver) {
 
-                        driver.GasCards.forEach(function(gasCard) {
-                            delete gasCard.dataValues.GasCardAssignment;
-                            delete gasCard.dataValues.createdAt;
-                            delete gasCard.dataValues.updatedAt;
-                        });
+                            driver.GasCards.forEach(function(gasCard) {
+                                delete gasCard.dataValues.GasCardAssignment;
+                                delete gasCard.dataValues.createdAt;
+                                delete gasCard.dataValues.updatedAt;
+                            });
 
-                        // combine names
-                        if(driver.dataValues.middleInitial) {
-                            driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.middleInitial + '. ' + driver.dataValues.surName;    
-                        } else {
-                            driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.surName;
-                        }
-                        
-                        delete driver.dataValues.givenName;
-                        delete driver.dataValues.surName;
-                        delete driver.dataValues.middleInitial;
-                        delete driver.dataValues.Assignment;
-                        // delete driver.dataValues.driversLicenseNum;
-                        // delete driver.dataValues.phoneNumber;
-                        // delete driver.dataValues.email;
-                        // delete driver.dataValues.address;
-                        // delete driver.dataValues.description;
-                        delete driver.dataValues.userId;
-                        delete driver.dataValues.createdAt;
-                        delete driver.dataValues.updatedAt;
-                    });   
-                }
+                            // combine names
+                            if(driver.dataValues.middleInitial) {
+                                driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.middleInitial + '. ' + driver.dataValues.surName;    
+                            } else {
+                                driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.surName;
+                            }
+                            
+                            delete driver.dataValues.givenName;
+                            delete driver.dataValues.surName;
+                            delete driver.dataValues.middleInitial;
+                            delete driver.dataValues.Assignment;
+                            // delete driver.dataValues.driversLicenseNum;
+                            // delete driver.dataValues.phoneNumber;
+                            // delete driver.dataValues.email;
+                            // delete driver.dataValues.address;
+                            // delete driver.dataValues.description;
+                            delete driver.dataValues.userId;
+                            delete driver.dataValues.createdAt;
+                            delete driver.dataValues.updatedAt;
+                        });   
+                    }
+                });
+                res.json(minimizedData);
+            })
+            .catch(function(err) {
+                throw err;
             });
-            console.log(minimizedData.dataValues);
-            res.json(minimizedData);
         })
         .catch(function(err) {
-            console.error(err);
             res.status(500).json({ error: err });
-        });;
+        });
     },
 
     getDrivers: function(req, res) {
-        Drivers.findAll().then(function(drivers) {
+        Drivers.findAll({
+            where: {
+                organization: getUserId(req)
+            }
+        }).then(function(drivers) {
             var minimizedData = drivers;
             minimizedData.forEach(function(driver) {
                 // delete driver.dataValues.driversLicenseNum;
@@ -92,7 +104,11 @@ module.exports = {
     },
 
     getCars: function(req, res) {
-        Cars.findAll().then(function(cars) {
+        Cars.findAll({
+            where: {
+                organization: getUserId(req)
+            }
+        }).then(function(cars) {
             var minimizedData = cars;
             minimizedData.forEach(function(car) {
                 delete car.dataValues.updatedAt;

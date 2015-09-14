@@ -5,10 +5,22 @@ var sequelize = models.sequelize;
 var MaintenanceLogs = models.MaintenanceLog;
 var CarLogs = models.CarLog;
 var Cars = models.Car;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
     getLogs: function(req, res) {
-        MaintenanceLogs.findAll({ order: '"dateInMs"', include: CarLogs }).then(function(logs) {
+        MaintenanceLogs.findAll({ 
+            where: {
+                organization: getUserId(req)
+            },
+            order: '"dateInMs"', 
+            include: [{
+                model: CarLogs,
+                where: {
+                    organization: getUserId(req)
+                }
+            }]
+        }).then(function(logs) {
             
             var minimizedData = {};
             minimizedData.logs = logs;
@@ -43,14 +55,20 @@ module.exports = {
     createLogs: function(req, res) {
         MaintenanceLogs.create({
             date: req.body.date,
-            dateInMs: req.body.dateInMs
+            dateInMs: req.body.dateInMs,
+            organization: getUserId(req)
         }).then(function(maintenanceLog) {
-            Cars.findAll().then(function(cars) {
+            Cars.findAll({
+                where: {
+                    organization: getUserId(req)
+                }
+            }).then(function(cars) {
                 cars.forEach(function(car) {
                     CarLogs.create({
                         dateInMs: req.body.dateInMs,
                         date: req.body.date,
-                        tlcNumber: car.tlcNumber
+                        tlcNumber: car.tlcNumber,
+                        organization: getUserId(req)
                     }).then(function(carLog) {
                         car.addMaintenanceLog([carLog.id]);
                         maintenanceLog.addCarLog([carLog.id]);

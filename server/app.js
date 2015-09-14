@@ -8,6 +8,10 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
+
+// Stormpath user variables
+var organizationName;
+
 app.set('models', require('./db/models'));
 
 // uncomment after placing your favicon in /public
@@ -22,7 +26,23 @@ var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
 var spMiddleware = stormpathExpressSdk.createMiddleware({
   appHref: apiKey.href,
   apiKeyId: apiKey.id,
-  apiKeySecret: apiKey.secret
+  apiKeySecret: apiKey.secret,
+  expandCustomData: true,
+  postRegistrationHandler: function(account, res, next) {
+    var hrefArray = account.user.href.split('/');
+    var accountId = hrefArray[hrefArray.length-1];
+    account.user.getCustomData(function(err, data) {
+      if(err) {
+        next(err)
+      } else {
+        organizationName = data.organization;
+        console.log(organizationName);
+        data.id = accountId;
+        data.save();
+        next();
+      }
+    });
+  }
 });
 
 // development error handler

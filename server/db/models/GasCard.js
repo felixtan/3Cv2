@@ -10,7 +10,11 @@ module.exports = function(sequelize, DataTypes) {
         },
         number: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false            // required
+        },
+        organization: {
+            type: DataTypes.STRING,
+            allowNull: false            // required
         }
     });
 };

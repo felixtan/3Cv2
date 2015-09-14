@@ -1,11 +1,16 @@
 'use strict';
 
 var Cars = require('../../db/models').Car;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
 
     getCars: function(req, res) {
-        Cars.findAll().then(function(cars) {
+        Cars.findAll({
+            where: {
+                organization: getUserId(req)
+            }
+        }).then(function(cars) {
             console.log(cars);
             res.json(cars);
         })
@@ -31,12 +36,13 @@ module.exports = {
     },
 
     saveCar: function(req, res) {
+        var organization = getUserId(req);
+        console.log('returning organization?',organization); 
         Cars.create({
             tlcNumber: req.body.tlcNumber,
             licensePlateNumber: req.body.licensePlateNumber,
             mileage: req.body.mileage,
-            // oilChangeRequired: false,
-            // userId: req.user.customData._id,
+            organization: getUserId(req),
             description: req.body.description
         })
         .then(function(car) {
@@ -86,7 +92,6 @@ module.exports = {
         Cars.destroy({
             where: {
                 id: req.params.id
-                // userId: req.user.customData._id
             }
         })
         .then(function() {
@@ -99,7 +104,11 @@ module.exports = {
     },
 
     rearrange: function(req, res) {
-        Cars.findAll().then(function(cars) {
+        Cars.findAll({
+            where: {
+                organization: getUserId(req)
+            }
+        }).then(function(cars) {
             console.log('before rearrange:', cars);
             console.log('oldIndex:', req.body.oldIndex - 1);
             console.log('newIndex:', req.body.newIndex - 1);

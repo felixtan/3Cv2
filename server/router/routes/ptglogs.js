@@ -5,10 +5,22 @@ var sequelize = models.sequelize;
 var PtgLogs = models.PtgLog;
 var DriverLogs = models.DriverLog;
 var Drivers = models.Driver;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
     getLogs: function(req, res) {
-        PtgLogs.findAll({ order: '"dateInMs"', include: DriverLogs }).then(function(logs) {
+        PtgLogs.findAll({ 
+            where: {
+                organization: getUserId(req)
+            },
+            order: '"dateInMs"', 
+            include: [{
+                model: DriverLogs,
+                where: {
+                    organization: getUserId(req)
+                }
+            }]
+        }).then(function(logs) {
 
             var minimizedData = {};
             minimizedData.logs = logs;
@@ -42,15 +54,21 @@ module.exports = {
     createLog: function(req, res) {
         PtgLogs.create({
             dateInMs: req.body.dateInMs,
-            date: req.body.date
+            date: req.body.date,
+            organization: getUserId(req)
         }).then(function(ptgLog) {
-            Drivers.findAll().then(function(drivers) {
+            Drivers.findAll({
+                where: {
+                   organization: getUserId(req)
+                }
+            }).then(function(drivers) {
                 drivers.forEach(function(driver) {
                     DriverLogs.create({
                         date: ptgLog.date,
                         dateInMs: ptgLog.dateInMs,
                         givenName: driver.givenName,
-                        surName: driver.surName
+                        surName: driver.surName,
+                        organization: getUserId(req)
                     }).then(function(driverLog) {
                         driver.addPtgLog([driverLog.id]);
                         ptgLog.addDriverLog([driverLog.id]);

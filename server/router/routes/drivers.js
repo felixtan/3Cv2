@@ -4,11 +4,16 @@ var models = require('../../db/models');
 var Drivers = models.Driver;
 var DriverLog = models.DriverLog;
 var PtgLogs = models.PtgLog;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
 
     getDrivers: function(req, res) {
-        Drivers.findAll().then(function(drivers) {
+        Drivers.findAll({
+            where: {
+                organization: getUserId(req)
+            }
+        }).then(function(drivers) {
             res.json(drivers);
         })
         .catch(function(err) {
@@ -33,7 +38,6 @@ module.exports = {
     },
 
     saveDriver: function(req, res) {
-        console.log('driver:', req.body);
         Drivers.create({
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
@@ -49,8 +53,8 @@ module.exports = {
             shift: req.body.shift,
             paperwork: req.body.paperwork,
             description: req.body.description,
-            payRate: req.body.payRate
-            // userId: req.user.customData._id
+            payRate: req.body.payRate,
+            organization: getUserId(req)
         })
         .then(function(driver) {
             /**
@@ -66,13 +70,18 @@ module.exports = {
             /**
              * Create driver logs
              */
-            PtgLogs.findAll().then(function(ptgLogs) {
+            PtgLogs.findAll({
+                where: {
+                    organization: getUserId(req)
+                }
+            }).then(function(ptgLogs) {
                 ptgLogs.forEach(function(ptgLog) {
                     DriverLog.create({
                         date: ptgLog.date,
                         dateInMs: ptgLog.dateInMs,
                         givenName: driver.givenName,
-                        surName: driver.surName
+                        surName: driver.surName,
+                        organization: getUserId(req)
                     }).then(function(driverLog) {
                         driver.addLog([driverLog.id]);
                         ptgLog.addDriverLog([driverLog.id]);
@@ -105,7 +114,6 @@ module.exports = {
             paperwork: req.body.paperwork,
             description: req.body.description,
             payRate: req.body.payRate
-            // userId: req.user.customData._id
         }, {
             where: {
                 id: req.params.id
@@ -135,7 +143,6 @@ module.exports = {
         Drivers.destroy({
             where: {
                 id: req.params.id
-                // userId: req.user.customData._id
             }
         })
         .then(function() {

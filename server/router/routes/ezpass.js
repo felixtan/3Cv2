@@ -3,30 +3,44 @@
 var models = require('../../db/models');
 var EzPass = models.EzPass;
 var Driver = models.Driver;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
     getAll: function(req, res) {
-        EzPass.findAll({ include: Driver }).then(function(passes) {
+        getUserId(req).then(function(organizationId) {
+            EzPass.findAll({ 
+                where: {
+                    organization: organizationId
+                },
+                include: [{
+                    model: Driver,
+                    where: { organization: organizationId },
+                    required: false
+                }]
+            }).then(function(passes) {
 
-            var minimizedData = {};
-            minimizedData = passes;
+                var minimizedData = {};
+                minimizedData = passes;
 
-            minimizedData.forEach(function(pass) {
-                delete pass.dataValues.createdAt;
-                delete pass.dataValues.updateAt;
+                minimizedData.forEach(function(pass) {
+                    delete pass.dataValues.createdAt;
+                    delete pass.dataValues.updateAt;
+                });
+                res.json(minimizedData);
+            })
+            .catch(function(err) {
+                throw err;
             });
-
-            res.json(minimizedData);
         })
         .catch(function(err) {
-            console.error(err);
             res.status(500).json({ error: err });
         });
     },
 
     create: function(req, res) {
         EzPass.create({
-            number: req.body.number
+            number: req.body.number,
+            organization: getUserId(req)
         }).then(function(pass) {
            res.json(pass);
             // pass.addDriver([req.body.driverId]);

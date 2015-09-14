@@ -38,7 +38,8 @@ module.exports = {
                 accidents: '0', 
                 shift: 'Am/flexible',
                 address: 'Queens corona',
-                status: 'rejected'
+                status: 'rejected',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect2 = {
                 givenName: 'James',
@@ -48,12 +49,15 @@ module.exports = {
                 dmv: '7',
                 accidents: '2', 
                 shift: 'Pm/flexible',
-                address: '16043 Claude avenue Jamaica'
+                address: '16043 Claude avenue Jamaica',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect3 = {
                 givenName: 'Dovran',
                 surName: 'Esenov',
-                address: '1802 ocean pkwy a17'
+                address: '1802 ocean pkwy a17',
+                // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             prospect4 = {
                 givenName: 'Thomas',
@@ -63,7 +67,8 @@ module.exports = {
                 accidents: '0', 
                 shift: 'Pm',
                 address: 'Harlem',
-                status: 'interviewed'
+                status: 'interviewed',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect5 = {
                 givenName: 'Maurice',
@@ -75,7 +80,8 @@ module.exports = {
                 accidents: '0', 
                 shift: "Am,pair with gustavo",
                 address: '3245 Fenton avenue',
-                status: 'waiting list'
+                status: 'waiting list',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         Prospects.create(prospect1);
@@ -89,19 +95,23 @@ module.exports = {
                 tlcNumber: 'T646853C',
                 licensePlateNumber: 'FUJ 5993',
                 mileage: 12923,
-                description: 'lorem ipsum'
+                description: 'lorem ipsum',
+                // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             car2 = {
                 tlcNumber: 'T627067C',
                 licensePlateNumber: 'GPJ 6478',
                 mileage: 14081,
-                description: 'lorem ipsum'      
+                description: 'lorem ipsum',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'      
         },
             car3 = {
                 tlcNumber: 'T657227C',
                 licensePlateNumber: 'FLJ 6290',
                 mileage: 120461,
-                description: 'lorem ipsum' 
+                description: 'lorem ipsum',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         // Drivers
@@ -113,7 +123,9 @@ module.exports = {
                 email: 'jdoe@gmail.com',
                 address: '4703 Bayberry Drive Staunton, VA 24401',
                 payRate: '40',
-                description: 'drove T627066 1/6/15'
+                description: 'drove T627066 1/6/15',
+                // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },  
             driver2 = {
                 givenName: 'Seymour',
@@ -126,7 +138,8 @@ module.exports = {
                 points: '0',
                 dmv: '15',
                 tlc: '3',
-                description: 'can start 4/24/15'
+                description: 'can start 4/24/15',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             driver3 = {
                 givenName: 'Max',
@@ -139,7 +152,8 @@ module.exports = {
                 tlc: '2 months',
                 dmv: '22',
                 points: '0',
-                description: 'has ticket for 60'
+                description: 'has ticket for 60',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         /* LOGS */ 
@@ -152,21 +166,24 @@ module.exports = {
                 dateInMs: dateInMs,
                 tlcNumber: car1.tlcNumber,
                 mileage: car1.mileage,
-                note: "Added too much air, told him to release air"
+                note: "Added too much air, told him to release air",
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             car2_log = {
                 date: d,
                 dateInMs: dateInMs,
                 tlcNumber: car2.tlcNumber,
                 mileage: car2.mileage,
-                note: 'Left side back door damage below handle 6 inches below '
+                note: 'Left side back door damage below handle 6 inches below ',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             car3_log = {
                 date: d,
                 dateInMs: dateInMs,
                 tlcNumber: car3.tlcNumber,
                 mileage: car3.mileage,
-                note: 'back right fender needs fixing'
+                note: 'back right fender needs fixing',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         // Driver logs
@@ -178,7 +195,8 @@ module.exports = {
                 gasCosts: 140,
                 deposit: 0,
                 hours: 45,
-                acceptRate: 98
+                acceptRate: 98,
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             driver2_log = {
                 date: d,
@@ -188,7 +206,8 @@ module.exports = {
                 gasCosts: 164,
                 deposit: 75,
                 hours: 24.4,
-                acceptRate: 98
+                acceptRate: 98,
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             driver3_log = {
                 date: d,
@@ -198,33 +217,40 @@ module.exports = {
                 gasCosts: 276,
                 deposit: 75,
                 hours: 46.4,
-                acceptRate: 81
+                acceptRate: 81,
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         // PTG Logs
         var ptgLog1 = {
             date: d,
-            dateInMs: dateInMs
+            dateInMs: dateInMs,
+            organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         // Maintenance Logs
         var maintenanceLog1 = {
             date: d,
-            dateInMs: dateInMs
+            dateInMs: dateInMs,
+            organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         // Assets
         var ezPass1 = {
-                number: '00809549650'
+                number: '00809549650',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             ezPass2 = {
-                number: '00809320883'
+                number: '00809320883',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             ezPass3 = {
-                number: '00809531889'
+                number: '00809531889',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             ezPass4 = {
-                number: '00807409342'
+                number: '00807409342',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         EzPass.create(ezPass1);
@@ -233,16 +259,21 @@ module.exports = {
         EzPass.create(ezPass4);
 
         var gasCard1 = {
-                number: 'Driver 26 (2336)'
+                number: 'Driver 26 (2336)',
+                // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             gasCard2 = {
-                number: 'Driver 17 (2278)'
+                number: 'Driver 17 (2278)',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             gasCard3 = {
-                number: 'Driver 3 (0165)'
+                number: 'Driver 3 (0165)',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             gasCard4 = {
-                number: 'Driver 30 (8961)'
+                number: 'Driver 30 (8961)',
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
 
         GasCard.create(gasCard1);

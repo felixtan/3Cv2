@@ -2,28 +2,38 @@
 
 var models = require('../../db/models');
 var Prospects = models.Prospect;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
 
     getProspects: function(req, res) {
-        Prospects.findAll().then(function(prospects) {
-            var minimizedData = prospects;
-            minimizedData.forEach(function(prospect) {
-                // combine names
-                if(prospect.dataValues.middleInitial) {
-                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.middleInitial + '. ' + prospect.dataValues.surName;    
-                } else {
-                    prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.surName;
+        getUserId(req).then(function(organizationId) {
+            Prospects.findAll({
+                where: {
+                    organization: organizationId
                 }
-                
-                delete prospect.dataValues.givenName;
-                delete prospect.dataValues.surName;
-                delete prospect.dataValues.middleInitial;
+            }).then(function(prospects) {
+                var minimizedData = prospects;
+                minimizedData.forEach(function(prospect) {
+                    // combine names
+                    if(prospect.dataValues.middleInitial) {
+                        prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.middleInitial + '. ' + prospect.dataValues.surName;    
+                    } else {
+                        prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.surName;
+                    }
+                    
+                    delete prospect.dataValues.givenName;
+                    delete prospect.dataValues.surName;
+                    delete prospect.dataValues.middleInitial;
+                });
+                res.json(minimizedData);
+            })
+            .catch(function(err) {
+                // console.error(err);
+                throw err;
             });
-            res.json(minimizedData);
         })
         .catch(function(err) {
-            console.error(err);
             res.status(500).json({ error: err });
         });
     },
@@ -59,8 +69,8 @@ module.exports = {
             accidents: req.body.accidents,
             shift: req.body.shift,
             paperwork: req.body.paperwork,
-            description: req.body.description
-            // userId: req.user.customData._id
+            description: req.body.description,
+            organization: getUserId(req)
         })
         .then(function(prospect) {
             res.json(prospect);
@@ -88,7 +98,6 @@ module.exports = {
             shift: req.body.shift,
             paperwork: req.body.paperwork,
             description: req.body.description
-            // userId: req.user.customData._id
         }, {
             where: {
                 id: req.params.id
@@ -107,7 +116,6 @@ module.exports = {
         Prospects.destroy({
             where: {
                 id: req.params.id
-                // userId: req.user.customData._id
             }
         })
         .then(function() {

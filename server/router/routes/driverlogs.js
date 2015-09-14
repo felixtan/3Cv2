@@ -2,6 +2,7 @@
 
 var DriverLog = require('../../db/models').DriverLog;
 var Driver = require('../../db/models').Driver;
+var getUserId = require('../helpers').getUserId;
 
 module.exports = {
 
@@ -9,7 +10,17 @@ module.exports = {
     // TODO: query filter options and functionality
     getDriversLogs: function(req, res) {
         // gets logs for all drivers
-        Driver.findAll({ include: DriverLog }).then(function(drivers) {
+        Driver.findAll({ 
+            where: {
+                organization: getUserId(req)
+            },
+            include: [{
+                model: DriverLog,
+                where: {
+                    organization: getUserId(req)
+                }
+            }]
+        }).then(function(drivers) {
             res.json(drivers);
         })
         .catch(function(err) {
@@ -46,7 +57,8 @@ module.exports = {
             acceptRate: req.body.acceptRate,
             payout: req.body.payout,
             debt: req.body.debt,
-            profitsContributed: req.body.profitsContributed
+            profitsContributed: req.body.profitsContributed,
+            organization: getUserId(req)
         })
         .then(function(log) {
             Driver.addDriverLog([log.id]).then(function() {

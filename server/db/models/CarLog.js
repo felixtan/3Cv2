@@ -14,15 +14,19 @@ module.exports = function(sequelize, DataTypes) {
         },
         tlcNumber: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false            // required
         },
         mileage: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false            // required
         },
         note: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        organization: {
+            type: DataTypes.STRING,
+            allowNull: false            // required
         }
     });
 }

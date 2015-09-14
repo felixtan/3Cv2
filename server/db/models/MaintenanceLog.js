@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
         dateInMs: {
             type: DataTypes.BIGINT,
             allowNull: false
+        },
+        organization: {
+            type: DataTypes.STRING,
+            allowNull: false            // required
         }
     });
 }

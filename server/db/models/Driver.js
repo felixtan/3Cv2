@@ -6,11 +6,11 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Driver', { 
     payRate: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false            // required
     },
     givenName: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false            // required
     },
     middleInitial: {
       type: DataTypes.STRING(1),
@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     surName: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false            // required
     },
     driversLicenseNum: {
       type: DataTypes.STRING,
@@ -60,9 +60,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    userId: {
+    organization: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false            // required
     },
     description: {
       type: DataTypes.TEXT,

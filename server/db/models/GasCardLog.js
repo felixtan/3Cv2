@@ -15,6 +15,10 @@ module.exports = function(sequelize, DataTypes) {
         notes: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        organization: {
+            type: DataTypes.STRING,
+            allowNull: false            // required
         }
     });
 };
