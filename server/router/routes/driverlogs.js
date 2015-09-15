@@ -9,21 +9,18 @@ module.exports = {
     // many drivers
     // TODO: query filter options and functionality
     getDriversLogs: function(req, res) {
-        // gets logs for all drivers
-        Driver.findAll({ 
-            where: {
-                organization: getUserId(req)
-            },
-            include: [{
-                model: DriverLog,
-                where: {
-                    organization: getUserId(req)
-                }
-            }]
-        }).then(function(drivers) {
-            res.json(drivers);
-        })
-        .catch(function(err) {
+        getUserId(req).then(function(organizationId) {
+            Driver.findAll({ 
+                where: { organization: organizationId },
+                include: [{
+                    model: DriverLog,
+                    where: { organization: organizationId },
+                    require: false
+                }]
+            }).then(function(drivers) {
+                res.json(drivers);
+            })
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });
@@ -32,15 +29,9 @@ module.exports = {
     // one driver
     // TODO: query filter options and functionality
     getDriverLogs: function(req, res) {
-        DriverLog.findAll({ 
-            where: {
-                driverId: req.params.id
-            } 
-        })
-        .then(function(logs) {
+        DriverLog.findById(req.params.id).then(function(logs) {
             res.json(logs);
-        })
-        .catch(function(err) {
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });
@@ -48,25 +39,26 @@ module.exports = {
 
     // pertains to a specific driver
     saveDriverLog: function(req, res) {
-        DriverLog.create({
-            uberRevenue: req.body.uberRevenue,
-            tollCosts: req.body.tollCosts,
-            gasCosts: req.body.gasCosts,
-            deposit: req.body.deposit,
-            hours: req.body.hours,
-            acceptRate: req.body.acceptRate,
-            payout: req.body.payout,
-            debt: req.body.debt,
-            profitsContributed: req.body.profitsContributed,
-            organization: getUserId(req)
-        })
-        .then(function(log) {
-            Driver.addDriverLog([log.id]).then(function() {
-                console.log('Driver ' + req.params.id + ' has new log.');
-                res.json(log.dataValues);
+        getUserId(req).then(function(organizationId) {
+            DriverLog.create({
+                uberRevenue: req.body.uberRevenue,
+                tollCosts: req.body.tollCosts,
+                gasCosts: req.body.gasCosts,
+                deposit: req.body.deposit,
+                hours: req.body.hours,
+                acceptRate: req.body.acceptRate,
+                payout: req.body.payout,
+                debt: req.body.debt,
+                profitsContributed: req.body.profitsContributed,
+                organization: organizationId
+            })
+            .then(function(log) {
+                Driver.addLog([log.id]).then(function() {
+                    console.log('Driver ' + req.params.id + ' has new log.');
+                    res.json(log.dataValues);
+                });
             });
-        })
-        .catch(function(err) {
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });

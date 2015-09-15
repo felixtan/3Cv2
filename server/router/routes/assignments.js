@@ -79,23 +79,23 @@ module.exports = {
     },
 
     getDrivers: function(req, res) {
-        Drivers.findAll({
-            where: {
-                organization: getUserId(req)
-            }
-        }).then(function(drivers) {
-            var minimizedData = drivers;
-            minimizedData.forEach(function(driver) {
-                // delete driver.dataValues.driversLicenseNum;
-                // delete driver.dataValues.phoneNumber;
-                // delete driver.dataValues.email;
-                delete driver.dataValues.address;
-                // delete driver.dataValues.description;
-                delete driver.dataValues.userId;
-                delete driver.dataValues.createdAt;
-                delete driver.dataValues.updatedAt;
+        getUserId(req).then(function(organizationId) {
+            Drivers.findAll({
+                where: { organization: organizationId }
+            }).then(function(drivers) {
+                var minimizedData = drivers;
+                minimizedData.forEach(function(driver) {
+                    // delete driver.dataValues.driversLicenseNum;
+                    // delete driver.dataValues.phoneNumber;
+                    // delete driver.dataValues.email;
+                    delete driver.dataValues.address;
+                    // delete driver.dataValues.description;
+                    delete driver.dataValues.userId;
+                    delete driver.dataValues.createdAt;
+                    delete driver.dataValues.updatedAt;
+                });
+                res.json(minimizedData);
             });
-            res.json(minimizedData);
         })
         .catch(function(err) {
             console.error(err);
@@ -104,22 +104,25 @@ module.exports = {
     },
 
     getCars: function(req, res) {
-        Cars.findAll({
-            where: {
-                organization: getUserId(req)
-            }
-        }).then(function(cars) {
-            var minimizedData = cars;
-            minimizedData.forEach(function(car) {
-                delete car.dataValues.updatedAt;
-                delete car.dataValues.createdAt;
-                delete car.dataValues.licensePlateNumber;
-                delete car.dataValues.mileage;
-                delete car.dataValues.description;
-                delete car.dataValues.userId;
-                delete car.dataValues.oilChangeRequired;
+        getUserId(req).then(function(organizationId) {
+            Cars.findAll({
+                where: { organization: organizationId }
+            }).then(function(cars) {
+                var minimizedData = cars;
+                minimizedData.forEach(function(car) {
+                    delete car.dataValues.updatedAt;
+                    delete car.dataValues.createdAt;
+                    delete car.dataValues.licensePlateNumber;
+                    delete car.dataValues.mileage;
+                    delete car.dataValues.description;
+                    delete car.dataValues.userId;
+                    delete car.dataValues.oilChangeRequired;
+                });
+                res.json(minimizedData);
+            })
+            .catch(function(err) {
+                console.error(err);
             });
-            res.json(minimizedData);
         })
         .catch(function(err) {
             res.status(500).json({ error: err });

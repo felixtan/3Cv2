@@ -38,14 +38,17 @@ module.exports = {
     },
 
     create: function(req, res) {
-        EzPass.create({
-            number: req.body.number,
-            organization: getUserId(req)
-        }).then(function(pass) {
-           res.json(pass);
-            // pass.addDriver([req.body.driverId]);
+        getUserId(req).then(function(organizationId) {
+            EzPass.create({
+                number: req.body.number,
+                organization: organizationId
+            }).then(function(pass) {
+               res.json(pass);
+            }).catch(function(err) {
+                console.error(err);
+            });
         }).catch(function(err) {
-            console.error(err);
+            res.status(500).json({ error: err });
         });
     },
 

@@ -183,7 +183,7 @@ module.exports = {
                 tlcNumber: car3.tlcNumber,
                 mileage: car3.mileage,
                 note: 'back right fender needs fixing',
-                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         };
 
         // Driver logs
@@ -196,7 +196,8 @@ module.exports = {
                 deposit: 0,
                 hours: 45,
                 acceptRate: 98,
-                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             driver2_log = {
                 date: d,
@@ -304,7 +305,7 @@ module.exports = {
                                 driver1.addLog([driverLog.id]);
                                 ptgLog.addDriverLog([driverLog.id]);
                                 
-                                car1.addMaintenanceLog([carLog.id]);
+                                car1.addLog([carLog.id]);
                             });
                         
                         });
@@ -342,7 +343,7 @@ module.exports = {
                                         driver3.addLog([driverLog.id]);
                                         ptgLog.addDriverLog([driverLog.id]);
                                         
-                                        car2.addMaintenanceLog([carLog.id]);
+                                        car2.addLog([carLog.id]);
                                     });
                                 });
 
@@ -352,7 +353,7 @@ module.exports = {
                     }).then(function() {
                         Car.create(car3).then(function(car3) {
                             CarLog.create(car3_log).then(function(carLog) {
-                                car3.addMaintenanceLog([carLog.id]);
+                                car3.addLog([carLog.id]);
                                 maintenanceLog.addCarLog([carLog.id]);
                             });
                         });

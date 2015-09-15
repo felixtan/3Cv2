@@ -30,7 +30,7 @@ module.exports = {
                 res.json(minimizedData);
             })
             .catch(function(err) {
-                throw err;
+                console.error(err);
             });
         })
         .catch(function(err) {
@@ -39,13 +39,17 @@ module.exports = {
     },
 
     create: function(req, res) {
-        GasCard.create({
-            number: req.body.number,
-            organization: getUserId(req)
-        }).then(function(card) {
-            res.json(card);
+        getUserId(req).then(function(organizationId) {
+            GasCard.create({
+                number: req.body.number,
+                organization: organizationId
+            }).then(function(card) {
+                res.json(card);
+            }).catch(function(err) {
+                console.error(err);
+            });
         }).catch(function(err) {
-            console.error(err);
+            res.status(500).json({ error: err });
         });
     },
 

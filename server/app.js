@@ -8,10 +8,6 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-
-// Stormpath user variables
-var organizationName;
-
 app.set('models', require('./db/models'));
 
 // uncomment after placing your favicon in /public
@@ -35,8 +31,6 @@ var spMiddleware = stormpathExpressSdk.createMiddleware({
       if(err) {
         next(err)
       } else {
-        organizationName = data.organization;
-        console.log(organizationName);
         data.id = accountId;
         data.save();
         next();

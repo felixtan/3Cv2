@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         mileage: {
             type: DataTypes.INTEGER,
-            allowNull: false            // required
+            allowNull: true
         },
         note: {
             type: DataTypes.STRING,

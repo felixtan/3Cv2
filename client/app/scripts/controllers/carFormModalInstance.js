@@ -13,23 +13,35 @@ angular.module('clientApp')
     $scope.drivers = getDrivers.data;
 
       $scope.submit = function () {
-        console.log('creating car:',$scope.formData);
-        $http.post('/api/cars', $scope.formData)
-            .then(function(car) {
-                console.log('car created:',car);    
-                $http.post('/api/assignments/driver=' +
-                    $scope.formData.driverId +
-                    '/car=' +
-                    car.data.id).then(function(data) {
-                        console.log(data);
-                        $scope.reset();        
-                    }, function(err) {
-                        console.error(err);
-                    });
-            }, function(err) {
-                console.error(err);
-            });
-      };
+        $http.post('/api/cars', $scope.formData).then(function(car) {
+          console.log('car created:',car);   
+
+          // create ptg log for current week
+          $http.post('/api/logs/cars/' + car.data.id, { 
+            tlcNumber: car.data.tlcNumber,
+            note: car.data.note
+          }).then(function(log) {
+            // if driver was assigned
+            if($scope.formData.driverId) {
+              $http.post('/api/assignments/driver=' +
+                $scope.formData.driverId +
+                '/car=' +
+                car.data.id).then(function(data) {
+                    console.log(data);
+                    $scope.reset();        
+                }, function(err) {
+                    console.error(err);
+                });
+            } else {
+              $scope.reset();        
+            } 
+          }, function(err) {
+            console.error(err);
+          });
+      }, function(err) {
+          console.error(err);
+      });
+    };
 
       $scope.reset = function () {
         $scope.formData = {};

@@ -9,9 +9,7 @@ module.exports = {
     getProspects: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Prospects.findAll({
-                where: {
-                    organization: organizationId
-                }
+                where: { organization: organizationId }
             }).then(function(prospects) {
                 var minimizedData = prospects;
                 minimizedData.forEach(function(prospect) {
@@ -29,8 +27,8 @@ module.exports = {
                 res.json(minimizedData);
             })
             .catch(function(err) {
-                // console.error(err);
-                throw err;
+                console.error(err);
+                // throw err;
             });
         })
         .catch(function(err) {
@@ -44,7 +42,7 @@ module.exports = {
                 res.status(404).json({ error: 'Resource not found.' });
                 console.log('Prospect not found.');
             } else {
-                res.json(prospect.dataValues);
+                res.json(prospect);
             }
         })
         .catch(function(err) {
@@ -54,28 +52,31 @@ module.exports = {
     },
 
     saveProspect: function(req, res) {
-        Prospects.create({
-            status: req.body.status,
-            givenName: req.body.givenName,
-            middleInitial: req.body.middleInitial,
-            surName: req.body.surName,
-            driversLicenseNum: req.body.driversLicenseNum,
-            phoneNumber: req.body.phoneNumber,
-            email: req.body.email,
-            address: req.body.address,
-            tlc: req.body.tlc,
-            dmv: req.body.dmv,
-            points: req.body.points,
-            accidents: req.body.accidents,
-            shift: req.body.shift,
-            paperwork: req.body.paperwork,
-            description: req.body.description,
-            organization: getUserId(req)
-        })
-        .then(function(prospect) {
-            res.json(prospect);
-        })
-        .catch(function(err) {
+        getUserId(req).then(function(organizationId) {
+            Prospects.create({
+                status: req.body.status,
+                givenName: req.body.givenName,
+                middleInitial: req.body.middleInitial,
+                surName: req.body.surName,
+                driversLicenseNum: req.body.driversLicenseNum,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                address: req.body.address,
+                tlc: req.body.tlc,
+                dmv: req.body.dmv,
+                points: req.body.points,
+                accidents: req.body.accidents,
+                shift: req.body.shift,
+                paperwork: req.body.paperwork,
+                description: req.body.description,
+                organization: organizationId
+            })
+            .then(function(prospect) {
+                res.json(prospect);
+            }).catch(function(err) {
+                console.error(err);
+            });
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });
@@ -99,9 +100,7 @@ module.exports = {
             paperwork: req.body.paperwork,
             description: req.body.description
         }, {
-            where: {
-                id: req.params.id
-            }
+            where: { id: req.params.id }
         })
         .then(function() {
             res.status(200).json({ msg: 'Update prospect where id = ' + req.params.id });

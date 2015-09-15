@@ -24,7 +24,7 @@ db.Driver.belongsToMany(db.DriverLog, { as: 'Log', through: 'Driver_Logs' });
 db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_Logs' });
 
 // Car Maintenance
-db.Car.belongsToMany(db.CarLog, { as: 'MaintenanceLogs', through: 'Car_Logs' });
+db.Car.belongsToMany(db.CarLog, { as: 'Log', through: 'Car_Logs' });
 db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_Logs' });
 
 // trying n:m relationship for flexibility
