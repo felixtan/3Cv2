@@ -154,6 +154,7 @@
         var hash = window.location.hash;
         var url = origin + '/' + hash;
         if($('nav').hasClass('ng-hide') && (url === origin + '/#/')) {
+          console.log('logged out. redirecting...');
           window.location.replace(origin + '/#/login');
         }
       });

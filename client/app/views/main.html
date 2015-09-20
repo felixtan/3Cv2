@@ -1,26 +1,26 @@
 <div if-user-state-known>
-<!-- <button type='button' class='btn btn-default' ng-click='carListCollapsed = !carListCollapsed'>Toggle Collapse</button> -->
+<!-- <button type='button' class='btn btn-default' ng-click='driverListCollapsed = !driverListCollapsed'>Toggle Collapse</button> -->
 
 <!-- Collapsed car list becomes a button -->
-<div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='carListCollapsed' ng-click='carListCollapsed = !carListCollapsed' type='button'>
+<div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='driverListCollapsed' ng-click="reload()" type='button'>
   <div class='row row-collapsed'>
     <p class='fa fa-caret-right fa-3x btn-expand'></p>
   </div>
 </div>
 
 <!-- Collapsed prospect list becomes a button -->
-<div class='col-md-offset-11 col-md-1 col-collapsed' ng-show='prospectListCollapsed' ng-click='prospectListCollapsed = !prospectListCollapsed' type='button'>
+<div class='col-md-offset-11 col-md-1 col-collapsed' ng-show='prospectListCollapsed' ng-click="reload()" type='button'>
   <div class='row row-collapsed'>
     <p class='fa fa-caret-left fa-3x btn-expand'></p>
   </div>
 </div>
 
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='carListCollapsed' if-user>
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='driverListCollapsed' if-user>
   
   <h2 class='sub-header'>
     Cars
     <span class='btn-collapse' ng-show='!prospectListCollapsed'>
-      <i class='fa fa-caret-left btn-collapse' type='button' ng-click='carListCollapsed = !carListCollapsed'></i>
+      <i class='fa fa-caret-left btn-collapse' type='button' ng-click='driverListCollapsed = !driverListCollapsed'></i>
     </span>
   </h2>  
 
@@ -81,12 +81,15 @@
                     <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show="!driverRowForm.$visible && prospectListCollapsed">
                     </li>
                     <li>
-                      <form editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
+                      <form class='driverRowForm' editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
                         <button class='btn btn-xs btn-warning' type='submit' ng-disabled='driverRowForm.$waiting'>
                           Save
                         </button>
                         <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(driver)'>
-                          Del
+                          Delete
+                        </button>
+                        <button class='btn btn-xs btn-default'type='button' ng-click='driverRowForm.$cancel()'>
+                          Cancel
                         </button>
                       </form>
                     </li>
@@ -154,19 +157,22 @@
   </div>
 </div>
 
-<div ng-class="{ 'col-md-offset-3' : carListCollapsed, 'col-md-9' : carListCollapsed, 'col-md-5' : !carListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible' if-user>
+<div ng-class="{ 'col-md-offset-3' : driverListCollapsed, 'col-md-9' : driverListCollapsed, 'col-md-5' : !driverListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible' if-user>
+
   <h2 class='sub-header'>
     Prospects
-    <span class='btn-collapse' ng-show='!carListCollapsed'>
+    <span class='btn-collapse' ng-show='!driverListCollapsed'>
       <i class='fa fa-caret-right' type='button' ng-click='prospectListCollapsed = !prospectListCollapsed'></i>
     </span>
   </h2>
+
   <div class='row'>
     <div class='col-md-5 prospect-actions' ng-controller="ProspectFormModalCtrl">
       
       <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
     </div>
   </div>
+
   <div class='table-responsive' ng-repeat='status in prospectStatuses'>
     <table class='table'>
       <thead>
@@ -198,22 +204,25 @@
               <ul class='row-actions'>
               <li class='drag-handle' ng-show='!prospectRowForm.$visible'>::</li>
               <li class='filler'> </li>
-              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show="!prospectRowForm.$visible && carListCollapsed">
+              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show="!prospectRowForm.$visible && driverListCollapsed">
               </li>  
-              <li>
-                <form editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>
+              <li ng-show='driverListCollapsed'>
+                <form class='prospectRowForm' editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>
                   <button class='btn btn-xs btn-warning' type='submit' ng-disabled='prospectRowForm.$waiting'>
-                    &#10003;
+                    Save
                   </button>
                   <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(prospect)'>
-                    &times;
+                    Delete
+                  </button>
+                  <button class='btn btn-xs btn-default'type='button' ng-click='prospectRowForm.$cancel()'>
+                    Cancel
                   </button>
                 </form>
               </li>
             </ul>
             </td>
             <td>
-              <span editable-text='prospect.name' buttons='no' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
+              <span editable-text='prospect.name' buttons='no' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)" ng-show='driverListCollapsed'>
                 {{ prospect.name }}
               </span>
             </td>
@@ -380,6 +389,13 @@
   </div>
   <div class="modal-body">
     <form novalidate role='form' id='newProspectForm'>
+      <div class='form-group'>
+        <label for='status'>Status</label>
+        <select class='form-control' ng-model='formData.status'>
+            <option> - </option>
+            <option ng-repeat='status in prospectStatuses' value='{{ status }}'>{{ status }}</option>
+        </select>
+      </div>
       <div class='form-group'>
         <label for='givenName'>First</label>
         <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>

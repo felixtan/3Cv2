@@ -39,13 +39,17 @@ module.exports = {
     createLog: function(req, res) {
         getUserId(req).then(function(organizationId) {
             CarLogs.create({
+                date: req.body.date,
+                dateInMs: req.body.dateInMs,
                 tlcNumber: req.body.tlcNumber,
                 note: req.body.note,
                 organization: organizationId
             }).then(function(log) {
-                Car.addLog([log.id]).then(function() {
-                    console.log('Car ' + req.params.id + ' has new log.');
-                    res.json(log.dataValues);
+                Cars.findById(req.params.id).then(function(car) {
+                    car.addLog([log.id]).then(function() {
+                        console.log('Car ' + car.id + ' has new log.');
+                        res.json(log);
+                    });
                 });
             }).catch(function(err) {
                 console.error(err);

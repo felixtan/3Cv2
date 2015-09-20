@@ -6,11 +6,11 @@ module.exports = function(sequelize, DataTypes) {
     return sequelize.define('CarLog', {
         date: {
             type: DataTypes.DATE,
-            allowNull: false
+            allowNull: true
         },
         dateInMs: {
             type: DataTypes.BIGINT,
-            allowNull: false
+            allowNull: true
         },
         tlcNumber: {
             type: DataTypes.STRING,

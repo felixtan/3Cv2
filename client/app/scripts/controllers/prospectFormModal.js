@@ -10,7 +10,6 @@
 angular.module('clientApp')
   .controller('ProspectFormModalCtrl', function ($scope, $modal) {
     $scope.formData = {};
-
     $scope.animationsEnabled = true;
 
     $scope.open = function (size) {
@@ -19,12 +18,7 @@ angular.module('clientApp')
             animation: $scope.animationsEnabled,
             templateUrl: 'newprospectformmodal',
             controller: 'ProspectFormModalInstanceCtrl',
-            size: size,
-            resolve: {
-                items: function () {
-                    console.log('ignore this');
-                }
-            }
+            size: size
         });
 
         modalInstance.result.then(function (formData) {

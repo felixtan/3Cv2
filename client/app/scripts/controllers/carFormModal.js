@@ -23,7 +23,10 @@ angular.module('clientApp')
             resolve: {
                 getDrivers: function(dataService) {
                     return dataService.getDrivers();
-                }
+                },
+                getMaintenanceLogs: function(dataService) {
+                    return dataService.getMaintenanceLogs();
+                },
             }
         });
 

@@ -30,7 +30,7 @@ module.exports = function (app) {
     // Prospects
     app.get('/api/prospects', prospect.getProspects);
     app.get('/api/prospects/:id', prospect.getProspect);
-    app.post('/api/prospects', prospect.saveProspect);
+    app.post('/api/prospects', prospect.save);
     app.put('/api/prospects/:id', prospect.updateProspect);
     app.delete('/api/prospects/:id', prospect.deleteProspect);
 
@@ -64,7 +64,7 @@ module.exports = function (app) {
     // Car API routes
     app.get('/api/cars', cars.getCars);
     app.get('/api/cars/:id', cars.getCar);
-    app.post('/api/cars', cars.saveCar);
+    app.post('/api/cars', cars.save);
     app.put('/api/cars/:id', cars.updateCar);
     app.delete('/api/cars/:id', cars.deleteCar);
     app.put('/api/cars', cars.rearrange);   // handles persisting changes to ordering in cars array
@@ -72,7 +72,7 @@ module.exports = function (app) {
     // Driver API routes
     app.get('/api/drivers', drivers.getDrivers);
     app.get('/api/drivers/:id', drivers.getDriver);
-    app.post('/api/drivers', drivers.saveDriver);
+    app.post('/api/drivers', drivers.save);
     app.put('/api/drivers/:id', drivers.updateDriver);
     app.delete('/api/drivers/:id', drivers.deleteDriver);
 };

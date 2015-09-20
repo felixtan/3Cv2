@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Car', { 
     tlcNumber: {
       type: DataTypes.STRING,
-      allowNull: false,           // required
+      allowNull: true,           // required
     },
     licensePlateNumber: {
       type: DataTypes.STRING,
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     mileage: {
       type: DataTypes.INTEGER,
-      allowNull: false,           // required
+      allowNull: true,           // required
     },
     oilChangeRequired: {
       type: DataTypes.BOOLEAN,

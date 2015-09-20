@@ -19,7 +19,6 @@ module.exports = {
                     required: false
                 }]
             }).then(function(logs) {
-                
                 var minimizedData = {};
                 minimizedData.logs = logs;
 

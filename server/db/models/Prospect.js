@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     givenName: {
       type: DataTypes.STRING,
-      allowNull: false          // required
+      allowNull: true          
     },
     middleInitial: {
       type: DataTypes.STRING(1),
@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     surName: {
       type: DataTypes.STRING,
-      allowNull: false          // required
+      allowNull: true
     },
     driversLicenseNum: {
       type: DataTypes.STRING,

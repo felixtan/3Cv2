@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function (getEzPasses, getGasCards, $modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function ($state, getEzPasses, getGasCards, $modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
 
     $scope.ezPasses = getEzPasses.data;
     $scope.gasCards = getGasCards.data;
@@ -17,6 +17,27 @@ angular.module('clientApp')
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
+
+    $scope.reload = function() {
+        $state.forceReload();
+    }
+    
+    // reload page
+    $scope.collapse = function(listType) {
+        if(listType === 'driver' || 'prospect') {
+            if(listType === 'driver') {
+                var driverRowForm = angular.element('form.driverRowForm');
+                console.log(driverRowForm);
+                driverRowForm.$cancel();
+            } else {
+                var driverRowForm = angular.element('form.prospectRowForm');
+                console.log(driverRowForm);
+                prospectRowForm.$cancel();
+            }
+        } else {
+            console.log('Invalid usage of this method.')
+        }
+    }
 
     // oil changed
     this.oilChanged = function(carId) {
@@ -140,7 +161,7 @@ angular.module('clientApp')
         return $q(function(resolve, reject) {
             $modal.open({
                 templateUrl: 'payRateModal',
-                controller: 'payRateModalInstanceCtrl'
+                controller: 'PayRateModalInstanceCtrl'
             }).result.then(function(payRate) {
                 
                 var prospect = $filter('filter')($scope.prospects, function(data) {

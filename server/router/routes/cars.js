@@ -1,7 +1,10 @@
 'use strict';
 
-var Cars = require('../../db/models').Car;
+var models = require('../../db/models');
+var Cars = models.Car;
 var getUserId = require('../helpers').getUserId;
+var CarLogs = models.CarLog;
+var MaintenanceLogs = models.MaintenanceLog;
 
 module.exports = {
 
@@ -35,7 +38,7 @@ module.exports = {
         });
     },
 
-    saveCar: function(req, res) {
+    save: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Cars.create({
                 tlcNumber: req.body.tlcNumber,
@@ -44,11 +47,42 @@ module.exports = {
                 organization: organizationId,
                 description: req.body.description
             }).then(function(car) {
-                res.json(car);
+                /**
+                 * If driverId is given, then associate the new car with the driver.
+                 */
+                if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
+                    car.addDriver([req.body.driverId]).then(function() {
+                        console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
+                    })
+                }
+
+                /**
+                 * Create car logs.
+                 */
+                MaintenanceLogs.findAll({
+                    where: { organization: organizationId}
+                }).then(function(maintenanceLogs) {
+                    maintenanceLogs.forEach(function(maintenanceLog) {
+                        CarLogs.create({
+                            date: maintenanceLog.date,
+                            dateInMs: maintenanceLog.dateInMs,
+                            organization: organizationId,
+                            tlcNumber: car.tlcNumber
+                        }).then(function(carLog) {
+                            car.addLog([carLog.id]);
+                            maintenanceLog.addCarLog([carLog.id]);
+                        });
+                    });
+                }).then(function() {
+                    res.json(car);
+                }).catch(function(err) {
+                    console.error(err);
+                });
             }).catch(function(err) {
                 console.error(err);
             });
         }).catch(function(err) {
+            console.error(err);
             res.status(500).json({ error: err });
         });
     },

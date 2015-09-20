@@ -39,7 +39,7 @@ module.exports = {
         });
     },
 
-    saveDriver: function(req, res) {
+    save: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Drivers.create({
                 givenName: req.body.givenName,

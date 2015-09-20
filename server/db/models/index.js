@@ -21,11 +21,11 @@ db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' 
 
 // PTG
 db.Driver.belongsToMany(db.DriverLog, { as: 'Log', through: 'Driver_Logs' });
-db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_Logs' });
+db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
 
 // Car Maintenance
 db.Car.belongsToMany(db.CarLog, { as: 'Log', through: 'Car_Logs' });
-db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_Logs' });
+db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
 
 // trying n:m relationship for flexibility
 // db.GasCard.belongsToMany(db.Driver, { through: 'DriverAssets' });
@@ -39,11 +39,11 @@ db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_Logs' });
 
 // Driver assets
 db.GasCard.belongsToMany(db.GasCardLog, { as: 'Log', through: 'GasCard_Logs' });
-db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignment' });
-db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignment' });
+db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignments' });
+db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignments' });
 db.EzPass.belongsToMany(db.EzPassLog, { as: 'Log', through: 'EzPass_Logs' });
-db.Driver.belongsToMany(db.EzPass, { through: 'EzPassAssignment' });
-db.EzPass.belongsToMany(db.Driver, { through: 'EzPassAssignment' });
+db.Driver.belongsToMany(db.EzPass, { through: 'EzPassAssignments' });
+db.EzPass.belongsToMany(db.Driver, { through: 'EzPassAssignments' });
 
 Object.keys(db).forEach(function(modelName) {
  if ("associate" in db[modelName]) {

@@ -51,7 +51,7 @@ module.exports = {
         });
     },
 
-    saveProspect: function(req, res) {
+    save: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Prospects.create({
                 status: req.body.status,

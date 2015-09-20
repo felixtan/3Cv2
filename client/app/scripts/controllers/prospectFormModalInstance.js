@@ -9,9 +9,16 @@
  */
 angular.module('clientApp')
   .controller('ProspectFormModalInstanceCtrl', function ($http, $route, $scope, $modalInstance) {
+    $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.formData = {};
 
       $scope.submit = function () {
+        if($scope.formData.status === ' - ') {
+          $scope.formData.status = 'Callers';
+        }
+
+        $scope.formData.status = $scope.formData.status.toLowerCase();
+
         $http.post('/api/prospects', $scope.formData)
             .then(function(prospect) {
                 console.log(prospect.data);    
