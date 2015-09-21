@@ -35,7 +35,7 @@ angular
         };
         return $delegate;
     });
-    
+
     $urlRouterProvider.otherwise('/login');
 
     $stateProvider

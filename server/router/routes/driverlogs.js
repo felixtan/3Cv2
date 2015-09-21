@@ -40,23 +40,28 @@ module.exports = {
     // pertains to a specific driver
     saveDriverLog: function(req, res) {
         getUserId(req).then(function(organizationId) {
-            DriverLog.create({
-                uberRevenue: req.body.uberRevenue,
-                tollCosts: req.body.tollCosts,
-                gasCosts: req.body.gasCosts,
-                deposit: req.body.deposit,
-                hours: req.body.hours,
-                acceptRate: req.body.acceptRate,
-                payout: req.body.payout,
-                debt: req.body.debt,
-                profitsContributed: req.body.profitsContributed,
-                organization: organizationId
-            })
-            .then(function(log) {
-                Driver.addLog([log.id]).then(function() {
-                    console.log('Driver ' + req.params.id + ' has new log.');
-                    res.json(log.dataValues);
+            var driverId = req.params.driverId || req.body.driverId;
+            Driver.findById(driverId).then(function(driver) {
+                DriverLog.create({
+                    uberRevenue: req.body.uberRevenue,
+                    tollCosts: req.body.tollCosts,
+                    gasCosts: req.body.gasCosts,
+                    deposit: req.body.deposit,
+                    hours: req.body.hours,
+                    acceptRate: req.body.acceptRate,
+                    additions: req.body.additions,
+                    subtractions: req.body.subtractions,
+                    payout: req.body.payout,
+                    profit: req.body.profit,
+                    organization: organizationId
+                }).then(function(log) {
+                    driver.addLog([log.id]).then(function() {
+                        console.log('Driver ' + driver.id + ' has new log.');
+                        res.json(log.dataValues);
+                    });
                 });
+            }).catch(function(err) {
+                console.error(err);
             });
         }).catch(function(err) {
             console.error(err);
@@ -67,14 +72,15 @@ module.exports = {
     updateDriverLog: function(req, res) {
         DriverLog.update({
             uberRevenue: req.body.uberRevenue,
-            tollCosts: req.body.tollCosts,
-            gasCosts: req.body.gasCosts,
-            deposit: req.body.deposit,
-            hours: req.body.hours,
-            acceptRate: req.body.acceptRate,
-            payout: req.body.payout,
-            debt: req.body.debt,
-            profitsContributed: req.body.profitsContributed
+                tollCosts: req.body.tollCosts,
+                gasCosts: req.body.gasCosts,
+                deposit: req.body.deposit,
+                hours: req.body.hours,
+                acceptRate: req.body.acceptRate,
+                additions: req.body.additions,
+                subtractions: req.body.subtractions,
+                payout: req.body.payout,
+                profit: req.body.profit
         }, {
             where: {
                 // driverId: req.params.id, 

@@ -9,14 +9,14 @@
 
   <div class="table-responsive">
     <table class="table table-bordered table-striped table-hover">
-      <thead ng-model='ptg.drivers'>
+      <thead ng-model='drivers'>
         <tr>
           <td><strong>Week \ Driver</strong></td>
-          <td ng-repeat="driver in ptg.drivers | orderBy:'id'">{{ driver.givenName }} {{driver.surName}}</td>
+          <td ng-repeat="driver in drivers | orderBy:'id'">{{ driver.givenName }} {{driver.surName}}</td>
         </tr>
       </thead>
-      <tbody ng-model='ptg.logs'>
-        <tr ng-repeat="ptgLog in ptg.logs | orderBy:'-dateInMs'">
+      <tbody ng-model='logs'>
+        <tr ng-repeat="ptgLog in logs | orderBy:'-dateInMs'">
           <td>
             <span>{{ ptgLog.date | date : format : shortDate }}</span>
             <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
@@ -37,7 +37,7 @@
             <ul class='log'>
               <li>
                 <p ng-show='rowform.$visible'>Uber: $</p>
-                <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='ptg.updateLog(driver)' e-required>
+                <span editable-text='driver.uberRevenue' e-name='uberRevenue' e-form='rowform' onaftersave='updateLog(driver)' e-required>
                   Uber: ${{ driver.uberRevenue || ' ' }}
                 </span>
               </li>
@@ -69,6 +69,30 @@
                 <p ng-show='rowform.$visible'>Acceptance: %</p>
                 <span editable-text='driver.acceptRate' e-name='acceptRate' e-form='rowform' e-required>
                   Acceptance: {{ driver.acceptRate || ' ' }}%
+                </span>              
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Additions: </p>
+                <span editable-text='driver.additions' e-name='additions' e-form='rowform' e-required>
+                  Additions: ${{ driver.additions || ' ' }}
+                </span>              
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Subtractions: </p>
+                <span editable-text='driver.subtractions' e-name='subtractions' e-form='rowform' e-required>
+                  Subtractions: ${{ driver.subtractions || ' ' }}
+                </span>              
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Payout: </p>
+                <span editable-text='driver.payout' e-name='payout' e-form='rowform' e-required>
+                  Payout: ${{ driver.payout || ' ' }} <button type='button' class='btn btn-xs btn-info calculate' ng-click='ptg.calculatePayout(driver)'>Calculate</button>
+                </span>              
+              </li>
+              <li>
+                <p ng-show='rowform.$visible'>Profit: </p>
+                <span editable-text='driver.profit' e-name='profit' e-form='rowform' e-required>
+                  Profit: ${{ driver.profit || ' ' }} <button type='button' class='btn btn-xs btn-info calculate' ng-click='ptg.calculateProfit(driver)'>Calculate</button>
                 </span>              
               </li>
             </ul>

@@ -65,6 +65,7 @@ module.exports = {
                             date: ptgLog.date,
                             dateInMs: ptgLog.dateInMs,
                             givenName: driver.givenName,
+                            driverId: driver.id,
                             surName: driver.surName,
                             organization: organizationId
                         }).then(function(driverLog) {

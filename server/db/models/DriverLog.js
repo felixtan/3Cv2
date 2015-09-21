@@ -12,6 +12,10 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BIGINT,
             allowNull: false            // required
         },
+        driverId: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         givenName: {
             type: DataTypes.STRING,
             allowNull: false            // required
@@ -48,15 +52,19 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.FLOAT(1),
             allowNull: true
         },
+        additions: {
+            type: DataTypes.FLOAT(2),
+            allowNull: true
+        },
+        subtractions: {
+            type: DataTypes.FLOAT(2),
+            allowNull: true
+        },
+        profit: {
+            type: DataTypes.FLOAT(2),
+            allowNull: true
+        },
         payout: {
-            type: DataTypes.FLOAT(2),
-            allowNull: true
-        },
-        debt: {
-            type: DataTypes.FLOAT(2),
-            allowNull: true
-        },
-        profitContributed: {
             type: DataTypes.FLOAT(2),
             allowNull: true
         }
