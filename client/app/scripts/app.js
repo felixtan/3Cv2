@@ -82,6 +82,9 @@ angular
           getEzPasses: function(dataService) {
             return dataService.getEzPasses();
           }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('ptg', {
@@ -96,6 +99,9 @@ angular
           basicDriverData: function(dataService) {
             return dataService.getDrivers();
           }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('maintenance', {
@@ -110,6 +116,9 @@ angular
           basicCarData: function(dataService) {
             return dataService.getCars();
           }
+        },
+        sp: {
+            authenticate: true
         }
     });
   })

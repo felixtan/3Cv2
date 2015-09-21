@@ -149,18 +149,5 @@
         });
       });
     </script>
-
-    <!-- For some reason stormpath doesn't redirect to /login when / is accessed and user is not logged in -->
-    <script type="text/javascript">
-      $(window).load(function() {
-        var origin = window.location.origin;
-        var hash = window.location.hash;
-        var url = origin + '/' + hash;
-        if($('nav').hasClass('ng-hide') && (url === origin + '/#/')) {
-          console.log('logged out. redirecting...');
-          window.location.replace(origin + '/#/login');
-        }
-      });
-    </script>
 </body>
 </html>
