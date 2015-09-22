@@ -6,7 +6,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MaintenanceLogsCtrl', function ($route, $http, getMaintenanceLogs, basicCarData) {
+  .controller('MaintenanceLogsCtrl', function ($state, $http, getMaintenanceLogs, basicCarData) {
     this.logs = getMaintenanceLogs.data.logs;
     this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
     this.cars = basicCarData.data;
@@ -23,7 +23,7 @@ angular.module('clientApp')
             dateInMs: newDateInMs
         }).then(function() {
             console.log('New maintenance log created.');
-            setTimeout(function() { $route.reload(); }, 1000);
+            setTimeout(function() { $state.forceReload(); }, 1000);
         }).catch(function(err) {
             console.log(err);
         });

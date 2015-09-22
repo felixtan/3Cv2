@@ -41,8 +41,7 @@ angular
     $stateProvider
     .state('login', {
         url: '/login',
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
+        templateUrl: 'views/login.html'
     })
     .state('logout', {
         url: '/logout',
@@ -51,18 +50,15 @@ angular
     })
     .state('register', {
         url: '/register',
-        templateUrl: 'views/register.html',
-        controller: 'RegisterCtrl' 
+        templateUrl: 'views/register.html'
     })
     .state('passwordResetRequest', {
         url: '/password/requestReset',
-        templateUrl: 'views/passwordresetrequest.html',
-        controller: 'PasswordResetRequestCtrl'
+        templateUrl: 'views/passwordresetrequest.html'
     })
     .state('passwordReset', {
         url: '/password/reset',
-        templateUrl: 'views/passwordreset.html',
-        controller: 'PasswordResetCtrl'
+        templateUrl: 'views/passwordreset.html'
     })
     .state('main', {
         url: '/',

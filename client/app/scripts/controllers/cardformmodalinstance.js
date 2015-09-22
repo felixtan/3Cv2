@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CardFormModalInstanceCtrl', function ($http, $route, $scope, $modalInstance) {
+  .controller('CardFormModalInstanceCtrl', function ($state, $http, $scope, $modalInstance) {
     $scope.animationsEnabled = true;
     $scope.formData = {};
     $scope.routeFor = {
@@ -26,15 +26,15 @@ angular.module('clientApp')
             }, function(err) {
                 console.error(err);
             });
-      };
+    };
 
-      $scope.reset = function () {
-        $scope.formData = {};
-        $route.reload();
-      };
+    $scope.reset = function () {
+      $scope.formData = {};
+      $state.forceReload();
+    };
 
-      $scope.close = function () {
-        $scope.reset();
-        $modalInstance.dismiss('cancel');
-      };
+    $scope.close = function () {
+      $scope.reset();
+      $modalInstance.dismiss('cancel');
+    };
   });

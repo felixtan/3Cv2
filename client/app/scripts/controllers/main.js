@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($state, getEzPasses, getGasCards, $modal, $route, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
+  .controller('MainCtrl', function ($state, getEzPasses, getGasCards, $modal, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
 
     $scope.ezPasses = getEzPasses.data;
     $scope.gasCards = getGasCards.data;
@@ -45,7 +45,7 @@ angular.module('clientApp')
             oilChangeRequired: false
         }).then(function() {
             console.log('Car ' + carId + ' oil changed.');
-            $route.reload();
+            $state.forceReload();
         }).catch(function(err) {
             console.log(err);
         });
@@ -94,7 +94,7 @@ angular.module('clientApp')
 
             promise.then(function(data) {
                 deferred.resolve(data);
-                setTimeout(function() { $route.reload(); }, 100);
+                setTimeout(function() { $state.forceReload(); }, 100);
             }, function(err) {
                 deferred.reject(err);
             });
@@ -118,7 +118,7 @@ angular.module('clientApp')
 
         $http.delete('/api/' + type + 's/' + obj.id).then(function(data) {
             console.log(data.msg);
-            $route.reload();
+            $state.forceReload();
         }, function(err) {
             console.error(err);
         });
@@ -250,7 +250,7 @@ angular.module('clientApp')
                                         console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
                                         $http.delete('/api/prospects/'+id).then(function(data) {
                                             console.log(data.data.msg);
-                                            $route.reload();    // Temp fix for reloading the view so the UI is accurate
+                                            $state.forceReload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);
                                         });

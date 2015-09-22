@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ProspectFormModalInstanceCtrl', function ($http, $route, $scope, $modalInstance) {
+  .controller('ProspectFormModalInstanceCtrl', function ($state, $http, $scope, $modalInstance) {
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.formData = {};
 
@@ -30,7 +30,7 @@ angular.module('clientApp')
 
       $scope.reset = function () {
         $scope.formData = {};
-        $route.reload();
+        $state.forceReload();
       };
 
       $scope.close = function () {

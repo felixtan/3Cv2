@@ -6,7 +6,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PtgCtrl', function ($scope, $window, $route, getPtgLogs, basicDriverData, $http) {
+  .controller('PtgCtrl', function ($state, $scope, $window, getPtgLogs, basicDriverData, $http) {
     var _ = $window._;
     $scope.logs = getPtgLogs.data.logs; 
     $scope.mostRecentDateInMs = getPtgLogs.data.mostRecentDateInMs;
@@ -72,7 +72,7 @@ angular.module('clientApp')
     }
 
     this.newLog = function() {
-        var newDateInMs = this.mostRecentDateInMs + oneWeekInMs; 
+        var newDateInMs = $scope.mostRecentDateInMs + oneWeekInMs; 
         var date = new Date(newDateInMs);
 
         $http.post('/api/logs/ptg', {
@@ -80,7 +80,7 @@ angular.module('clientApp')
             date: date
         }).then(function() {
             console.log('New PTG log created.');
-            setTimeout(function() { $route.reload(); }, 1000);
+            setTimeout(function() { $state.forceReload(); }, 1000);
         }).catch(function(err) {
             console.error(err);
         });

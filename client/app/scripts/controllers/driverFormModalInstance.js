@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DriverFormModalInstanceCtrl', function (getCars, $http, $route, $scope, $modalInstance) {
+  .controller('DriverFormModalInstanceCtrl', function ($state, getCars, $http, $scope, $modalInstance) {
     $scope.formData = {};
     $scope.cars = getCars.data;
 
@@ -25,11 +25,11 @@ angular.module('clientApp')
 
       $scope.reset = function () {
         $scope.formData = {};
-        $route.reload();
+        $state.forceReload();
       };
 
       $scope.close = function () {
-        $route.reset();
+        $scope.reset();
         $modalInstance.dismiss('cancel');
       };
   });

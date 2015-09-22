@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarFormModalInstanceCtrl', function (getMaintenanceLogs, getDrivers, $http, $route, $scope, $modalInstance) {
+  .controller('CarFormModalInstanceCtrl', function ($state, getMaintenanceLogs, getDrivers, $http, $scope, $modalInstance) {
     $scope.formData = {};
     $scope.drivers = getDrivers.data;
     $scope.formData.dateInMs = getMaintenanceLogs.data.mostRecentDateInMs; 
@@ -24,11 +24,11 @@ angular.module('clientApp')
 
     $scope.reset = function () {
       $scope.formData = {};
-      $route.reload();
+      $state.forceReload();
     };
 
     $scope.close = function () {
-      $route.reload();
+      $state.forceReload();
       $modalInstance.dismiss('cancel');
     };
   });
