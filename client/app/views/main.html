@@ -75,11 +75,11 @@
                   <ul class='row-actions'>
                     <li class='drag-handle'>::</li>
                     <li class='filler'> </li>
-                    <li type='button' class='fa fa-pencil-square-o'></li>
+                    <li type='button' class='fa fa-pencil-square-o' data-toggle='modal' ng-controller='PersonEditFormModalCtrl' ng-click='open(lg, driver, "Driver")'></li>
                   </ul>
                 </td>
                 <td>
-                    {{ driver.name }}
+                    {{ driver.givenName }} {{ driver.middleInitial }} {{ driver.surName }}
                 </td>
                 <td>
                     {{ driver.GasCards[0].number }}
@@ -164,12 +164,12 @@
               <ul class='row-actions'>
               <li class='drag-handle'>::</li>
               <li class='filler'> </li>
-              <li type='button' class='fa fa-pencil-square-o'>
+              <li type='button' class='fa fa-pencil-square-o' data-toggle='modal' ng-controller='PersonEditFormModalCtrl' ng-click='open(lg, prospect, "Prospect")'>
               </li>  
             </ul>
             </td>
             <td>
-                {{ prospect.name }}
+                {{ prospect.givenName }} {{ prospect.middleInitial }} {{ prospect.surName }}
             </td>
             <td>
                 {{ prospect.description }}
@@ -243,6 +243,10 @@
       <div class='form-group'>
         <label for='givenName'>First</label>
         <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
+      </div>
+      <div class='form-group'>
+        <label for='middleInitial'>Middle</label>
+        <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
       </div>
       <div class='form-group'>
         <label for='surName'>Last</label>
@@ -330,6 +334,10 @@
       <div class='form-group'>
         <label for='givenName'>First</label>
         <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
+      </div>
+      <div class='form-group'>
+        <label for='middleInitial'>Middle</label>
+        <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
       </div>
       <div class='form-group'>
         <label for='surName'>Last</label>
@@ -445,6 +453,118 @@
   <div class='modal-footer'>
     <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="personEditFormModal">
+  <div class='modal-header'>
+    <h3 class='modal-title'>
+      Edit {{ typeOfPerson }}
+    </h3>
+    <button type='button' class='close' ng-click='close()' style='margin-top:-35px;'>
+      &times;
+    </button>
+    <div class='modal-body'>
+      <form novalidate role='form' name='personEditForm'>
+
+        <div class='form-group' ng-show='typeOfPerson === "Prospect"'>
+          <label for='status'>Status</label>
+          <select class='form-control' ng-model='formData.status'>
+              <option> - </option>
+              <option ng-repeat='status in prospectStatuses' value='{{ status }}'>{{ status }}</option>
+          </select>
+        </div>
+
+        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
+          <label for='car'>Car</label>
+          <select type='text' class='form-control' ng-options='car.tlcNumber for car in cars' ng-model='formData.car'>
+          </select>
+        </div>
+
+        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
+          <label for='gasCard'>Gas Card</label>
+          <select type='text' class='form-control' ng-options='card.number for card in gasCards' ng-model='formData.gasCard'>
+          </select>
+        </div>
+
+        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
+          <label for='ezPass'>EZ Pass</label>
+          <select type='text' class='form-control' ng-options='pass.number for pass in ezPasses' ng-model='formData.ezPass'>
+          </select>
+        </div>
+
+        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
+          <label for='payRate'>Pay Rate</label>
+          <input type='text' class='form-control' ng-model='formData.payRate' placeholder='Number ex. 0-100'>
+        </div>
+
+        <div class='form-group'>
+          <label for='givenName'>First</label>
+          <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
+        </div>
+
+        <div class='form-group'>
+          <label for='middleInitial'>Middle</label>
+          <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
+        </div>
+
+        <div class='form-group'>
+          <label for='surName'>Last</label>
+          <input type='text' class='form-control' ng-model='formData.surName' placeholder='Doe'>
+        </div>
+
+        <div class='form-group'>
+            <label for='email'>Email</label>
+            <input type='text' class='form-control' ng-model='formData.email' placeholder='xyz@email.com'>
+        </div>
+
+        <div class='form-group'>
+            <label for='phoneNumber'>Phone Number</label>
+            <input type='text' class='form-control' ng-model='formData.phoneNumber' placeholder='6461234567'>
+        </div>
+
+        <div class='form-group'>
+            <label for='address'>Address</label>
+            <input type='text' class='form-control' ng-model='formData.address' placeholder='1600 Pennsylvania Ave NW, Washington, DC 20500'>
+        </div>
+        <div class='form-group'>
+            <label for='driversLicenseNum'>Driver License Number</label>
+            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder='123456789'>
+        </div>
+        <div class='form-group'>
+          <label for='tlc'>TLC</label>
+          <input type='text' class='form-control' ng-model='formData.tlc'>
+        </div>
+        <div class='form-group'>
+          <label for='dmv'>DMV</label>
+          <input type='text' class='form-control' ng-model='formData.dmv'>
+        </div>
+        <div class='form-group'>
+          <label for='points'>Points</label>
+          <input type='text' class='form-control' ng-model='formData.points' placeholder='Number ex. 12'>
+        </div>
+        <div class='form-group'>
+          <label for='accidents'>Accidents</label>
+          <input type='text' class='form-control' ng-model='formData.accidents' placeholder='Number ex. 0'>
+        </div>
+        <div class='form-group'>
+          <label for='shift'>Shift</label>
+          <input type='text' class='form-control' ng-model='formData.shift' placeholder='24/7'>
+        </div>
+        <div class='form-group'>
+          <label for='paperwork'>Paperwork</label>
+          <input type='text' class='form-control' ng-model='formData.paperwork'>
+        </div>
+        <label for='description'>Notes</label>
+        <textarea ng-model='formData.description' type='text' class='form-control' rows='5' placeholder='Upstanding guy.'>
+        </textarea>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+    </div>
   </div>
 </script>
 
