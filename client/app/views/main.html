@@ -1,6 +1,3 @@
-<div if-user-state-known>
-<!-- <button type='button' class='btn btn-default' ng-click='driverListCollapsed = !driverListCollapsed'>Toggle Collapse</button> -->
-
 <!-- Collapsed car list becomes a button -->
 <div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='driverListCollapsed' ng-click="reload()" type='button'>
   <div class='row row-collapsed'>
@@ -51,13 +48,13 @@
               <th>Name</th>
               <th>Gas Card</th>
               <th>EZ Pass</th>
-              <th ng-show='prospectListCollapsed'>TLC</th>
               <th>Notes</th>
-              <th ng-show='prospectListCollapsed'>DMV</th>
-              <th ng-show='prospectListCollapsed'>Points</th>
-              <th ng-show='prospectListCollapsed'>Accidents</th>
+              <th>TLC</th>
+              <th>DMV</th>
+              <th>Points</th>
+              <th>Accidents</th>
               <th>Shift</th>
-              <th ng-show='prospectListCollapsed'>Address</th>
+              <th>Address</th>
             </thead>
             <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
               <tr class='dropfix'>
@@ -76,77 +73,40 @@
               <tr class='driver-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
                 <td>
                   <ul class='row-actions'>
-                    <li class='drag-handle' ng-show='!driverRowForm.$visible'>::</li>
+                    <li class='drag-handle'>::</li>
                     <li class='filler'> </li>
-                    <li type='button' class='fa fa-pencil-square-o' ng-click='driverRowForm.$show()' ng-show="!driverRowForm.$visible && prospectListCollapsed">
-                    </li>
-                    <li>
-                      <form class='driverRowForm' editable-form name='driverRowForm' ng-show='driverRowForm.$visible' class='form-buttons'>
-                        <button class='btn btn-xs btn-warning' type='submit' ng-disabled='driverRowForm.$waiting'>
-                          Save
-                        </button>
-                        <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(driver)'>
-                          Delete
-                        </button>
-                        <button class='btn btn-xs btn-default'type='button' ng-click='driverRowForm.$cancel()'>
-                          Cancel
-                        </button>
-                      </form>
-                    </li>
+                    <li type='button' class='fa fa-pencil-square-o'></li>
                   </ul>
                 </td>
                 <td>
-                  <span editable-text='driver.name' buttons='no' e-name='name' e-form='driverRowForm' onaftersave='updateRow(driver)' e-ng-keypress="keypress($event, driverRowForm)">
                     {{ driver.name }}
-                  </span>
                 </td>
                 <td>
-                  <span editable-select='driver.gasCardId' e-ng-options='card.id as card.number for card in gasCards' e-form='driverRowForm'>
-                  </span>
-                  <span ng-show='!driverRowForm.$visible'>
                     {{ driver.GasCards[0].number }}
-                  </span>
                 </td>
                 <td>
-                  <span editable-select='driver.ezPassId' e-ng-options='pass.id as pass.number for pass in ezPasses' e-form='driverRowForm'>
-                  </span>
-                  <span ng-show='!driverRowForm.$visible'>
                     {{ driver.EzPasses[0].number }}
-                  </span>
                 </td>
-                <td ng-show='prospectListCollapsed'>
-                  <span editable-text='driver.tlc' e-name='tlc' e-form='driverRowForm'>
+                <td>
+                    {{ driver.description }}
+                </td>
+                <td>
                     {{ driver.tlc }}
-                  </span>
                 </td>
                 <td>
-                  <span editable-text='driver.description' e-name='description' e-form='driverRowForm'>{{ driver.description }}
-                  </span>
-                </td>
-                <td ng-show='prospectListCollapsed'>
-                  <span editable-text='driver.dmv' e-name='dmv' e-form='driverRowForm'>
                     {{ driver.dmv }}
-                  </span>
-                </td>
-                <td ng-show='prospectListCollapsed'>
-                  <span editable-text='driver.points' e-name='points' e-form='driverRowForm'>
-                    {{ driver.points }}
-                  </span>
-                </td>
-                <td ng-show='prospectListCollapsed'>
-                  <span editable-text='driver.accidents' e-name='accidents' e-form='driverRowForm'>
-                    {{ driver.accidents }}
-                  </span>
                 </td>
                 <td>
-                  <span editable-text='driver.shift' e-name='shift' e-form='driverRowForm'>
-                    {{ driver.shift }}
-                  </span>
+                    {{ driver.points }}
                 </td>
-                <td ng-show='prospectListCollapsed'>
-                  <span editable-text='driver.address' e-name='address' e-form='driverRowForm'>
+                <td>
+                    {{ driver.accidents }}
+                </td>
+                <td>
+                    {{ driver.shift }}
+                </td>
+                <td>
                     {{ driver.address }}
-                  </span>
                 </td>
               </tr>
             </tbody>
@@ -179,8 +139,8 @@
         <h3>{{ status }}</h3>
         <th></th>
         <th>Name</th>
-        <th>TLC</th>
         <th>Notes</th>
+        <th>TLC</th>
         <th>DMV</th>
         <th>Points</th>
         <th>Accidents</th>
@@ -202,71 +162,42 @@
           <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
             <td>
               <ul class='row-actions'>
-              <li class='drag-handle' ng-show='!prospectRowForm.$visible'>::</li>
+              <li class='drag-handle'>::</li>
               <li class='filler'> </li>
-              <li type='button' class='fa fa-pencil-square-o' ng-click='prospectRowForm.$show()' ng-show="!prospectRowForm.$visible && driverListCollapsed">
+              <li type='button' class='fa fa-pencil-square-o'>
               </li>  
-              <li ng-show='driverListCollapsed'>
-                <form class='prospectRowForm' editable-form name='prospectRowForm' ng-show='prospectRowForm.$visible' class='form-buttons'>
-                  <button class='btn btn-xs btn-warning' type='submit' ng-disabled='prospectRowForm.$waiting'>
-                    Save
-                  </button>
-                  <button class='btn btn-xs btn-danger'type='button' ng-click='deleteRow(prospect)'>
-                    Delete
-                  </button>
-                  <button class='btn btn-xs btn-default'type='button' ng-click='prospectRowForm.$cancel()'>
-                    Cancel
-                  </button>
-                </form>
-              </li>
             </ul>
             </td>
             <td>
-              <span editable-text='prospect.name' buttons='no' e-name='name' e-form='prospectRowForm' onaftersave='updateRow(prospect)' e-ng-keypress="keypress($event, prospectRowForm)">
                 {{ prospect.name }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.tlc' e-name='tlc' e-form='prospectRowForm'>
-                {{ prospect.tlc }}
-              </span>
-            </td>
-            <td>
-              <span editable-text='prospect.description' e-name='description' e-form='prospectRowForm'>
                 {{ prospect.description }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.dmv' e-name='dmv' e-form='prospectRowForm'>
+                {{ prospect.tlc }}
+            </td>
+            <td>
                 {{ prospect.dmv }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.points' e-name='points' e-form='prospectRowForm'>
                 {{ prospect.points }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.accidents' e-name='accidents' e-form='prospectRowForm'>
                 {{ prospect.accidents }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.shift' e-name='shift' e-form='prospectRowForm'>
                 {{ prospect.shift }}
-              </span>
             </td>
             <td>
-              <span editable-text='prospect.address' e-name='address' e-form='prospectRowForm'>
                 {{ prospect.address }}
-              </span>
             </td>
           </tr>
       </tbody>
     </table>
   </div>
 </div>
-</div>
+
 <!-- Card form modal view -->
 <!-- TODO: put it in a different file -->
 <script type="text/ng-template" id="cardformmodal">

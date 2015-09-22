@@ -17,7 +17,7 @@ angular.module('clientApp')
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
-
+    console.log($scope.cars);
     $scope.reload = function() {
         $state.forceReload();
     }
@@ -53,6 +53,8 @@ angular.module('clientApp')
 
     // submit xeditable row form by pressing enter
     // will then call updateDriver
+    // to use this add following attribute to button element
+    // e-ng-keypress="keypress($event, driverRowForm)"
     $scope.keypress = function(e, form) {
         console.log(e);
         console.log(form);
