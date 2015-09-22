@@ -45,16 +45,6 @@ module.exports = {
                                 delete gasCard.dataValues.updatedAt;
                             });
 
-                            // combine names
-                            if(driver.dataValues.middleInitial) {
-                                driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.middleInitial + '. ' + driver.dataValues.surName;    
-                            } else {
-                                driver.dataValues.name = driver.dataValues.givenName + ' ' + driver.dataValues.surName;
-                            }
-                            
-                            delete driver.dataValues.givenName;
-                            delete driver.dataValues.surName;
-                            delete driver.dataValues.middleInitial;
                             delete driver.dataValues.Assignment;
                             // delete driver.dataValues.driversLicenseNum;
                             // delete driver.dataValues.phoneNumber;

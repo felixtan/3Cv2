@@ -14,8 +14,7 @@ module.exports = {
                 where: { organization: organizationId }
             }).then(function(drivers) {
                 res.json(drivers);
-            })
-            .catch(function(err) {
+            }).catch(function(err) {
                 throw err;
             });
         })
@@ -102,7 +101,7 @@ module.exports = {
         });
     },
 
-    updateDriver: function(req, res) {
+    update: function(req, res) {
         Drivers.update({
             givenName: req.body.givenName,
             middleInitial: req.body.middleInitial,
@@ -133,6 +132,10 @@ module.exports = {
 
                 if(req.body.ezPassId) {
                     driver.setEzPasses([req.body.ezPassId]);
+                }
+
+                if(req.body.carId) {
+                    driver.setCars([req.body.carId]);   
                 }
             });
 

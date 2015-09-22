@@ -11,22 +11,8 @@ module.exports = {
             Prospects.findAll({
                 where: { organization: organizationId }
             }).then(function(prospects) {
-                var minimizedData = prospects;
-                minimizedData.forEach(function(prospect) {
-                    // combine names
-                    if(prospect.dataValues.middleInitial) {
-                        prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.middleInitial + '. ' + prospect.dataValues.surName;    
-                    } else {
-                        prospect.dataValues.name = prospect.dataValues.givenName + ' ' + prospect.dataValues.surName;
-                    }
-                    
-                    delete prospect.dataValues.givenName;
-                    delete prospect.dataValues.surName;
-                    delete prospect.dataValues.middleInitial;
-                });
-                res.json(minimizedData);
-            })
-            .catch(function(err) {
+                res.json(prospects);
+            }).catch(function(err) {
                 console.error(err);
                 // throw err;
             });
@@ -82,7 +68,7 @@ module.exports = {
         });
     },
 
-    updateProspect: function(req, res) {
+    update: function(req, res) {
         Prospects.update({
             status: req.body.status,
             givenName: req.body.givenName,

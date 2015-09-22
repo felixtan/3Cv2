@@ -70,7 +70,7 @@
                 <td></td>
                 <td></td>
               </tr>
-              <tr class='driver-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
+              <tr class='person-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
                 <td>
                   <ul class='row-actions'>
                     <li class='drag-handle'>::</li>
@@ -159,7 +159,7 @@
             <td></td>
             <td></td>
           </tr>
-          <tr ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
+          <tr class='person-row' ng-repeat="prospect in prospects | filter:status" data-id='{{ prospect.id }}' data-status='{{ prospect.status }}' repeat-finished>
             <td>
               <ul class='row-actions'>
               <li class='drag-handle'>::</li>

@@ -31,7 +31,7 @@ module.exports = function (app) {
     app.get('/api/prospects', prospect.getProspects);
     app.get('/api/prospects/:id', prospect.getProspect);
     app.post('/api/prospects', prospect.save);
-    app.put('/api/prospects/:id', prospect.updateProspect);
+    app.put('/api/prospects/:id', prospect.update);
     app.delete('/api/prospects/:id', prospect.deleteProspect);
 
     // EZ pass
@@ -73,6 +73,6 @@ module.exports = function (app) {
     app.get('/api/drivers', drivers.getDrivers);
     app.get('/api/drivers/:id', drivers.getDriver);
     app.post('/api/drivers', drivers.save);
-    app.put('/api/drivers/:id', drivers.updateDriver);
+    app.put('/api/drivers/:id', drivers.update);
     app.delete('/api/drivers/:id', drivers.deleteDriver);
 };
