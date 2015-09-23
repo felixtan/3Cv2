@@ -10,8 +10,6 @@
 angular.module('clientApp')
   .factory('dataService', function ($http, $q) {
 
-    var deferred;
-
     // Public API here
     return {
       getAss: function () {

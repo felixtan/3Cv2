@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @ngdoc function
  * @name clientApp.controller:PtgCtrl
@@ -22,19 +24,17 @@ angular.module('clientApp')
         var currentPayout = driverLog.payout;
         
         // minimum condition to calculate
-        if(typeof driverLog.uberRevenue === 'number' 
-            && typeof driverLog.tollCosts === 'number'
-            && typeof driverLog.gasCosts === 'number') {
+        if(typeof driverLog.uberRevenue === 'number' && typeof driverLog.tollCosts === 'number' && typeof driverLog.gasCosts === 'number') {
 
             var driver = _.filter($scope.drivers, function(driver) {
-                return driverLog.driverId == driver.id;
+                return driverLog.driverId === driver.id;
             });
             
-            var newPayout = Math.round((driverLog.uberRevenue - driverLog.tollCosts) * driver[0].payRate*.01 - driverLog.gasCosts/2);
+            var newPayout = Math.round((driverLog.uberRevenue - driverLog.tollCosts) * driver[0].payRate*0.01 - driverLog.gasCosts/2);
 
-            if(typeof driverLog.deposit === 'number') newPayout -= driverLog.deposit;
-            if(typeof driverLog.additions === 'number') newPayout = newPayout + driverLog.additions;
-            if(typeof driverLog.subtractions === 'number') newPayout = newPayout - driverLog.subtractions;
+            if(typeof driverLog.deposit === 'number') { newPayout -= driverLog.deposit; }
+            if(typeof driverLog.additions === 'number') { newPayout = newPayout + driverLog.additions; }
+            if(typeof driverLog.subtractions === 'number') { newPayout = newPayout - driverLog.subtractions; }
             
             if(currentPayout !== newPayout) {
                 driverLog.payout = newPayout;
@@ -48,18 +48,16 @@ angular.module('clientApp')
     this.calculateProfit = function(driverLog) {
         var currentProfit = driverLog.profit;
 
-        if(typeof driverLog.uberRevenue === 'number' 
-            && typeof driverLog.tollCosts === 'number'
-            && typeof driverLog.gasCosts === 'number') {
+        if(typeof driverLog.uberRevenue === 'number' && typeof driverLog.tollCosts === 'number' && typeof driverLog.gasCosts === 'number') {
 
             var driver = _.filter($scope.drivers, function(driver) {
-                return driverLog.driverId == driver.id;
+                return driverLog.driverId === driver.id;
             });
-            var newProfit = Math.round((driverLog.uberRevenue - driverLog.tollCosts) * (1-driver[0].payRate*.01) - driverLog.gasCosts/2 - driverLog.additions);
+            var newProfit = Math.round((driverLog.uberRevenue - driverLog.tollCosts) * (1-driver[0].payRate*0.01) - driverLog.gasCosts/2 - driverLog.additions);
 
-            if(typeof driverLog.deposit === 'number') newProfit -= driverLog.deposit;
-            if(typeof driverLog.additions === 'number') newProfit += driverLog.additions;
-            if(typeof driverLog.subtractions === 'number') newProfit -= driverLog.subtractions;
+            if(typeof driverLog.deposit === 'number') { newProfit -= driverLog.deposit; }
+            if(typeof driverLog.additions === 'number') { newProfit += driverLog.additions; } 
+            if(typeof driverLog.subtractions === 'number') { newProfit -= driverLog.subtractions; }
             
             if(currentProfit !== newProfit) {
                 driverLog.profit = newProfit;
@@ -68,7 +66,7 @@ angular.module('clientApp')
         } else {
             console.log('uberRevenue or tollCosts or gasCosts invalid');
         }
-    }
+    };
 
     this.newLog = function() {
         var newDateInMs = $scope.mostRecentDateInMs + oneWeekInMs; 

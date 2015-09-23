@@ -20,7 +20,7 @@ angular.module('clientApp')
     
     $scope.reload = function() {
         $state.forceReload();
-    }
+    };
     
     // reload page
     $scope.collapse = function(listType) {
@@ -29,13 +29,13 @@ angular.module('clientApp')
                 var driverRowForm = angular.element('form.driverRowForm');
                 driverRowForm.$cancel();
             } else {
-                var driverRowForm = angular.element('form.prospectRowForm');
+                var prospectRowForm = angular.element('form.prospectRowForm');
                 prospectRowForm.$cancel();
             }
         } else {
-            console.log('Invalid usage of this method.')
+            console.log('Invalid usage of this method.');
         }
-    }
+    };
 
     // oil changed
     this.oilChanged = function(carId) {
@@ -89,7 +89,7 @@ angular.module('clientApp')
             console.error('Failed to delete.', obj);
         }
 
-        $http.delete('/api/' + type + 's/' + obj.id).then(function(data) {
+        $http.delete('/api/' + type + 's/' + obj.id).then(function() {
             $state.forceReload();
         }, function(err) {
             console.error(err);
@@ -216,8 +216,8 @@ angular.module('clientApp')
                             $scope.filterProspectData(id).then(function(prospect) {
                                 $scope.getCarId(event.item).then(function(carId) {
                                     prospect.carId = carId;
-                                    $http.post('/api/drivers', prospect).then(function(driver) {
-                                        $http.delete('/api/prospects/'+id).then(function(data) {
+                                    $http.post('/api/drivers', prospect).then(function() {
+                                        $http.delete('/api/prospects/'+id).then(function() {
                                             $state.forceReload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);

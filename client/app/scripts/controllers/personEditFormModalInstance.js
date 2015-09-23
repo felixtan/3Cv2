@@ -20,9 +20,9 @@ angular.module('clientApp')
         var type = $scope.typeOfPerson.toLowerCase();   // driver or prospect
         var id = $scope.formData.id;
 
-        if($scope.formData.middleInitial) $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase();
-        if($scope.formData.givenName) $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
-        if($scope.formData.surName) $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
+        if($scope.formData.middleInitial) { $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase(); }
+        if($scope.formData.givenName) { $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase(); } 
+        if($scope.formData.surName) { $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase(); }
 
         // building the request body
         var requestBody = {
@@ -41,15 +41,15 @@ angular.module('clientApp')
             shift: $scope.formData.shift,
             paperwork: $scope.formData.paperwork,
             description: $scope.formData.description
-        }
+        };
 
         if(type === 'driver') {
-            if($scope.formData.payRate) requestBody.payRate = $scope.formData.payRate.toString();
-            if($scope.formData.ezPassId) requestBody.ezPassId = $scope.formData.ezPass.id;
-            if($scope.formData.gasCardId) requestBody.gasCardId = $scope.formData.gasCard.id;
-            if($scope.formData.carId) requestBody.carId = $scope.formData.car.id;
+            if($scope.formData.payRate) { requestBody.payRate = $scope.formData.payRate.toString(); }
+            if($scope.formData.ezPassId) { requestBody.ezPassId = $scope.formData.ezPass.id; }
+            if($scope.formData.gasCardId) { requestBody.gasCardId = $scope.formData.gasCard.id; }
+            if($scope.formData.carId) { requestBody.carId = $scope.formData.car.id; }
         } else if (type === 'prospect') {
-            if($scope.formData.status) requestBody.status = $scope.formData.status.toLowerCase();
+            if($scope.formData.status) { requestBody.status = $scope.formData.status.toLowerCase(); }
         } else {
             console.error('What type of person is this?!');
         }

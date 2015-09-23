@@ -18,13 +18,13 @@ angular.module('clientApp')
       }
 
       // Formatting
-      if($scope.formData.status) $scope.formData.status = $scope.formData.status.toLowerCase();
-      if($scope.formData.middleInitial) $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase();
+      if($scope.formData.status) { $scope.formData.status = $scope.formData.status.toLowerCase(); }
+      if($scope.formData.middleInitial) { $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase(); }
       $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
       $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
 
       $http.post('/api/prospects', $scope.formData)
-          .then(function(prospect) {
+          .then(function() {
               $scope.reset();
           }, function(err) {
               console.error(err);

@@ -19,7 +19,7 @@ angular.module('clientApp')
 
     $scope.submit = function () {
         $http.post('/api/assets/' + $scope.routeFor[$scope.formData.type], $scope.formData)
-            .then(function(card) {   
+            .then(function() {   
                 $scope.reset();
             }, function(err) {
                 console.error(err);

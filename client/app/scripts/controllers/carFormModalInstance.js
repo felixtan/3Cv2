@@ -19,7 +19,7 @@ angular.module('clientApp')
       // Formatting
       $scope.formData.licensePlateNumber = $scope.formData.licensePlateNumber.toUpperCase();
 
-      $http.post('/api/cars', $scope.formData).then(function(car) {
+      $http.post('/api/cars', $scope.formData).then(function() {
         $scope.reset();  
       }, function(err) {
           console.error(err);
