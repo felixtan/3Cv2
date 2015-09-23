@@ -16,10 +16,10 @@
     "dialect": "postgres" 
   },
   "production": {
-    "username": "ft91",
-    "password": "steamisgay",
-    "database": "threec",
-    "host": "threec.cim3iuhrrxpw.us-east-1.rds.amazonaws.com",
+    "username": "tf91",
+    "password": "steamisgay1",
+    "database": "threec_production",
+    "host": "threec-production.cim3iuhrrxpw.us-east-1.rds.amazonaws.com",
     "port": "5432",
     "dialect": "postgres" 
   }
