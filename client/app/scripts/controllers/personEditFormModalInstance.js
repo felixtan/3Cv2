@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PersonEditFormModalInstanceCtrl', function ($state, $http, $scope, $modalInstance, getPerson, getGasCards, getEzPasses, getCars) {
+  .controller('PersonEditFormModalInstanceCtrl', function ($http, $scope, $modalInstance, getPerson, getGasCards, getEzPasses, getCars, $state) {
     $scope.formData = getPerson.data;
     $scope.typeOfPerson = getPerson.type;
     $scope.gasCards = getGasCards.data;
@@ -19,6 +19,10 @@ angular.module('clientApp')
     $scope.submit = function() {
         var type = $scope.typeOfPerson.toLowerCase();   // driver or prospect
         var id = $scope.formData.id;
+
+        if($scope.formData.middleInitial) $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase();
+        if($scope.formData.givenName) $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
+        if($scope.formData.surName) $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
 
         // building the request body
         var requestBody = {
@@ -40,17 +44,15 @@ angular.module('clientApp')
         }
 
         if(type === 'driver') {
-            requestBody.payRate = $scope.formData.payRate;
-            requestBody.ezPassId = $scope.formData.ezPass.id;
-            requestBody.gasCardId = $scope.formData.gasCard.id;
-            requestBody.carId = $scope.formData.car.id;
+            if($scope.formData.payRate) requestBody.payRate = $scope.formData.payRate.toString();
+            if($scope.formData.ezPassId) requestBody.ezPassId = $scope.formData.ezPass.id;
+            if($scope.formData.gasCardId) requestBody.gasCardId = $scope.formData.gasCard.id;
+            if($scope.formData.carId) requestBody.carId = $scope.formData.car.id;
         } else if (type === 'prospect') {
-            requestBody.status = $scope.formData.status.toLowerCase();
+            if($scope.formData.status) requestBody.status = $scope.formData.status.toLowerCase();
         } else {
-            console.log('What type of person is this?!');
+            console.error('What type of person is this?!');
         }
-
-        console.log('updating ' + type + ':', requestBody);
 
         // Fire the update request
         $http.put('/api/' + type + 's/' + id, requestBody).then(function() {
@@ -63,10 +65,12 @@ angular.module('clientApp')
 
     $scope.reset = function() {
         $scope.formData = getPerson.data;
-        $state.forceReload();
+        $scope.personEditForm.$setPristine();
+        $scope.personEditForm.$setUntouched();
     };
 
     $scope.close = function() {
+        $state.forceReload();
         $modalInstance.dismiss('cancel');
     };
   });

@@ -16,7 +16,7 @@ angular.module('clientApp')
 
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
-            templateUrl: 'payRateModal',
+            templateUrl: 'views/payRateModal.html',
             controller: 'PayRateModalInstanceCtrl',
             size: size
         });

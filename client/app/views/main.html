@@ -21,10 +21,30 @@
     </span>
   </h2>  
 
-  <div class='row car-list-actions'>
-    <div class='col-md-1' ng-controller="CarFormModalCtrl">
-      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
+  <div class='btn-group car-list-actions'>
+    <button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+      + <span class='caret'></span>
+    </button>
+    <ul class='dropdown-menu'>
+      <li class='add-btn-li' ng-controller="CarFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
+        Car
+      </li>
+      <li class='add-btn-li' ng-controller="DriverFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
+        Driver
+      </li>
+      <li class='add-btn-li' ng-controller="CardFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
+        Card/Pass
+      </li>
+    </ul>
+    <!-- <div class='col-md-1 add-btn' ng-controller="CarFormModalCtrl">
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Car</button>
     </div>
+    <div class='col-md-1 add-btn' ng-controller="DriverFormModalCtrl">
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Driver</button>
+    </div>
+    <div class='col-md-1 add-btn' ng-controller="CardFormModalCtrl">
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Card/Pass</button>
+    </div> -->
   </div>
 
   <div class="table-responsive car" ng-repeat='car in cars'>
@@ -129,7 +149,7 @@
   <div class='row'>
     <div class='col-md-5 prospect-actions' ng-controller="ProspectFormModalCtrl">
       
-      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+</button>
+      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Prospect</button>
     </div>
   </div>
 
@@ -169,7 +189,7 @@
             </ul>
             </td>
             <td>
-                {{ prospect.givenName }} {{ prospect.middleInitial }} {{ prospect.surName }}
+                {{ prospect.givenName }} {{ prospect.middleInitial }}<span ng-show='prospect.middleInitial'>.</span> {{ prospect.surName }}
             </td>
             <td>
                 {{ prospect.description }}
@@ -197,374 +217,3 @@
     </table>
   </div>
 </div>
-
-<!-- Card form modal view -->
-<!-- TODO: put it in a different file -->
-<script type="text/ng-template" id="cardformmodal">
-  <div class="modal-header">
-      <h3 class="modal-title">Add Card</h3>
-      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
-  </div>
-  <div class='modal-body'>
-    <form novalidate role='form' id='newCardForm'>
-      <div class='form-group'>
-        <label for='type'>Type</label>
-        <select class='form-control' ng-model='formData.type'>
-            <option> - </option>
-            <option ng-repeat='type in typeNames' value='{{ type }}'>{{ type }} </option>
-        </select>
-      </div>
-      <div class='form-group'>
-          <label for='number'>Number</label>
-          <input type='text' class='form-control' ng-model='formData.number' placeholder=''>
-      </div>
-      <div class='form-group' ng-show="formData.type === 'Gas Card'">
-          <label for='name'>Name</label>
-          <input type='text' class='form-control' ng-model='formData.name' placeholder=''>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-  </div>
-</script>
-
-<!-- Driver form modal view -->
-<!-- TODO: put it in a different file -->
-<script type="text/ng-template" id="driverformmodal">
-  <div class="modal-header">
-      <h3 class="modal-title">Add Driver</h3>
-      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
-  </div>
-  <div class="modal-body">
-    <form novalidate role='form' id='newDriverForm'>
-      <div class='form-group'>
-        <label for='givenName'>First</label>
-        <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
-      </div>
-      <div class='form-group'>
-        <label for='middleInitial'>Middle</label>
-        <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
-      </div>
-      <div class='form-group'>
-        <label for='surName'>Last</label>
-        <input type='text' class='form-control' ng-model='formData.surName' placeholder='Doe'>
-      </div>
-      <div class='form-group'>
-            <label for='email'>Email</label>
-            <input type='text' class='form-control' ng-model='formData.email' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='phoneNumber'>Phone Number</label>
-            <input type='text' class='form-control' ng-model='formData.phoneNumber' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='address'>Address</label>
-            <input type='text' class='form-control' ng-model='formData.address' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='driversLicenseNum'>Driver License Number</label>
-            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder=''>
-        </div>
-        <div class='form-group'>
-          <label for='tlc'>TLC</label>
-          <input type='text' class='form-control' ng-model='formData.tlc'>
-        </div>
-        <div class='form-group'>
-          <label for='dmv'>DMV</label>
-          <input type='text' class='form-control' ng-model='formData.dmv'>
-        </div>
-        <div class='form-group'>
-          <label for='points'>Points</label>
-          <input type='text' class='form-control' ng-model='formData.points'>
-        </div>
-        <div class='form-group'>
-          <label for='accidents'>Accidents</label>
-          <input type='text' class='form-control' ng-model='formData.accidents'>
-        </div>
-        <div class='form-group'>
-          <label for='shift'>Shift</label>
-          <input type='text' class='form-control' ng-model='formData.shift'>
-        </div>
-        <div class='form-group'>
-          <label for='paperwork'>Paperwork</label>
-          <input type='text' class='form-control' ng-model='formData.paperwork'>
-        </div>
-        <div class='form-group'>
-          <label for='payRate'>Pay Rate (%)</label>
-          <input type='text' class='form-control' ng-model='formData.payRate'>
-        </div>
-        <div class='form-group'>
-          <label for='car'>Car</label>
-          <select class='form-control' ng-model='formData.carId'>
-              <option> - </option>
-              <option ng-repeat='car in cars' value='{{ car.id }}'>{{ car.tlcNumber }}</option>
-          </select>
-        </div>
-        <label for='description'>Description</label>
-        <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
-        </textarea>
-    </form>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-  </div>
-</script>
-
-<!-- Prospect form modal view -->
-<!-- TODO: put it in a different file -->
-<script type="text/ng-template" id="newprospectformmodal">
-  <div class="modal-header">
-      <h3 class="modal-title">Add Caller</h3>
-      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
-  </div>
-  <div class="modal-body">
-    <form novalidate role='form' id='newProspectForm'>
-      <div class='form-group'>
-        <label for='status'>Status</label>
-        <select class='form-control' ng-model='formData.status'>
-            <option> - </option>
-            <option ng-repeat='status in prospectStatuses' value='{{ status }}'>{{ status }}</option>
-        </select>
-      </div>
-      <div class='form-group'>
-        <label for='givenName'>First</label>
-        <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
-      </div>
-      <div class='form-group'>
-        <label for='middleInitial'>Middle</label>
-        <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
-      </div>
-      <div class='form-group'>
-        <label for='surName'>Last</label>
-        <input type='text' class='form-control' ng-model='formData.surName' placeholder='Doe'>
-      </div>
-      <div class='form-group'>
-            <label for='email'>Email</label>
-            <input type='text' class='form-control' ng-model='formData.email' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='phoneNumber'>Phone Number</label>
-            <input type='text' class='form-control' ng-model='formData.phoneNumber' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='address'>Address</label>
-            <input type='text' class='form-control' ng-model='formData.address' placeholder=''>
-        </div>
-        <div class='form-group'>
-            <label for='driversLicenseNum'>Driver License Number</label>
-            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder=''>
-        </div>
-        <div class='form-group'>
-          <label for='tlc'>TLC</label>
-          <input type='text' class='form-control' ng-model='formData.tlc'>
-        </div>
-        <div class='form-group'>
-          <label for='dmv'>DMV</label>
-          <input type='text' class='form-control' ng-model='formData.dmv'>
-        </div>
-        <div class='form-group'>
-          <label for='points'>Points</label>
-          <input type='text' class='form-control' ng-model='formData.points'>
-        </div>
-        <div class='form-group'>
-          <label for='accidents'>Accidents</label>
-          <input type='text' class='form-control' ng-model='formData.accidents'>
-        </div>
-        <div class='form-group'>
-          <label for='shift'>Shift</label>
-          <input type='text' class='form-control' ng-model='formData.shift'>
-        </div>
-        <div class='form-group'>
-          <label for='paperwork'>Paperwork</label>
-          <input type='text' class='form-control' ng-model='formData.paperwork'>
-        </div>
-        <label for='description'>Description</label>
-        <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
-        </textarea>
-    </form>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-  </div>
-</script>
-
-<!-- Car form modal view -->
-<!-- TODO: put it in a different file -->
-<script type="text/ng-template" id="carformmodal">
-  <div class="modal-header">
-      <h3 class="modal-title">Add Car</h3>
-      <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
-  </div>
-  <div class="modal-body">
-    <form novalidate role='form' id='newCarForm'>
-      <div class='form-group'>
-        <label for='tlcNumber'>TLC Number</label>
-        <input type='text' class='form-control' ng-model='formData.tlcNumber'>
-      </div>
-      <div class='form-group'>
-        <label for='licensePlateNumber'>License Plate Number</label>
-        <input type='text' class='form-control' ng-model='formData.licensePlateNumber'>
-      </div>
-      <div class='form-group'>
-            <label for='mileage'>Mileage</label>
-            <input type='text' class='form-control' ng-model='formData.mileage' placeholder=''>
-      </div>
-      <div class='form-group'>
-        <label for='driver'>Driver</label>
-        <select class='form-control' ng-model='formData.driverId' placeholder='Select Driver'>
-            <option> - </option>
-            <option ng-repeat='driver in drivers' value='{{ driver.id }}'>{{ driver.givenName }} {{ driver.surName }}</option>
-        </select>
-      </div>
-      <label for='description'>Description</label>
-      <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
-      </textarea>
-    </form>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-  </div>
-</script>
-
-<!-- Pay rate modal view -->
-<!-- TODO: put it in a different file -->
-<script type="text/ng-template" id="payRateModal">
-  <div class='modal-header'>
-    <h3 class="modal-title">Enter Pay Rate</h3>
-    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
-  </div>
-  <div class='modal-body'>
-    <form novalidate role='form' name='payRateForm'>
-      <div class='form-group'>
-        <label for='payRate'>Pay Rate (%)</label>
-        <input type='text' class='form-control' ng-model='payRate'>
-      </div>
-    </form>
-  </div>
-  <div class='modal-footer'>
-    <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-  </div>
-</script>
-
-<script type="text/ng-template" id="personEditFormModal">
-  <div class='modal-header'>
-    <h3 class='modal-title'>
-      Edit {{ typeOfPerson }}
-    </h3>
-    <button type='button' class='close' ng-click='close()' style='margin-top:-35px;'>
-      &times;
-    </button>
-    <div class='modal-body'>
-      <form novalidate role='form' name='personEditForm'>
-
-        <div class='form-group' ng-show='typeOfPerson === "Prospect"'>
-          <label for='status'>Status</label>
-          <select class='form-control' ng-model='formData.status'>
-              <option> - </option>
-              <option ng-repeat='status in prospectStatuses' value='{{ status }}'>{{ status }}</option>
-          </select>
-        </div>
-
-        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
-          <label for='car'>Car</label>
-          <select type='text' class='form-control' ng-options='car.tlcNumber for car in cars' ng-model='formData.car'>
-          </select>
-        </div>
-
-        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
-          <label for='gasCard'>Gas Card</label>
-          <select type='text' class='form-control' ng-options='card.number for card in gasCards' ng-model='formData.gasCard'>
-          </select>
-        </div>
-
-        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
-          <label for='ezPass'>EZ Pass</label>
-          <select type='text' class='form-control' ng-options='pass.number for pass in ezPasses' ng-model='formData.ezPass'>
-          </select>
-        </div>
-
-        <div class='form-group' ng-show='typeOfPerson === "Driver"'>
-          <label for='payRate'>Pay Rate</label>
-          <input type='text' class='form-control' ng-model='formData.payRate' placeholder='Number ex. 0-100'>
-        </div>
-
-        <div class='form-group'>
-          <label for='givenName'>First</label>
-          <input type='text' class='form-control' ng-model='formData.givenName' placeholder='John'>
-        </div>
-
-        <div class='form-group'>
-          <label for='middleInitial'>Middle</label>
-          <input type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
-        </div>
-
-        <div class='form-group'>
-          <label for='surName'>Last</label>
-          <input type='text' class='form-control' ng-model='formData.surName' placeholder='Doe'>
-        </div>
-
-        <div class='form-group'>
-            <label for='email'>Email</label>
-            <input type='text' class='form-control' ng-model='formData.email' placeholder='xyz@email.com'>
-        </div>
-
-        <div class='form-group'>
-            <label for='phoneNumber'>Phone Number</label>
-            <input type='text' class='form-control' ng-model='formData.phoneNumber' placeholder='6461234567'>
-        </div>
-
-        <div class='form-group'>
-            <label for='address'>Address</label>
-            <input type='text' class='form-control' ng-model='formData.address' placeholder='1600 Pennsylvania Ave NW, Washington, DC 20500'>
-        </div>
-        <div class='form-group'>
-            <label for='driversLicenseNum'>Driver License Number</label>
-            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder='123456789'>
-        </div>
-        <div class='form-group'>
-          <label for='tlc'>TLC</label>
-          <input type='text' class='form-control' ng-model='formData.tlc'>
-        </div>
-        <div class='form-group'>
-          <label for='dmv'>DMV</label>
-          <input type='text' class='form-control' ng-model='formData.dmv'>
-        </div>
-        <div class='form-group'>
-          <label for='points'>Points</label>
-          <input type='text' class='form-control' ng-model='formData.points' placeholder='Number ex. 12'>
-        </div>
-        <div class='form-group'>
-          <label for='accidents'>Accidents</label>
-          <input type='text' class='form-control' ng-model='formData.accidents' placeholder='Number ex. 0'>
-        </div>
-        <div class='form-group'>
-          <label for='shift'>Shift</label>
-          <input type='text' class='form-control' ng-model='formData.shift' placeholder='24/7'>
-        </div>
-        <div class='form-group'>
-          <label for='paperwork'>Paperwork</label>
-          <input type='text' class='form-control' ng-model='formData.paperwork'>
-        </div>
-        <label for='description'>Notes</label>
-        <textarea ng-model='formData.description' type='text' class='form-control' rows='5' placeholder='Upstanding guy.'>
-        </textarea>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-      <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-      <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
-    </div>
-  </div>
-</script>
-

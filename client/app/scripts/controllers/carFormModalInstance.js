@@ -15,8 +15,12 @@ angular.module('clientApp')
     $scope.formData.date = new Date($scope.formData.dateInMs);
 
     $scope.submit = function () {
+
+      // Formatting
+      $scope.formData.licensePlateNumber = $scope.formData.licensePlateNumber.toUpperCase();
+
       $http.post('/api/cars', $scope.formData).then(function(car) {
-        console.log('car created:',car);   
+        $scope.reset();  
       }, function(err) {
           console.error(err);
       });
@@ -24,6 +28,8 @@ angular.module('clientApp')
 
     $scope.reset = function () {
       $scope.formData = {};
+      $scope.carForm.$setPristine();
+      $scope.carForm.$setUntouched();
       $state.forceReload();
     };
 

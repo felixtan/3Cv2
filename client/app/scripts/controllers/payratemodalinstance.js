@@ -12,7 +12,7 @@ angular.module('clientApp')
     document.onkeypress = function (e) {
         e = e || window.event;
         // use e.keyCode
-        if(e.charCode === 13) {
+        if(e.charCode === 13 && !$scope.payRateForm.$invalid) {
             $scope.submit();
         }
     };

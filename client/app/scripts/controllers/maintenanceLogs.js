@@ -22,10 +22,9 @@ angular.module('clientApp')
             date: date,
             dateInMs: newDateInMs
         }).then(function() {
-            console.log('New maintenance log created.');
             setTimeout(function() { $state.forceReload(); }, 1000);
         }).catch(function(err) {
-            console.log(err);
+            console.error(err);
         });
     };
 
@@ -35,7 +34,6 @@ angular.module('clientApp')
             note: car.note,
             tlcNumber: car.tlcNumber
         }).success(function() {
-            console.log('Maintenance log updated.');
         }).error(function(err) {
             console.error(err);
         });

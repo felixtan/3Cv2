@@ -1,0 +1,147 @@
+<link rel="stylesheet" href='styles/forms.scss'>
+
+<div class="modal-header">
+    <h3 class="modal-title">Add Driver</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+
+<div class="modal-body">
+    <form novalidate role='form' id='newDriverForm' name='driverForm' ng-submit='submit()'>
+
+        <div class='form-rules clearfix'>
+            <p style='float: right;'>
+                <span style='color:#ff0000;'>* </span>Required
+            </p>
+        </div>
+
+        <!-- givenName VALIDATION -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.givenName.$error' 
+            ng-if='driverForm.givenName.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/givenName.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='givenName'>
+                <span style='color:#ff0000'>* </span>First
+            </label>
+            <input name='givenName' type='text' class='form-control' ng-model='formData.givenName' placeholder='John' ng-minlength='2' ng-maxlength='16' ng-pattern='/^[a-zA-Z]*$/' ng-required='true'>
+        </div>
+
+        <div class='form-group'>
+            <label for='middleInitial'>Middle</label>
+            <input name='middleInitial' type='text' class='form-control' ng-model='formData.middleInitial' placeholder='H'>
+        </div>
+
+        <!-- surName Validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.surName.$error' 
+            ng-if='driverForm.surName.$dirty' 
+            role='alert'>
+            <div ng-messages-include='views/formMessages/surName.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='surName'>
+                <span style='color:#ff0000'>* </span>Last
+            </label>
+            <input name='surName' type='text' class='form-control' ng-model='formData.surName' placeholder='Doe' ng-minlength='2' ng-maxlength='16' ng-pattern='/^[a-zA-Z]*$/' ng-required='true'>
+        </div>
+
+        <!-- email validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.email.$error' 
+            ng-if='driverForm.email.$dirty' 
+            role='alert'>
+            <div ng-messages-include='views/formMessages/email.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='email'>Email</label>
+            <input name='email' type='email' class='form-control' ng-model='formData.email' placeholder='xyz@email.com' ng-pattern='/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/'>
+        </div>
+
+        <!-- phone number validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.phoneNumber.$error' 
+            ng-if='driverForm.phoneNumber.$dirty' 
+            role='alert'>
+            <div ng-messages-include='views/formMessages/phone.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='phoneNumber'>Phone Number</label>
+            <input name='phoneNumber' type='text' class='form-control' ng-model='formData.phoneNumber' placeholder='ex. 123-456-7890' ng-pattern="/^1?[-\. ]?(\(\d{3}\)?[-\. ]?|\d{3}?[-\. ]?)?\d{3}?[-\. ]?\d{4}$/">
+        </div>
+
+        <div class='form-group'>
+            <label for='address'>Address</label>
+            <input type='text' class='form-control' ng-model='formData.address' placeholder=''>
+        </div>
+
+        <div class='form-group'>
+            <label for='driversLicenseNum'>Driver License Number</label>
+            <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder=''>
+        </div>
+        <div class='form-group'>
+          <label for='tlc'>TLC</label>
+          <input type='text' class='form-control' ng-model='formData.tlc'>
+        </div>
+        <div class='form-group'>
+          <label for='dmv'>DMV</label>
+          <input type='text' class='form-control' ng-model='formData.dmv'>
+        </div>
+        <div class='form-group'>
+          <label for='points'>Points</label>
+          <input type='text' class='form-control' ng-model='formData.points'>
+        </div>
+        <div class='form-group'>
+          <label for='accidents'>Accidents</label>
+          <input type='text' class='form-control' ng-model='formData.accidents'>
+        </div>
+        <div class='form-group'>
+          <label for='shift'>Shift</label>
+          <input type='text' class='form-control' ng-model='formData.shift'>
+        </div>
+        <div class='form-group'>
+          <label for='paperwork'>Paperwork</label>
+          <input type='text' class='form-control' ng-model='formData.paperwork'>
+        </div>
+
+        <!-- payRate validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.payRate.$error' 
+            ng-if='driverForm.payRate.$dirty' 
+            role='alert'>
+            <div ng-messages-include='views/formMessages/payRate.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='payRate'>
+                <span style='color:#ff0000;'>* </span>Pay Rate (%)
+            </label>
+            <input name='payRate' type='text' class='form-control' ng-model='formData.payRate' placeholder='0-100' ng-required='true' ng-pattern="/^(0|[1-9][0-9]?$|^100)$/">
+        </div>
+
+        <div class='form-group'>
+          <label for='car'>Car</label>
+          <select class='form-control' ng-model='formData.carId'>
+              <option> - </option>
+              <option ng-repeat='car in cars' value='{{ car.id }}'>{{ car.tlcNumber }}</option>
+          </select>
+        </div>
+        <label for='description'>Description</label>
+        <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
+        </textarea>
+    </form>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='driverForm.$invalid'>Submit</button>
+  <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+  <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>
+

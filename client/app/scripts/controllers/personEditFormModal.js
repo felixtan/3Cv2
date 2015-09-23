@@ -17,7 +17,7 @@ angular.module('clientApp')
         $scope.person.type = type;
         var modalInstance = $modal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: 'personEditFormModal',
+                templateUrl: 'views/personEditFormModal.html',
                 controller: 'PersonEditFormModalInstanceCtrl',
                 size: size,
                 resolve: {

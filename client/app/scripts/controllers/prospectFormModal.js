@@ -16,7 +16,7 @@ angular.module('clientApp')
 
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
-            templateUrl: 'newprospectformmodal',
+            templateUrl: 'views/newprospectformmodal.html',
             controller: 'ProspectFormModalInstanceCtrl',
             size: size
         });

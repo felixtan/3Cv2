@@ -1,0 +1,83 @@
+<link rel="stylesheet" href='styles/forms.scss'>
+
+<div class="modal-header">
+    <h3 class="modal-title">Add Car</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+
+<div class="modal-body">
+    <form novalidate role='form' id='newCarForm' name='carForm' ng-submit='submit()'>
+        
+        <div class='form-rules clearfix'>
+            <p style='float: right;'>
+                <span style='color:#ff0000;'>* </span>Required
+            </p>
+        </div>
+
+        <!-- licensePlate validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='carForm.licensePlateNumber.$error' 
+            ng-if='carForm.licensePlateNumber.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/licensePlate.html'></div>
+        </div>
+        
+        <div class='form-group'>
+            <label for='licensePlateNumber'>
+                <span style='color:#ff0000'>* </span>License Plate
+            </label>
+            <input name='licensePlateNumber' type='text' class='form-control' ng-model='formData.licensePlateNumber' placeholder='ex. T5728292C' ng-pattern='/^[a-zA-Z0-9]{6,8}$/' ng-required='true'>
+        </div>
+
+        <!-- licenseNumber validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='carForm.tlcNumber.$error' 
+            ng-if='carForm.tlcNumber.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/licenseNumber.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='tlcNumber'>TLC Number</label>
+            <input name='tlcNumber' type='text' placeholder='ex. 5571653' class='form-control' ng-model='formData.tlcNumber' ng-pattern="/^([a-zA-Z0-9]){4,7}$/">
+        </div>
+
+        <!-- licensePlate validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='carForm.mileage.$error' 
+            ng-if='carForm.mileage.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/mileage.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='mileage'>
+                <span style='color:#ff0000'>* </span>Mileage
+            </label>
+            <input name='mileage' type='text' class='form-control' ng-model='formData.mileage' placeholder='ex. 50000' ng-required='true' ng-pattern='/^\d+$/'>
+        </div>
+
+        <div class='form-group'>
+            <label for='driver'>Driver</label>
+            <select class='form-control' ng-model='formData.driverId' placeholder='Select Driver'>
+                <option> - </option>
+                <option ng-repeat='driver in drivers' value='{{ driver.id }}'>{{ driver.givenName }} {{ driver.surName }}</option>
+            </select>
+        </div>
+
+        <div class='form-group'>
+            <label for='description'>Description</label>
+            <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
+            </textarea>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='carForm.$invalid'>Submit</button>
+    <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>

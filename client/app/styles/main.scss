@@ -272,7 +272,11 @@ body {
   transition-duration: 0.0125s;
 }
 
-// rows
-.driver-row {
-  font-weight: light !important;
+// spacing buttons on the dashboard
+.add-btn-li:hover {
+  background-color: #f9f9f9; 
+}
+
+.add-btn-li {
+  padding-left: 1.5em;
 }

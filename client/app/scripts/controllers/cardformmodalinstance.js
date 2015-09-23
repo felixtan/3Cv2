@@ -18,10 +18,8 @@ angular.module('clientApp')
     $scope.typeNames = Object.keys($scope.routeFor);
 
     $scope.submit = function () {
-        console.log('creating card:', $scope.formData);
         $http.post('/api/assets/' + $scope.routeFor[$scope.formData.type], $scope.formData)
-            .then(function(card) {
-                console.log('card created:', card);    
+            .then(function(card) {   
                 $scope.reset();
             }, function(err) {
                 console.error(err);
@@ -30,6 +28,8 @@ angular.module('clientApp')
 
     $scope.reset = function () {
       $scope.formData = {};
+      $scope.cardForm.$setPristine();
+      $scope.cardForm.$setUntouched();
       $state.forceReload();
     };
 

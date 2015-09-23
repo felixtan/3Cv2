@@ -17,7 +17,7 @@ angular.module('clientApp')
 
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
-            templateUrl: 'cardformmodal',
+            templateUrl: 'views/cardformmodal.html',
             controller: 'CardFormModalInstanceCtrl',
             size: size
         });

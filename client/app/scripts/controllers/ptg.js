@@ -55,7 +55,6 @@ angular.module('clientApp')
             var driver = _.filter($scope.drivers, function(driver) {
                 return driverLog.driverId == driver.id;
             });
-            console.log(driver);
             var newProfit = Math.round((driverLog.uberRevenue - driverLog.tollCosts) * (1-driver[0].payRate*.01) - driverLog.gasCosts/2 - driverLog.additions);
 
             if(typeof driverLog.deposit === 'number') newProfit -= driverLog.deposit;
@@ -79,7 +78,6 @@ angular.module('clientApp')
             dateInMs: newDateInMs,
             date: date
         }).then(function() {
-            console.log('New PTG log created.');
             setTimeout(function() { $state.forceReload(); }, 1000);
         }).catch(function(err) {
             console.error(err);
@@ -99,7 +97,6 @@ angular.module('clientApp')
             subtractions: driver.subtractions,
             profit: driver.profit
         }).success(function() {
-            console.log('PTG log updated.');
         }).error(function(err) {
             console.error(err);
         });

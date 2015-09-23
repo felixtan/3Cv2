@@ -17,7 +17,7 @@ angular.module('clientApp')
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
-    console.log($scope.cars);
+    
     $scope.reload = function() {
         $state.forceReload();
     }
@@ -27,11 +27,9 @@ angular.module('clientApp')
         if(listType === 'driver' || 'prospect') {
             if(listType === 'driver') {
                 var driverRowForm = angular.element('form.driverRowForm');
-                console.log(driverRowForm);
                 driverRowForm.$cancel();
             } else {
                 var driverRowForm = angular.element('form.prospectRowForm');
-                console.log(driverRowForm);
                 prospectRowForm.$cancel();
             }
         } else {
@@ -44,10 +42,9 @@ angular.module('clientApp')
         $http.put('/api/cars/' + carId, {
             oilChangeRequired: false
         }).then(function() {
-            console.log('Car ' + carId + ' oil changed.');
             $state.forceReload();
         }).catch(function(err) {
-            console.log(err);
+            console.error(err);
         });
     };
 
@@ -56,55 +53,29 @@ angular.module('clientApp')
     // to use this add following attribute to button element
     // e-ng-keypress="keypress($event, driverRowForm)"
     $scope.keypress = function(e, form) {
-        console.log(e);
-        console.log(form);
         if (e.which === 13) {
             form.$submit();
         }
     };
 
-    // Input: name string
-    // Output: object with givenName, middleInitial, and surName properties
-    var parseName = function(obj) {
-        return $q(function(resolve, reject) {
-            var name = obj.name.split(/[ .]+/);
-            delete obj.name;
-            if(name.length === 3) {
-                obj.givenName = name[0];
-                obj.middleInitial = name[1];
-                obj.surName = name[2];  
-            } else if(name.length === 2) {
-                obj.givenName = name[0];
-                obj.surName = name[1];          
-            } 
-
-            resolve(obj);
-            reject(new Error('obj.name is fucked'));
-        });
-    };
-
     $scope.updateRow = function(obj) {
-        parseName(obj).then(function(objNameParsed) {
-            var promise = {};
-            var deferred = deferred || $q.defer();
+        var promise = {};
+        var deferred = deferred || $q.defer();
 
-            if(objNameParsed.status) {
-                promise = $http.put('/api/prospects/'+objNameParsed.id, objNameParsed);
-            } else if(objNameParsed.payRate) {
-                promise = $http.put('/api/drivers/'+objNameParsed.id, objNameParsed);
-            }
+        if(obj.status) {
+            promise = $http.put('/api/prospects/'+obj.id, obj);
+        } else if(obj.payRate) {
+            promise = $http.put('/api/drivers/'+obj.id, obj);
+        }
 
-            promise.then(function(data) {
-                deferred.resolve(data);
-                setTimeout(function() { $state.forceReload(); }, 100);
-            }, function(err) {
-                deferred.reject(err);
-            });
-
-            return deferred.promise;
+        promise.then(function(data) {
+            deferred.resolve(data);
+            setTimeout(function() { $state.forceReload(); }, 100);
         }, function(err) {
-            return new Error({ error: err, msg: 'Error updating dashboard row.' });
+            deferred.reject(err);
         });
+
+        return deferred.promise;
     };
 
     $scope.deleteRow = function(obj) {
@@ -119,7 +90,6 @@ angular.module('clientApp')
         }
 
         $http.delete('/api/' + type + 's/' + obj.id).then(function(data) {
-            console.log(data.msg);
             $state.forceReload();
         }, function(err) {
             console.error(err);
@@ -151,7 +121,6 @@ angular.module('clientApp')
         $http.put('/api/prospects/' + id, {
             status: newStatus
         }).then(function() {
-            console.log('Prospect ' + id + ' now has status ' + newStatus + '.');
         }, function(err) {
             console.error(err);
         });
@@ -162,7 +131,7 @@ angular.module('clientApp')
     $scope.filterProspectData = function(id) {
         return $q(function(resolve, reject) {
             $modal.open({
-                templateUrl: 'payRateModal',
+                templateUrl: 'views/payRateModal.html',
                 controller: 'PayRateModalInstanceCtrl'
             }).result.then(function(payRate) {
                 
@@ -170,18 +139,18 @@ angular.module('clientApp')
                     return data.id === id;
                 })[0];
 
-                parseName(prospect).then(function(parsedNameProspect) {
-                    parsedNameProspect.payRate = payRate;
-                    delete prospect.status;
-                    delete prospect.$$hashKey;
-                    delete prospect.createdAt;
-                    delete prospect.id;
-                    delete prospect.updatedAt;
-                    delete prospect.userId;
+                
+                prospect.payRate = payRate;
+                delete prospect.status;
+                delete prospect.$$hashKey;
+                delete prospect.createdAt;
+                delete prospect.id;
+                delete prospect.updatedAt;
+                delete prospect.userId;
 
-                    resolve(prospect);
-                    reject(new Error('Failed to filter prospect data before promoting to driver.'));
-                });
+                resolve(prospect);
+                reject(new Error('Failed to filter prospect data before promoting to driver.'));
+                
             }, function(err) {
                 console.error(err);
             });
@@ -212,7 +181,7 @@ angular.module('clientApp')
             newCar: newCar
         }).then(function(data) {
             console.log(data.data.msg);
-        }).then(function(err) {
+        }, function(err) {
             console.error(err);
         });
     };
@@ -247,11 +216,8 @@ angular.module('clientApp')
                             $scope.filterProspectData(id).then(function(prospect) {
                                 $scope.getCarId(event.item).then(function(carId) {
                                     prospect.carId = carId;
-                                    console.log('prospect being promoted:',prospect);
                                     $http.post('/api/drivers', prospect).then(function(driver) {
-                                        console.log('Promoted prospect ' + driver.data.givenName + ' ' + driver.data.surName + ' to driver.');
                                         $http.delete('/api/prospects/'+id).then(function(data) {
-                                            console.log(data.data.msg);
                                             $state.forceReload();    // Temp fix for reloading the view so the UI is accurate
                                         }, function(err) {
                                             console.error(err);

@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <label class="col-xs-12 col-sm-4 control-label" for="spOrganization">
-                <span style='color:#ff0000'>* </span>Organization
+                Organization
             </label>
 
             <div class="col-xs-12 col-sm-4">
@@ -81,10 +81,6 @@
 
         <!-- angular validation for organization field -->
         <!-- everything else is handled by stormpath -->
-        <div class='help-block' ng-messages='registration.organization.$error' role='alert' ng-show='registration.organization.$touched'>
-            <div ng-message='required'></div>
-        </div>
-
         <div ng-messages='registration.givenName.$error' role='alert' ng-show='registration.givenName.$touched'>
             <div ng-message='required'></div>
         </div>

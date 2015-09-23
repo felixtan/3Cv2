@@ -1,0 +1,61 @@
+<link rel="stylesheet" href='styles/forms.scss'>
+
+<div class="modal-header">
+    <h3 class="modal-title">Add Card</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>&times;</button>
+</div>
+
+<div class='modal-body'>
+  <form novalidate role='form' id='newCardForm' name='cardForm'>
+    
+    <div class='form-rules clearfix'>
+        <p style='float: right;'>
+            <span style='color:#ff0000;'>* </span>Required
+        </p>
+    </div>
+
+    <!-- givenName VALIDATION -->
+    <div class='error-message bg-danger' 
+        ng-messages='cardForm.type.$error' 
+        ng-if='cardForm.type.$dirty'
+        role='alert'>
+        <div ng-messages-include='views/formMessages/card.html'></div>
+    </div>
+
+    <div class='form-group'>
+      <label for='type'>
+        <span style='color:#ff0000'>* </span>Type
+      </label>
+      <select name='type' class='form-control' ng-model='formData.type'>
+          <option ng-repeat='type in typeNames' value='{{ type }}'>{{ type }} </option>
+      </select>
+    </div>
+
+    <!-- givenName VALIDATION -->
+    <div class='error-message bg-danger' 
+        ng-messages='cardForm.number.$error' 
+        ng-if='cardForm.number.$dirty'
+        role='alert'>
+        <div ng-messages-include='views/formMessages/card.html'></div>
+    </div>
+
+    <div class='form-group'>
+        <label for='number'>
+          <span style='color:#ff0000'>* </span>Number
+        </label>
+        <input name='number' type='text' class='form-control' ng-model='formData.number' placeholder='ex. 642190' ng-required='true'>
+    </div>
+
+    <div class='form-group' ng-show="formData.type === 'Gas Card'">
+        <label for='name'>Name</label>
+        <input name='name' type='text' class='form-control' ng-model='formData.name'>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='cardForm.$invalid'>Submit</button>
+    <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>

@@ -10,14 +10,13 @@
 angular.module('clientApp')
   .controller('CarFormModalCtrl', function ($scope, $modal, dataService) {
     $scope.formData = {};
-
     $scope.animationsEnabled = true;
 
     $scope.open = function (size) {
 
         var modalInstance = $modal.open({
             animation: $scope.animationsEnabled,
-            templateUrl: 'carformmodal',
+            templateUrl: 'views/carformmodal.html',
             controller: 'CarFormModalInstanceCtrl',
             size: size,
             resolve: {

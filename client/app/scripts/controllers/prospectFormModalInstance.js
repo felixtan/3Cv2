@@ -12,28 +12,33 @@ angular.module('clientApp')
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.formData = {};
 
-      $scope.submit = function () {
-        if($scope.formData.status === ' - ') {
-          $scope.formData.status = 'Callers';
-        }
+    $scope.submit = function () {
+      if($scope.formData.status === ' - ') {
+        $scope.formData.status = 'Callers';
+      }
 
-        $scope.formData.status = $scope.formData.status.toLowerCase();
+      // Formatting
+      if($scope.formData.status) $scope.formData.status = $scope.formData.status.toLowerCase();
+      if($scope.formData.middleInitial) $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase();
+      $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
+      $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
 
-        $http.post('/api/prospects', $scope.formData)
-            .then(function(prospect) {
-                console.log(prospect.data);    
-                $scope.reset();
-            }, function(err) {
-                console.error(err);
-            });
-      };
+      $http.post('/api/prospects', $scope.formData)
+          .then(function(prospect) {
+              $scope.reset();
+          }, function(err) {
+              console.error(err);
+          });
+    };
 
-      $scope.reset = function () {
-        $scope.formData = {};
-        $state.forceReload();
-      };
+    $scope.reset = function () {
+      $scope.formData = {};
+      $scope.prospectForm.$setPristine();
+      $scope.prospectForm.$setUntouched();
+      $state.forceReload();
+    };
 
-      $scope.close = function () {
-        $modalInstance.dismiss('cancel');
-      };
+    $scope.close = function () {
+      $modalInstance.dismiss('cancel');
+    };
   });

@@ -10,26 +10,33 @@
 angular.module('clientApp')
   .controller('DriverFormModalInstanceCtrl', function ($state, getCars, $http, $scope, $modalInstance) {
     $scope.formData = {};
-    $scope.cars = getCars.data;
+    $scope.cars = getCars.data;    
 
-      $scope.submit = function () {
-        console.log('creating driver:',$scope.formData);
-        $http.post('/api/drivers', $scope.formData)
-            .then(function(driver) {
-                console.log('driver created:', driver); 
-                $scope.reset();   
-            }, function(err) {
-                console.error(err);
-            });
-      };
+    
+    $scope.submit = function () {
+        
+      // Formatting
+      if($scope.formData.middleInitial) $scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase();
+      $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
+      $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
+      $scope.formData.payRate = $scope.formData.payRate.toString();
 
-      $scope.reset = function () {
-        $scope.formData = {};
-        $state.forceReload();
-      };
+      $http.post('/api/drivers', $scope.formData)
+          .then(function(driver) {
+              $scope.reset();   
+          }, function(err) {
+              console.error(err);
+          });
+    };
 
-      $scope.close = function () {
-        $scope.reset();
-        $modalInstance.dismiss('cancel');
-      };
+    $scope.reset = function () {
+      $scope.formData = {};
+      $scope.driverForm.$setPristine();
+      $scope.driverForm.$setUntouched();
+      $state.forceReload();
+    };
+
+    $scope.close = function () {
+      $modalInstance.dismiss('cancel');
+    };
   });
