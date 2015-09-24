@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.set('models', require('./db/models'));
-
+console.log(process.env);
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -78,7 +78,7 @@ if (app.get('env') === ('development' || 'production')) {
 
 // attach stormpath routes
 spMiddleware.attachDefaults(app);
-app.use(spMiddleware.authenticate);
+// app.use(spMiddleware.authenticate);
 
 // Includes all routes
 var router = require('./router')(app);

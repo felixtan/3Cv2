@@ -20,7 +20,6 @@ angular
     'ng-sortable',
     'ui.bootstrap',
     'stormpath',
-    'stormpath.templates',
     'ui.router',
     'ngMessages'
   ])

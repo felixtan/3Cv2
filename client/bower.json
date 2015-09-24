@@ -30,6 +30,11 @@
         "dist/css/bootstrap.css",
         "dist/js/bootstrap.js"
       ]
+    },
+    "stormpath-sdk-angularjs": {
+      "main": [
+        "dist/stormpath-sdk-angularjs.tpls.min.js"
+      ]
     }
   }
 }
