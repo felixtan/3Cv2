@@ -41,9 +41,10 @@ module.exports = {
             CarLogs.create({
                 date: req.body.date,
                 dateInMs: req.body.dateInMs,
-                tlcNumber: req.body.tlcNumber,
+                licensePlate: req.body.licensePlate,
                 note: req.body.note,
-                organization: organizationId
+                organization: organizationId,
+                carId: req.body.carId
             }).then(function(log) {
                 Cars.findById(req.params.id).then(function(car) {
                     car.addLog([log.id]).then(function() {
@@ -61,22 +62,33 @@ module.exports = {
     },
 
     updateLog: function(req, res) {
-        CarLogs.max("mileage", { where: { tlcNumber: req.body.tlcNumber } }).then(function(previouslyCheckedMileage) {
-            // check if car needs oil change
-            // TODO: user should be able to set thresholdMileage
-            var thresholdMileage = 10000;
-            var oilChangeRequired = (req.body.mileage - previouslyCheckedMileage >= thresholdMileage) || false;
-            Cars.update({
-                mileage: req.body.mileage,
-                oilChangeRequired: oilChangeRequired
-            }, {
-                where: {
-                    tlcNumber: req.body.tlcNumber
+        CarLogs.findById(req.params.id).then(function(carLog) {
+            console.log('carLog.carId:',carLog.carId);
+            CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {
+                // check if car needs oil change
+                // TODO: user should be able to set thresholdMileage
+                var thresholdMileage = 10000;
+                var oilChangeRequired = (req.body.mileage - previouslyCheckedMileage >= thresholdMileage) || false;
+                console.log('previouslyCheckedMileage:', previouslyCheckedMileage);
+                console.log('oilChangeRequired:', oilChangeRequired);
+                if(oilChangeRequired) {
+                    Cars.findById(carLog.carId).then(function(car) {
+                        car.update({
+                            oilChangeRequired: true
+                        });
+                    }).catch(function(err) {
+                        console.error(err);
+                    });
                 }
-            }).then(function() {
-                res.status(200).json({ msg: 'Updated log for car ' + req.params.id });    
-            }).catch(function(err) {
-                console.error(err);    
+
+                carLog.update({
+                    mileage: req.body.mileage,
+                    note: req.body.note
+                }).then(function() {
+                    res.status(200).json({ msg: 'Updated log for car ' + req.params.id }); 
+                }).catch(function(err) {
+                    console.error(err);    
+                });
             });
         }).catch(function(err) {
             console.error(err);

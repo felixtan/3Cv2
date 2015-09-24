@@ -92,23 +92,23 @@ module.exports = {
         
         // Cars
         var car1 = {
-                tlcNumber: 'T646853C',
-                licensePlateNumber: 'FUJ 5993',
+                licensePlate: 'T646853C',
+                licenseNumber: 'FUJ 5993',
                 mileage: 12923,
                 description: 'lorem ipsum',
                 // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             car2 = {
-                tlcNumber: 'T627067C',
-                licensePlateNumber: 'GPJ 6478',
+                licensePlate: 'T627067C',
+                licenseNumber: 'GPJ 6478',
                 mileage: 14081,
                 description: 'lorem ipsum',
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'      
         },
             car3 = {
-                tlcNumber: 'T657227C',
-                licensePlateNumber: 'FLJ 6290',
+                licensePlate: 'T657227C',
+                licenseNumber: 'FLJ 6290',
                 mileage: 120461,
                 description: 'lorem ipsum',
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
@@ -164,7 +164,7 @@ module.exports = {
         var car1_log = {
                 date: d,
                 dateInMs: dateInMs,
-                tlcNumber: car1.tlcNumber,
+                licensePlate: car1.licensePlate,
                 mileage: car1.mileage,
                 note: "Added too much air, told him to release air",
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
@@ -172,7 +172,7 @@ module.exports = {
             car2_log = {
                 date: d,
                 dateInMs: dateInMs,
-                tlcNumber: car2.tlcNumber,
+                licensePlate: car2.licensePlate,
                 mileage: car2.mileage,
                 note: 'Left side back door damage below handle 6 inches below ',
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
@@ -180,7 +180,7 @@ module.exports = {
             car3_log = {
                 date: d,
                 dateInMs: dateInMs,
-                tlcNumber: car3.tlcNumber,
+                licensePlate: car3.licensePlate,
                 mileage: car3.mileage,
                 note: 'back right fender needs fixing',
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0y'

@@ -29,11 +29,17 @@ var server = http.createServer(app);
 // multiple connections to the database
 var models = app.get('models');
 var setupDevDB = require('../db/scripts/setupDevDB');
+var opts = {};
+if(process.env.NODE_ENV === 'development') { 
+  opts = { 
+    force: true 
+  } 
+}
 
 // app.on('stormpath.ready', function() {
 //   console.log('Stormpath initialized.')
-  models.sequelize.sync({force: true}).then(function() {
-    setupDevDB.populate();
+  models.sequelize.sync(opts).then(function() {
+    if(process.env.NODE_ENV === 'development') { setupDevDB.populate(); }
     console.log('Connected to the threec database.');
     server.listen(port);
   });

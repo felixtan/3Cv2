@@ -61,11 +61,14 @@ module.exports = {
                         CarLogs.create({
                             dateInMs: req.body.dateInMs,
                             date: req.body.date,
-                            tlcNumber: car.tlcNumber,
-                            organization: organizationId
+                            mileage: car.mileage,
+                            licensePlate: car.licensePlate,
+                            organization: organizationId,
+                            carId: car.id
                         }).then(function(carLog) {
                             car.addLog([carLog.id]);
                             maintenanceLog.addCarLog([carLog.id]);
+                            console.log('Log for car ' + car.id + ' attached to maintenance log ' + maintenanceLog.date);
                         });
                     });
                 })

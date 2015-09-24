@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="styles/partials/_ptg.css">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h1 class='page-header'>Mileage Log</h1>
+    <h1 class='page-header'>Car Logs</h1>
 
     <div class='sub-header'>
         <button class='btn btn-success' ng-click='maintenance.newLog()'> Add Row </button>
@@ -13,7 +13,7 @@
                 <tr>
                     <td><strong>Week \ Car</strong></td>
                     <td ng-repeat="car in maintenance.cars | orderBy:'id'">
-                        {{ car.tlcNumber }}
+                        {{ car.licensePlate }}
                     </td>
                 </tr>
             </thead>
@@ -33,7 +33,7 @@
                           </button>
                         </form>
                     </td>
-                    <td class='log-tablecell' ng-repeat="car in log.CarLogs | orderBy:'id'">
+                    <td class='log-tablecell' ng-repeat="car in log.CarLogs | orderBy:'carId'">
                         <ul class='log'>
                             <li>
                                 <p ng-show='rowform.$visible'>Mileage: </p>

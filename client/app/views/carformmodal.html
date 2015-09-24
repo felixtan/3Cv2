@@ -18,30 +18,30 @@
 
         <!-- licensePlate validation -->
         <div class='error-message bg-danger' 
-            ng-messages='carForm.licensePlateNumber.$error' 
-            ng-if='carForm.licensePlateNumber.$dirty'
+            ng-messages='carForm.licensePlate.$error' 
+            ng-if='carForm.licensePlate.$dirty'
             role='alert'>
             <div ng-messages-include='views/formMessages/licensePlate.html'></div>
         </div>
         
         <div class='form-group'>
-            <label for='licensePlateNumber'>
+            <label for='licensePlate'>
                 <span style='color:#ff0000'>* </span>License Plate
             </label>
-            <input name='licensePlateNumber' type='text' class='form-control' ng-model='formData.licensePlateNumber' placeholder='ex. T5728292C' ng-pattern='/^[a-zA-Z0-9]{6,8}$/' ng-required='true'>
+            <input name='licensePlate' type='text' class='form-control' ng-model='formData.licensePlate' placeholder='ex. T5728292C' ng-pattern='/^[a-zA-Z0-9]{6,8}$/' ng-required='true'>
         </div>
 
         <!-- licenseNumber validation -->
         <div class='error-message bg-danger' 
-            ng-messages='carForm.tlcNumber.$error' 
-            ng-if='carForm.tlcNumber.$dirty'
+            ng-messages='carForm.licenseNumber.$error' 
+            ng-if='carForm.licenseNumber.$dirty'
             role='alert'>
             <div ng-messages-include='views/formMessages/licenseNumber.html'></div>
         </div>
 
         <div class='form-group'>
-            <label for='tlcNumber'>TLC Number</label>
-            <input name='tlcNumber' type='text' placeholder='ex. 5571653' class='form-control' ng-model='formData.tlcNumber' ng-pattern="/^([a-zA-Z0-9]){4,7}$/">
+            <label for='licenseNumber'>TLC Number</label>
+            <input name='licenseNumber' type='text' placeholder='ex. 5571653' class='form-control' ng-model='formData.licenseNumber' ng-pattern="/^([a-zA-Z0-9]){4,7}$/">
         </div>
 
         <!-- licensePlate validation -->

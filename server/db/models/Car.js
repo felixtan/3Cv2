@@ -4,11 +4,11 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Car', { 
-    tlcNumber: {
+    licenseNumber: {
       type: DataTypes.STRING,
       allowNull: true,           // required
     },
-    licensePlateNumber: {
+    licensePlate: {
       type: DataTypes.STRING,
       allowNull: true,
     },

@@ -18,11 +18,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // stormpath
-var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
+// var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
 var spMiddleware = stormpathExpressSdk.createMiddleware({
-  appHref: apiKey.href,
-  apiKeyId: apiKey.id,
-  apiKeySecret: apiKey.secret,
+  cache: 'memory',
+  apiKeyId: process.env.STORMPATH_API_KEY_ID || '61DEQ0RV2XQNYF92MLBGRJ40F',
+  apiKeySecret: process.env.STORMPATH_API_KEY_SECRET || 'yYclBSybH5K1HTOnjepY2gHXhRZOMH4e7XdBAKvD+og',
+  appHref: process.env.STORMPATH_URL || 'https://api.stormpath.com/v1/applications/2FK2EinsSqnyPZwzuOKGwk',
+  secretKey: process.env.STORMPATH_SECRET_KEY || '27ENHv1QFu8j8bdt4RpMPXuKMCDn61JWbtv17gZzQmdu5/mMlr4oCQ==',
   expandCustomData: true,
   postRegistrationHandler: function(account, res, next) {
     var hrefArray = account.user.href.split('/');
@@ -41,7 +43,7 @@ var spMiddleware = stormpathExpressSdk.createMiddleware({
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (app.get('env') === ('development' || 'production')) {
 
   // This will change in production since we'll be using the dist folder
   app.use(express.static(path.join(__dirname, '../client')));
@@ -60,19 +62,19 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-if(app.get('env') === 'production') {
+// if(app.get('env') === 'production') {
 
-  // changes it to use the optimized version for production
-  app.use(express.static(path.join(__dirname, '/dist')));
+//   // changes it to use the optimized version for production
+//   app.use(express.static(path.join(__dirname, '/dist')));
 
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: {}
-    });
-  });
-}
+//   app.use(function(err, req, res, next) {
+//     res.status(err.status || 500);
+//     res.render('error', {
+//       message: err.message,
+//       error: {}
+//     });
+//   });
+// }
 
 // attach stormpath routes
 spMiddleware.attachDefaults(app);

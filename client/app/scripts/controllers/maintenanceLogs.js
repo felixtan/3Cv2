@@ -30,11 +30,10 @@ angular.module('clientApp')
         });
     };
 
-    this.updateLog = function(car) {
-        $http.put('/api/logs/cars/' + car.id, {
-            mileage: car.mileage,
-            note: car.note,
-            tlcNumber: car.tlcNumber
+    this.updateLog = function(carLog) {
+        $http.put('/api/logs/cars/' + carLog.id, {
+            mileage: carLog.mileage,
+            note: carLog.note
         }).success(function() {
         }).error(function(err) {
             console.error(err);

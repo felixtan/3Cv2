@@ -41,8 +41,8 @@ module.exports = {
     save: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Cars.create({
-                tlcNumber: req.body.tlcNumber,
-                licensePlateNumber: req.body.licensePlateNumber,
+                licenseNumber: req.body.licenseNumber,
+                licensePlate: req.body.licensePlate,
                 mileage: req.body.mileage,
                 organization: organizationId,
                 description: req.body.description
@@ -67,10 +67,12 @@ module.exports = {
                             date: maintenanceLog.date,
                             dateInMs: maintenanceLog.dateInMs,
                             organization: organizationId,
-                            tlcNumber: car.tlcNumber
+                            licensePlate: car.licensePlate,
+                            mileage: car.mileage
                         }).then(function(carLog) {
                             car.addLog([carLog.id]);
                             maintenanceLog.addCarLog([carLog.id]);
+                            console.log('Log for car ' + car.id + ' attached to maintenance log ' + maintenanceLog.date);
                         });
                     });
                 }).then(function() {
@@ -89,8 +91,8 @@ module.exports = {
 
     updateCar: function(req, res) {
         Cars.update({
-            tlcNumber: req.body.tlcNumber,
-            licensePlateNumber: req.body.licensePlateNumber,
+            licenseNumber: req.body.licenseNumber,
+            licensePlate: req.body.licensePlate,
             mileage: req.body.mileage,
             oilChangeRequired: req.body.oilChangeRequired,
             description: req.body.description

@@ -15,9 +15,8 @@ angular.module('clientApp')
     $scope.formData.date = new Date($scope.formData.dateInMs);
 
     $scope.submit = function () {
-
       // Formatting
-      $scope.formData.licensePlateNumber = $scope.formData.licensePlateNumber.toUpperCase();
+      $scope.formData.licensePlate = $scope.formData.licensePlate.toUpperCase();
 
       $http.post('/api/cars', $scope.formData).then(function() {
         $scope.reset();  

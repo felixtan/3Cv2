@@ -41,24 +41,39 @@ angular
     $stateProvider
     .state('login', {
         url: '/login',
-        templateUrl: 'views/login.html'
+        templateUrl: 'views/login.html',
+        sp: {
+            authenticate: false
+        }
     })
     .state('logout', {
         url: '/logout',
         templateUrl: 'views/logout.html',
-        controller: 'LogoutCtrl'
+        controller: 'LogoutCtrl',
+        sp: {
+            authenticate: false
+        }
     })
     .state('register', {
         url: '/register',
-        templateUrl: 'views/register.html'
+        templateUrl: 'views/register.html',
+        sp: {
+            authenticate: false
+        }
     })
     .state('passwordResetRequest', {
         url: '/password/requestReset',
-        templateUrl: 'views/passwordresetrequest.html'
+        templateUrl: 'views/passwordresetrequest.html',
+        sp: {
+            authenticate: false
+        }
     })
     .state('passwordReset', {
         url: '/password/reset',
-        templateUrl: 'views/passwordreset.html'
+        templateUrl: 'views/passwordreset.html',
+        sp: {
+            authenticate: false
+        }
     })
     .state('main', {
         url: '/',

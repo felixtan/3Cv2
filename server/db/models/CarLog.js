@@ -4,6 +4,10 @@
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('CarLog', {
+        carId: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
         date: {
             type: DataTypes.DATE,
             allowNull: true
@@ -12,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BIGINT,
             allowNull: true
         },
-        tlcNumber: {
+        licensePlate: {
             type: DataTypes.STRING,
             allowNull: false            // required
         },
