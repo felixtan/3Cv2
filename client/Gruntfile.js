@@ -25,6 +25,10 @@ module.exports = function (grunt) {
     dist: '../server/dist'
   };
 
+  // Stuff I installed
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 

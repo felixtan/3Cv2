@@ -15,7 +15,7 @@ angular.module('clientApp')
     $scope.drivers = basicDriverData.data;
 
     // causes error when 'use strict'
-    const oneWeekInMs = 604800000;
+    var oneWeekInMs = 604800000;
 
     // calculate payout
     // input: driverId from ptgLog

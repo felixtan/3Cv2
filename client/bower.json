@@ -16,7 +16,7 @@
     "bootstrap-sass-official": "^3.2.0",
     "normalize.css": "~3.0.3",
     "Sortable": "https://github.com/RubaXa/Sortable.git#~1.2.1",
-    "stormpath-sdk-angularjs": "~0.5.3"
+    "stormpath-sdk-angularjs": "~0.6.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0"
@@ -29,11 +29,6 @@
         "less/bootstrap.less",
         "dist/css/bootstrap.css",
         "dist/js/bootstrap.js"
-      ]
-    },
-    "stormpath-sdk-angularjs": {
-      "main": [
-        "dist/stormpath-sdk-angularjs.tpls.min.js"
       ]
     }
   }

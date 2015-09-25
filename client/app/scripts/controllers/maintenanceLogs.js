@@ -14,7 +14,7 @@ angular.module('clientApp')
     this.cars = basicCarData.data;
 
     // causes error when 'use strict'
-    const oneWeekInMs = 604800000;
+    var oneWeekInMs = 604800000;
 
     this.newLog = function() {
         var newDateInMs = this.mostRecentDateInMs + oneWeekInMs;

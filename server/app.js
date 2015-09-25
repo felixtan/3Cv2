@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 app.set('models', require('./db/models'));
-console.log(process.env);
+
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -43,7 +43,7 @@ var spMiddleware = stormpathExpressSdk.createMiddleware({
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === ('development' || 'production')) {
+if (app.get('env') === ('development')) {
 
   // This will change in production since we'll be using the dist folder
   app.use(express.static(path.join(__dirname, '../client')));
@@ -62,23 +62,23 @@ if (app.get('env') === ('development' || 'production')) {
 
 // production error handler
 // no stacktraces leaked to user
-// if(app.get('env') === 'production') {
+if(app.get('env') === 'production') {
 
-//   // changes it to use the optimized version for production
-//   app.use(express.static(path.join(__dirname, '/dist')));
+  // changes it to use the optimized version for production
+  app.use(express.static(path.join(__dirname, '/dist')));
 
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.render('error', {
-//       message: err.message,
-//       error: {}
-//     });
-//   });
-// }
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
+  });
+}
 
 // attach stormpath routes
 spMiddleware.attachDefaults(app);
-// app.use(spMiddleware.authenticate);
+app.use(spMiddleware.authenticate);
 
 // Includes all routes
 var router = require('./router')(app);
