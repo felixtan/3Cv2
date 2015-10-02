@@ -17,10 +17,6 @@ angular.module('clientApp')
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
-    
-    $scope.gmaps = function(address) {
-        window.open('https://maps.google.com/?q='+address);
-    };
 
     $scope.reload = function() {
         $state.forceReload();

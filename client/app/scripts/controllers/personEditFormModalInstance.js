@@ -16,6 +16,14 @@ angular.module('clientApp')
     $scope.cars = getCars.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
 
+    // parsing address
+    // var address = $scope.formData.address.replace(/,/g , "").split(' ');
+    // $scope.formData.zip = address.splice(address.length-1, 1);
+    // $scope.formData.state = address.splice(address.length-1, 1);
+    // console.log(address);
+    // $scope.formData.addressLine1 = address[0] + ' ' + address[1] + ' ' + address[2];
+    // $scope.formData.addressLine2 = address[1] + address[2];
+
     $scope.submit = function() {
         var type = $scope.typeOfPerson.toLowerCase();   // driver or prospect
         var id = $scope.formData.id;

@@ -210,7 +210,7 @@
                 {{ prospect.shift }}
             </td>
             <td>
-                {{ prospect.address }}
+                <a class='addressLink' href="https://maps.google.com/?q={{ prospect.address }}" target="_blank">{{ prospect.address }}</a>
             </td>
           </tr>
       </tbody>

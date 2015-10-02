@@ -104,10 +104,13 @@
           <input type='text' class='form-control' ng-model='formData.phoneNumber'  placeholder='ex. 123-456-7890' ng-pattern="/^1?[-\. ]?(\(\d{3}\)?[-\. ]?|\d{3}?[-\. ]?)?\d{3}?[-\. ]?\d{4}$/">
       </div>
 
+      <!-- Address -->
       <div class='form-group'>
-          <label for='address'>Address</label>
-          <input type='text' class='form-control' ng-model='formData.address' placeholder='1600 Pennsylvania Ave NW, Washington, DC 20500'>
-      </div>
+            <label for='address'>Address</label>
+            <input name='address' type='text' class='form-control' ng-model='formData.address' placeholder='1600 Pennsylvannia Ave NW, Washington DC 20006'>
+        </div>
+      <!-- Address -->
+      
       <div class='form-group'>
           <label for='driversLicenseNum'>Driver License Number</label>
           <input type='text' class='form-control' ng-model='formData.driversLicenseNum' placeholder='123456789'>
