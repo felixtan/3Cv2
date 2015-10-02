@@ -77,10 +77,64 @@
             <input name='phoneNumber' type='text' class='form-control' ng-model='formData.phoneNumber' placeholder='ex. 123-456-7890' ng-pattern="/^1?[-\. ]?(\(\d{3}\)?[-\. ]?|\d{3}?[-\. ]?)?\d{3}?[-\. ]?\d{4}$/">
         </div>
 
-        <div class='form-group'>
-            <label for='address'>Address</label>
-            <input type='text' class='form-control' ng-model='formData.address' placeholder=''>
+        <!-- Address -->
+        <!-- address line 1 validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.addressLine1.$error, driverForm.addressLine2.$error, driverForm.city.$error, driverForm.state.$error, driverForm.zip.$error' ng-if='driverForm.addressLine1.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/addressLine.html'></div>
         </div>
+
+        <div class='form-group'>
+            <label for='addressLine1'>Address Line 1</label>
+            <input name='addressLine1' type='text' class='form-control' ng-model='formData.addressLine1' placeholder='1600 Pennsylvannia Ave.' ng-pattern="/^\s*\S+(?:\s+\S+){2}/">
+        </div>
+
+        <!-- no line 2 validation -->
+        <div class='form-group'>
+            <label for='addressLine2'>Address Line 2</label>
+            <input name='addressLine2' type='text' class='form-control' ng-model='formData.addressLine2' placeholder='Apt. 1A'>
+        </div>
+
+        <!-- city validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.city.$error' 
+            ng-if='driverForm.city.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/city.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='city'>City</label>
+            <input name='city' type='text' class='form-control' ng-model='formData.city' placeholder='Washington' ng-pattern="/^[A-z]+$/">
+        </div>
+
+        <!-- state validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.state.$error' 
+            ng-if='driverForm.state.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/state.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='state'>State</label>
+            <input name='state' type='text' class='form-control' ng-model='formData.state' placeholder='DC' ng-pattern="/^(?:A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])*$/">
+        </div>
+
+        <!-- zip code validation -->
+        <div class='error-message bg-danger' 
+            ng-messages='driverForm.zip.$error' 
+            ng-if='driverForm.zip.$dirty'
+            role='alert'>
+            <div ng-messages-include='views/formMessages/zip.html'></div>
+        </div>
+
+        <div class='form-group'>
+            <label for='zip'>Zip Code</label>
+            <input name='zip' type='text' class='form-control' ng-model='formData.zip' placeholder='20006' ng-pattern="/^([0-9]{5}(?:-[0-9]{4})?)*$/">
+        </div>  
+        <!-- Address -->
 
         <div class='form-group'>
             <label for='driversLicenseNum'>Driver License Number</label>
@@ -130,7 +184,7 @@
           <label for='car'>Car</label>
           <select class='form-control' ng-model='formData.carId'>
               <option> - </option>
-              <option ng-repeat='car in cars' value='{{ car.id }}'>{{ car.licenseNumber }}</option>
+              <option ng-repeat='car in cars' value='{{ car.id }}'>{{ car.licensePlate }}</option>
           </select>
         </div>
         <label for='description'>Description</label>

@@ -3,6 +3,8 @@
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+// $fa-font-path: "/bower_components/font-awesome/fonts/";
+// @import "font-awesome/scss/font-awesome.scss";
 
 .browsehappy {
   margin: 0.2em 0;
@@ -279,4 +281,12 @@ body {
 
 .add-btn-li {
   padding-left: 1.5em;
+}
+
+.addressLink:hover {
+  color: #0000FF;
+}
+
+.addressLink:active {
+  color: #FF0000;
 }

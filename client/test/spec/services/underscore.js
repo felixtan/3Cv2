@@ -11,8 +11,4 @@ describe('Service: underscore', function () {
     underscore = _underscore_;
   }));
 
-  it('should do something', function () {
-    expect(!!underscore).toBe(true);
-  });
-
 });

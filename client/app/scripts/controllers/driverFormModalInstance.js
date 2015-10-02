@@ -20,6 +20,7 @@ angular.module('clientApp')
       $scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase();
       $scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase();
       $scope.formData.payRate = $scope.formData.payRate.toString();
+      $scope.formData.address = $scope.formData.addressLine1 + ' ' + $scope.formData.addressLine2 + ' ' + $scope.formData.city + ' ' + $scope.formData.state + ' ' + $scope.formData.zip;
 
       $http.post('/api/drivers', $scope.formData)
           .then(function() {

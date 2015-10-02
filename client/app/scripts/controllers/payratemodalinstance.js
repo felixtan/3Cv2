@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PayRateModalInstanceCtrl', function ($scope, $modalInstance) {
+  .controller('PayRateModalInstanceCtrl', function ($state, $scope, $modalInstance) {
     document.onkeypress = function (e) {
         e = e || window.event;
         // use e.keyCode
@@ -22,6 +22,7 @@ angular.module('clientApp')
     };
 
     $scope.close = function () {
+        $state.forceReload();
         $modalInstance.dismiss('cancel');
     };
   });

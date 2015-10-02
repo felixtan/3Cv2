@@ -10,10 +10,4 @@ describe('Filter: nameCapitalization', function () {
   beforeEach(inject(function ($filter) {
     nameCapitalization = $filter('nameCapitalization');
   }));
-
-  it('should return the input prefixed with "nameCapitalization filter:"', function () {
-    var text = 'angularjs';
-    expect(nameCapitalization(text)).toBe('nameCapitalization filter: ' + text);
-  });
-
 });
