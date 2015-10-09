@@ -99,7 +99,7 @@
                   </ul>
                 </td>
                 <td>
-                    {{ driver.givenName }} {{ driver.middleInitial }} {{ driver.surName }}
+                    {{ driver.givenName }} {{ driver.middleInitial }}<span ng-show='driver.middleInitial'>.</span> {{ driver.surName }}
                 </td>
                 <td>
                     {{ driver.GasCards[0].number }}

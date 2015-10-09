@@ -4,6 +4,9 @@ var models = require('../../db/models');
 var Drivers = models.Driver;
 var DriverLog = models.DriverLog;
 var PtgLogs = models.PtgLog;
+var GasCards = models.GasCard;
+var EzPasses = models.EzPass;
+var Cars = models.Car;
 var getUserId = require('../helpers').getUserId;
 
 module.exports = {
@@ -11,11 +14,26 @@ module.exports = {
     getDrivers: function(req, res) {
         getUserId(req).then(function(organizationId) {
             Drivers.findAll({
-                where: { organization: organizationId }
+                where: { organization: organizationId },
+                include: [{
+                    model: Cars,
+                    where: { organization: organizationId },
+                    required: false
+                }, {
+                    model: GasCards,
+                    where: { organization: organizationId },
+                    required: false
+                }, {
+                    model: EzPasses,
+                    where: { organization: organizationId },
+                    required: false
+                }]
             }).then(function(drivers) {
+                // no data minimization here because maybe iterating
+                // through arrays is more expensive than sending a bigger request?
                 res.json(drivers);
             }).catch(function(err) {
-                throw err;
+                console.error(err);
             });
         })
         .catch(function(err) {

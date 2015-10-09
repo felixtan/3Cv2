@@ -35,7 +35,7 @@ module.exports = {
                     // delete car.dataValues.mileage;
                     // delete car.dataValues.description;
                     
-                    if(car.dataValues.Drivers && car.dataValues.Drivers.length > 0) {
+                    if(car.dataValues.Drivers) {
                         car.dataValues.Drivers.forEach(function(driver) {
 
                             driver.GasCards.forEach(function(gasCard) {

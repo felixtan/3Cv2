@@ -25,6 +25,19 @@ angular.module('clientApp')
         return deferred.promise;
       },
 
+      getDriversFull: function() {
+        var promise = $http.get('/api/drivers');
+        var deferred = deferred || $q.defer();
+
+        promise.then(function(data) {
+          deferred.resolve(data);
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
+      },
+
       getDrivers: function () {
         var promise = $http.get('/api/assignments/drivers');
         var deferred = deferred || $q.defer();

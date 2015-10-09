@@ -82,6 +82,20 @@ angular
             authenticate: true
         }
     })
+    .state('roster', {
+        url: '/drivers',
+        templateUrl: 'views/roster.html',
+        controller: 'RosterCtrl',
+        controllerAs: 'roster',
+        resolve: {
+          getDriversFull: function(dataService) {
+            return dataService.getDriversFull();
+          }
+        },
+        sp: {
+          authenticate: true
+        }
+    })
     .state('ptg', {
         url: '/pay-toll-gas',
         templateUrl: 'views/ptg.html',
