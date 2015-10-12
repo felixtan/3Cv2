@@ -37,12 +37,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#/">{{ user.customData.organization }}</a>
+          <a class="navbar-brand" ui-sref="main">{{ user.customData.organization }} <span ng-show='!user.customData.organization'>Main</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="#/">Dashboard</a></li> -->
-            <!-- <li><a href="#/settings">Settings</a></li> -->
+            <li>
+              <a>current state: {{ $state.current.name }}</a>
+            </li>
+            <li>
+              <a ui-sref="settings">Settings</a>
+            </li>
             <li>
               <a sp-logout ui-sref="logout">Logout</a>
             </li>
@@ -57,12 +61,22 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar" if-user>
+
+        <div class="col-sm-3 col-md-2 sidebar" if-user ng-if="!$state.includes('settings')">
           <ul class="nav nav-sidebar">
-            <li><a href="#/"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
-            <li><a href='#/drivers' class='fa fa-users'>Drivers</a></li>
-            <li><a href='#/pay-toll-gas' class='fa fa-table'> PTG</a></li>
-            <li><a href="#/maintenance" class='fa fa-wrench'> Car Logs</a></li>
+            <li><a ui-sref="main"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
+            <li><a ui-sref='roster' class='fa fa-users'>Drivers</a></li>
+            <li><a ui-sref='ptg' class='fa fa-table'> PTG</a></li>
+            <li><a ui-sref="maintenance" class='fa fa-wrench'> Car Logs</a></li>
+          </ul>
+        </div>
+
+        <!-- settings sidebar -->
+        <div class="col-sm-3 col-md-2 sidebar" if-user ng-if="$state.includes('settings')">
+          <ul class="nav nav-sidebar">
+            <li>
+              <a ui-sref='settings.models.drivers' class='fa fa-user'>Drivers</a>
+            </li>
           </ul>
         </div>
 
@@ -133,6 +147,7 @@
         <script src="scripts/controllers/personEditFormModal.js"></script>
         <script src="scripts/controllers/personEditFormModalInstance.js"></script>
         <script src="scripts/controllers/roster.js"></script>
+        <script src="scripts/controllers/settings.js"></script>
         <!-- endbuild -->
 
     <!-- Applies css to side nav active page element -->

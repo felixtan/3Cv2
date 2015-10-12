@@ -16,6 +16,8 @@ var carLogs = require('./routes/carLogs');
 var maintenanceLogs = require('./routes/maintenanceLogs');
 
 module.exports = function (app) {
+    // umzug migration methods
+    
 
     // Car logs
     app.get('/api/logs/cars', carLogs.getLogs);

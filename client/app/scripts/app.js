@@ -38,6 +38,26 @@ angular
     $urlRouterProvider.otherwise('/login');
 
     $stateProvider
+    .state('settings', {
+        url: '/settings',
+        templateUrl: 'views/settings/settings.html',
+        controller: 'SettingsCtrl',
+        controllerAs: 'settings',
+        sp: {
+          authenticate: true
+        }
+    })
+    .state('settings.models', {
+        abstract: true,
+        url: '/models',
+        template: '<ui-view/>'
+    })
+    .state('settings.models.drivers', {
+        url: '/drivers',
+        templateUrl: 'views/settings/models.drivers.html',
+        controller: 'ModelSettingsCtrl',
+        controllerAs: 'modelSettings'
+    })
     .state('login', {
         url: '/login',
         templateUrl: 'views/login.html'
@@ -131,7 +151,7 @@ angular
         }
     });
   })
-  .run(function(editableOptions, $stormpath) {
+  .run(function(editableOptions, $stormpath, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
     $stormpath.uiRouter({
       loginState: 'login',
@@ -139,4 +159,8 @@ angular
       forbiddenState: 'login',
       autoRedirect: true
     });
+
+    // exposes $state to $rootScope so it can be referenced on any view/scope
+    $rootScope.$state = $state;
+    $rootScope.$stateParams = $stateParams;
   });

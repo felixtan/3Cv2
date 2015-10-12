@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($state, getEzPasses, getGasCards, $modal, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
-
+  .controller('MainCtrl', function ($window, $state, getEzPasses, getGasCards, $modal, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
     $scope.ezPasses = getEzPasses.data;
     $scope.gasCards = getGasCards.data;
     $scope.carListCollapsed = false;
