@@ -7,15 +7,21 @@ var DriverLogs = models.DriverLog;
 var Drivers = models.Driver;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
-    getLogs: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             PtgLogs.findAll({ 
-                where: { organization: organizationId },
+                where: opts,
                 order: '"dateInMs"', 
                 include: [{
                     model: DriverLogs,
-                    where: { organization: organizationId },
+                    where: opts,
                     required: false
                 }]
             }).then(function(logs) {
@@ -46,19 +52,23 @@ module.exports = {
                     finalData.mostRecentDateInMs = mostRecentDateInMs;
                     res.json(finalData);
                 });
+            })
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
             });
-        });
+        // });
     },
 
-    createLog: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    create: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             PtgLogs.create({
                 dateInMs: req.body.dateInMs,
                 date: req.body.date,
                 organization: organizationId
             }).then(function(ptgLog) {
                 Drivers.findAll({
-                    where: { organization: organizationId }
+                    where: opts
                 }).then(function(drivers) {
                     drivers.forEach(function(driver) {
                         DriverLogs.create({
@@ -78,11 +88,15 @@ module.exports = {
                 }).catch(function(err) {
                     console.error(err);
                 });
+            })
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // })
+        // .catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     }
 }

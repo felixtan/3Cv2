@@ -77,8 +77,10 @@ if(app.get('env') === 'production') {
 }
 
 // attach stormpath routes
-spMiddleware.attachDefaults(app);
-app.use(spMiddleware.authenticate);
+if(process.env.NODE_ENV === 'production') {
+  spMiddleware.attachDefaults(app);
+  app.use(spMiddleware.authenticate);
+}
 
 // Includes all routes
 var router = require('./router')(app);

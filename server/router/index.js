@@ -20,61 +20,61 @@ module.exports = function (app) {
     
 
     // Car logs
-    app.get('/api/logs/cars', carLogs.getLogs);
+    app.get('/api/logs/cars', carLogs.get);
     app.get('/api/logs/cars/:id', carLogs.getLog);
-    app.post('/api/logs/cars/:id', carLogs.createLog);
-    app.put('/api/logs/cars/:id', carLogs.updateLog);
+    app.post('/api/logs/cars/:id', carLogs.create);
+    app.put('/api/logs/cars/:id', carLogs.update);
 
     // Maintenance logs
-    app.get('/api/logs/maintenance', maintenanceLogs.getLogs);
-    app.post('/api/logs/maintenance', maintenanceLogs.createLogs);
+    app.get('/api/logs/maintenance', maintenanceLogs.get);
+    app.post('/api/logs/maintenance', maintenanceLogs.create);
 
     // Prospects
-    app.get('/api/prospects', prospect.getProspects);
-    app.get('/api/prospects/:id', prospect.getProspect);
+    app.get('/api/prospects', prospect.get);
+    app.get('/api/prospects/:id', prospect.getById);
     app.post('/api/prospects', prospect.save);
     app.put('/api/prospects/:id', prospect.update);
-    app.delete('/api/prospects/:id', prospect.deleteProspect);
+    app.delete('/api/prospects/:id', prospect.delete);
 
     // EZ pass
-    app.get('/api/assets/ez-passes', ezPass.getAll);
+    app.get('/api/assets/ez-passes', ezPass.get);
     app.post('/api/assets/ez-passes', ezPass.create);
     app.delete('/api/assets/ez-passes', ezPass.delete);
 
     // Gas cards
-    app.get('/api/assets/gas-cards', gasCards.getAll);
+    app.get('/api/assets/gas-cards', gasCards.get);
     app.post('/api/assets/gas-cards', gasCards.create);
     app.delete('/api/assets/gas-cards', gasCards.delete);
 
     // PTG logs
-    app.get('/api/logs/ptg', ptgLogs.getLogs);
-    app.post('/api/logs/ptg', ptgLogs.createLog);
+    app.get('/api/logs/ptg', ptgLogs.get);
+    app.post('/api/logs/ptg', ptgLogs.create);
 
     // Driver logs
-    app.get('/api/logs/drivers', driverLogs.getDriversLogs);
-    app.get('/api/logs/drivers/:id', driverLogs.getDriverLogs);
-    app.post('/api/logs/drivers/:id', driverLogs.saveDriverLog);
-    app.put('/api/logs/drivers/:id', driverLogs.updateDriverLog);
+    app.get('/api/logs/drivers', driverLogs.getAll);
+    app.get('/api/logs/drivers/:id', driverLogs.getByDriverId);
+    app.post('/api/logs/drivers/:id', driverLogs.save);
+    app.put('/api/logs/drivers/:id', driverLogs.update);
 
     // Assignments
-    app.get('/api/assignments', assignments.getAss);
+    app.get('/api/assignments', assignments.get);
     app.get('/api/assignments/drivers', assignments.getDrivers);
     app.put('/api/assignments/drivers/:id', assignments.reassignDriver);
     app.get('/api/assignments/cars', assignments.getCars);
     app.post('/api/assignments/driver=:driverId/car=:carId', assignments.assign);
 
     // Car API routes
-    app.get('/api/cars', cars.getCars);
+    app.get('/api/cars', cars.get);
     app.get('/api/cars/:id', cars.getCar);
     app.post('/api/cars', cars.save);
-    app.put('/api/cars/:id', cars.updateCar);
-    app.delete('/api/cars/:id', cars.deleteCar);
+    app.put('/api/cars/:id', cars.update);
+    app.delete('/api/cars/:id', cars.delete);
     app.put('/api/cars', cars.rearrange);   // handles persisting changes to ordering in cars array
 
     // Driver API routes
-    app.get('/api/drivers', drivers.getDrivers);
-    app.get('/api/drivers/:id', drivers.getDriver);
+    app.get('/api/drivers', drivers.get);
+    app.get('/api/drivers/:id', drivers.getById);
     app.post('/api/drivers', drivers.save);
     app.put('/api/drivers/:id', drivers.update);
-    app.delete('/api/drivers/:id', drivers.deleteDriver);
+    app.delete('/api/drivers/:id', drivers.delete);
 };

@@ -5,16 +5,20 @@ var GasCard = models.GasCard;
 var Driver = models.Driver;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
-    getAll: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             GasCard.findAll({ 
-                where: {
-                    organization: organizationId
-                },
+                where: opts,
                 include: [{
                     model: Driver,
-                    where: { organization: organizationId },
+                    where: opts,
                     required: false
                 }]
             }).then(function(cards) {
@@ -31,15 +35,16 @@ module.exports = {
             })
             .catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        // })
+        // .catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     create: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             GasCard.create({
                 number: req.body.number,
                 organization: organizationId
@@ -47,10 +52,11 @@ module.exports = {
                 res.json(card);
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     delete: function(req, res) {

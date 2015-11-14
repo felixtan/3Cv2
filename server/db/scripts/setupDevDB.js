@@ -29,8 +29,7 @@ module.exports = {
     populate: function() {
         // Prospects
         var prospect1 = {
-                givenName: 'Donald',
-                surName: 'Duck',
+                name: 'Donald Duck',
                 description: 'Planning to work 50+ hours',
                 tlc: '1 month',
                 dmv: '20',
@@ -42,9 +41,7 @@ module.exports = {
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect2 = {
-                givenName: 'James',
-                middleInitial: 'B',
-                surName: 'Grossweiner',
+                name: 'James B Grossweiner',
                 tlc: 'New',
                 dmv: '7',
                 accidents: '2', 
@@ -53,15 +50,13 @@ module.exports = {
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect3 = {
-                givenName: 'Dovran',
-                surName: 'Esenov',
+                name: 'Dovran Esenov',
                 address: '1802 ocean pkwy a17',
                 // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             prospect4 = {
-                givenName: 'Thomas',
-                surName: 'Grube',
+                name: 'Thomas Grube',
                 tlc: '15',
                 points: '0',
                 accidents: '0', 
@@ -71,8 +66,7 @@ module.exports = {
                 organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         },
             prospect5 = {
-                givenName: 'Maurice',
-                surName: 'Cloyd',
+                name: 'Maurice Cloyd',
                 description: 'Planning to work 55+',
                 tlc: '1',
                 dmv: '9',

@@ -6,21 +6,28 @@ var getUserId = require('../helpers').getUserId;
 var CarLogs = models.CarLog;
 var MaintenanceLogs = models.MaintenanceLog;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
 
-    getCars: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             Cars.findAll({
-                where: { organization: organizationId }
+                where: opts
             }).then(function(cars) {
                 res.json(cars);
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     getCar: function(req, res) {
@@ -39,7 +46,7 @@ module.exports = {
     },
 
     save: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             Cars.create({
                 licenseNumber: req.body.licenseNumber,
                 licensePlate: req.body.licensePlate,
@@ -82,14 +89,15 @@ module.exports = {
                 });
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     },
 
-    updateCar: function(req, res) {
+    update: function(req, res) {
         Cars.update({
             licenseNumber: req.body.licenseNumber,
             licensePlate: req.body.licensePlate,
@@ -110,7 +118,7 @@ module.exports = {
         });
     },
 
-    deleteCar: function(req, res) {
+    delete: function(req, res) {
         Cars.destroy({
             where: {
                 id: req.params.id
@@ -126,9 +134,9 @@ module.exports = {
     },
 
     rearrange: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             Cars.findAll({
-                where: { organization: organizationId }
+                where: opts
             }).then(function(cars) {
                 console.log('before rearrange:', cars);
                 console.log('oldIndex:', req.body.oldIndex - 1);
@@ -140,7 +148,8 @@ module.exports = {
                 Cars.update(cars);
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        });
+        // });
     }
 };

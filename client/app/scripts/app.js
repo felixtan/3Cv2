@@ -19,11 +19,12 @@ angular
     'xeditable',
     'ng-sortable',
     'ui.bootstrap',
-    'stormpath',
+    // 'stormpath',
     'ui.router',
-    'ngMessages'
+    'ngMessages',
+    'config'
   ])
-  .config(function ($stateProvider, $urlRouterProvider, $provide) {
+  .config(function (ENV, $stateProvider, $urlRouterProvider, $provide) {
     $provide.decorator('$state', function($delegate, $stateParams) {
         $delegate.forceReload = function() {
             return $delegate.go($delegate.current, $stateParams, {
@@ -35,17 +36,23 @@ angular
         return $delegate;
     });
 
-    $urlRouterProvider.otherwise('/login');
+    // if(ENV.name === 'production' || 'staging') {
+    //     $urlRouterProvider.otherwise('/login');
+    // } else {
+    //     $urlRouterProvider.otherwise('/');
+    // }
+
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
     .state('settings', {
         url: '/settings',
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsCtrl',
-        controllerAs: 'settings',
-        sp: {
-          authenticate: true
-        }
+        controllerAs: 'settings'
+        // sp: {
+        //   authenticate: true
+        // }
     })
     .state('settings.models', {
         abstract: true,
@@ -54,7 +61,7 @@ angular
     })
     .state('settings.models.drivers', {
         url: '/drivers',
-        templateUrl: 'views/settings/models.drivers.html',
+        templateUrl: 'views/settings/driversModel.html',
         controller: 'ModelSettingsCtrl',
         controllerAs: 'modelSettings'
     })
@@ -97,10 +104,10 @@ angular
           getEzPasses: function(dataService) {
             return dataService.getEzPasses();
           }
-        },
-        sp: {
-            authenticate: true
         }
+        // sp: {
+        //     authenticate: true
+        // }
     })
     .state('roster', {
         url: '/drivers',
@@ -111,10 +118,10 @@ angular
           getDriversFull: function(dataService) {
             return dataService.getDriversFull();
           }
-        },
-        sp: {
-          authenticate: true
         }
+        // sp: {
+        //   authenticate: true
+        // }
     })
     .state('ptg', {
         url: '/pay-toll-gas',
@@ -128,10 +135,10 @@ angular
           basicDriverData: function(dataService) {
             return dataService.getDrivers();
           }
-        },
-        sp: {
-            authenticate: true
         }
+        // sp: {
+        //     authenticate: true
+        // }
     })
     .state('maintenance', {
         url: '/maintenance',
@@ -145,20 +152,25 @@ angular
           basicCarData: function(dataService) {
             return dataService.getCars();
           }
-        },
-        sp: {
-            authenticate: true
         }
+        // sp: {
+        //     authenticate: true
+        // }
     });
   })
-  .run(function(editableOptions, $stormpath, $state, $stateParams, $rootScope) {
+    // inject ENV when grunt-ng-constant is working
+  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
-    $stormpath.uiRouter({
-      loginState: 'login',
-      defaultPostLoginState: 'main',
-      forbiddenState: 'login',
-      autoRedirect: true
-    });
+
+    // if(ENV.name === 'production') {
+    //     console.log('production mode');
+    //     $stormpath.uiRouter({
+    //         loginState: 'login',
+    //         defaultPostLoginState: 'main',
+    //         forbiddenState: 'login',
+    //       autoRedirect: true
+    //     });
+    // }
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;

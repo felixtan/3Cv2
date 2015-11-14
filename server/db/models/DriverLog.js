@@ -16,13 +16,9 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        givenName: {
+        name: {
             type: DataTypes.STRING,
-            allowNull: false            // required
-        },
-        surName: {
-            type: DataTypes.STRING,
-            allowNull: false            // required
+            allowNull: true
         },
         organization: {
             type: DataTypes.STRING,

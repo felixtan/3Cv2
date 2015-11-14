@@ -4,31 +4,37 @@ var DriverLog = require('../../db/models').DriverLog;
 var Driver = require('../../db/models').Driver;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
 
     // many drivers
     // TODO: query filter options and functionality
-    getDriversLogs: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    getAll: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             Driver.findAll({ 
-                where: { organization: organizationId },
+                where: opts,
                 include: [{
                     model: DriverLog,
-                    where: { organization: organizationId },
+                    where: opts,
                     require: false
                 }]
             }).then(function(drivers) {
                 res.json(drivers);
             })
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
+            });
     },
 
     // one driver
     // TODO: query filter options and functionality
-    getDriverLogs: function(req, res) {
+    getByDriverId: function(req, res) {
         DriverLog.findById(req.params.id).then(function(logs) {
             res.json(logs);
         }).catch(function(err) {
@@ -38,10 +44,10 @@ module.exports = {
     },
 
     // pertains to a specific driver
-    saveDriverLog: function(req, res) {
-        getUserId(req).then(function(organizationId) {
-            var driverId = req.params.driverId || req.body.driverId;
-            Driver.findById(driverId).then(function(driver) {
+    save: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
+            // var driverId = req.params.driverId || req.body.driverId;
+            Driver.findById(req.body.driverId).then(function(driver) {
                 DriverLog.create({
                     uberRevenue: req.body.uberRevenue,
                     tollCosts: req.body.tollCosts,
@@ -62,14 +68,15 @@ module.exports = {
                 });
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     },
 
-    updateDriverLog: function(req, res) {
+    update: function(req, res) {
         DriverLog.update({
             uberRevenue: req.body.uberRevenue,
                 tollCosts: req.body.tollCosts,
@@ -96,7 +103,7 @@ module.exports = {
         });
     },
 
-    deleteDriverLog: function(req, res) {
+    delete: function(req, res) {
         DriverLog.destroy({
             where: {
                 driverId: req.params.id,

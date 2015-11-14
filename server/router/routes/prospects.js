@@ -4,25 +4,30 @@ var models = require('../../db/models');
 var Prospects = models.Prospect;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production || staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
 
-    getProspects: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             Prospects.findAll({
-                where: { organization: organizationId }
+                where: opts
             }).then(function(prospects) {
                 res.json(prospects);
             }).catch(function(err) {
                 console.error(err);
-                // throw err;
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        // .catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     },
 
-    getProspect: function(req, res) {
+    getById: function(req, res) {
         Prospects.findById(req.params.id).then(function(prospect) {
             if(!prospect) {
                 res.status(404).json({ error: 'Resource not found.' });
@@ -38,7 +43,7 @@ module.exports = {
     },
 
     save: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             Prospects.create({
                 status: req.body.status,
                 givenName: req.body.givenName,
@@ -61,11 +66,12 @@ module.exports = {
                 res.json(prospect);
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     update: function(req, res) {
@@ -97,7 +103,7 @@ module.exports = {
         });
     },
 
-    deleteProspect: function(req, res) {
+    delete: function(req, res) {
         Prospects.destroy({
             where: {
                 id: req.params.id

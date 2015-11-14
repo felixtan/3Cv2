@@ -7,23 +7,30 @@ var GasCards = models.GasCard;
 var EzPasses = models.EzPass;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
+
     // Eager loading of cars and drivers
-    getAss: function(req, res) { 
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) { 
+        // getUserId(req).then(function(organizationId) {
             Cars.findAll({ 
-                where: { organization: organizationId },
+                where: opts,
                 include: [{ 
                     model: Drivers, 
-                    where: { organization: organizationId }, 
+                    where: opts, 
                     required: false, 
                     include: [{ 
                         model: GasCards,
-                        where: { organization: organizationId },
+                        where: opts,
                         required: false
                     } , { 
                         model: EzPasses,
-                        where: { organization: organizationId },
+                        where: opts,
                         required: false
                     }]
                 }]
@@ -59,19 +66,24 @@ module.exports = {
                 res.json(minimizedData);
             })
             .catch(function(err) {
-                throw err;
+                console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        //     .catch(function(err) {
+        //         throw err;
+        //     });
+        // });
+        // .catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     getDrivers: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             Drivers.findAll({
-                where: { organization: organizationId }
-            }).then(function(drivers) {
+                where: opts
+            })
+            .then(function(drivers) {
                 var minimizedData = drivers;
                 minimizedData.forEach(function(driver) {
                     // delete driver.dataValues.driversLicenseNum;
@@ -84,18 +96,18 @@ module.exports = {
                     delete driver.dataValues.updatedAt;
                 });
                 res.json(minimizedData);
+            })
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // })
     },
 
     getCars: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+        // getUserId(req).then(function(organizationId) {
             Cars.findAll({
-                where: { organization: organizationId }
+                where: opts
             }).then(function(cars) {
                 var minimizedData = cars;
                 minimizedData.forEach(function(car) {
@@ -109,12 +121,13 @@ module.exports = {
                 res.json(minimizedData);
             })
             .catch(function(err) {
-                console.error(err);
+                // console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        // })
+        // .catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     reassignDriver: function(req, res) {

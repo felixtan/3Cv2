@@ -5,26 +5,33 @@ var CarLogs = models.CarLog;
 var Cars = models.Car;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
-    getLogs: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             Cars.findAll({ 
-                where: { organization: organizationId },
+                where: opts,
                 include: [{
                     model: CarLogs,
-                    where: { organization: organizationId },
+                    where: opts,
                     required: false
                 }]
             }).then(function(cars) {
                 res.json(cars);
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        })
-        .catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });
+        // })
+        // .catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });
     },
 
     getLog: function(req, res) {
@@ -36,8 +43,8 @@ module.exports = {
         });
     },
 
-    createLog: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    create: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             CarLogs.create({
                 date: req.body.date,
                 dateInMs: req.body.dateInMs,
@@ -54,14 +61,15 @@ module.exports = {
                 });
             }).catch(function(err) {
                 console.error(err);
+                res.status(500).json({ error: err });
             });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
-        });   
+        // }).catch(function(err) {
+        //     console.error(err);
+        //     res.status(500).json({ error: err });
+        // });   
     },
 
-    updateLog: function(req, res) {
+    update: function(req, res) {
         CarLogs.findById(req.params.id).then(function(carLog) {
             console.log('carLog.carId:',carLog.carId);
             CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {
@@ -96,7 +104,7 @@ module.exports = {
         });
     },
 
-    deleteLog: function(req, res) {
+    delete: function(req, res) {
         CarLogs.destroy({
             where: {
                 carId: req.params.id,

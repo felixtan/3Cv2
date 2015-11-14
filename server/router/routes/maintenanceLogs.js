@@ -7,15 +7,21 @@ var CarLogs = models.CarLog;
 var Cars = models.Car;
 var getUserId = require('../helpers').getUserId;
 
+var opts = {};
+if(process.env.NODE_ENV === 'production' || 'staging') {
+    var organizationId = '';
+    opts = { organization: organizationId };
+}
+
 module.exports = {
-    getLogs: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    get: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             MaintenanceLogs.findAll({ 
-                where: { organization: organizationId },
+                where: opts,
                 order: '"dateInMs"', 
                 include: [{
                     model: CarLogs,
-                    where: { organization: organizationId },
+                    where: opts,
                     required: false
                 }]
             }).then(function(logs) {
@@ -43,19 +49,23 @@ module.exports = {
                     finalData.mostRecentDateInMs = mostRecentDateInMs;
                     res.json(finalData);
                 });
+            })
+            .catch(function(err) {
+                console.error(err);
+                res.status(500).json({ error: err });
             });
-        });
+        // });
     },
 
-    createLogs: function(req, res) {
-        getUserId(req).then(function(organizationId) {
+    create: function(req, res) {
+        // getUserId(req).then(function(organizationId) {
             MaintenanceLogs.create({
                 date: req.body.date,
                 dateInMs: req.body.dateInMs,
                 organization: organizationId
             }).then(function(maintenanceLog) {
                 Cars.findAll({
-                    where: { organization: organizationId }
+                    where: opts
                 }).then(function(cars) {
                     cars.forEach(function(car) {
                         CarLogs.create({
@@ -76,10 +86,11 @@ module.exports = {
                     res.json(maintenanceLog);
                 }).catch(function(err) {
                     console.error(err);
+                    res.status(500).json({ error: err });
                 });   
             });    
-        }).catch(function(err) {
-            res.status(500).json({ error: err });
-        });
+        // }).catch(function(err) {
+        //     res.status(500).json({ error: err });
+        // });
     }
 }
