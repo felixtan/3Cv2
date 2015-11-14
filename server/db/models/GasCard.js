@@ -4,17 +4,23 @@
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('GasCard', {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        number: {
-            type: DataTypes.STRING,
-            allowNull: false            // required
-        },
-        organization: {
-            type: DataTypes.STRING,
-            allowNull: false            // required
+
+        data: {
+            type: DataTypes.JSONB,
+            allowNull: false
         }
+
+        // name: {
+        //     type: DataTypes.STRING,
+        //     allowNull: true
+        // },
+        // number: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false            // required
+        // },
+        // organization: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false            // required
+        // }
     });
 };

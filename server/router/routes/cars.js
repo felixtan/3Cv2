@@ -48,19 +48,21 @@ module.exports = {
     save: function(req, res) {
         // getUserId(req).then(function(organizationId) {
             Cars.create({
-                licenseNumber: req.body.licenseNumber,
-                licensePlate: req.body.licensePlate,
-                mileage: req.body.mileage,
+                // licenseNumber: req.body.licenseNumber,
+                // licensePlate: req.body.licensePlate,
+                // mileage: req.body.mileage,
                 organization: organizationId,
-                description: req.body.description
+                // description: req.body.description
+                data: req.body.data
             }).then(function(car) {
                 /**
                  * If driverId is given, then associate the new car with the driver.
                  */
-                if(req.body.driverId !== null && typeof req.body.driverId !== 'undefined') {
-                    car.addDriver([req.body.driverId]).then(function() {
-                        console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
-                    })
+                if(req.body.data.driverId !== null && typeof req.body.data.driverId !== 'undefined') {
+                    // car.addDriver([req.body.driverId]).then(function() {
+                    //     console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
+                    // })
+                    console.log('Assign car' + req.body.id + ' to driver ' + req.body.data.driverId + '!');
                 }
 
                 /**
