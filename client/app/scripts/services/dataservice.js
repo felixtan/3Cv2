@@ -8,12 +8,22 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('dataService', function ($http, $q) {
+  .factory('dataService', function ($http, $q, ENV) {
+
+    // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
+    var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
+
+    // Learning
+    // This results in false
+    // console.log(ENV.name === ('production' || 'staging'));
+    // 
+    // This results in 'staging'
+    // console.log(ENV.name === 'production' || 'staging');
 
     // Public API here
     return {
       getAss: function () {
-        var promise = $http.get('/api/assignments');
+        var promise = $http.get('/api/assignments', params);
         var deferred = deferred || $q.defer();
 
         promise.then(function(data) {
@@ -26,7 +36,7 @@ angular.module('clientApp')
       },
 
       getDriversFull: function() {
-        var promise = $http.get('/api/drivers');
+        var promise = $http.get('/api/drivers', params);
         var deferred = deferred || $q.defer();
 
         promise.then(function(data) {
@@ -39,7 +49,7 @@ angular.module('clientApp')
       },
 
       getDrivers: function () {
-        var promise = $http.get('/api/assignments/drivers');
+        var promise = $http.get('/api/assignments/drivers', params);
         var deferred = deferred || $q.defer();
 
         promise.then(function(data) {
@@ -52,7 +62,11 @@ angular.module('clientApp')
       },
 
       getCars: function () {
-        return $http.get('/api/assignments/cars')
+        return $http({
+                      method: 'GET',
+                      url: '/api/cars',
+                      params: params
+                  })
                   .success(function(data) {
                     return data;
                   })
@@ -61,8 +75,28 @@ angular.module('clientApp')
                   });
       },
 
+      getCar: function (id) {
+        return $http.get('/api/cars/' + id)
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    throw err;
+                  });
+      },
+
+      getCarProperties: function () {
+        return $http.get('/api/settings/cars', params)
+                  .success(function(data) {
+                    return data;
+                  })
+                  .error(function(err) {
+                    throw err;
+                  });
+      },
+
       getPtgLogs: function () {
-        return $http.get('/api/logs/ptg')
+        return $http.get('/api/logs/ptg', params)
                   .success(function(data) {
                     return data;
                   })
@@ -72,7 +106,7 @@ angular.module('clientApp')
       },
 
       getGasCards: function() {
-        return $http.get('/api/assets/gas-cards')
+        return $http.get('/api/assets/gas-cards', params)
                   .success(function(data) {
                     return data;
                   })
@@ -82,7 +116,7 @@ angular.module('clientApp')
       },
 
       getEzPasses: function() {
-        return $http.get('/api/assets/ez-passes')
+        return $http.get('/api/assets/ez-passes', params)
                   .success(function(data) {
                     return data;
                   })
@@ -92,7 +126,7 @@ angular.module('clientApp')
       },
 
       getProspects: function() {
-        return $http.get('/api/prospects')
+        return $http.get('/api/prospects', params)
                   .success(function(data) {
                     return data;
                   })
@@ -102,7 +136,7 @@ angular.module('clientApp')
       },
 
       getMaintenanceLogs: function() {
-        return $http.get('/api/logs/maintenance')
+        return $http.get('/api/logs/maintenance', params)
                   .success(function(data) {
                     return data;
                   })

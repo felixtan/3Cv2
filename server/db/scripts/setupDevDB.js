@@ -35,7 +35,7 @@ module.exports = {
                     mileage: 12923,
                     description: 'lorem ipsum'
                 },
-                organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
+                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             car2 = {
                 data: {
@@ -44,7 +44,7 @@ module.exports = {
                     mileage: 14081,
                     description: 'lorem ipsum'
                 },
-                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'      
+                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'      
         },
             car3 = {
                 data: {
@@ -53,9 +53,13 @@ module.exports = {
                     mileage: 120461,
                     description: 'lorem ipsum'
                 },
-                organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };
-        
+
+        Car.create(car1);
+        Car.create(car2);
+        Car.create(car3);
+
         // Prospects
         // var prospect1 = {
         //         name: 'Donald Duck',

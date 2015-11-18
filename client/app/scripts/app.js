@@ -59,11 +59,16 @@ angular
         url: '/models',
         template: '<ui-view/>'
     })
-    .state('settings.models.drivers', {
-        url: '/drivers',
-        templateUrl: 'views/settings/driversModel.html',
-        controller: 'ModelSettingsCtrl',
-        controllerAs: 'modelSettings'
+    .state('settings.models.car', {
+        url: '/car',
+        templateUrl: 'views/settings/models/Car.html',
+        controller: 'CarModelCtrl',
+        controllerAs: 'carSettings',
+        resolve: {
+            getCarProperties: function(dataService) {
+                return dataService.getCarProperties();
+            }
+        }
     })
     .state('login', {
         url: '/login',
@@ -92,18 +97,18 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
-          getCarsAndDrivers: function(dataService) {
-            return dataService.getAss();
+          getCars: function(dataService) {
+            return dataService.getCars();
           },
           getProspects: function(dataService) {
             return dataService.getProspects();
-          },
-          getGasCards: function(dataService) {
-            return dataService.getGasCards();
-          },
-          getEzPasses: function(dataService) {
-            return dataService.getEzPasses();
           }
+          // getGasCards: function(dataService) {
+          //   return dataService.getGasCards();
+          // },
+          // getEzPasses: function(dataService) {
+          //   return dataService.getEzPasses();
+          // }
         }
         // sp: {
         //     authenticate: true
@@ -156,6 +161,17 @@ angular
         // sp: {
         //     authenticate: true
         // }
+    })
+    .state('carProfile', {
+        url: '/car/:id',
+        templateUrl: '/views/carprofile.html',
+        controller: 'CarProfileCtrl',
+        controllerAs: 'car',
+        resolve: {
+            getCar: function(dataService, $stateParams) {
+                return dataService.getCar($stateParams.id);
+            }
+        }
     });
   })
     // inject ENV when grunt-ng-constant is working

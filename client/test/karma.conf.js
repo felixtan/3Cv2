@@ -39,8 +39,6 @@ module.exports = function(config) {
       'bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js',
       'bower_components/Sortable/Sortable.js',
       'bower_components/Sortable/ng-sortable.js',
-      'bower_components/Sortable/knockout-sortable.js',
-      'bower_components/Sortable/react-sortable-mixin.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

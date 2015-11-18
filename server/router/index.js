@@ -16,8 +16,10 @@ var carLogs = require('./routes/carLogs');
 var maintenanceLogs = require('./routes/maintenanceLogs');
 
 module.exports = function (app) {
-    // umzug migration methods
+
     
+    // settings
+    app.get('/api/settings/cars', cars.getModel);
 
     // Car logs
     app.get('/api/logs/cars', carLogs.get);
@@ -66,7 +68,7 @@ module.exports = function (app) {
     // Car API routes
     app.get('/api/cars', cars.get);
     app.get('/api/cars/:id', cars.getCar);
-    app.post('/api/cars', cars.save);
+    app.post('/api/cars', cars.create);
     app.put('/api/cars/:id', cars.update);
     app.delete('/api/cars/:id', cars.delete);
     app.put('/api/cars', cars.rearrange);   // handles persisting changes to ordering in cars array

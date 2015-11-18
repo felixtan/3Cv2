@@ -75,7 +75,7 @@
         <div class="col-sm-3 col-md-2 sidebar" if-user ng-if="$state.includes('settings')">
           <ul class="nav nav-sidebar">
             <li>
-              <a ui-sref='settings.models.drivers' class='fa fa-user'>Drivers</a>
+              <a ui-sref='settings.models.car' class='fa fa-user'>Cars</a>
             </li>
           </ul>
         </div>
@@ -121,8 +121,6 @@
     <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js'></script>
     <script src='bower_components/Sortable/Sortable.js'></script>
     <script src='bower_components/Sortable/ng-sortable.js'></script>
-    <script src='bower_components/Sortable/knockout-sortable.js'></script>
-    <script src='bower_components/Sortable/react-sortable-mixin.js'></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -151,10 +149,15 @@
         <script src="scripts/controllers/roster.js"></script>
         <script src="scripts/controllers/settings.js"></script>
         <script src="scripts/controllers/modelsettings.js"></script>
+        <script src="scripts/controllers/settings/models/Car.js"></script>
+        <script src="scripts/controllers/carprofile.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->
         <script src='/scripts/config.js'></script>
+
+        <!-- other -->
+        <!-- <script src='/scripts/controllers/settings/models/Car.js'></script> -->
 
     <!-- Applies css to side nav active page element -->
     <script type="text/javascript">

@@ -1,23 +1,18 @@
 'use strict';
 
 var models = require('../../db/models');
+var helpers = require('../helpers');
 var Cars = models.Car;
-var getUserId = require('../helpers').getUserId;
+var getUserId = helpers.getUserId;
 var CarLogs = models.CarLog;
 var MaintenanceLogs = models.MaintenanceLog;
-
-var opts = {};
-if(process.env.NODE_ENV === 'production' || 'staging') {
-    var organizationId = '';
-    opts = { organization: organizationId };
-}
 
 module.exports = {
 
     get: function(req, res) {
         // getUserId(req).then(function(organizationId) {
             Cars.findAll({
-                where: opts
+                where: helpers.filterByOrgId(req)
             }).then(function(cars) {
                 res.json(cars);
             }).catch(function(err) {
@@ -45,14 +40,23 @@ module.exports = {
         });
     },
 
-    save: function(req, res) {
+    getModel: function(req, res) {
+        Cars.findAll({
+            where: helpers.filterByOrgId,
+            limit: 1
+        }).then(function(cars) {
+            // use underscore to just return the keys
+            console.log(cars[0].dataValues);
+            res.json(helpers.getKeys(cars[0].dataValues.data));
+        }).catch(function(err) {
+            res.status(500).json({ error: err });
+        });
+    },
+
+    create: function(req, res) {
         // getUserId(req).then(function(organizationId) {
             Cars.create({
-                // licenseNumber: req.body.licenseNumber,
-                // licensePlate: req.body.licensePlate,
-                // mileage: req.body.mileage,
-                organization: organizationId,
-                // description: req.body.description
+                organizationId: helpers.getOrgId,
                 data: req.body.data
             }).then(function(car) {
                 /**
@@ -68,27 +72,27 @@ module.exports = {
                 /**
                  * Create car logs.
                  */
-                MaintenanceLogs.findAll({
-                    where: { organization: organizationId}
-                }).then(function(maintenanceLogs) {
-                    maintenanceLogs.forEach(function(maintenanceLog) {
-                        CarLogs.create({
-                            date: maintenanceLog.date,
-                            dateInMs: maintenanceLog.dateInMs,
-                            organization: organizationId,
-                            licensePlate: car.licensePlate,
-                            mileage: car.mileage
-                        }).then(function(carLog) {
-                            car.addLog([carLog.id]);
-                            maintenanceLog.addCarLog([carLog.id]);
-                            console.log('Log for car ' + car.id + ' attached to maintenance log ' + maintenanceLog.date);
-                        });
-                    });
-                }).then(function() {
-                    res.json(car);
-                }).catch(function(err) {
-                    console.error(err);
-                });
+                // MaintenanceLogs.findAll({
+                //     where: { organization: organizationId}
+                // }).then(function(maintenanceLogs) {
+                //     maintenanceLogs.forEach(function(maintenanceLog) {
+                //         CarLogs.create({
+                //             date: maintenanceLog.date,
+                //             dateInMs: maintenanceLog.dateInMs,
+                //             organization: organizationId,
+                //             licensePlate: car.licensePlate,
+                //             mileage: car.mileage
+                //         }).then(function(carLog) {
+                //             car.addLog([carLog.id]);
+                //             maintenanceLog.addCarLog([carLog.id]);
+                //             console.log('Log for car ' + car.id + ' attached to maintenance log ' + maintenanceLog.date);
+                //         });
+                //     });
+                // }).then(function() {
+                //     res.json(car);
+                // }).catch(function(err) {
+                //     console.error(err);
+                // });
             }).catch(function(err) {
                 console.error(err);
                 res.status(500).json({ error: err });
@@ -138,7 +142,7 @@ module.exports = {
     rearrange: function(req, res) {
         // getUserId(req).then(function(organizationId) {
             Cars.findAll({
-                where: opts
+                where: filterByOrgId
             }).then(function(cars) {
                 console.log('before rearrange:', cars);
                 console.log('oldIndex:', req.body.oldIndex - 1);

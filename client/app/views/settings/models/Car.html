@@ -1,0 +1,35 @@
+<h2 class='sub-header'>Car Data</h2>
+<table class='table table-hover dataModel'>
+    <thead>
+        <div>
+            <button class='btn btn-primary'>+ Field</button>
+            <button class='btn btn-success' ng-click='submitModel()'>Save</button>
+        </div>
+        <tr>
+            <th>Fields</th>
+            <th>Log?</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+   <!--  <tfoot>
+        <td>
+            <button class='btn btn-primary'>+ Field</button>
+            <button class='btn btn-success' ng-click='submitModel()'>Save</button>
+        </td>
+    </tfoot> -->
+    <tbody>
+         <tr ng-repeat='field in carSettings.fields'>
+            <td>{{ field }}</td>
+            <td>
+                <div class='checkbox'>
+                    <label><input type='checkbox' value=''></label>
+                </div>
+            </td>
+            <td class='editButtons'>
+                <button class='btn btn-warning'>Edit</button>
+                <button class='btn btn-danger'>Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

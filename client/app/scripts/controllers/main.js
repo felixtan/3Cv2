@@ -8,11 +8,11 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($window, $state, getEzPasses, getGasCards, $modal, $filter, $q, $http, $scope, getProspects, getCarsAndDrivers) {
-    $scope.ezPasses = getEzPasses.data;
-    $scope.gasCards = getGasCards.data;
+  .controller('MainCtrl', function ($window, $state, $modal, $filter, $q, $http, $scope, getProspects, getCars) {
+    // $scope.ezPasses = getEzPasses.data;
+    // $scope.gasCards = getGasCards.data;
     $scope.carListCollapsed = false;
-    $scope.cars = getCarsAndDrivers.data;
+    $scope.cars = getCars.data;
     $scope.prospects = getProspects.data;
     $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];

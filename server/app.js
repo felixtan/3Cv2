@@ -19,27 +19,27 @@ app.use(cookieParser());
 
 // stormpath
 // var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
-var spMiddleware = stormpathExpressSdk.createMiddleware({
-  cache: 'memory',
-  apiKeyId: process.env.STORMPATH_API_KEY_ID || '61DEQ0RV2XQNYF92MLBGRJ40F',
-  apiKeySecret: process.env.STORMPATH_API_KEY_SECRET || 'yYclBSybH5K1HTOnjepY2gHXhRZOMH4e7XdBAKvD+og',
-  appHref: process.env.STORMPATH_URL || 'https://api.stormpath.com/v1/applications/2FK2EinsSqnyPZwzuOKGwk',
-  secretKey: process.env.STORMPATH_SECRET_KEY || '27ENHv1QFu8j8bdt4RpMPXuKMCDn61JWbtv17gZzQmdu5/mMlr4oCQ==',
-  expandCustomData: true,
-  postRegistrationHandler: function(account, res, next) {
-    var hrefArray = account.user.href.split('/');
-    var accountId = hrefArray[hrefArray.length-1];
-    account.user.getCustomData(function(err, data) {
-      if(err) {
-        next(err)
-      } else {
-        data.id = accountId;
-        data.save();
-        next();
-      }
-    });
-  }
-});
+// var spMiddleware = stormpathExpressSdk.createMiddleware({
+//   cache: 'memory',
+//   apiKeyId: process.env.STORMPATH_API_KEY_ID || '61DEQ0RV2XQNYF92MLBGRJ40F',
+//   apiKeySecret: process.env.STORMPATH_API_KEY_SECRET || 'yYclBSybH5K1HTOnjepY2gHXhRZOMH4e7XdBAKvD+og',
+//   appHref: process.env.STORMPATH_URL || 'https://api.stormpath.com/v1/applications/2FK2EinsSqnyPZwzuOKGwk',
+//   secretKey: process.env.STORMPATH_SECRET_KEY || '27ENHv1QFu8j8bdt4RpMPXuKMCDn61JWbtv17gZzQmdu5/mMlr4oCQ==',
+//   expandCustomData: true,
+//   postRegistrationHandler: function(account, res, next) {
+//     var hrefArray = account.user.href.split('/');
+//     var accountId = hrefArray[hrefArray.length-1];
+//     account.user.getCustomData(function(err, data) {
+//       if(err) {
+//         next(err)
+//       } else {
+//         data.id = accountId;
+//         data.save();
+//         next();
+//       }
+//     });
+//   }
+// });
 
 // development error handler
 // will print stacktrace
@@ -77,10 +77,10 @@ if(app.get('env') === 'production') {
 }
 
 // attach stormpath routes
-if(process.env.NODE_ENV === 'production') {
-  spMiddleware.attachDefaults(app);
-  app.use(spMiddleware.authenticate);
-}
+// if(process.env.NODE_ENV === 'production' || 'staging') {
+//   spMiddleware.attachDefaults(app);
+//   app.use(spMiddleware.authenticate);
+// }
 
 // Includes all routes
 var router = require('./router')(app);

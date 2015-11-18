@@ -4,7 +4,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Car', { 
-    organization: {
+    organizationId: {
         type: DataTypes.STRING,
         allowNull: false
     },
