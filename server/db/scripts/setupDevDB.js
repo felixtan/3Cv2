@@ -30,28 +30,64 @@ module.exports = {
         // Cars
         var car1 = {
                 data: {
-                    licensePlate: 'T646853C',
-                    licenseNumber: 'FUJ 5993',
-                    mileage: 12923,
-                    description: 'lorem ipsum'
+                    licensePlate: {
+                        value: 'T646853C',
+                        log: false
+                    },
+                    licenseNumber: {
+                        value: 'FUJ 5993',
+                        log: false
+                    },
+                    mileage: {
+                        value: 12923,
+                        log: true
+                    },
+                    description: {
+                        value: 'lorem ipsum',
+                        log: false
+                    }
                 },
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y'
         },
             car2 = {
                 data: {
-                    licensePlate: 'T627067C',
-                    licenseNumber: 'GPJ 6478',
-                    mileage: 14081,
-                    description: 'lorem ipsum'
+                    licensePlate: {
+                        value: 'T627067C',
+                        log: false
+                    },
+                    licenseNumber: {
+                        value: 'GPJ 6478',
+                        log: false
+                    },
+                    mileage: {
+                        value: 14081,
+                        log: true
+                    },
+                    description: {
+                        value: 'lorem ipsum',
+                        log: false
+                    }
                 },
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'      
         },
             car3 = {
                 data: {
-                    licensePlate: 'T657227C',
-                    licenseNumber: 'FLJ 6290',
-                    mileage: 120461,
-                    description: 'lorem ipsum'
+                    licensePlate: {
+                        value: 'T657227C',
+                        log: false
+                    },
+                    licenseNumber: {
+                        value: 'FLJ 6290',
+                        log: false
+                    },
+                    mileage: {
+                        value: 120461,
+                        log: true
+                    },
+                    description: {
+                        value: 'lorem ipsum',
+                        log: false
+                    }
                 },
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'
         };

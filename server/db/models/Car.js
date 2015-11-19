@@ -13,30 +13,5 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
     
-    // licenseNumber: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,           // required
-    // },
-    // licensePlate: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,
-    // },
-    // mileage: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,           // required
-    // },
-    // oilChangeRequired: {
-    //   type: DataTypes.BOOLEAN,
-    //   allowNull: true,
-    //   defaultValue: false,
-    // },
-    // organization: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,           // required
-    // },
-    // description: {
-    //   type: DataTypes.TEXT,
-    //   allowNull: true,
-    // }
   });
 };
