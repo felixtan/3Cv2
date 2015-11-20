@@ -62,12 +62,12 @@ module.exports = {
                 /**
                  * If driverId is given, then associate the new car with the driver.
                  */
-                if(req.body.data.driverId !== null && typeof req.body.data.driverId !== 'undefined') {
+                // if(req.body.data.driverId !== null && typeof req.body.data.driverId !== 'undefined') {
                     // car.addDriver([req.body.driverId]).then(function() {
                     //     console.log('Car ' + car.id + ' is associated with Driver ' + req.body.driverId);
                     // })
-                    console.log('Assign car' + req.body.id + ' to driver ' + req.body.data.driverId + '!');
-                }
+                    // console.log('Assign car' + req.body.id + ' to driver ' + req.body.data.driverId + '!');
+                // }
 
                 /**
                  * Create car logs.

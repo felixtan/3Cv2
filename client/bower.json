@@ -15,7 +15,6 @@
     "angular-xeditable": "~0.1.9",
     "bootstrap-sass-official": "^3.2.0",
     "normalize.css": "~3.0.3",
-    "stormpath-sdk-angularjs": "~0.6.0",
     "font-awesome": "~4.4.0",
     "Sortable": "~1.4.2"
   },

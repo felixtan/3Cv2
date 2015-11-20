@@ -29,12 +29,7 @@ var server = http.createServer(app);
 // multiple connections to the database
 var models = app.get('models');
 var setupDevDB = require('../db/scripts/setupDevDB');
-var opts = {};
-if(process.env.NODE_ENV === 'development') { 
-  opts = { 
-    force: true 
-  } 
-}
+var opts = (process.env.NODE_ENV === 'development') ? { force: true } : {};
 
 // app.on('stormpath.ready', function() {
 //   console.log('Stormpath initialized.')

@@ -7,7 +7,7 @@
     "port": "5432",
     "dialect": "postgres"
   },
-  "test": {
+  "staging": {
     "username": "ft91",
     "password": "steamisgay",
     "database": "threec",

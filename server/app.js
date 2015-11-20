@@ -1,5 +1,5 @@
 var express = require('express');
-var stormpathExpressSdk = require('stormpath-sdk-express');
+// var stormpathExpressSdk = require('stormpath-sdk-express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');

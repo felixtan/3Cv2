@@ -17,7 +17,6 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.4.1",
     "serve-favicon": "~2.3.0",
-    "stormpath-sdk-express": "^0.4.9",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

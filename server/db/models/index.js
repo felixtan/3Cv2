@@ -16,16 +16,16 @@ fs.readdirSync(__dirname).filter(function(file) {
 });
 
 // Model relations
-db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
-db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
+// db.Car.belongsToMany(db.Driver, { through: 'Assignment', foreignKey: 'carId' });
+// db.Driver.belongsToMany(db.Car, { through: 'Assignment', foreignKey: 'driverId' });
 
 // PTG
-db.Driver.belongsToMany(db.DriverLog, { as: 'Log', through: 'Driver_Logs' });
-db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
+// db.Driver.belongsToMany(db.DriverLog, { as: 'Log', through: 'Driver_Logs' });
+// db.PtgLog.belongsToMany(db.DriverLog, { through: 'Ptg_DriverLogs' });
 
 // Car Maintenance
-db.Car.belongsToMany(db.CarLog, { as: 'Log', through: 'Car_Logs' });
-db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
+// db.Car.belongsToMany(db.CarLog, { as: 'Log', through: 'Car_Logs' });
+// db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
 
 // trying n:m relationship for flexibility
 // db.GasCard.belongsToMany(db.Driver, { through: 'DriverAssets' });
@@ -38,12 +38,12 @@ db.MaintenanceLog.belongsToMany(db.CarLog, { through: 'Maintenance_CarLogs' });
 // db.Driver.hasMany(db.EzPass);
 
 // Driver assets
-db.GasCard.belongsToMany(db.GasCardLog, { as: 'Log', through: 'GasCard_Logs' });
-db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignments' });
-db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignments' });
-db.EzPass.belongsToMany(db.EzPassLog, { as: 'Log', through: 'EzPass_Logs' });
-db.Driver.belongsToMany(db.EzPass, { through: 'EzPassAssignments' });
-db.EzPass.belongsToMany(db.Driver, { through: 'EzPassAssignments' });
+// db.GasCard.belongsToMany(db.GasCardLog, { as: 'Log', through: 'GasCard_Logs' });
+// db.Driver.belongsToMany(db.GasCard, { through: 'GasCardAssignments' });
+// db.GasCard.belongsToMany(db.Driver, { through: 'GasCardAssignments' });
+// db.EzPass.belongsToMany(db.EzPassLog, { as: 'Log', through: 'EzPass_Logs' });
+// db.Driver.belongsToMany(db.EzPass, { through: 'EzPassAssignments' });
+// db.EzPass.belongsToMany(db.Driver, { through: 'EzPassAssignments' });
 
 Object.keys(db).forEach(function(modelName) {
  if ("associate" in db[modelName]) {

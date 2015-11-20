@@ -19,7 +19,6 @@ angular
     'xeditable',
     'ng-sortable',
     'ui.bootstrap',
-    // 'stormpath',
     'ui.router',
     'ngMessages',
     'config'
@@ -50,9 +49,6 @@ angular
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsCtrl',
         controllerAs: 'settings'
-        // sp: {
-        //   authenticate: true
-        // }
     })
     .state('settings.models', {
         abstract: true,
@@ -69,27 +65,6 @@ angular
                 return dataService.getCarProperties();
             }
         }
-    })
-    .state('login', {
-        url: '/login',
-        templateUrl: 'views/login.html'
-    })
-    .state('logout', {
-        url: '/logout',
-        templateUrl: 'views/logout.html',
-        controller: 'LogoutCtrl'
-    })
-    .state('register', {
-        url: '/register',
-        templateUrl: 'views/register.html'
-    })
-    .state('passwordResetRequest', {
-        url: '/password/requestReset',
-        templateUrl: 'views/passwordresetrequest.html'
-    })
-    .state('passwordReset', {
-        url: '/password/reset',
-        templateUrl: 'views/passwordreset.html'
     })
     .state('main', {
         url: '/',
@@ -110,9 +85,6 @@ angular
           //   return dataService.getEzPasses();
           // }
         }
-        // sp: {
-        //     authenticate: true
-        // }
     })
     .state('roster', {
         url: '/drivers',
@@ -124,9 +96,6 @@ angular
             return dataService.getDriversFull();
           }
         }
-        // sp: {
-        //   authenticate: true
-        // }
     })
     .state('ptg', {
         url: '/pay-toll-gas',
@@ -141,9 +110,6 @@ angular
             return dataService.getDrivers();
           }
         }
-        // sp: {
-        //     authenticate: true
-        // }
     })
     .state('maintenance', {
         url: '/maintenance',
@@ -158,9 +124,6 @@ angular
             return dataService.getCars();
           }
         }
-        // sp: {
-        //     authenticate: true
-        // }
     })
     .state('carProfile', {
         url: '/car/:id',
@@ -177,16 +140,6 @@ angular
     // inject ENV when grunt-ng-constant is working
   .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
-
-    // if(ENV.name === 'production') {
-    //     console.log('production mode');
-    //     $stormpath.uiRouter({
-    //         loginState: 'login',
-    //         defaultPostLoginState: 'main',
-    //         forbiddenState: 'login',
-    //       autoRedirect: true
-    //     });
-    // }
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;

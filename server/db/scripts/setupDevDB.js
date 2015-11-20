@@ -1,7 +1,6 @@
 'use strict';
 
 var models = require('../models');
-// var sequelize = models.sequelize;
 var Car = models.Car;
 var Driver = models.Driver;
 var driverLog = models.DriverLog;
@@ -29,27 +28,28 @@ module.exports = {
     populate: function() {
         // Cars
         var car1 = {
-                data: {
-                    licensePlate: {
-                        value: 'T646853C',
-                        log: false
-                    },
-                    licenseNumber: {
-                        value: 'FUJ 5993',
-                        log: false
-                    },
-                    mileage: {
-                        value: 12923,
-                        log: true
-                    },
-                    description: {
-                        value: 'lorem ipsum',
-                        log: false
-                    }
+            organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y',
+            data: {
+                licensePlate: {
+                    value: 'T646853C',
+                    log: false
                 },
-                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y'
+                licenseNumber: {
+                    value: 'FUJ 5993',
+                    log: false
+                },
+                mileage: {
+                    value: 12923,
+                    log: true
+                },
+                description: {
+                    value: 'lorem ipsum',
+                    log: false
+                }
+            }
         },
             car2 = {
+                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
                 data: {
                     licensePlate: {
                         value: 'T627067C',
@@ -67,10 +67,10 @@ module.exports = {
                         value: 'lorem ipsum',
                         log: false
                     }
-                },
-                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'      
+                }
         },
             car3 = {
+                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
                 data: {
                     licensePlate: {
                         value: 'T657227C',
@@ -88,8 +88,7 @@ module.exports = {
                         value: 'lorem ipsum',
                         log: false
                     }
-                },
-                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'
+                }
         };
 
         Car.create(car1);
