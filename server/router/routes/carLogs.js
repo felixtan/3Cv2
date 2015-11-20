@@ -1,26 +1,15 @@
 'use strict';
 
 var models = require('../../db/models');
-var CarLogs = models.CarLog;
-var Cars = models.Car;
-var getUserId = require('../helpers').getUserId;
-
-var opts = {};
-if(process.env.NODE_ENV === 'production' || 'staging') {
-    var organizationId = '';
-    opts = { organization: organizationId };
-}
+var CarLog = models.CarLog;
+var Car = models.Car;
+var helpers = require('../helpers');
 
 module.exports = {
-    get: function(req, res) {
+    getForAllCars: function(req, res) {
         // getUserId(req).then(function(organizationId) {
-            Cars.findAll({ 
-                where: opts,
-                include: [{
-                    model: CarLogs,
-                    where: opts,
-                    required: false
-                }]
+            Car.findAll({ 
+                where: helpers.filterByOrgId(req),
             }).then(function(cars) {
                 res.json(cars);
             }).catch(function(err) {
@@ -34,9 +23,9 @@ module.exports = {
         // });
     },
 
-    getLog: function(req, res) {
-        CarLogs.findById(req.params.id).then(function(logs) {
-            res.json(logs);
+    getForOneCar: function(req, res) {
+        Car.findById(req.params.id).then(function(car) {
+            res.json(car.logs);
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });

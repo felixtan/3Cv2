@@ -15,8 +15,8 @@ angular.module('clientApp')
 
     $scope.tabs = [
         { title: 'Data', content: 'Data' },
-        { title: 'Logs', content: 'Logs '},
-        { title: 'Drivers', content: 'Drivers' }
+        { title: 'Logs', content: 'Logs '}
+        // { title: 'Drivers', content: 'Drivers' }
     ];
 
 

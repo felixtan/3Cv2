@@ -35,12 +35,6 @@ angular
         return $delegate;
     });
 
-    // if(ENV.name === 'production' || 'staging') {
-    //     $urlRouterProvider.otherwise('/login');
-    // } else {
-    //     $urlRouterProvider.otherwise('/');
-    // }
-
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -109,6 +103,22 @@ angular
           basicDriverData: function(dataService) {
             return dataService.getDrivers();
           }
+        }
+    })
+    .state('logs', {
+        abstract: true,
+        url: '/logs',
+        template: '<ui-view/>'
+    })
+    .state('logs.cars', {
+        url: '/logs/cars',
+        templateUrl: 'views/carLogs.html',
+        controller: 'CarLogsCtrl',
+        controllerAs: 'carlogs',
+        resolve: {
+            getCarLogs: function(dataService) {
+                return dataService.getCarLogs();
+            }
         }
     })
     .state('maintenance', {

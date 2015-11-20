@@ -8,10 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MaintenanceLogsCtrl', function ($state, $http, getMaintenanceLogs, basicCarData) {
-    this.logs = getMaintenanceLogs.data.logs;
-    this.mostRecentDateInMs = getMaintenanceLogs.data.mostRecentDateInMs;
-    this.cars = basicCarData.data;
+  .controller('CarLogsCtrl', function ($state, $http, getCarLogs) {
+    this.logs = getCarLogs.data.logs;
+    this.mostRecentDateInMs = getCarLogs.data.mostRecentDateInMs;
 
     // causes error when 'use strict'
     var oneWeekInMs = 604800000;

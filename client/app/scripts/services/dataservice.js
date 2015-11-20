@@ -135,8 +135,8 @@ angular.module('clientApp')
                   });
       },
 
-      getMaintenanceLogs: function() {
-        return $http.get('/api/logs/maintenance', params)
+      getCarLogs: function() {
+        return $http.get('/api/logs/cars', params)
                   .success(function(data) {
                     return data;
                   })

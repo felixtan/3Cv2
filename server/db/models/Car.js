@@ -1,7 +1,5 @@
 'use strict';
 
-/* jshint indent: 2 */
-
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Car', {
 
@@ -13,6 +11,11 @@ module.exports = function(sequelize, DataTypes) {
     data: {
       type: DataTypes.JSONB,
       allowNull: false
+    },
+
+    logs: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
+      allowNull: true
     }
     
   });

@@ -13,7 +13,6 @@ var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
 var prospect = require('./routes/prospects');
 var carLogs = require('./routes/carLogs');
-var maintenanceLogs = require('./routes/maintenanceLogs');
 
 module.exports = function (app) {
 
@@ -22,14 +21,10 @@ module.exports = function (app) {
     app.get('/api/settings/cars', cars.getModel);
 
     // Car logs
-    app.get('/api/logs/cars', carLogs.get);
-    app.get('/api/logs/cars/:id', carLogs.getLog);
+    app.get('/api/logs/cars', carLogs.getForAllCars);
+    app.get('/api/logs/cars/:id', carLogs.getForOneCar);
     app.post('/api/logs/cars/:id', carLogs.create);
     app.put('/api/logs/cars/:id', carLogs.update);
-
-    // Maintenance logs
-    app.get('/api/logs/maintenance', maintenanceLogs.get);
-    app.post('/api/logs/maintenance', maintenanceLogs.create);
 
     // Prospects
     app.get('/api/prospects', prospect.get);

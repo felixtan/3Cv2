@@ -93,6 +93,7 @@ module.exports = {
                 // }).catch(function(err) {
                 //     console.error(err);
                 // });
+                res.json(car);
             }).catch(function(err) {
                 console.error(err);
                 res.status(500).json({ error: err });

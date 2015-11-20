@@ -10,6 +10,7 @@ var CarLog = models.CarLog;
 var maintenanceLog = models.MaintenanceLog;
 var EzPass = models.EzPass;
 var GasCard = models.GasCard;
+var User = models.User;
 
 // Populate the db with fake data
 module.exports = {
@@ -26,6 +27,7 @@ module.exports = {
     },
 
     populate: function() {
+
         // Cars
         var car1 = {
             organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y',
@@ -39,14 +41,15 @@ module.exports = {
                     log: false
                 },
                 mileage: {
-                    value: 12923,
+                    value: '12923',
                     log: true
                 },
                 description: {
                     value: 'lorem ipsum',
                     log: false
                 }
-            }
+            },
+            logs: []
         },
             car2 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -60,14 +63,15 @@ module.exports = {
                         log: false
                     },
                     mileage: {
-                        value: 14081,
+                        value: '14081',
                         log: true
                     },
                     description: {
                         value: 'lorem ipsum',
                         log: false
                     }
-                }
+                },
+                logs: []
         },
             car3 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -81,19 +85,22 @@ module.exports = {
                         log: false
                     },
                     mileage: {
-                        value: 120461,
+                        value: '120461',
                         log: true
                     },
                     description: {
                         value: 'lorem ipsum',
                         log: false
                     }
-                }
+                },
+                logs: []
         };
 
         Car.create(car1);
         Car.create(car2);
         Car.create(car3);
+    }
+}
 
         // Prospects
         // var prospect1 = {
@@ -404,8 +411,6 @@ module.exports = {
         //     console.log('Finished populating the development database.');    
 
         // });
-    }
-}
 
 // Need to add logs to their owners
 

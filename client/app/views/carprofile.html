@@ -30,7 +30,7 @@
                         </span>
                     </td>
                     <td>
-                        <i class='fa fa-check' ng-show='value.log && !rowform.$visible'></i>
+                        <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
                         <!-- <span editable-checklist='value.log' e-name='log' e-form='rowform' e-required>
                         </span> --> 
                         <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible'></input>                  

@@ -1,30 +1,36 @@
 <!-- Collapsed car list becomes a button -->
-<div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='driverListCollapsed' ng-click="reload()" type='button'>
+<!-- <div class='col-md-offset-2 col-md-1 col-collapsed' ng-show='driverListCollapsed' ng-click="reload()" type='button'>
   <div class='row row-collapsed'>
     <p class='fa fa-caret-right fa-3x btn-expand'></p>
   </div>
-</div>
+</div> -->
 
 <!-- Collapsed prospect list becomes a button -->
-<div class='col-md-offset-11 col-md-1 col-collapsed' ng-show='prospectListCollapsed' ng-click="reload()" type='button'>
+<!-- <div class='col-md-offset-11 col-md-1 col-collapsed' ng-show='prospectListCollapsed' ng-click="reload()" type='button'>
   <div class='row row-collapsed'>
     <p class='fa fa-caret-left fa-3x btn-expand'></p>
   </div>
-</div>
+</div> -->
 
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-5' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='driverListCollapsed' if-user>
+<!-- change to col-md-5 : !prospectListCollapsed when prospect list is operational -->
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='driverListCollapsed' if-user>
   
   <h2 class='sub-header'>
     Cars
-    <span class='btn-collapse' ng-show='!prospectListCollapsed'>
+
+    <!-- Collapse car list view button -->
+    <!-- <span class='btn-collapse' ng-show='!prospectListCollapsed'>
       <i class='fa fa-caret-left btn-collapse' type='button' ng-click='driverListCollapsed = !driverListCollapsed'></i>
-    </span>
+    </span> -->
   </h2>  
 
   <div class='btn-group car-list-actions'>
-    <button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+
+    <!-- Enable when add cars, add card/pass, and add driver functionality is operational -->
+    <!-- <button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
       + <span class='caret'></span>
     </button>
+
     <ul class='dropdown-menu'>
       <li class='add-btn-li' ng-controller="CarFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
         Car
@@ -35,11 +41,12 @@
       <li class='add-btn-li' ng-controller="CardFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
         Card/Pass
       </li>
-    </ul>
-    <!-- <div class='col-md-1 add-btn' ng-controller="CarFormModalCtrl">
+    </ul> -->
+
+    <div class='add-btn' ng-controller="CarFormModalCtrl">
       <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Car</button>
     </div>
-    <div class='col-md-1 add-btn' ng-controller="DriverFormModalCtrl">
+    <!-- <div class='col-md-1 add-btn' ng-controller="DriverFormModalCtrl">
       <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Driver</button>
     </div>
     <div class='col-md-1 add-btn' ng-controller="CardFormModalCtrl">
@@ -141,7 +148,7 @@
   </div>
 </div>
 
-<div ng-class="{ 'col-md-offset-3' : driverListCollapsed, 'col-md-9' : driverListCollapsed, 'col-md-5' : !driverListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible' if-user>
+<!-- <div ng-class="{ 'col-md-offset-3' : driverListCollapsed, 'col-md-9' : driverListCollapsed, 'col-md-5' : !driverListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible' if-user>
 
   <h2 class='sub-header'>
     Prospects
