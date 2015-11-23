@@ -48,38 +48,31 @@ module.exports = {
     },
 
     update: function(req, res) {
-        CarLogs.findById(req.params.id).then(function(carLog) {
-            console.log('carLog.carId:',carLog.carId);
-            CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {
-                // check if car needs oil change
-                // TODO: user should be able to set thresholdMileage
-                var thresholdMileage = 10000;
-                var oilChangeRequired = (req.body.mileage - previouslyCheckedMileage >= thresholdMileage) || false;
-                console.log('previouslyCheckedMileage:', previouslyCheckedMileage);
-                console.log('oilChangeRequired:', oilChangeRequired);
-                if(oilChangeRequired) {
-                    Cars.findById(carLog.carId).then(function(car) {
-                        car.update({
-                            oilChangeRequired: true
-                        });
-                    }).catch(function(err) {
-                        console.error(err);
-                    });
-                }
-
-                carLog.update({
-                    mileage: req.body.mileage,
-                    note: req.body.note
-                }).then(function() {
-                    res.status(200).json({ msg: 'Updated log for car ' + req.params.id }); 
-                }).catch(function(err) {
-                    console.error(err);    
-                });
-            });
-        }).catch(function(err) {
-            console.error(err);
-            res.status(500).json({ error: err });
+        Car.update(req.body, { 
+            where: { id: req.params.id }
+        })
+        .then(function() {
+            res.status(200).json({ msg: 'Updated car ' + req.params.id }); 
+        })
+        .catch(function(err) {
+            throw err;    
         });
+            // CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {
+            //     // check if car needs oil change
+            //     // TODO: user should be able to set thresholdMileage
+            //     var thresholdMileage = 10000;
+            //     var oilChangeRequired = (req.body.mileage - previouslyCheckedMileage >= thresholdMileage) || false;
+            //     console.log('previouslyCheckedMileage:', previouslyCheckedMileage);
+            //     console.log('oilChangeRequired:', oilChangeRequired);
+            //     if(oilChangeRequired) {
+            //         Cars.findById(carLog.carId).then(function(car) {
+            //             car.update({
+            //                 oilChangeRequired: true
+            //             });
+            //         }).catch(function(err) {
+            //             console.error(err);
+            //         });
+            //     }
     },
 
     delete: function(req, res) {

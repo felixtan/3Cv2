@@ -49,7 +49,22 @@ module.exports = {
                     log: false
                 }
             },
-            logs: []
+            logs: [
+                {
+                    weekOf: 1448168400000,
+                    createdAt: '2015-11-23T20:55:20.432Z',
+                    data: {
+                        mileage: '8421'
+                    }
+                },
+                {
+                    weekOf: 1448773200000,
+                    createdAt: '2015-11-23T21:05:36.954Z',
+                    data: {
+                        mileage: '12923'
+                    }
+                }
+            ]
         },
             car2 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -71,7 +86,22 @@ module.exports = {
                         log: false
                     }
                 },
-                logs: []
+                logs: [
+                    {
+                        weekOf: 1448168400000,
+                        createdAt: '2015-11-23T20:55:20.432Z',
+                        data: {
+                            mileage: '9412'
+                        }
+                    },
+                    {
+                        weekOf: 1448773200000,
+                        createdAt: '2015-11-23T21:05:36.954Z',
+                        data: {
+                            mileage: '14081'
+                        }
+                    }
+                ]
         },
             car3 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -93,7 +123,22 @@ module.exports = {
                         log: false
                     }
                 },
-                logs: []
+                logs: [
+                    {
+                        weekOf: 1448168400000,
+                        createdAt: '2015-11-23T20:55:20.432Z',
+                        data: {
+                            mileage: '100461'
+                        }
+                    },
+                    {
+                        weekOf: 1448773200000,
+                        createdAt: '2015-11-23T21:05:36.954Z',
+                        data: {
+                            mileage: '120461'
+                        }
+                    }
+                ]
         };
 
         Car.create(car1);

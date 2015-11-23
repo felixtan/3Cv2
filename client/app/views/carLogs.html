@@ -5,7 +5,7 @@
 
     <div class='btn-toolbar log-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
-            <button class='btn btn-success' ng-click='logctrl.newLog()'> 
+            <button class='btn btn-success' ng-click='logctrl.newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'> 
                 + Log 
             </button>
         </div>
@@ -16,10 +16,8 @@
                     datepicker-popup="{{format}}" 
                     ng-model="dt" 
                     is-open="status.opened" 
-                    min-date="minDate" 
                     max-date="maxDate" 
-                    datepicker-options="dateOptions" 
-                    date-disabled="disabled(date, mode)" 
+                    datepicker-options="dateOptions"  
                     ng-required="true" 
                     close-text="Close" /> 
                 <div class="input-group-btn">
@@ -29,23 +27,35 @@
                 </div>   
             </div>
         </div>
+        <div class='btn-group' role='group'>
+            <p id='datepicker-instructions'>
+                * Choose the {{ getStartingDayWord() }} of the week to be logged.
+            </p>
+        </div>
     </div>
-
+    <div>most recent log: {{ mostRecentLogDate | date:'longDate' }}</div>
     <br>
 
-    <div class="table-responsive" ng-model='logctrl.cars'>
+    <div class="table-responsive" ng-model='cars'>
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <td><strong>Week \ Car</strong></td>
-                    <td ng-repeat="car in logctrl.cars | orderBy:'id'">
+                    <td ng-repeat="car in cars | orderBy:'id'">
                         {{ car.data.licensePlate.value }}
                     </td>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-
+                <tr ng-repeat='date in dates' ng-model='date'>
+                    <td>{{ date | date:'longDate' }}</td>
+                    <td ng-repeat='car in cars'>
+                        <ul ng-repeat='log in car.logs' ng-if='log.weekOf === date' class='log'>
+                            <li ng-repeat='(field, value) in log.data'>
+                                {{ field }}: {{ value }}
+                            </li>
+                        </ul>
+                    </td>
                 </tr>
                 <!-- <tr ng-repeat="car in logctrl.cars | orderBy:'-dateInMs'">
                     <td>

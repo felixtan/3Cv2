@@ -8,18 +8,67 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogsCtrl', function ($scope, $state, $http, getAllCarLogs) {
-    this.cars = getAllCarLogs.data;
-    // this.mostRecentDateInMs = getCarLogs.data.mostRecentDateInMs;
+  .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, $state, $http, getAllCarLogs) {
+    var _ = $window._;
+    $scope.cars = getAllCarLogs.data;
 
-    // stores dates of log fors week starting/ending
+    // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
-    this.dates = [];
+    $scope.getLogDates = function() {
+        var arr = [];
+        _.each($scope.cars, function(car, index) {
+            _.each(car.logs, function(log, index) {
+                arr.push(log.weekOf);
+            });
+        });
+        
+        $scope.dates = _.uniq(arr.sort(), true).reverse();
+    }
+    $scope.getLogDates();
 
-    // error when using const and 'use strict'
-    var oneWeekInMs = 604800000;
+    $scope.getMostRecentLogDate = function() {
+        // return Math.max(...$scope.dates); -> assuming unsorted
+
+        // assuming sorted from recent to past
+        $scope.mostRecentLogDate = $scope.dates[0];     
+    }
+    $scope.getMostRecentLogDate();
+
+    $scope.date = 0;
 
     // Datepicker
+    // error when using const and 'use strict'
+    var oneWeekInMs = 604800000;
+    var oneDayInMs = 86400000;
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        startingDay: 0
+    };
+
+    $scope.getStartingDayNum = function() {
+        return $scope.dateOptions.startingDay;
+    }
+
+    $scope.getStartingDayWord = function() {
+        switch($scope.getStartingDayNum()) {
+            case 0:
+                return 'Sunday';
+                break;
+            case 1:
+                return 'Monday';
+                break;
+            default:
+                return 'Invalid day';
+        }
+    }
+
+    // @param day is of type int from 0-1 (Sunday/Monday)
+    $scope.setStartingDay = function(day) {
+        if((day < 0) || (day > 1)) alert('Invalid day');
+        $scope.dateOptions.startingDay = day;
+    }
+
     $scope.today = function() {
         $scope.dt = new Date();
     };
@@ -28,70 +77,69 @@ angular.module('clientApp')
     $scope.clear = function () {
         $scope.dt = null;
     };
+
     // Disable weekend selection
-  $scope.disabled = function(date, mode) {
-    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-  };
+    $scope.disabled = function(date, mode) {
+        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+    };
 
-  $scope.toggleMin = function() {
-    $scope.minDate = $scope.minDate ? null : new Date();
-  };
-  $scope.toggleMin();
-  $scope.maxDate = new Date(2020, 5, 22);
+    $scope.toggleMin = function() {
+        $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
 
-  $scope.open = function($event) {
-    $scope.status.opened = true;
-  };
+    // Allows for a year in advance
+    $scope.maxDate = new Date($scope.dt.getFullYear()+1, $scope.dt.getMonth()+1);
 
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
-  };
+    $scope.open = function($event) {
+        $scope.status.opened = true;
+    };
 
-  $scope.dateOptions = {
-    formatYear: 'yy',
-    startingDay: 1
-  };
+    $scope.setDate = function(year, month, day) {
+        $scope.dt = new Date(year, month, day);
+    };
 
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
 
-  $scope.status = {
-    opened: false
-  };
+    $scope.status = {
+        opened: false
+    };
 
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var afterTomorrow = new Date();
-  afterTomorrow.setDate(tomorrow.getDate() + 2);
-  $scope.events =
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date();
+    afterTomorrow.setDate(tomorrow.getDate() + 2);
+  
+    $scope.events = 
     [
-      {
-        date: tomorrow,
-        status: 'full'
-      },
-      {
-        date: afterTomorrow,
-        status: 'partially'
-      }
+            {
+                date: tomorrow,
+                status: 'full'
+            },
+        {
+            date: afterTomorrow,
+            status: 'partially'
+        }
     ];
 
-  $scope.getDayClass = function(date, mode) {
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
+    $scope.getDayClass = function(date, mode) {
+        if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-      for (var i=0;i<$scope.events.length;i++){
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+            for (var i=0;i<$scope.events.length;i++){
+                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
+                if (dayToCheck === currentDay) {
+                    return $scope.events[i].status;
+                }
+            }
         }
-      }
-    }
 
-    return '';
-  };
+        return '';
+    };
+    // End datepicker stuff
 
-    
     this.newLog = function() {
         // 1. show date picker
         // 2. user picks date -> store in log.date
@@ -99,16 +147,14 @@ angular.module('clientApp')
         // 4. create for all cars
         // employ loading animation 
 
-        var newDateInMs = this.mostRecentDateInMs + oneWeekInMs;
-        var date = new Date(newDateInMs);
-
-        $http.post('/api/logs/maintenance', {
-            date: date,
-            dateInMs: newDateInMs
-        }).then(function() {
-            setTimeout(function() { $state.forceReload(); }, 1000);
-        }).catch(function(err) {
-            console.error(err);
+        var d = $scope.dt;
+        $scope.dates.push(d.getTime());
+        _.each($scope.cars, function(car) {
+            car.logs.push({
+                createdAt: (new Date()),
+                weekOf: (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime()
+            });
+            dataService.updateCar(car);
         });
     };
 

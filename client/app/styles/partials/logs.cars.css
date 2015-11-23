@@ -13,3 +13,13 @@
 .car-log-toolbar {
     max-width: 20vw;
 }
+
+#datepicker-instructions {
+    font-size: 0.80em;
+    font-style: italic;
+}
+
+.log {
+    list-style-type: none;
+    padding-left: 0;
+}

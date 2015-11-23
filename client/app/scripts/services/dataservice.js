@@ -147,6 +147,20 @@ angular.module('clientApp')
                   .error(function(err) {
                     console.error(err);
                   });
+      },
+
+      updateCar: function(car) {
+        $http({
+            method: 'PUT',
+            url: '/api/logs/cars/' + car.id,
+            data: car
+        })
+        .success(function(data) {
+          return data;
+        })
+        .error(function(err) {
+          console.error(err);
+        });
       }
     };
   });
