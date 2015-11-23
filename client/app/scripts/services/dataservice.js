@@ -135,8 +135,12 @@ angular.module('clientApp')
                   });
       },
 
-      getCarLogs: function() {
-        return $http.get('/api/logs/cars', params)
+      getAllCarLogs: function () {
+        return $http({
+                      method: 'GET',
+                      url:'/api/logs/cars', 
+                      params: params
+                  })
                   .success(function(data) {
                     return data;
                   })

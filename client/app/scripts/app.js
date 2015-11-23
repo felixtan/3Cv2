@@ -114,25 +114,11 @@ angular
         url: '/logs/cars',
         templateUrl: 'views/carLogs.html',
         controller: 'CarLogsCtrl',
-        controllerAs: 'carlogs',
+        controllerAs: 'logctrl',
         resolve: {
-            getCarLogs: function(dataService) {
-                return dataService.getCarLogs();
+            getAllCarLogs: function(dataService) {
+                return dataService.getAllCarLogs();
             }
-        }
-    })
-    .state('maintenance', {
-        url: '/maintenance',
-        templateUrl: 'views/maintenanceLogs.html',
-        controller: 'MaintenanceLogsCtrl',
-        controllerAs: 'maintenance',
-        resolve: {
-          getMaintenanceLogs: function(dataService) {
-            return dataService.getMaintenanceLogs();
-          },
-          basicCarData: function(dataService) {
-            return dataService.getCars();
-          }
         }
     })
     .state('carProfile', {
