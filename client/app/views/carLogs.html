@@ -48,26 +48,43 @@
             </thead>
             <tbody>
                 <tr ng-repeat='date in dates' ng-model='date'>
-                    <td>{{ date | date:'longDate' }}</td>
+                    <td>
+                        {{ date | date:'longDate' }}
+                        <button class='btn btn-warning btn-xs' ng-click='logform.$show()' ng-show='!logform.$visible'>
+                            Edit
+                        </button>
+                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='logctrl.save(date)'>
+                            <button type="submit" ng-disabled="logform.$waiting" class="btn btn-primary btn-xs">
+                                Save
+                            </button>
+                            <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
+                                Cancel
+                            </button>
+                        </form>
+                    </td>
                     <td ng-repeat='car in cars'>
                         <ul ng-repeat='log in car.logs' ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                {{ field }}: {{ value }}
+                                <p ng-show='logform.$visible'>{{ field }}: </p>
+                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
+                                    {{ field }}: {{ value }}
+                                </span>
                             </li>
+                            {{ log }}
                         </ul>
                     </td>
                 </tr>
                 <!-- <tr ng-repeat="car in logctrl.cars | orderBy:'-dateInMs'">
                     <td>
                         <span>{{ log.date | date : format : shortDate }}</span>
-                        <button class='btn btn-warning btn-xs edit-btn' ng-click='rowform.$show()' ng-show='!rowform.$visible'>
+                        <button class='btn btn-warning btn-xs edit-btn' ng-click='logform.$show()' ng-show='!logform.$visible'>
                             Edit
                         </button>
-                        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
-                          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary btn-xs">
+                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" shown="false">
+                          <button type="submit" ng-disabled="logform.$waiting" class="btn btn-primary btn-xs">
                             Save
                           </button>
-                          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default btn-xs">
+                          <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
                             Cancel
                           </button>
                         </form>
@@ -75,14 +92,14 @@
                     <td class='log-tablecell' ng-repeat="car in log.CarLogs | orderBy:'carId'">
                         <ul class='log'>
                             <li>
-                                <p ng-show='rowform.$visible'>Mileage: </p>
-                                <span editable-text='car.mileage' e-name='mileage' e-form='rowform' onaftersave='logctrl.updateLog(car)' e-required>
+                                <p ng-show='logform.$visible'>Mileage: </p>
+                                <span editable-text='car.mileage' e-name='mileage' e-form='logform' onaftersave='logctrl.updateLog(car)' e-required>
                                     Mileage: {{ car.mileage || ' ' }}
                                 </span>
                             </li>
                             <li class='li-notes'>
-                                <p ng-show='rowform.$visible'>Notes: </p>
-                                <span class='note' editable-textarea='car.note' e-name='note' e-form='rowform' e-required>
+                                <p ng-show='logform.$visible'>Notes: </p>
+                                <span class='note' editable-textarea='car.note' e-name='note' e-form='logform' e-required>
                                     Notes: {{ car.note || ' '}}
                                 </span>
                             </li>

@@ -37,5 +37,7 @@ module.exports = {
     // used for create methods
     getOrgId: function(req) {
         return (process.env.NODE_ENV === 'production' || 'staging') ? req.user.customData.organizationId : req.body.organizationId;
-    }
+    },
+
+    underscore: _
 }

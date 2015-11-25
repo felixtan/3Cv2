@@ -23,7 +23,7 @@ module.exports = function (app) {
     // Car logs
     app.get('/api/logs/cars', carLogs.getForAllCars);
     app.get('/api/logs/cars/:id', carLogs.getForOneCar);
-    app.post('/api/logs/cars/:id', carLogs.create);
+    // app.post('/api/logs/cars/:id', carLogs.create);
     app.put('/api/logs/cars/:id', carLogs.update);
 
     // Prospects

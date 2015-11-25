@@ -10,6 +10,7 @@
 angular.module('clientApp')
   .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, $state, $http, getAllCarLogs) {
     var _ = $window._;
+
     $scope.cars = getAllCarLogs.data;
 
     // stores dates of log fors week starting/ending in milliseconds
@@ -140,32 +141,76 @@ angular.module('clientApp')
     };
     // End datepicker stuff
 
+    var getFieldsToBeLogged = function(car) {
+        return $q(function(resolve, reject) {
+            var fields = [];
+            for(var field in car.data) {
+                if(car.data[field].log === true) fields.push(field);
+            }
+
+            resolve(fields);
+            reject(new Error('Error getting fields to be logged'));
+        });
+    }
+
+    // returns an object to be car.logs[i].data with keys (feilds) to be logged
+    var newDataObj = function() {
+        return $q(function(resolve, reject) {
+            var data = {};
+            // first car is taken because fields in car.data are assumed to be uniform for all cars
+            getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
+                (function(field) {
+                    data[field] = null;
+                })(...fields);
+
+                resolve(data);
+                reject(new Error('Error creating log.data'));
+            });
+        });
+    }
+
     this.newLog = function() {
         // 1. show date picker
         // 2. user picks date -> store in log.date
         // 3. start of week -> stored in log.weekStarting
         // 4. create for all cars
         // employ loading animation 
-
+        
         var d = $scope.dt;
-        $scope.dates.push(d.getTime());
-        _.each($scope.cars, function(car) {
-            car.logs.push({
-                createdAt: (new Date()),
-                weekOf: (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime()
+        var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
+
+        if(!(_.contains($scope.dates, weekOf))) {
+            // add new date to array of log dates
+            $scope.dates.push(d.getTime());
+
+            newDataObj().then(function(blankDataObj) {
+                _.each($scope.cars, function(car) {            
+                    car.logs.push({
+                        createdAt: (new Date()),
+                        weekOf: weekOf,
+                        data: blankDataObj
+                    });
+                    
+                    dataService.updateCar(car, { updateCarData: false });
+                });
             });
-            dataService.updateCar(car);
-        });
-    };
+        } else {
+            alert('Log for ' + d.toDateString() + ' already exists!');
+        }
+    }
 
-    this.updateLog = function(carLog) {
-        $http.put('/api/logs/cars/' + carLog.id, {
-            mileage: carLog.mileage,
-            note: carLog.note
-        }).success(function() {
-        }).error(function(err) {
-            console.error(err);
-        });
-    };
+    // need to make this more efficient
+    this.save = function(logDate) {
+        _.each($scope.cars, function(car) {
+            if(logDate === $scope.mostRecentLogDate) {
+                // update car.data is new value isn't null
+                var mostRecentLog = _.find(car.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate });
+                for(var field in mostRecentLog.data) {
+                    if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') car.data[field].value = mostRecentLog.data[field];
+                }
+            }
 
+            dataService.updateCar(car, { updateCarData: false });
+        });
+    }
   });

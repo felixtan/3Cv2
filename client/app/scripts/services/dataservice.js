@@ -67,71 +67,57 @@ angular.module('clientApp')
                       url: '/api/cars',
                       params: params
                   })
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
                   });
       },
 
       getCar: function (id) {
         return $http.get('/api/cars/' + id)
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    throw err;
                   });
       },
 
       getCarProperties: function () {
         return $http.get('/api/settings/cars', params)
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    throw err;
                   });
       },
 
       getPtgLogs: function () {
         return $http.get('/api/logs/ptg', params)
-                  .success(function(data) {
-                    return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
-                  });
+                 .then(function(err, data) {
+                  if(err) console.error(err);
+                  return data;
+                });
       },
 
       getGasCards: function() {
         return $http.get('/api/assets/gas-cards', params)
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
                   });
       },
 
       getEzPasses: function() {
         return $http.get('/api/assets/ez-passes', params)
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
                   });
       },
 
       getProspects: function() {
         return $http.get('/api/prospects', params)
-                  .success(function(data) {
+                  .then(function(err, data) {
+                    if(err) console.error(err);
                     return data;
-                  })
-                  .error(function(err) {
-                    console.error(err);
                   });
       },
 
@@ -141,24 +127,23 @@ angular.module('clientApp')
                       url:'/api/logs/cars', 
                       params: params
                   })
-                  .success(function(data) {
+                  .then(function(data) {
                     return data;
-                  })
-                  .error(function(err) {
+                  }, function(err) {
                     console.error(err);
                   });
       },
 
-      updateCar: function(car) {
+      updateCar: function(car, params) {
         $http({
-            method: 'PUT',
-            url: '/api/logs/cars/' + car.id,
-            data: car
+          method: 'PUT',
+          url: '/api/logs/cars/' + car.id,
+          params: params,
+          data: car
         })
-        .success(function(data) {
+        .then(function(data) {
           return data;
-        })
-        .error(function(err) {
+        }, function(err) {
           console.error(err);
         });
       }
