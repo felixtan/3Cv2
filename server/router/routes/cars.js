@@ -1,35 +1,30 @@
 'use strict';
 
 var models = require('../../db/models');
-var helpers = require('../helpers');
 var Cars = models.Car;
+var helpers = require('../helpers');
+var filterByOrgId = helpers.filterByOrgId;
 var getUserId = helpers.getUserId;
-var CarLogs = models.CarLog;
-var MaintenanceLogs = models.MaintenanceLog;
+var getKeys = helpers.getKeys;
+var getOrgId = helpers.getOrgId;
+var _ = helpers._;
 
 module.exports = {
 
     get: function(req, res) {
-        // getUserId(req).then(function(organizationId) {
-            Cars.findAll({
-                where: helpers.filterByOrgId(req)
-            }).then(function(cars) {
-                res.json(cars);
-            }).catch(function(err) {
-                console.error(err);
-                res.status(500).json({ error: err });
-            });
-        // }).catch(function(err) {
-        //     console.error(err);
-        //     res.status(500).json({ error: err });
-        // });
+        Cars.findAll({
+            where: filterByOrgId(req)
+        }).then(function(cars) {
+            res.json(cars);
+        }).catch(function(err) {
+            res.status(500).json({ error: err });
+        });
     },
 
     getCar: function(req, res) {
         Cars.findById(req.params.id).then(function(car) {
             if(!car) {
-                res.status(404).json({ error: 'Resource not found.' });
-                console.log('Car not found.');
+                res.status(404).json({ error: 'Car not found.' });
             } else {
                 res.json(car);
             }
@@ -42,12 +37,12 @@ module.exports = {
 
     getModel: function(req, res) {
         Cars.findAll({
-            where: helpers.filterByOrgId,
+            where: filterByOrgId,
             limit: 1
         }).then(function(cars) {
             // use underscore to just return the keys
             console.log(cars[0].dataValues);
-            res.json(helpers.getKeys(cars[0].dataValues.data));
+            res.json(getKeys(cars[0].dataValues.data));
         }).catch(function(err) {
             res.status(500).json({ error: err });
         });
@@ -56,7 +51,7 @@ module.exports = {
     create: function(req, res) {
         // getUserId(req).then(function(organizationId) {
             Cars.create({
-                organizationId: helpers.getOrgId,
+                organizationId: getOrgId,
                 data: req.body.data
             }).then(function(car) {
                 /**

@@ -111,13 +111,13 @@ angular
         template: '<ui-view/>'
     })
     .state('logs.cars', {
-        url: '/logs/cars',
+        url: '/cars',
         templateUrl: 'views/carLogs.html',
         controller: 'CarLogsCtrl',
         controllerAs: 'logctrl',
         resolve: {
-            getAllCarLogs: function(dataService) {
-                return dataService.getAllCarLogs();
+            getCars: function(dataService) {
+                return dataService.getCars();
             }
         }
     })

@@ -8,10 +8,13 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, $state, $http, getAllCarLogs) {
+  .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, $state, $http, getCars) {
     var _ = $window._;
 
-    $scope.cars = getAllCarLogs.data;
+    $scope.getCars = function() {
+        $scope.cars = getCars.data;
+    }
+    $scope.getCars();
 
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case

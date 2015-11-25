@@ -23,3 +23,7 @@
     list-style-type: none;
     padding-left: 0;
 }
+
+.btn-edit {
+    float: right;
+}

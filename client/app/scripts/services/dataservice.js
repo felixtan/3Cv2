@@ -67,66 +67,60 @@ angular.module('clientApp')
                       url: '/api/cars',
                       params: params
                   })
-                  .then(function(err, data) {
-                    if(err) console.error(err);
+                  .then(function(data) {
                     return data;
+                  }, function(err) {
+                    throw err;
                   });
       },
 
       getCar: function (id) {
         return $http.get('/api/cars/' + id)
-                  .then(function(err, data) {
-                    if(err) console.error(err);
+                  .then(function(data) {
                     return data;
+                  }, function(err) {
+                    console.error(err);
                   });
       },
 
       getCarProperties: function () {
         return $http.get('/api/settings/cars', params)
-                  .then(function(err, data) {
-                    if(err) console.error(err);
+                  .then(function(data) {
                     return data;
+                  }, function(err) {
+                    console.error(err);
                   });
       },
 
       getPtgLogs: function () {
         return $http.get('/api/logs/ptg', params)
-                 .then(function(err, data) {
-                  if(err) console.error(err);
+                 .then(function(data) {
                   return data;
+                }, function(err) {
+                  console.error(err);
                 });
       },
 
       getGasCards: function() {
         return $http.get('/api/assets/gas-cards', params)
-                  .then(function(err, data) {
-                    if(err) console.error(err);
+                  .then(function(data) {
                     return data;
+                  }, function(err) {
+                    console.error(err);
                   });
       },
 
       getEzPasses: function() {
         return $http.get('/api/assets/ez-passes', params)
-                  .then(function(err, data) {
-                    if(err) console.error(err);
+                  .then(function(data) {
                     return data;
+                  }, function(err) {
+                    console.error(err);
                   });
       },
 
       getProspects: function() {
         return $http.get('/api/prospects', params)
-                  .then(function(err, data) {
-                    if(err) console.error(err);
-                    return data;
-                  });
-      },
-
-      getAllCarLogs: function () {
-        return $http({
-                      method: 'GET',
-                      url:'/api/logs/cars', 
-                      params: params
-                  })
                   .then(function(data) {
                     return data;
                   }, function(err) {

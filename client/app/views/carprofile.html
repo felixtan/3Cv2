@@ -1,5 +1,5 @@
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='sub-header'>{{ car.data.licensePlate.value }}</h2>
+    <h2 class='sub-header'>{{ _car.data.licensePlate.value }}</h2>
     
     <tabset>
         <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' active='tab.active' disable='tab.disabled'>
@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat='(field, value) in car.data'>
+                <tr ng-repeat='(field, value) in _car.data'>
                     <td>
                         <span editable-text='field' e-name='name' e-form='rowform' e-required>
                             {{ field }}

@@ -13,139 +13,45 @@
 </div> -->
 
 <!-- change to col-md-5 : !prospectListCollapsed when prospect list is operational -->
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='col-md-offset-2 col-collapsible' id='car-list' ng-model='cars' collapse='driverListCollapsed' if-user>
-  
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='table-responsive col-md-offset-2 table-responsive col-collapsible' id='car-list' collapse='driverListCollapsed' if-user>  
   <h2 class='sub-header'>
-    Cars
+      Cars
+    <!-- <div class='add-btn' ng-controller="CarFormModalCtrl"> -->
+    <span style='margin-left:4vw;'>
+     <!--  <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>
+        +
+      </button> -->
+    </span>
+      <!-- </div> -->
+  </h2>
+  <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>
+    + Car
+  </button>
+  <table class='table table-striped'>
+    <thead>
+      <td>#</td>
+      <td>Car</td>
+    </thead>
+    <tbody ng-model='cars'>
+      <tr ng-repeat='car in cars | orderBy:"car.id"'>
+        <td>{{ $index+1 }}</td>
+        <td>
+          <h4>
+            <a ui-sref='carProfile({ id: car.id })'>
+              {{ car.data.licensePlate.value }}
+            </a>
 
-    <!-- Collapse car list view button -->
-    <!-- <span class='btn-collapse' ng-show='!prospectListCollapsed'>
-      <i class='fa fa-caret-left btn-collapse' type='button' ng-click='driverListCollapsed = !driverListCollapsed'></i>
-    </span> -->
-  </h2>  
+            <!-- <span>
+              <button class='btn btn-xs btn-warning' ng-click='main.oilChanged(car.id)' ng-show='car.oilChangeRequired'>
+                Oil Changed
+              </button>
+            </span> -->
 
-  <div class='btn-group car-list-actions'>
-
-    <!-- Enable when add cars, add card/pass, and add driver functionality is operational -->
-    <!-- <button type='button' class='btn btn-success dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-      + <span class='caret'></span>
-    </button>
-
-    <ul class='dropdown-menu'>
-      <li class='add-btn-li' ng-controller="CarFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
-        Car
-      </li>
-      <li class='add-btn-li' ng-controller="DriverFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
-        Driver
-      </li>
-      <li class='add-btn-li' ng-controller="CardFormModalCtrl" data-toggle='modal' ng-click='open(lg)'>
-        Card/Pass
-      </li>
-    </ul> -->
-
-    <div class='add-btn' ng-controller="CarFormModalCtrl">
-      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Car</button>
-    </div>
-    <!-- <div class='col-md-1 add-btn' ng-controller="DriverFormModalCtrl">
-      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Driver</button>
-    </div>
-    <div class='col-md-1 add-btn' ng-controller="CardFormModalCtrl">
-      <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>+ Card/Pass</button>
-    </div> -->
-  </div>
-
-  <div class="table-responsive car-list" ng-repeat='car in cars'>
-    <table class="table">
-      <tbody>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <h3>
-                <span class='drag-handle-car'>
-                  ::
-                </span> 
-                <span ng-class="{'bg-danger' : car.oilChangeRequired}">
-                  <a ui-sref='carProfile({ id: car.id })'>
-                    {{ car.data.licensePlate.value }}
-                  </a>
-                </span>
-                <span>
-                  <button class='btn btn-xs btn-warning' ng-click='main.oilChanged(car.id)' ng-show='car.oilChangeRequired'>
-                    Oil Changed
-                  </button>
-                </span>
-              </h3>
-              <th></th>
-              <th>Name</th>
-              <th>Gas Card</th>
-              <th>EZ Pass</th>
-              <th>Notes</th>
-              <th>TLC</th>
-              <th>DMV</th>
-              <th>Points</th>
-              <th>Accidents</th>
-              <th>Shift</th>
-              <th>Address</th>
-            </thead>
-            <tbody class='driver-list' data-list='driver' data-carid='{{ car.id }}' ng-model='car.Drivers'>
-              <tr class='dropfix'>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr class='person-row' ng-repeat='driver in car.Drivers' data-id='{{ driver.id }}' data-currentCarId='{{ car.id }}'>
-                <td>
-                  <ul class='row-actions'>
-                    <li class='drag-handle'>::</li>
-                    <li class='filler'> </li>
-                    <li type='button' class='fa fa-pencil-square-o' data-toggle='modal' ng-controller='PersonEditFormModalCtrl' ng-click='open(lg, driver, "Driver")'></li>
-                  </ul>
-                </td>
-                <td>
-                    {{ driver.name }}
-                </td>
-                <td>
-                    {{ driver.GasCards[0].number }}
-                </td>
-                <td>
-                    {{ driver.EzPasses[0].number }}
-                </td>
-                <td>
-                    {{ driver.description }}
-                </td>
-                <td>
-                    {{ driver.tlc }}
-                </td>
-                <td>
-                    {{ driver.dmv }}
-                </td>
-                <td>
-                    {{ driver.points }}
-                </td>
-                <td>
-                    {{ driver.accidents }}
-                </td>
-                <td>
-                    {{ driver.shift }}
-                </td>
-                <td>
-                    <a class='addressLink' href="https://maps.google.com/?q={{ driver.address }}" target="_blank">{{ driver.address }}</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </tbody>
-    </table>
-  </div>
+          </h4>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- <div ng-class="{ 'col-md-offset-3' : driverListCollapsed, 'col-md-9' : driverListCollapsed, 'col-md-5' : !driverListCollapsed }" id='prospect-list' ng-model='prospects' collapse='prospectListCollapsed' class='col-collapsible' if-user>
