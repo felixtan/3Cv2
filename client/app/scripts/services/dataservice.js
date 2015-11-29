@@ -129,7 +129,7 @@ angular.module('clientApp')
       },
 
       updateCar: function(car, params) {
-        $http({
+        return $http({
           method: 'PUT',
           url: '/api/logs/cars/' + car.id,
           params: params,
@@ -140,6 +140,10 @@ angular.module('clientApp')
         }, function(err) {
           console.error(err);
         });
+      },
+
+      deleteField: function(index) {
+        // return $http.delete{}
       }
     };
   });

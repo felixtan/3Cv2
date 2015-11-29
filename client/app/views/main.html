@@ -29,15 +29,19 @@
   </button>
   <table class='table table-striped'>
     <thead>
-      <td>#</td>
-      <td>Car</td>
+      <td><h4>#</h4></td>
+      <td><h4>Car</h4></td>
     </thead>
     <tbody ng-model='cars'>
       <tr ng-repeat='car in cars | orderBy:"car.id"'>
-        <td>{{ $index+1 }}</td>
         <td>
           <h4>
-            <a ui-sref='carProfile({ id: car.id })'>
+            {{ $index+1 }}
+          </h4>
+        </td>
+        <td>
+          <h4>
+            <a ui-sref='carProfile.data({ id: car.id })'>
               {{ car.data.licensePlate.value }}
             </a>
 

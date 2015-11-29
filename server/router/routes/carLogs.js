@@ -33,8 +33,7 @@ module.exports = {
         //console.log(req.body);  // car
         //console.log(req.query);   // { updateCarData: 'true' }
         Car.update(req.body, { 
-            where: { id: req.params.id },
-            fields: ['logs']
+            where: { id: req.params.id }
         })
         .then(function(data) {
             console.log(data);

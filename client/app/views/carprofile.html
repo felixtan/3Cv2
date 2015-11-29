@@ -1,57 +1,8 @@
-<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='sub-header'>{{ _car.data.licensePlate.value }}</h2>
-    
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3' ng-init='activateTab($state)'>
+    <h2 class='sub-header'>{{ car.data.licensePlate.value }}</h2>
     <tabset>
-        <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' active='tab.active' disable='tab.disabled'>
-            <!-- {{ tab.content }} -->
+        <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
+            <div ui-view></div>
         </tab>
     </tabset>
-
-    <div class='table-responsive'>
-        <table class='table'>
-            <thead>
-                <tr>
-                    <th>Field</th>
-                    <th>Value</th>
-                    <th>Logged</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat='(field, value) in _car.data'>
-                    <td>
-                        <span editable-text='field' e-name='name' e-form='rowform' e-required>
-                            {{ field }}
-                        </span>
-                    </td>
-                    <td>
-                        <span editable-text='value.value' e-name='value' e-form='rowform' e-required>
-                            {{ value.value }}
-                        </span>
-                    </td>
-                    <td>
-                        <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
-                        <!-- <span editable-checklist='value.log' e-name='log' e-form='rowform' e-required>
-                        </span> --> 
-                        <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible'></input>                  
-                    </td>
-                    <td style='whote-space: nowrap'>
-                        <form editable-form name='rowform' onbeforesave='saveCars()' ng-show='rowform.$visible' class='form-buttons form-inline'>
-                            <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-primary'>
-                                Save
-                            </button>
-                            <button type='button' ng-disabled='rowform.$waiting' ng-click='rowform.$cancel()' class='btn btn-default'>
-                                Cancel
-                            </button>
-                        </form>
-                        <div class='buttons' ng-show='!rowform.$visible'>
-                            <button class='btn btn-warning' ng-click='rowform.$show()'>Edit</button>
-                            <button class='btn btn-danger' ng-click='promptDelete()'>Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        {{ car.data }}
-    </div>
 </div>

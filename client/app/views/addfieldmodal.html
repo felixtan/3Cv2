@@ -1,0 +1,31 @@
+<link rel="stylesheet" href='styles/forms.scss'>
+
+<div class="modal-header">
+    <h3 class="modal-title">Add field</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+
+<div class="modal-body">
+    <form novalidate role='form' name='form' ng-submit='submit()'>
+
+        <div class='form-group'>
+            <label for='field'>Field</label>
+            <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' >
+        </div>
+
+        <div class='checkbox'>
+            <label for='log'>
+                <input type='checkbox' ng-model='formData.log'> Log it?
+            </label>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.$invalid'>Submit</button>
+    <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>

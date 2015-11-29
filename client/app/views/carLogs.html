@@ -5,7 +5,7 @@
 
     <div class='btn-toolbar log-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
-            <button class='btn btn-success' ng-click='logctrl.newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'> 
+            <button class='btn btn-success' ng-click='logctrl.newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'>
                 + Log 
             </button>
         </div>
@@ -42,25 +42,34 @@
                 <tr>
                     <td><strong>Week \ Car</strong></td>
                     <td ng-repeat="car in cars | orderBy:'id'">
-                        {{ car.data.licensePlate.value }}
+                        <a ui-sref='carProfile.logs({ id: car.id })'>
+                            {{ car.data.licensePlate.value }}
+                        </a>
                     </td>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat='date in dates' ng-model='date'>
                     <td>
-                        {{ date | date:'longDate' }}
-                        <button class='btn btn-warning btn-xs btn-edit' ng-click='logform.$show()' ng-show='!logform.$visible'>
+                        <span class='log-date'>
+                            {{ date | date:'longDate' }}
+                        </span>
+                        <button class='btn btn-warning btn-xs' ng-click='logform.$show()' ng-show='!logform.$visible'>
                             Edit
                         </button>
-                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='logctrl.save(date)'>
-                            <button type="submit" ng-disabled="logform.$waiting" class="btn btn-primary btn-xs">
-                                Save
-                            </button>
-                            <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
-                                Cancel
-                            </button>
-                        </form>
+                        <div class='btn-toolbar' role='toolbar'>
+                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='logctrl.save(date)'>
+                                <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs">
+                                    Save
+                                </button>
+                                <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
+                                    Cancel
+                                </button>
+                                <button class='btn btn-danger btn-xs' style='margin-left:1vw' ng-click='open(lg, { "log": date })' ng-controller='DeleteFieldModalCtrl'>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                     <td ng-repeat='car in cars'>
                         <ul ng-repeat='log in car.logs | orderBy: "car.id"' ng-if='log.weekOf === date' class='log'>

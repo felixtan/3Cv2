@@ -1,0 +1,58 @@
+<br>
+
+<div class='table-responsive table-bordered'>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>
+                    Field
+                    <button class='btn btn-success btn-xs' ng-click='open(lg)' ng-controller='AddFieldModalCtrl' style='margin-left: 1vw;'>
+                        +
+                    </button>
+                </th>
+                <th>Value</th>
+                <th>Logged</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='(field, value) in car.data'>
+                <td>
+                    <span editable-text='field' e-name='name' e-form='rowform' data-newField='{{ field }}' once once-attr-oldField='{{::field}}' e-required>
+                        {{ field }}
+                    </span>
+                </td>
+                <td>
+                    <span editable-text='value.value' e-name='value' e-form='rowform' e-required>
+                        {{ value.value }}
+                    </span>
+                </td>
+                <td>
+                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
+                    <!-- <span editable-checklist='value.log' e-name='log' e-form='rowform' e-required>
+                    </span> --> 
+                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible'></input>                  
+                </td>
+                <td style='white-space: nowrap'>
+                    <div class='btn-toolbar btn-edit' role='toolbar'>
+                        <form editable-form name='rowform' onaftersave='save($data, car.id)' ng-show='rowform.$visible' class='form-buttons form-inline'>
+                            <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-success btn-xs'>
+                                Save
+                            </button>
+                            <button type='button' ng-disabled='rowform.$waiting' ng-click='rowform.$cancel()' class='btn btn-default btn-xs'>
+                                Cancel
+                            </button>
+                            <button class='btn btn-danger btn-xs' style='margin-left:1vw' data-toggle='modal' ng-click='open(lg, { "field": field })' ng-controller='DeleteFieldModalCtrl'>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                    <div class='buttons' ng-show='!rowform.$visible'>
+                        <button class='btn btn-warning btn-xs' ng-click='rowform.$show()'>Edit</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- {{ car.data }} -->
+</div>

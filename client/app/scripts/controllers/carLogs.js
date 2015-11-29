@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, $state, $http, getCars) {
+  .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, getCars, $state) {
     var _ = $window._;
 
     $scope.getCars = function() {
@@ -162,6 +162,14 @@ angular.module('clientApp')
             var data = {};
             // first car is taken because fields in car.data are assumed to be uniform for all cars
             getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
+
+                // Turn this into modal?
+                if(fields.length === 0) {
+                    var msg = 'There are no fields to be logged!'
+                    // alert(msg);
+                    reject(new Error(msg));
+                }
+
                 (function(field) {
                     data[field] = null;
                 })(...fields);
@@ -183,10 +191,9 @@ angular.module('clientApp')
         var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
 
         if(!(_.contains($scope.dates, weekOf))) {
-            // add new date to array of log dates
-            $scope.dates.push(d.getTime());
 
             newDataObj().then(function(blankDataObj) {
+
                 _.each($scope.cars, function(car) {            
                     car.logs.push({
                         createdAt: (new Date()),
@@ -196,6 +203,12 @@ angular.module('clientApp')
                     
                     dataService.updateCar(car, { updateCarData: false });
                 });
+
+                createNewRow();
+
+            }).catch(function(err) {
+                alert(err);
+                console.error(err);
             });
         } else {
             alert('Log for ' + d.toDateString() + ' already exists!');
@@ -215,5 +228,11 @@ angular.module('clientApp')
 
             dataService.updateCar(car, { updateCarData: false });
         });
+    }
+
+    var createNewRow = function() {
+        // add new date to array of log dates
+        $scope.dates.push($scope.dt.getTime());
+        $state.forceReload();
     }
   });

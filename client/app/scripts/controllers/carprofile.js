@@ -8,27 +8,16 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarProfileCtrl', function ($scope, $window, getCar) {
-    var _ = $window._;
-
+  .controller('CarProfileCtrl', function ($scope, $window, getCar, getCars, $state) {
     $scope.getCar = function() {
-        $scope._car = getCar.data;
+        $scope.car = getCar.data;
     }
     $scope.getCar();
 
-    console.log($scope._car);
-    console.log($scope._car.data);
-
-    $scope.getFields = function() {
-        $scope.fields = _.keys($scope._car.data);
-    }
-    $scope.getFields();
-
     $scope.tabs = [
-        { title: 'Data', content: 'Data' },
-        { title: 'Logs', content: 'Logs '}
+        { title: 'Data', route: 'carProfile.data', active: false },
+        { title: 'Logs', route: 'carProfile.logs' }
         // { title: 'Drivers', content: 'Drivers' }
     ];
-
 
   });

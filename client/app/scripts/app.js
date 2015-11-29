@@ -122,16 +122,29 @@ angular
         }
     })
     .state('carProfile', {
+        abstract: true,
         url: '/car/:id',
         templateUrl: '/views/carprofile.html',
         controller: 'CarProfileCtrl',
-        controllerAs: 'car',
         resolve: {
             getCar: function(dataService, $stateParams) {
                 return dataService.getCar($stateParams.id);
+            },
+            getCars: function(dataService) {
+                return dataService.getCars();
             }
         }
-    });
+    })
+    .state('carProfile.data', {
+        url: '/data',
+        templateUrl: '/views/cardataui.html',
+        controller: 'CarDataCtrl'
+    })
+    .state('carProfile.logs', {
+        url: '/logs',
+        templateUrl: '/views/carlogsui.html',
+        controller: 'CarLogCtrl'
+    }); 
   })
     // inject ENV when grunt-ng-constant is working
   .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
