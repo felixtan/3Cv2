@@ -11,16 +11,12 @@ angular.module('clientApp')
   .controller('MainCtrl', function ($window, $state, $modal, $filter, $q, $http, $scope, getCars) {
     // $scope.ezPasses = getEzPasses.data;
     // $scope.gasCards = getGasCards.data;
-    $scope.carListCollapsed = false;
-    $scope.cars = getCars.data;
+    // $scope.carListCollapsed = false;
     // $scope.prospects = getProspects.data;
-    $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
+    // $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     $scope.sortableConfigs = [];
+    $scope.cars = getCars.data;
 
-    $scope.reload = function() {
-        $state.forceReload();
-    };
-    
     // reload page
     $scope.collapse = function(listType) {
         if(listType === 'driver' || 'prospect') {

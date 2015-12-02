@@ -18,7 +18,7 @@
         <tbody>
             <tr ng-repeat='(field, value) in car.data'>
                 <td>
-                    <span editable-text='field' e-name='name' e-form='rowform' data-newField='{{ field }}' once once-attr-oldField='{{::field}}' e-required>
+                    <span class='field-name' editable-text='field' e-name='name' e-form='rowform' data-newField='{{ field }}' e-required>
                         {{ field }}
                     </span>
                 </td>

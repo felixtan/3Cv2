@@ -12,13 +12,22 @@ angular.module('clientApp')
 
     var _ = $window._;
 
+    $scope.upToDateFields = [];
     $scope.car = getCar.data;
+    $scope.oldCar = {};
+    angular.copy($scope.car, $scope.oldCar);    // for tracking changes
     
-    $scope.getFields = function() {
+    var getFields = function(car) {
         $scope.fields = _.keys($scope.car.data);
-        return $scope.fields;
+        return _.keys(car);
     }
-    $scope.getFields();
+    getFields();
+
+    $scope.updateCar = function(field) {
+        console.log(field);
+        console.log($scope.car);
+        console.log($scope.oldCar);
+    }
 
     // Implement CRUD operations for car data
 
@@ -55,37 +64,45 @@ angular.module('clientApp')
 
     // Update
     $scope.save = function (data, id) {
-        var field = angular.element('#' + data.name).attr('once-attr-field');
+        var oldFields = $scope.fields;
+        var newFields = [];
+        _.each(angular.element('.field-name'), function(elem) {
+            console.log(angular.element(elem).attr('data-newField'));
+            // newFields.push(elem.attr('data-newField'));
+        });
         var cars = getCars.data;
-        console.log('old:',field);
-        console.log('new:',data.name);
-        if(data.name !== field)  {   
-            renameField(field, data.name, $scope.car).then(function(currentCar) {
-                // field name and log val should be updated
-                dataService.updateCar(currentCar, { updateCar: true });
-                console.log('current car:', currentCar);
 
-                // _.each(cars, function(car) {
-                //     if(car.id !== id) {
-                //         changeLogValue(field, car).then(function(car) {
-                //             renameField(field, data.name, car).then(function(car) {
-                //                 dataService.updateCar(car, { updateCar: true });
-                //                 console.log('other cars:',car);
-                //             });
-                //         });
-                //     }
-                // });
-            });
-        } else {
-            dataService.updateCar($scope.car, { updateCar: true });
-            console.log(car);
-            _.each(cars, function(car) {
-                changeLogValue(data.name, car).then(function(car) {
-                    console.log(car);
-                    dataService.updateCar(car, { updateCar: true });
-                });
-            });
-        }
+        console.log('changed field', data.name);
+        console.log('old:', oldFields);
+        console.log('new:', newFields);
+
+        // if(data.name !== field)  {   
+        //     renameField(field, data.name, $scope.car).then(function(currentCar) {
+        //         // field name and log val should be updated
+        //         dataService.updateCar(currentCar, { updateCar: true });
+        //         console.log('current car:', currentCar);
+
+        //         // _.each(cars, function(car) {
+        //         //     if(car.id !== id) {
+        //         //         changeLogValue(field, car).then(function(car) {
+        //         //             renameField(field, data.name, car).then(function(car) {
+        //         //                 dataService.updateCar(car, { updateCar: true });
+        //         //                 console.log('other cars:',car);
+        //         //             });
+        //         //         });
+        //         //     }
+        //         // });
+        //     });
+        // } else {
+        //     dataService.updateCar($scope.car, { updateCar: true });
+        //     console.log(car);
+        //     _.each(cars, function(car) {
+        //         changeLogValue(data.name, car).then(function(car) {
+        //             console.log(car);
+        //             dataService.updateCar(car, { updateCar: true });
+        //         });
+        //     });
+        // }
 
         // 2. if field or log changed, change the other cars too
 

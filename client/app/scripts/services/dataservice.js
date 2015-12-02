@@ -142,8 +142,13 @@ angular.module('clientApp')
         });
       },
 
-      deleteField: function(index) {
-        // return $http.delete{}
+      createCar: function(car) {
+        return $http.post('/api/cars', car)
+                  .then(function(data) {
+                    return data;
+                  }, function(err) {
+                    console.error(err);
+                  });
       }
     };
   });

@@ -38,6 +38,7 @@ module.exports = function(config) {
       'bower_components/Sortable/Sortable.js',
       'bower_components/Sortable/ng-sortable.js',
       'bower_components/angular-once/once.js',
+      'bower_components/angular-bindonce/bindonce.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

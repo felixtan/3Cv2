@@ -30,23 +30,23 @@ module.exports = {
     update: function(req, res) {
         //console.log(req.params); // { id: '3' }
         //console.log(req.data); // undefined
-        //console.log(req.body);  // car
+        // console.log(req.body);  // car
         //console.log(req.query);   // { updateCarData: 'true' }
         Car.update(req.body, { 
             where: { id: req.params.id }
         })
-        .then(function(data) {
-            console.log(data);
-            if(JSON.parse(req.query.updateCarData) === true) {
-                console.log('Update car.data and check for oilChangeRequired');
+        .then(function() {
+            // if(JSON.parse(req.query.updateCarData) === true) {
+                // console.log('Update car.data and check for oilChangeRequired');
                 // 1. compare car.data and log.data
                 // _.pluck()
                 // 2. for each key/field they have in common, set car.data.field.value = log.data.field.value
-            }
+            // }
             res.status(200).json({ msg: 'New log for car ' + req.params.id }); 
         })
         .catch(function(err) {
-            res.status(500).json({ error: err });    
+            console.error('carLogs.update went wrong');
+            res.status(500).json({ error: err.stack });    
         });
 
             // CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {

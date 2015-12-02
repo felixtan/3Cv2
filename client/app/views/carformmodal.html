@@ -8,72 +8,44 @@
 </div>
 
 <div class="modal-body">
-    <form novalidate role='form' id='newCarForm' name='carForm' ng-submit='submit()'>
-        
-        <div class='form-rules clearfix'>
-            <p style='float: right;'>
-                <span style='color:#ff0000;'>* </span>Required
-            </p>
-        </div>
 
-        <!-- licensePlate validation -->
-        <div class='error-message bg-danger' 
-            ng-messages='carForm.licensePlate.$error' 
-            ng-if='carForm.licensePlate.$dirty'
-            role='alert'>
-            <div ng-messages-include='views/formMessages/licensePlate.html'></div>
-        </div>
-        
-        <div class='form-group'>
-            <label for='licensePlate'>
-                <span style='color:#ff0000'>* </span>License Plate
-            </label>
-            <input name='licensePlate' type='text' class='form-control' ng-model='formData.licensePlate' placeholder='ex. T5728292C' ng-pattern='/^[a-zA-Z0-9]{6,8}$/' ng-required='true'>
-        </div>
+    <form novalidate>
+        <button class='btn btn-info' type='button' ng-click='isCollapsed = !isCollapsed'> 
+            + Field
+        </button>
+    </form>
 
-        <!-- licenseNumber validation -->
-        <div class='error-message bg-danger' 
-            ng-messages='carForm.licenseNumber.$error' 
-            ng-if='carForm.licenseNumber.$dirty'
-            role='alert'>
-            <div ng-messages-include='views/formMessages/licenseNumber.html'></div>
-        </div>
+    <br>
+    
+    <div collapse='isCollapsed' class='well well-lg'>
+        <form novalidate role='form' id='fieldForm' name='fieldForm'>
+            <div class='form-group'>
+                <label for='name'>Name</label>
+                <input type='text' class='form-control' ng-model='newField.name' ng-required>
+            </div>
+            
+            <!-- <div class='form-group'>
+                <label for='type'>Type of input</label>
+                <input type='text' class='form-control' ng-model='newField.type'>
+            </div> -->
+            
+            <button type='submit' class='btn btn-success' ng-click='addField()'>+</button>
+        </form>
+    </div>
 
-        <div class='form-group'>
-            <label for='licenseNumber'>TLC Number</label>
-            <input name='licenseNumber' type='text' placeholder='ex. 5571653' class='form-control' ng-model='formData.licenseNumber' ng-pattern="/^([a-zA-Z0-9]){4,7}$/">
-        </div>
+    <form novalidate role='form' id='newCarForm' name='carform' ng-submit='submit($data)'>
 
-        <!-- licensePlate validation -->
-        <div class='error-message bg-danger' 
-            ng-messages='carForm.mileage.$error' 
-            ng-if='carForm.mileage.$dirty'
-            role='alert'>
-            <div ng-messages-include='views/formMessages/mileage.html'></div>
-        </div>
-
-        <div class='form-group'>
-            <label for='mileage'>
-                <span style='color:#ff0000'>* </span>Mileage
-            </label>
-            <input name='mileage' type='text' class='form-control' ng-model='formData.mileage' placeholder='ex. 50000' ng-required='true' ng-pattern='/^\d+$/'>
-        </div>
-
-        <div class='form-group'>
-            <label for='driver'>Driver</label>
-            <select class='form-control' ng-model='formData.driverId' placeholder='Select Driver'>
-                <option> - </option>
-                <option ng-repeat='driver in drivers' value='{{ driver.id }}'>{{ driver.givenName }} {{ driver.surName }}</option>
-            </select>
-        </div>
-
-        <div class='form-group'>
-            <label for='description'>Description</label>
-            <textarea ng-model='formData.description' type='text' class='form-control' rows='5'>
-            </textarea>
+        <div class='form-group' ng-repeat='(field, value) in formData' ng-if='thereAreCars()'>
+            <label for='{{ field }}'>{{ field }}</label>
+            <span style='float: right;'><input type='checkbox' ng-model='formData[field].log'> Log this</span>
+            <input type='text' class='form-control' ng-model="formData[field].value">
         </div>
 
     </form>
+
+    <div>
+        <!-- {{ formData }} -->
+    </div>  
 </div>
 
 <div class="modal-footer">
