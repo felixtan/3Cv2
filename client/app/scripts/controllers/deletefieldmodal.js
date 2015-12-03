@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalCtrl', function (dataService, $scope, $modal) {
+  .controller('DeleteFieldModalCtrl', function (dataService, $scope, $modal, $state) {
     $scope.input = '';
 
     $scope.open = function (size, thing) {
@@ -29,6 +29,7 @@ angular.module('clientApp')
 
         modalInstance.result.then(function (input) {
             $scope.input = input;
+            console.log('passed back from DeleteFieldModalInstanceCtrl:', input);
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });

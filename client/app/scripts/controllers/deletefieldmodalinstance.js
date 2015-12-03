@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalInstanceCtrl', function (getCars, thing, dataService, $scope, $modalInstance, $state) {
+  .controller('DeleteFieldModalInstanceCtrl', function ($rootScope, getCars, thing, dataService, $scope, $modalInstance, $state) {
     $scope.input = '';
     $scope.cars = getCars.data;
     $scope.type = Object.keys(thing)[0];
@@ -38,7 +38,13 @@ angular.module('clientApp')
             
         }
             // delete the field from all cars data but not from logs
-        $scope.close();
+        $scope.ok();
+    }
+
+    $scope.ok = function() {
+        // send the deleted field back
+        $modalInstance.close(thing[$scope.type]);
+        $state.forceReload();
     }
 
     $scope.close = function () {

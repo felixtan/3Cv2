@@ -36,7 +36,7 @@ angular.module('clientApp')
           });
         });
       }
-      console.log(logDates);
+
       resolve(logDates);
       reject(new Error('Error getting log dates'));
     });

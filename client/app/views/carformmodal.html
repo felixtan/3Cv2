@@ -37,7 +37,15 @@
 
         <div class='form-group' ng-repeat='(field, value) in formData' ng-if='thereAreCars()'>
             <label for='{{ field }}'>{{ field }}</label>
-            <span style='float: right;'><input type='checkbox' ng-model='formData[field].log'> Log this</span>
+            <span style='margin-left:1vw;'>
+                <input type='checkbox' ng-model='formData[field].log'> Log this
+            </span>
+            <span style='float:right;'>
+                <button class='btn btn-danger btn-xs' type='button' ng-click='openDeleteFieldModal(lg, { "field": field })'>
+                    Delete
+                </button>
+                <!-- ng-click='deleteField(field)' -->
+            </span>
             <input type='text' class='form-control' ng-model="formData[field].value">
         </div>
 

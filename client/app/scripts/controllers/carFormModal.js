@@ -26,6 +26,7 @@ angular.module('clientApp')
         });
 
         modalInstance.result.then(function (formData) {
+            console.log('passed upon closing car form modal instance:',formData);
             $scope.formData = formData;
         }, function () {
             console.log('Modal dismissed at: ' + new Date());

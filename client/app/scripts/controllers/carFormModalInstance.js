@@ -8,8 +8,8 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, $window, getCars, $state, dataService, $scope, $modalInstance) {
-
+  .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, $window, getCars, $state, dataService, $scope, $modalInstance, $modal) {
+    
     // exposed vars
     var _ = $window._;
     $scope.newFieldsThisSession = [];   // store new fields created this session
@@ -23,29 +23,37 @@ angular.module('clientApp')
 
     $scope.cars = ($scope.thereAreCars()) ? (getCars.data) : [];
     
+    // get $scope.logDates
     (function () {
       $scope.logDates = [];
       if($scope.thereAreCars()) {
         carHelpers.getLogDates($scope.cars).then(function(logDates) {
           $scope.logDates = logDates;
-          console.log('$scope.logDates:', $scope.logDates);
         });
       } 
     })();
 
-    var initializeForm = function() {
+    // get $scope.fields (old fields)
+    var getFields = function () {
+      $scope.fields = [];
       if($scope.thereAreCars()) {
         var car = getCars.data[0];
-        var fields = Object.keys(car.data);
-        $scope.formData = {};
-        fields.forEach(function(field) {
+        $scope.fields = Object.keys(car.data);
+      }
+    };
+    getFields();
+
+    var initializeForm = function() {
+      var car = getCars.data[0];
+      $scope.formData = {};
+      
+      if($scope.fields.length > 0) {
+        _.each($scope.fields, function(field) {
           $scope.formData[field] = {
             value: null,
             log: car.data[field].log
           }
         });
-      } else {
-        $scope.formData = {};
       }
     };
     initializeForm();
@@ -74,8 +82,7 @@ angular.module('clientApp')
         var cars = getCars.data;
 
         _.each(cars, function(car) {
-          if(!(_.has(car, newField))) {
-
+          if(!(_.has(car.data, newField))) {
             // since log is set to false here, 
             // IMPORTANT to make sure it's updated 
             // for each car when carForm is submitted
@@ -119,20 +126,14 @@ angular.module('clientApp')
       // if so, then update all other cars
       if($scope.newFieldsThisSession.length > 0) {
         _.each($scope.newFieldsThisSession, function(field) {
-          if($scope.formData[field].log === true) {
+          if(($scope.formData[field].log === true) && (typeof $scope.formData[field] !== 'undefined')) {
             var cars = $scope.cars;
             
             _.each(cars, function(car) {
               
               if(typeof car.data[field] !== 'undefined') {
                 car.data[field].log = true;
-              } else {
-                // something may have went wrong
-                car.data[field] = {
-                  log: true,
-                  value: null
-                }
-              }
+              } 
 
               dataService.updateCar(car, { updateCar: true });
             });
@@ -151,5 +152,28 @@ angular.module('clientApp')
     $scope.close = function () {
       $state.forceReload();
       $modalInstance.dismiss('cancel');
+    };
+
+    $scope.openDeleteFieldModal = function (size, thing) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/deletefieldmodal.html',
+            controller: 'DeleteFieldModalInstanceCtrl',
+            size: size,
+            resolve: {
+                thing: function() {
+                    return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                },
+                getCars: function(dataService) {
+                    return dataService.getCars();
+                }
+            }
+        });
+
+        modalInstance.result.then(function (field) {
+            if(typeof field !== 'undefined') delete $scope.formData[field];
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
     };
   });

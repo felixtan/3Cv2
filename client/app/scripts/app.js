@@ -68,15 +68,9 @@ angular
         resolve: {
           getCars: function(dataService) {
             return dataService.getCars();
-          },
-          getProspects: function(dataService) {
-            return dataService.getProspects();
           }
-          // getGasCards: function(dataService) {
-          //   return dataService.getGasCards();
-          // },
-          // getEzPasses: function(dataService) {
-          //   return dataService.getEzPasses();
+          // getProspects: function(dataService) {
+          //   return dataService.getProspects();
           // }
         }
     })
