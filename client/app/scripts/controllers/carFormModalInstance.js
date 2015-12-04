@@ -150,8 +150,8 @@ angular.module('clientApp')
     };
 
     $scope.close = function () {
-      $state.forceReload();
       $modalInstance.dismiss('cancel');
+      $state.go('main');
     };
 
     $scope.openDeleteFieldModal = function (size, thing) {

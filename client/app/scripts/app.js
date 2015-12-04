@@ -74,6 +74,31 @@ angular
           // }
         }
     })
+    .state('main.carForm', {
+        url: 'car-form',
+        onEnter: function($modal, dataService, $state) {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'views/carformmodal.html',
+                controller: 'CarFormModalInstanceCtrl',
+                size: 'md',
+                resolve: {
+                    getCars: function(dataService) {
+                        return dataService.getCars();
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                // upon submit
+                $state.go('main');
+                console.log('Modal dismissed at: ' + new Date());
+            }, function() {
+                // upon dismiss
+                $state.go('main');
+            });
+        }
+    })
     .state('roster', {
         url: '/drivers',
         templateUrl: 'views/roster.html',

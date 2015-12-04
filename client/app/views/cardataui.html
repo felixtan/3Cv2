@@ -18,7 +18,7 @@
         <tbody>
             <tr ng-repeat='(field, value) in car.data'>
                 <td>
-                    <span class='field-name' editable-text='field' e-name='name' e-form='rowform' data-newField='{{ field }}' e-required>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' data-field='{{ ::field }}' onbeforesave='nameChanged($data, field)' e-required>
                         {{ field }}
                     </span>
                 </td>
@@ -35,7 +35,7 @@
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>
-                        <form editable-form name='rowform' onaftersave='save($data, car.id)' ng-show='rowform.$visible' class='form-buttons form-inline'>
+                        <form editable-form name='rowform' onaftersave='save($data)' ng-show='rowform.$visible' class='form-buttons form-inline'>
                             <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-success btn-xs'>
                                 Save
                             </button>

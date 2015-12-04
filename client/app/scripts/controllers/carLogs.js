@@ -145,39 +145,36 @@ angular.module('clientApp')
     // End datepicker stuff
 
     var getFieldsToBeLogged = function(car) {
-        return $q(function(resolve, reject) {
-            var fields = [];
-            for(var field in car.data) {
-                if(car.data[field].log === true) fields.push(field);
-            }
-
-            resolve(fields);
-            reject(new Error('Error getting fields to be logged'));
-        });
+        var deferred = $q.defer();
+        var fields = [];
+        for(var field in car.data) {
+            if(car.data[field].log === true) fields.push(field);
+        }
+        
+        deferred.resolve(fields);
+        deferred.reject(new Error('Error getting fields to be logged'));
+        return deferred.promise;
     }
 
     // returns an object to be car.logs[i].data with keys (feilds) to be logged
     var newDataObj = function() {
-        return $q(function(resolve, reject) {
-            var data = {};
-            // first car is taken because fields in car.data are assumed to be uniform for all cars
-            getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
+        var deferred = $q.defer();
+        var data = {};
+        // first car is taken because fields in car.data are assumed to be uniform for all cars
+        getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
+            // Turn this into modal?
+            if(fields.length === 0) {
+                deferred.reject(new Error('There are no fields to be logged!'));
+            }
 
-                // Turn this into modal?
-                if(fields.length === 0) {
-                    var msg = 'There are no fields to be logged!'
-                    // alert(msg);
-                    reject(new Error(msg));
-                }
-
-                (function(field) {
-                    data[field] = null;
-                })(...fields);
-
-                resolve(data);
-                reject(new Error('Error creating log.data'));
+            _.each(fields, function(field) {
+                data[field] = null;
             });
         });
+
+        deferred.resolve(data);
+        deferred.reject(new Error('Error creating log.data'));
+        return deferred.promise;
     }
 
     this.newLog = function() {
@@ -193,7 +190,6 @@ angular.module('clientApp')
         if(!(_.contains($scope.dates, weekOf))) {
 
             newDataObj().then(function(blankDataObj) {
-
                 _.each($scope.cars, function(car) {            
                     car.logs.push({
                         createdAt: (new Date()),

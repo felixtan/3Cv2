@@ -137,7 +137,7 @@ angular.module('clientApp')
         createLogs(values[0], values[1]).then(function(logs) {
           car.logs = logs;
           deferred.resolve(car);
-          deferred.reject('Failed to populate logs for car ' + car.id);
+          deferred.reject(new Error('Failed to populate logs for car ' + car.id));
         }, errcb);
       });
 

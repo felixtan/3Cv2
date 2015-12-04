@@ -9,22 +9,16 @@
  */
 angular.module('clientApp')
   .controller('CardFormModalCtrl', function ($scope, $modal) {
-    $scope.formData = {};
 
-    $scope.animationsEnabled = true;
-
-    $scope.open = function (size) {
-
+    $scope.open = function () {
         var modalInstance = $modal.open({
-            animation: $scope.animationsEnabled,
+            animation: true,
             templateUrl: 'views/cardformmodal.html',
             controller: 'CardFormModalInstanceCtrl',
-            size: size
+            size: 'lg'
         });
 
-        modalInstance.result.then(function (formData) {
-            $scope.formData = formData;
-        }, function () {
+        modalInstance.result.then(function () {
             console.log('Modal dismissed at: ' + new Date());
         });
     };

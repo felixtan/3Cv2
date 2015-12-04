@@ -9,15 +9,15 @@
  */
 angular.module('clientApp')
   .controller('CarFormModalCtrl', function ($scope, $modal, dataService) {
-    $scope.formData = {};
-
-    $scope.open = function (size) {
+    
+    $scope.open = function () {
 
         var modalInstance = $modal.open({
             animation: true,
+            backdrop: 'static',
             templateUrl: 'views/carformmodal.html',
             controller: 'CarFormModalInstanceCtrl',
-            size: size,
+            size: 'md',
             resolve: {
                 getCars: function(dataService) {
                     return dataService.getCars();
@@ -25,11 +25,9 @@ angular.module('clientApp')
             }
         });
 
-        modalInstance.result.then(function (formData) {
-            console.log('passed upon closing car form modal instance:',formData);
-            $scope.formData = formData;
-        }, function () {
+        modalInstance.result.then(function () {
             console.log('Modal dismissed at: ' + new Date());
+            $state.go('main');
         });
     };
   });
