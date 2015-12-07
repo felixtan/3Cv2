@@ -92,9 +92,9 @@ angular.module('clientApp')
         reject(new Error('There are no fields to be logged'));
       }
 
-      (function(field) {
+      fields.forEach(function(field) {
         logData[field] = null;
-      })(...fields);
+      });
 
       resolve(logData);
       reject(new Error('Error creating log.data'));

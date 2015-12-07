@@ -29,6 +29,7 @@
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^1.0.0",
     "karma-chrome-launcher": "^0.2.0",
+    "karma-coverage": "^0.5.3",
     "karma-es5-shim": "0.0.4",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",

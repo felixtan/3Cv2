@@ -16,8 +16,4 @@ describe('Controller: DeletefieldmodalinstanceCtrl', function () {
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(DeletefieldmodalinstanceCtrl.awesomeThings.length).toBe(3);
-  });
 });

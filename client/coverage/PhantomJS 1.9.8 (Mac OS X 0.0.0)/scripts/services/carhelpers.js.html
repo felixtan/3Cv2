@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/services/carhelpers.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/services/</a> carhelpers.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">13.43% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>9/67</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">4.35% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">13.64% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>9/66</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc service
+ * @name clientApp.carHelpers
+ * @description
+ * # carHelpers
+ * Factory in the clientApp.
+ */
+angular.module('clientApp')
+  .factory('carHelpers', function($q, $window, dataService) {
+  // Service logic
+  // ...
+&nbsp;
+  var _ = $window._;
+  var getCars = dataService.getCars;
+  
+  var getLogDates = <span class="fstat-no" title="function not covered" >function(existingCars) {</span>
+<span class="cstat-no" title="statement not covered" >    return $q(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >      var logDates = [];</span>
+<span class="cstat-no" title="statement not covered" >      var cars = null;</span>
+<span class="cstat-no" title="statement not covered" >      if(existingCars.constructor === Object) {</span>
+<span class="cstat-no" title="statement not covered" >        cars = existingCars.data; </span>  // should be from dataService
+      } else <span class="cstat-no" title="statement not covered" >if(existingCars.constructor === Array) {</span>
+<span class="cstat-no" title="statement not covered" >        cars = existingCars; </span>
+      } else {
+        // idk wtf it is
+<span class="cstat-no" title="statement not covered" >        reject(new Error('Invalid existingCars data type:', existingCars));</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if(cars.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        _.each(cars, <span class="fstat-no" title="function not covered" >function(car) {</span></span>
+<span class="cstat-no" title="statement not covered" >          _.each(car.logs, <span class="fstat-no" title="function not covered" >function(log) {</span></span>
+<span class="cstat-no" title="statement not covered" >            logDates.push(log.weekOf);</span>
+<span class="cstat-no" title="statement not covered" >            logDates = _.uniq(logDates.sort(), true).reverse();</span>
+          });
+        });
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(logDates);</span>
+<span class="cstat-no" title="statement not covered" >      reject(new Error('Error getting log dates'));</span>
+    });
+  };
+&nbsp;
+  var createLog = <span class="fstat-no" title="function not covered" >function(data, weekOf) {</span>
+<span class="cstat-no" title="statement not covered" >    return $q(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >      var log = {};</span>
+<span class="cstat-no" title="statement not covered" >      log.data = data;</span>
+<span class="cstat-no" title="statement not covered" >      log.createdAt = (new Date());</span>
+<span class="cstat-no" title="statement not covered" >      log.weekOf = weekOf;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(log);</span>
+<span class="cstat-no" title="statement not covered" >      reject(new Error('Error creating blank log object'));</span>
+    });
+  };
+&nbsp;
+  var createLogs = <span class="fstat-no" title="function not covered" >function(logData, logDates) {</span>
+<span class="cstat-no" title="statement not covered" >    return $q(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >      var logs = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      _.each(logDates, <span class="fstat-no" title="function not covered" >function(logDate) {</span></span>
+<span class="cstat-no" title="statement not covered" >        createLog(logData, logDate).then(<span class="fstat-no" title="function not covered" >function(log) {</span></span>
+<span class="cstat-no" title="statement not covered" >          logs.push(log);</span>
+        });
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(logs);</span>
+<span class="cstat-no" title="statement not covered" >      reject(new Error("Error creating blank logs array"));</span>
+    });
+  };
+&nbsp;
+  var getFieldsToBeLogged = <span class="fstat-no" title="function not covered" >function(car) {</span>
+<span class="cstat-no" title="statement not covered" >    return $q(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >      var fields = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      for (var field in car.data) {</span>
+<span class="cstat-no" title="statement not covered" >        if (car.data[field].log === true) {</span>
+<span class="cstat-no" title="statement not covered" >          fields.push(field);</span>
+        }
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(fields);</span>
+<span class="cstat-no" title="statement not covered" >      reject(new Error('Error getting fields to be logged'));</span>
+    });
+  };
+&nbsp;
+  var createLogData = <span class="fstat-no" title="function not covered" >function(fields) {</span>
+<span class="cstat-no" title="statement not covered" >    return $q(<span class="fstat-no" title="function not covered" >function(resolve, reject) {</span></span>
+<span class="cstat-no" title="statement not covered" >      var logData = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (fields.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >        reject(new Error('There are no fields to be logged'));</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      fields.forEach(<span class="fstat-no" title="function not covered" >function(field) {</span></span>
+<span class="cstat-no" title="statement not covered" >        logData[field] = null;</span>
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(logData);</span>
+<span class="cstat-no" title="statement not covered" >      reject(new Error('Error creating log.data'));</span>
+    });
+  };
+&nbsp;
+  // Public API here
+  return {
+&nbsp;
+    // returns array of log dates in ms in present to past order
+    // logDates[0] stores most recent log date
+    getLogDates: <span class="fstat-no" title="function not covered" >function(cars) {</span>
+<span class="cstat-no" title="statement not covered" >      return getLogDates(cars);</span>
+    },
+&nbsp;
+    getFieldsToBeLogged: getFieldsToBeLogged,
+&nbsp;
+    // relies on getFieldsToBeLogged
+    createLogData: <span class="fstat-no" title="function not covered" >function(fields) {</span>
+<span class="cstat-no" title="statement not covered" >      return createLogData(fields);</span>
+    },
+&nbsp;
+    // relies on createLogData and calcLogDates
+    createLog: <span class="fstat-no" title="function not covered" >function(data, weekOf) {</span>
+<span class="cstat-no" title="statement not covered" >      return createLog(data, weekOf);</span>
+    },
+&nbsp;
+    populateLogs: <span class="fstat-no" title="function not covered" >function(car) {</span>
+      // promise groups
+      // 1. getFieldsToBeLogged -&gt; createLogData
+      // 2. getCars -&gt; getLogDates
+      // 3. 1,2 -&gt; createLogs (_.each combine with createLog)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      var errcb = <span class="fstat-no" title="function not covered" >function(err) {</span> <span class="cstat-no" title="statement not covered" >console.error(err) }</span>;</span>
+<span class="cstat-no" title="statement not covered" >      var promise1 = getFieldsToBeLogged(car).then(createLogData, errcb);</span>
+<span class="cstat-no" title="statement not covered" >      var promise2 = getCars().then(getLogDates, errcb);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      $q.all([promise1, promise2]).then(<span class="fstat-no" title="function not covered" >function(values) {</span></span>
+<span class="cstat-no" title="statement not covered" >        createLogs(values[0], values[1]).then(<span class="fstat-no" title="function not covered" >function(logs) {</span></span>
+<span class="cstat-no" title="statement not covered" >          car.logs = logs;</span>
+<span class="cstat-no" title="statement not covered" >          deferred.resolve(car);</span>
+<span class="cstat-no" title="statement not covered" >          deferred.reject(new Error('Failed to populate logs for car ' + car.id));</span>
+        }, errcb);
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    } // closes populateLogs
+  }; // close return
+});</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Dec 06 2015 23:19:55 GMT-0500 (EST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

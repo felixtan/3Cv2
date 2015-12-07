@@ -15,7 +15,7 @@ angular.module('clientApp')
         $scope.tabs[0].active = false;
         $scope.tabs[1].active = true;
     }
-    $scope.activateTab();
+ 
 
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
@@ -55,9 +55,9 @@ angular.module('clientApp')
             var data = {};
             // first car is taken because fields in car.data are assumed to be uniform for all cars
             getFieldsToBeLogged($scope.car).then(function(fields) {
-                (function(field) {
-                    data[field] = null;
-                })(...fields);
+                fields.forEach(function(field) {
+                    data[field] = null
+                });
 
                 resolve(data);
                 reject(new Error('Error creating log.data'));

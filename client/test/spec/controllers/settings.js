@@ -16,8 +16,4 @@ describe('Controller: SettingsCtrl', function () {
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(SettingsCtrl.awesomeThings.length).toBe(3);
-  });
 });

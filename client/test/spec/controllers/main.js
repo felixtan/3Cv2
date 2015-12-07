@@ -14,28 +14,4 @@ describe('Controller: MainCtrl', function () {
     $controller = _$controller_('MainCtrl', { '$scope': $rootScope });
   }));
 
-  it("should only GET cars with the current user's organizationId", function(){
-    var $scope = {};
-    var controller = $controller('MainCtrl', { $scope: $scope });
-    $httpBackend.expect('GET', '/api/cars', {[
-      {
-        data: {
-            licensePlate: 'T627067C',
-            licenseNumber: 'GPJ 6478',
-            mileage: 14081,
-            description: 'lorem ipsum'
-        },
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'
-      },
-      {
-        data: {
-            licensePlate: 'T657227C',
-            licenseNumber: 'FLJ 6290',
-            mileage: 120461,
-            description: 'lorem ipsum'
-        },
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x'
-      }
-    ]});
-  });
 });

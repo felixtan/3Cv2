@@ -8,17 +8,16 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarDataCtrl', function ($state, $filter, $window, dataService, $q, $scope, getCar, getCars) {
+  .controller('CarDataCtrl', function (dataService, $scope, getCar, getCars) {
 
-    let _ = $window._;
-    $scope.upToDateFields = [];
+    // var _ = underscore._;     
     $scope.car = getCar.data;
     $scope.oldField = '';
     
-    // for view
-    let getFields = function(car) {
-        $scope.fields = _.keys($scope.car.data);
-        return _.keys(car);
+    // Read
+    var getFields = function(car) {
+        $scope.fields = Object.keys($scope.car.data);
+        return $scope.fields;
     }
     getFields();
 
@@ -37,11 +36,9 @@ angular.module('clientApp')
 
     // Update
     $scope.save = function (data) {
-        let newField = data.name;
-        let cars = getCars.data;
-        let logVal = data.log;
-        console.log('new:', newField);
-        console.log('old:',$scope.oldField);
+        var newField = data.name;
+        var cars = getCars.data;
+        var logVal = data.log;
 
         // update current car
         (function() {
@@ -50,9 +47,9 @@ angular.module('clientApp')
             dataService.updateCar($scope.car, { updateCarData: true });
         })();
 
-        _.each(cars, function(car) {
+        cars.forEach(function(car) {
             if(car.id !== $scope.car.id) {
-                let value = car.data[$scope.oldField].value;
+                var value = car.data[$scope.oldField].value;
                 car.data[newField] = { value: value, log: logVal };
                 if ($scope.oldField !== newField) delete car.data[$scope.oldField];
                 dataService.updateCar(car, { updateCarData: true });

@@ -22,110 +22,77 @@ angular.module('clientApp')
 
     // Public API here
     return {
-      getAss: function () {
-        var promise = $http.get('/api/assignments', params);
-        var deferred = deferred || $q.defer();
 
-        promise.then(function(data) {
-          deferred.resolve(data);
+      getDrivers: function() {
+        return $http({
+          method: 'GET',
+          url: '/api/drivers',
+          params: params
+        }).then(function(data) {
+          return data;
         }, function(err) {
-          deferred.reject(err);
+          console.error(err);
+          throw err;
         });
-
-        return deferred.promise;
-      },
-
-      getDriversFull: function() {
-        var promise = $http.get('/api/drivers', params);
-        var deferred = deferred || $q.defer();
-
-        promise.then(function(data) {
-          deferred.resolve(data);
-        }, function(err) {
-          deferred.reject(err);
-        });
-
-        return deferred.promise;
-      },
-
-      getDrivers: function () {
-        var promise = $http.get('/api/assignments/drivers', params);
-        var deferred = deferred || $q.defer();
-
-        promise.then(function(data) {
-          deferred.resolve(data);
-        }, function(err) {
-          deferred.reject(err);
-        });
-
-        return deferred.promise;
       },
 
       getCars: function () {
         return $http({
-                      method: 'GET',
-                      url: '/api/cars',
-                      params: params
-                  })
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    throw err;
-                  });
+            method: 'GET',
+            url: '/api/cars',
+            params: params
+          })
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+            throw err;
+          });
       },
 
       getCar: function (id) {
         return $http.get('/api/cars/' + id)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       getCarProperties: function () {
         return $http.get('/api/settings/cars', params)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
-      },
-
-      getPtgLogs: function () {
-        return $http.get('/api/logs/ptg', params)
-                 .then(function(data) {
-                  return data;
-                }, function(err) {
-                  console.error(err);
-                });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       getGasCards: function() {
         return $http.get('/api/assets/gas-cards', params)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       getEzPasses: function() {
         return $http.get('/api/assets/ez-passes', params)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       getProspects: function() {
         return $http.get('/api/prospects', params)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       updateCar: function(car, params) {
@@ -144,11 +111,11 @@ angular.module('clientApp')
 
       createCar: function(car) {
         return $http.post('/api/cars', car)
-                  .then(function(data) {
-                    return data;
-                  }, function(err) {
-                    console.error(err);
-                  });
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       }
     };
   });

@@ -16,8 +16,4 @@ describe('Controller: CarprofileCtrl', function () {
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(CarprofileCtrl.awesomeThings.length).toBe(3);
-  });
 });

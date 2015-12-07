@@ -14,23 +14,23 @@ angular.module('clientApp')
     // $scope.carListCollapsed = false;
     // $scope.prospects = getProspects.data;
     // $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
-    $scope.sortableConfigs = [];
+    // $scope.sortableConfigs = [];
     $scope.cars = getCars.data;
 
     // reload page
-    $scope.collapse = function(listType) {
-        if(listType === 'driver' || 'prospect') {
-            if(listType === 'driver') {
-                var driverRowForm = angular.element('form.driverRowForm');
-                driverRowForm.$cancel();
-            } else {
-                var prospectRowForm = angular.element('form.prospectRowForm');
-                prospectRowForm.$cancel();
-            }
-        } else {
-            console.log('Invalid usage of this method.');
-        }
-    };
+    // $scope.collapse = function(listType) {
+    //     if(listType === 'driver' || 'prospect') {
+    //         if(listType === 'driver') {
+    //             var driverRowForm = angular.element('form.driverRowForm');
+    //             driverRowForm.$cancel();
+    //         } else {
+    //             var prospectRowForm = angular.element('form.prospectRowForm');
+    //             prospectRowForm.$cancel();
+    //         }
+    //     } else {
+    //         console.log('Invalid usage of this method.');
+    //     }
+    // };
 
     // oil changed
     this.oilChanged = function(carId) {

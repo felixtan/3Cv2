@@ -105,8 +105,8 @@ angular
         controller: 'RosterCtrl',
         controllerAs: 'roster',
         resolve: {
-          getDriversFull: function(dataService) {
-            return dataService.getDriversFull();
+          getDrivers: function(dataService) {
+            return dataService.getDrivers();
           }
         }
     })
