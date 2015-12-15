@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.17% </span>
+        <span class="strong">79.17% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/24</span>
+        <span class='fraction'>19/24</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>2/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>5/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4.35% </span>
+        <span class="strong">82.61% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/23</span>
+        <span class='fraction'>19/23</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -102,8 +102,7 @@
 57
 58
 59
-60
-61</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+60</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -115,17 +114,15 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -135,26 +132,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -173,18 +171,17 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarDataCtrl', <span class="fstat-no" title="function not covered" >function (dataService, $scope, getCar, getCars) {</span>
-&nbsp;
+  .controller('CarDataCtrl', function ($state, dataService, $scope, getCar, getCars) {
     // var _ = underscore._;     
-<span class="cstat-no" title="statement not covered" >    $scope.car = getCar.data;</span>
-<span class="cstat-no" title="statement not covered" >    $scope.oldField = '';</span>
+    $scope.car = getCar.data;
+    $scope.oldField = '';
     
     // Read
-<span class="cstat-no" title="statement not covered" >    var getFields = <span class="fstat-no" title="function not covered" >function(car) {</span></span>
-<span class="cstat-no" title="statement not covered" >        $scope.fields = Object.keys($scope.car.data);</span>
-<span class="cstat-no" title="statement not covered" >        return $scope.fields;</span>
+    var getFields = function(car) {
+        $scope.fields = Object.keys($scope.car.data);
+        return $scope.fields;
     }
-<span class="cstat-no" title="statement not covered" >    getFields();</span>
+    getFields();
 &nbsp;
     // Delete
     // handled by DeleteFieldModalCtrl
@@ -195,29 +192,29 @@ angular.module('clientApp')
     // handled by AddFieldModalCtrl
 &nbsp;
     // editable row onbeforesave methods
-<span class="cstat-no" title="statement not covered" >    $scope.nameChanged = <span class="fstat-no" title="function not covered" >function(newVal, oldVal) {</span></span>
+    $scope.nameChanged = <span class="fstat-no" title="function not covered" >function(newVal, oldVal) {</span>
 <span class="cstat-no" title="statement not covered" >        $scope.oldField = oldVal;</span>
     }
 &nbsp;
     // Update
-<span class="cstat-no" title="statement not covered" >    $scope.save = <span class="fstat-no" title="function not covered" >function (data) {</span></span>
-<span class="cstat-no" title="statement not covered" >        var newField = data.name;</span>
-<span class="cstat-no" title="statement not covered" >        var cars = getCars.data;</span>
-<span class="cstat-no" title="statement not covered" >        var logVal = data.log;</span>
+    $scope.save = function (data) {
+        var newField = data.name;
+        $scope.cars = getCars.data;
+        var logVal = data.log;
 &nbsp;
         // update current car
-<span class="cstat-no" title="statement not covered" >        (<span class="fstat-no" title="function not covered" >function() {</span></span>
-<span class="cstat-no" title="statement not covered" >            delete $scope.car.data[$scope.oldField];</span>
-<span class="cstat-no" title="statement not covered" >            $scope.car.data[newField] = { value: data.value, log: data.log };</span>
-<span class="cstat-no" title="statement not covered" >            dataService.updateCar($scope.car, { updateCarData: true });</span>
+        (function() {
+            delete $scope.car.data[$scope.oldField];
+            $scope.car.data[newField] = { value: data.value, log: data.log };
+            dataService.updateCar($scope.car);
         })();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        cars.forEach(<span class="fstat-no" title="function not covered" >function(car) {</span></span>
-<span class="cstat-no" title="statement not covered" >            if(car.id !== $scope.car.id) {</span>
-<span class="cstat-no" title="statement not covered" >                var value = car.data[$scope.oldField].value;</span>
+        $scope.cars.forEach(function(car) {
+            if(car.id !== $scope.car.id) {
+                var value = car.data[$scope.oldField].value;
 <span class="cstat-no" title="statement not covered" >                car.data[newField] = { value: value, log: logVal };</span>
 <span class="cstat-no" title="statement not covered" >                if ($scope.oldField !== newField) <span class="cstat-no" title="statement not covered" >delete car.data[$scope.oldField];</span></span>
-<span class="cstat-no" title="statement not covered" >                dataService.updateCar(car, { updateCarData: true });</span>
+<span class="cstat-no" title="statement not covered" >                dataService.updateCar(car);</span>
             }
         });
     }
@@ -229,7 +226,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Dec 06 2015 23:19:55 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 14 2015 22:43:57 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

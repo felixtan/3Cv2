@@ -10,6 +10,8 @@
 angular.module('clientApp')
   .controller('CarLogCtrl', function ($state, $filter, $window, dataService, $q, $scope, getCar) {
 
+    $scope.car = getCar.data;
+
     // $scope.activateTab($state);
     $scope.activateTab = function() {
         $scope.tabs[0].active = false;
@@ -37,32 +39,18 @@ angular.module('clientApp')
 
     $scope.date = 0;
 
-    var getFieldsToBeLogged = function(car) {
-        return $q(function(resolve, reject) {
-            var fields = [];
-            for(var field in car.data) {
-                if(car.data[field].log === true) fields.push(field);
-            }
+    $scope.getFieldsToBeLogged = function(car) {
+        var deffered = $q.defer();
+        var fields = [];
 
-            resolve(fields);
-            reject(new Error('Error getting fields to be logged'));
-        });
-    }
+        for(var field in car.data) {
+            if(car.data[field].log === true) fields.push(field);
+        }
 
-    // returns an object to be car.logs[i].data with keys (feilds) to be logged
-    var newDataObj = function() {
-        return $q(function(resolve, reject) {
-            var data = {};
-            // first car is taken because fields in car.data are assumed to be uniform for all cars
-            getFieldsToBeLogged($scope.car).then(function(fields) {
-                fields.forEach(function(field) {
-                    data[field] = null
-                });
+        deffered.resolve(fields);
+        deffered.reject(new Error('Error getting fields to be logged'));
 
-                resolve(data);
-                reject(new Error('Error creating log.data'));
-            });
-        });
+        return deffered.promise;
     }
 
     // need to make this more efficient
@@ -75,6 +63,6 @@ angular.module('clientApp')
             }
         }
 
-        dataService.updateCar($scope.car, { updateCarData: false });
+        dataService.updateCar($scope.car);
     }
   });

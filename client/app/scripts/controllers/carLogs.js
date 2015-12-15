@@ -9,7 +9,6 @@
  */
 angular.module('clientApp')
   .controller('CarLogsCtrl', function ($filter, $window, dataService, $q, $scope, getCars, $state) {
-    var _ = $window._;
 
     $scope.getCars = function() {
         $scope.cars = getCars.data;
@@ -20,6 +19,7 @@ angular.module('clientApp')
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {
         var arr = [];
+        $scope.dates = [];
         _.each($scope.cars, function(car, index) {
             _.each(car.logs, function(log, index) {
                 arr.push(log.weekOf);
@@ -34,7 +34,7 @@ angular.module('clientApp')
         // return Math.max(...$scope.dates); -> assuming unsorted
 
         // assuming sorted from recent to past
-        $scope.mostRecentLogDate = $scope.dates[0];     
+        if($scope.dates.length > 0) $scope.mostRecentLogDate = $scope.dates[0];     
     }
     $scope.getMostRecentLogDate();
 
@@ -144,7 +144,7 @@ angular.module('clientApp')
     };
     // End datepicker stuff
 
-    var getFieldsToBeLogged = function(car) {
+    $scope.getFieldsToBeLogged = function(car) {
         var deferred = $q.defer();
         var fields = [];
         for(var field in car.data) {
@@ -157,11 +157,11 @@ angular.module('clientApp')
     }
 
     // returns an object to be car.logs[i].data with keys (feilds) to be logged
-    var newDataObj = function() {
+    $scope.newDataObj = function() {
         var deferred = $q.defer();
         var data = {};
         // first car is taken because fields in car.data are assumed to be uniform for all cars
-        getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
+        $scope.getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
             // Turn this into modal?
             if(fields.length === 0) {
                 deferred.reject(new Error('There are no fields to be logged!'));
@@ -189,7 +189,7 @@ angular.module('clientApp')
 
         if(!(_.contains($scope.dates, weekOf))) {
 
-            newDataObj().then(function(blankDataObj) {
+            $scope.newDataObj().then(function(blankDataObj) {
                 _.each($scope.cars, function(car) {            
                     car.logs.push({
                         createdAt: (new Date()),
@@ -197,7 +197,7 @@ angular.module('clientApp')
                         data: blankDataObj
                     });
                     
-                    dataService.updateCar(car, { updateCarData: false });
+                    dataService.updateCar(car);
                 });
 
                 createNewRow();
@@ -222,7 +222,7 @@ angular.module('clientApp')
                 }
             }
 
-            dataService.updateCar(car, { updateCarData: false });
+            dataService.updateCar(car);
         });
     }
 

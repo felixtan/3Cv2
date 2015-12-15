@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarDataCtrl', function (dataService, $scope, getCar, getCars) {
-
+  .controller('CarDataCtrl', function ($state, dataService, $scope, getCar, getCars) {
     // var _ = underscore._;     
     $scope.car = getCar.data;
     $scope.oldField = '';
@@ -37,22 +36,22 @@ angular.module('clientApp')
     // Update
     $scope.save = function (data) {
         var newField = data.name;
-        var cars = getCars.data;
+        $scope.cars = getCars.data;
         var logVal = data.log;
 
         // update current car
         (function() {
             delete $scope.car.data[$scope.oldField];
             $scope.car.data[newField] = { value: data.value, log: data.log };
-            dataService.updateCar($scope.car, { updateCarData: true });
+            dataService.updateCar($scope.car);
         })();
 
-        cars.forEach(function(car) {
+        $scope.cars.forEach(function(car) {
             if(car.id !== $scope.car.id) {
                 var value = car.data[$scope.oldField].value;
                 car.data[newField] = { value: value, log: logVal };
                 if ($scope.oldField !== newField) delete car.data[$scope.oldField];
-                dataService.updateCar(car, { updateCarData: true });
+                dataService.updateCar(car);
             }
         });
     }

@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, $window, getCars, $state, dataService, $scope, $modalInstance, $modal) {
     
     // exposed vars
-    var _ = $window._;
+    // var _ = $window._;
     $scope.newFieldsThisSession = [];   // store new fields created this session
     $scope.isCollapsed = true;
 
@@ -22,16 +22,6 @@ angular.module('clientApp')
     };
 
     $scope.cars = ($scope.thereAreCars()) ? (getCars.data) : [];
-    
-    // get $scope.logDates
-    (function () {
-      $scope.logDates = [];
-      if($scope.thereAreCars()) {
-        carHelpers.getLogDates($scope.cars).then(function(logDates) {
-          $scope.logDates = logDates;
-        });
-      } 
-    })();
 
     // get $scope.fields (old fields)
     var getFields = function () {
@@ -91,33 +81,28 @@ angular.module('clientApp')
               value: null
             }
 
-            dataService.updateCar(car, { updateCar: true });
+            dataService.updateCar(car);
           }
         });
       }
     };
 
     // pass in $scope.formData
-    var newCar = function(carData) {
-      return $q(function(resolve, reject) {
-        var car = {};
-        car.data = carData;
-        car.logs = [];
+    $scope.newCar = function(carData) {
+      var deferred = $q.defer();
+      var car = {
+        data: carData,
+        logs: [],
+        organizationId: (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x'
+      };
 
-        // check this in staging 
-        if(ENV.name === ('production' || 'staging')) {
-          car.organizationId = $scope.user.customData.organizationId;
-        } else {
-          car.organizationId = '3Qnv2pMAxLZqVdp7n8RZ0x';
-        }
-
-        resolve(car);
-        reject(new Error('Error creating new car object'));
-      });
+      deferred.resolve(car);
+      deferred.reject(new Error('Error creating new car object'));
+      return deferred.promise;
     };
 
     $scope.submit = function () {
-      var promise = newCar($scope.formData).then(carHelpers.populateLogs);
+      var promise = $scope.newCar($scope.formData).then(carHelpers.populateLogs);
       promise.then(function(car) {
         dataService.createCar(car);
       });
@@ -135,7 +120,7 @@ angular.module('clientApp')
                 car.data[field].log = true;
               } 
 
-              dataService.updateCar(car, { updateCar: true });
+              dataService.updateCar(car);
             });
           }
         });
@@ -146,7 +131,7 @@ angular.module('clientApp')
 
     $scope.reset = function () {
       initializeForm();
-      $state.forceReload();
+      // $state.forceReload();
     };
 
     $scope.close = function () {

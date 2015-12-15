@@ -35,10 +35,9 @@ angular.module('clientApp')
                 default:
                     console.error('Invalid delete');
             }
-            
+
+            $scope.ok();
         }
-            // delete the field from all cars data but not from logs
-        $scope.ok();
     }
 
     $scope.ok = function() {
