@@ -8,6 +8,7 @@ var getUserId = helpers.getUserId;
 var getKeys = helpers.getKeys;
 var getOrgId = helpers.getOrgId;
 var _ = helpers._;
+var Promise = require('Bluebird');
 
 module.exports = {
 
@@ -50,8 +51,25 @@ module.exports = {
 
     create: function(req, res) {
         Cars.create(req.body).then(function(car) {
-            console.log(req.body);
-            res.json(car);
+            var idEachLog = function(car) {
+                return new Promise(function(resolve) {
+                    car.logs.forEach(function(log) {
+                        if(!log.carId || (log.carId !== car.id)) log.carId = car.id;
+                    });
+
+                    resolve(car);
+                });
+            };
+
+            idEachLog(car).then(function(carWithLogsCarId) {
+                Cars.update(carWithLogsCarId.dataValues, {
+                    where: {
+                        id: car.id
+                    }
+                }).then(function() {
+                    res.json(carWithLogsCarId);
+                });
+            });
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
@@ -67,7 +85,7 @@ module.exports = {
             description: req.body.description
         }, {
             where: {
-                id: req.params.id,
+                id: req.params.id
             }
         })
         .then(function() {

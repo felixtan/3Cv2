@@ -177,6 +177,18 @@ angular.module('clientApp')
         return deferred.promise;
     }
 
+    $scope.createLogForCar = function(car, date, data) {
+        var deferred = $q.defer();
+        car.logs.push({
+            createdAt: (new Date()),
+            weekOf: date,
+            data: data
+        });
+        deferred.resolve(car);
+        deferred.reject(new Error('Error creating log for car ' + car.id));
+        return deferred.promise;
+    };
+
     this.newLog = function() {
         // 1. show date picker
         // 2. user picks date -> store in log.date
@@ -187,23 +199,16 @@ angular.module('clientApp')
         var d = $scope.dt;
         var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
 
+        var promise = $scope.newDataObj().then(function(blankDataObj) {
+            _.each($scope.cars, function(car) {
+                $scope.createLogForCar(car, weekOf, blankDataObj).then(dataService.updateCar);
+            });
+        });
+
         if(!(_.contains($scope.dates, weekOf))) {
-
-            $scope.newDataObj().then(function(blankDataObj) {
-                _.each($scope.cars, function(car) {            
-                    car.logs.push({
-                        createdAt: (new Date()),
-                        weekOf: weekOf,
-                        data: blankDataObj
-                    });
-                    
-                    dataService.updateCar(car);
-                });
-
-                createNewRow();
-
+            $q.all([promise]).then(function(values) {
+                createNewRow(weekOf);
             }).catch(function(err) {
-                alert(err);
                 console.error(err);
             });
         } else {
@@ -224,11 +229,11 @@ angular.module('clientApp')
 
             dataService.updateCar(car);
         });
-    }
+    };
 
-    var createNewRow = function() {
+    var createNewRow = function(date) {
         // add new date to array of log dates
-        $scope.dates.push($scope.dt.getTime());
+        $scope.dates.push(date);
         $state.forceReload();
-    }
+    };
   });

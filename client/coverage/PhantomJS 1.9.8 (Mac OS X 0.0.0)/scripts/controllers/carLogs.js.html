@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">65.49% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>72/108</span>
+        <span class='fraction'>74/113</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">23.33% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>7/30</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">53.57% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>15/28</span>
+        <span class='fraction'>15/30</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.96% </span>
+        <span class="strong">66.67% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>70/103</span>
+        <span class='fraction'>72/108</span>
       </div>
     </div>
   </div>
@@ -277,7 +277,12 @@
 232
 233
 234
-235</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+235
+236
+237
+238
+239
+240</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -457,6 +462,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -467,22 +484,15 @@
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -690,6 +700,18 @@ angular.module('clientApp')
         return deferred.promise;
     }
 &nbsp;
+    $scope.createLogForCar = <span class="fstat-no" title="function not covered" >function(car, date, data) {</span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        car.logs.push({</span>
+            createdAt: (new Date()),
+            weekOf: date,
+            data: data
+        });
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(car);</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error creating log for car ' + car.id));</span>
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+    };
+&nbsp;
     this.newLog = function() {
         // 1. show date picker
         // 2. user picks date -&gt; store in log.date
@@ -700,23 +722,16 @@ angular.module('clientApp')
         var d = $scope.dt;
         var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
 &nbsp;
+        var promise = $scope.newDataObj().then(<span class="fstat-no" title="function not covered" >function(blankDataObj) {</span>
+<span class="cstat-no" title="statement not covered" >            _.each($scope.cars, <span class="fstat-no" title="function not covered" >function(car) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $scope.createLogForCar(car, weekOf, blankDataObj).then(dataService.updateCar);</span>
+            });
+        });
+&nbsp;
         <span class="missing-if-branch" title="else path not taken" >E</span>if(!(_.contains($scope.dates, weekOf))) {
-&nbsp;
-            $scope.newDataObj().then(<span class="fstat-no" title="function not covered" >function(blankDataObj) {</span>
-<span class="cstat-no" title="statement not covered" >                _.each($scope.cars, <span class="fstat-no" title="function not covered" >function(car) {            </span></span>
-<span class="cstat-no" title="statement not covered" >                    car.logs.push({</span>
-                        createdAt: (new Date()),
-                        weekOf: weekOf,
-                        data: blankDataObj
-                    });
-                    
-<span class="cstat-no" title="statement not covered" >                    dataService.updateCar(car);</span>
-                });
-&nbsp;
-<span class="cstat-no" title="statement not covered" >                createNewRow();</span>
-&nbsp;
+            $q.all([promise]).then(<span class="fstat-no" title="function not covered" >function(values) {</span>
+<span class="cstat-no" title="statement not covered" >                createNewRow(weekOf);</span>
             }).catch(<span class="fstat-no" title="function not covered" >function(err) {</span>
-<span class="cstat-no" title="statement not covered" >                alert(err);</span>
 <span class="cstat-no" title="statement not covered" >                console.error(err);</span>
             });
         } else {
@@ -737,13 +752,13 @@ angular.module('clientApp')
 &nbsp;
             dataService.updateCar(car);
         });
-    }
+    };
 &nbsp;
-    var createNewRow = <span class="fstat-no" title="function not covered" >function() {</span>
+    var createNewRow = <span class="fstat-no" title="function not covered" >function(date) {</span>
         // add new date to array of log dates
-<span class="cstat-no" title="statement not covered" >        $scope.dates.push($scope.dt.getTime());</span>
+<span class="cstat-no" title="statement not covered" >        $scope.dates.push(date);</span>
 <span class="cstat-no" title="statement not covered" >        $state.forceReload();</span>
-    }
+    };
   });
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -751,7 +766,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 14 2015 22:43:57 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 15 2015 03:56:58 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

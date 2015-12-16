@@ -19,17 +19,17 @@ angular.module('clientApp')
                 case 'field': 
                     $scope.cars.forEach(function(car) {
                         delete car.data[thing[$scope.type]];
-                        dataService.updateCar(car, { updateCarData: true });
+                        dataService.updateCar(car);
                     });
                     break;
                 case 'log':
                     $scope.cars.forEach(function(car) {
-                        var log = _.filter(car.logs, function(log) {
-                            return log.weekOf === thing[$scope.type];
-                        })[0];
-                        var index = _.indexOf(car.logs, log);
-                        car.logs.splice(index,1);
-                        dataService.updateCar(car, { updateCarData: true });
+                        car.logs.forEach(function(log) {
+                            if(log.weekOf === thing[$scope.type]) {
+                                car.logs.splice(car.logs.indexOf(log), 1);
+                                dataService.updateCar(car);
+                            }
+                        });
                     });
                     break;
                 default:

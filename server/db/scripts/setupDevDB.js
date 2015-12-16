@@ -55,14 +55,16 @@ module.exports = {
                     createdAt: '2015-11-23T20:55:20.432Z',
                     data: {
                         mileage: '8421'
-                    }
+                    },
+                    carId: 1
                 },
                 {
                     weekOf: 1448773200000,
                     createdAt: '2015-11-23T21:05:36.954Z',
                     data: {
                         mileage: '12923'
-                    }
+                    },
+                    carId: 1
                 }
             ]
         },
@@ -92,14 +94,16 @@ module.exports = {
                         createdAt: '2015-11-23T20:55:20.432Z',
                         data: {
                             mileage: '9412'
-                        }
+                        },
+                        carId: 2
                     },
                     {
                         weekOf: 1448773200000,
                         createdAt: '2015-11-23T21:05:36.954Z',
                         data: {
                             mileage: '14081'
-                        }
+                        },
+                        carId: 2
                     }
                 ]
         },
@@ -129,14 +133,16 @@ module.exports = {
                         createdAt: '2015-11-23T20:55:20.432Z',
                         data: {
                             mileage: '100461'
-                        }
+                        },
+                        carId: 3
                     },
                     {
                         weekOf: 1448773200000,
                         createdAt: '2015-11-23T21:05:36.954Z',
                         data: {
                             mileage: '120461'
-                        }
+                        },
+                        carId: 3
                     }
                 ]
         };

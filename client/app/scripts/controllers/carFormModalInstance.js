@@ -131,12 +131,12 @@ angular.module('clientApp')
 
     $scope.reset = function () {
       initializeForm();
-      // $state.forceReload();
+      // $state.reload('main');
     };
 
     $scope.close = function () {
       $modalInstance.dismiss('cancel');
-      $state.go('main');
+      $state.reload('main');
     };
 
     $scope.openDeleteFieldModal = function (size, thing) {

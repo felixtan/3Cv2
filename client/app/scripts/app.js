@@ -91,11 +91,17 @@ angular
 
             modalInstance.result.then(function () {
                 // upon submit
-                $state.go('main');
+                $state.transitionTo('main', {}, {
+                    location: true,
+                    reload: true
+                });
                 console.log('Modal dismissed at: ' + new Date());
             }, function() {
                 // upon dismiss
-                $state.go('main');
+                $state.transitionTo('main', {}, {
+                    location: true,
+                    reload: true
+                });
             });
         }
     })
