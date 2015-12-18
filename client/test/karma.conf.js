@@ -37,9 +37,9 @@ module.exports = function(config) {
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/Sortable/Sortable.js',
       'bower_components/Sortable/ng-sortable.js',
-      'bower_components/angular-once/once.js',
-      'bower_components/angular-bindonce/bindonce.js',
       'bower_components/underscore/underscore.js',
+      'bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js',
+      'bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

@@ -13,9 +13,11 @@ var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
 var prospect = require('./routes/prospects');
 var carLogs = require('./routes/carLogs');
+var stormpath = require('express-stormpath');
 
 module.exports = function (app) {
 
+    app.use('/api', stormpath.loginRequired);
     
     // settings
     app.get('/api/settings/cars', cars.getModel);

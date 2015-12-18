@@ -1,5 +1,5 @@
 var express = require('express');
-// var stormpathExpressSdk = require('stormpath-sdk-express');
+var stormpath = require('express-stormpath');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -18,28 +18,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // stormpath
-// var apiKey = require(path.join(process.env.HOME, '/.stormpath/apiKey'));
-// var spMiddleware = stormpathExpressSdk.createMiddleware({
-//   cache: 'memory',
-//   apiKeyId: process.env.STORMPATH_API_KEY_ID || '61DEQ0RV2XQNYF92MLBGRJ40F',
-//   apiKeySecret: process.env.STORMPATH_API_KEY_SECRET || 'yYclBSybH5K1HTOnjepY2gHXhRZOMH4e7XdBAKvD+og',
-//   appHref: process.env.STORMPATH_URL || 'https://api.stormpath.com/v1/applications/2FK2EinsSqnyPZwzuOKGwk',
-//   secretKey: process.env.STORMPATH_SECRET_KEY || '27ENHv1QFu8j8bdt4RpMPXuKMCDn61JWbtv17gZzQmdu5/mMlr4oCQ==',
-//   expandCustomData: true,
-//   postRegistrationHandler: function(account, res, next) {
-//     var hrefArray = account.user.href.split('/');
-//     var accountId = hrefArray[hrefArray.length-1];
-//     account.user.getCustomData(function(err, data) {
-//       if(err) {
-//         next(err)
-//       } else {
-//         data.id = accountId;
-//         data.save();
-//         next();
-//       }
-//     });
-//   }
-// });
+app.use(stormpath.init(app, {
+  debug: 'info, error',
+  website: true,
+  web: {
+    spaRoot: process.env.HOME + '/Development/3C/client/app/index.html'
+  },
+  postRegistrationHandler: function(account, res, req, next) {
+    var hrefArray = account.href.split('/');
+
+    account.getCustomData(function(err, data) {
+      if(err) {
+        next(err);
+      } else {
+        data.organizationId = hrefArray[hrefArray.length-1];
+        data.save();
+        next();
+      }
+    });
+  }
+}));
 
 // development error handler
 // will print stacktrace

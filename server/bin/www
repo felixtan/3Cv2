@@ -31,16 +31,16 @@ var models = app.get('models');
 var setupDevDB = require('../db/scripts/setupDevDB');
 var opts = (process.env.NODE_ENV === 'development') ? { force: true } : {};
 
-// app.on('stormpath.ready', function() {
-//   console.log('Stormpath initialized.')
-  models.sequelize.sync(opts).then(function() {
-    if(process.env.NODE_ENV === 'development' || 'testing') { setupDevDB.populate(); }
-    console.log('Connected to the threec database.');
+models.sequelize.sync(opts).then(function() {
+  if(process.env.NODE_ENV === 'development' || 'testing') setupDevDB.populate(); 
+  console.log('Connected to the threec database.');
+  app.on('stormpath.ready', function() {
+  console.log('Stormpath initialized.')
     server.listen(port, function() {
-      console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV + ' mode.');
+      console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV.toUpperCase() + ' mode.');
     });
   });
-// });
+});
 
 server.on('error', onError);
 server.on('listening', onListening);

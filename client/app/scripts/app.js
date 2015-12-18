@@ -21,6 +21,8 @@ angular
     'ui.bootstrap',
     'ui.router',
     'ngMessages',
+    'stormpath',
+    'stormpath.templates',
     'config'
   ])
   .config(function (ENV, $stateProvider, $urlRouterProvider, $provide) {
@@ -35,19 +37,41 @@ angular
         return $delegate;
     });
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
+    .state('login', {
+        url: '/login',
+        templateUrl: 'login.html'
+    })
+    .state('registration', {
+        url: '/registration',
+        templateUrl: 'registration.html'
+    })
+    .state('forgot-password', {
+        url: '/forgot-password',
+        templateUrl: 'forgotpw.html'
+    })
+    .state('reset-password', {
+        url:'/reset?sptoken',
+        templateUrl: 'resetpw.html'
+    })
     .state('settings', {
         url: '/settings',
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsCtrl',
-        controllerAs: 'settings'
+        controllerAs: 'settings',
+        sp: {
+            authenticate: true
+        }
     })
     .state('settings.models', {
         abstract: true,
         url: '/models',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        sp: {
+            authenticate: true
+        }
     })
     .state('settings.models.car', {
         url: '/car',
@@ -58,10 +82,13 @@ angular
             getCarProperties: function(dataService) {
                 return dataService.getCarProperties();
             }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('main', {
-        url: '/',
+        url: '/dashboard',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
@@ -72,6 +99,9 @@ angular
           // getProspects: function(dataService) {
           //   return dataService.getProspects();
           // }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('main.carForm', {
@@ -79,6 +109,7 @@ angular
         onEnter: function($modal, dataService, $state) {
             var modalInstance = $modal.open({
                 animation: true,
+                backdrop: 'static',
                 templateUrl: 'views/carformmodal.html',
                 controller: 'CarFormModalInstanceCtrl',
                 size: 'md',
@@ -103,6 +134,9 @@ angular
                     reload: true
                 });
             });
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('roster', {
@@ -114,6 +148,9 @@ angular
           getDrivers: function(dataService) {
             return dataService.getDrivers();
           }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('ptg', {
@@ -128,12 +165,18 @@ angular
           basicDriverData: function(dataService) {
             return dataService.getDrivers();
           }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('logs', {
         abstract: true,
         url: '/logs',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        sp: {
+            authenticate: true
+        }
     })
     .state('logs.cars', {
         url: '/cars',
@@ -144,6 +187,9 @@ angular
             getCars: function(dataService) {
                 return dataService.getCars();
             }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('carProfile', {
@@ -158,24 +204,38 @@ angular
             getCars: function(dataService) {
                 return dataService.getCars();
             }
+        },
+        sp: {
+            authenticate: true
         }
     })
     .state('carProfile.data', {
         url: '/data',
         templateUrl: '/views/cardataui.html',
-        controller: 'CarDataCtrl'
+        controller: 'CarDataCtrl',
+        sp: {
+            authenticate: true
+        }
     })
     .state('carProfile.logs', {
         url: '/logs',
         templateUrl: '/views/carlogsui.html',
-        controller: 'CarLogCtrl'
+        controller: 'CarLogCtrl',
+        sp: {
+            authenticate: true
+        }
     }); 
   })
     // inject ENV when grunt-ng-constant is working
-  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
+  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope, $stormpath) {
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+
+    $stormpath.uiRouter({
+        loginState: 'login',
+        defaultPostLoginState: 'main'
+    });
   });

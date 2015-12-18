@@ -17,9 +17,8 @@
     "normalize.css": "~3.0.3",
     "font-awesome": "~4.4.0",
     "Sortable": "~1.4.2",
-    "angular-once": "~0.1.9",
-    "angular-bindonce": "~0.3.3",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "stormpath-sdk-angularjs": "~0.8.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.7"

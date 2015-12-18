@@ -41,16 +41,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li>
+            <!-- <li>
               <a>current state: {{ $state.current.name }}</a>
-            </li>
+            </li> -->
             <li>
               <a ui-sref="settings">Settings</a>
             </li>
             <li>
-              <a sp-logout ui-sref="logout">Logout</a>
+              <a sp-logout ui-sref="login">Logout</a>
             </li>
-            <!-- <li><a href="#/">Help</a></li> -->
           </ul>
           <!-- <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -117,9 +116,9 @@
     <script src='bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'></script>
     <script src='bower_components/Sortable/Sortable.js'></script>
     <script src='bower_components/Sortable/ng-sortable.js'></script>
-    <script src='bower_components/angular-once/once.js'></script>
-    <script src='bower_components/angular-bindonce/bindonce.js'></script>
     <script src='bower_components/underscore/underscore.js'></script>
+    <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js'></script>
+    <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js'></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -133,7 +132,6 @@
         <script src="scripts/directives/repeatfinished.js"></script>
         <script src="scripts/controllers/prospectFormModal.js"></script>
         <script src="scripts/controllers/prospectFormModalInstance.js"></script>
-        <script src="scripts/controllers/carformmodal.js"></script>
         <script src="scripts/controllers/carformmodalinstance.js"></script>
         <script src="scripts/controllers/carLogs.js"></script>
         <script src="scripts/controllers/payratemodal.js"></script>
@@ -162,6 +160,7 @@
 
         <!-- produced by grunt-ng-constant -->
         <script src='/scripts/config.js'></script>
+        <script src='/scripts/login.js'></script>
 
         <!-- other -->
         <!-- <script src='/scripts/controllers/settings/models/Car.js'></script> -->
