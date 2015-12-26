@@ -118,7 +118,7 @@ describe('CarLogsCtrl', function () {
   });
 
   describe('Datepicker:', function() {
-    it("should store the display options", function() {
+    xit("should store the display options", function() {
         expect(scope.dateOptions.formatYear).toBeString();
         expect(scope.dateOptions.startingDay).toBeNumber();
         expect(scope.dateOptions.startingDay).toBeLessThan(7);

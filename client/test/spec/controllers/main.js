@@ -97,7 +97,7 @@ describe('MainCtrl', function () {
   }));
 
   it('should direct to the correct url', function() {
-    expect(state.href('main')).toEqual('#/');
+    expect(state.href('main')).toEqual('#/dashboard');
   });
 
   it('should load all the cars to scope', function() {

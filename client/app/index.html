@@ -28,7 +28,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" if-user>
+    <!-- if-user this nav -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -60,8 +61,8 @@
 
     <div class="container-fluid">
       <div class="row">
-
-        <div class="col-sm-3 col-md-2 sidebar" if-user ng-if="!$state.includes('settings')">
+        <!-- if-user this div -->
+        <div class="col-sm-3 col-md-2 sidebar" ng-if="!$state.includes('settings')">
           <ul class="nav nav-sidebar">
             <li><a ui-sref="main"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
             <!-- <li><a ui-sref='roster' class='fa fa-users'>Drivers</a></li> -->
@@ -71,7 +72,8 @@
         </div>
 
         <!-- settings sidebar -->
-        <div class="col-sm-3 col-md-2 sidebar" if-user ng-if="$state.includes('settings')">
+        <!-- if-user this div -->
+        <div class="col-sm-3 col-md-2 sidebar" ng-if="$state.includes('settings')">
           <ul class="nav nav-sidebar">
             <li>
               <a ui-sref='settings.models.car' class='fa fa-user'>Cars</a>

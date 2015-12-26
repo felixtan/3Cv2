@@ -100,15 +100,11 @@ describe('CarFormModalInstanceCtrl', function () {
       $modalInstance: this,
       getCars: getCars
     });
-
-    modal = $controller('CarFormModalCtrl', {
-      $scope: scope
-    });
   }));
 
   it('should be directed to the correct url', function() {
     state.go('main.carForm');
-    expect(state.href('main.carForm')).toEqual('#/car-form');
+    expect(state.href('main.carForm')).toEqual('#/dashboard/car-form');
   });
 
   it('should load all the cars to scope', function() {

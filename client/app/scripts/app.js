@@ -21,7 +21,7 @@ angular
     'ui.bootstrap',
     'ui.router',
     'ngMessages',
-    'stormpath',
+    // 'stormpath',
     'stormpath.templates',
     'config'
   ])
@@ -37,7 +37,14 @@ angular
         return $delegate;
     });
 
-    $urlRouterProvider.otherwise('/login');
+    var getsp = function() {
+        var authOn = { authenticate: true };
+        var authOff = {};
+        return authOff;
+    }
+
+    // $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/dashboard');
 
     $stateProvider
     .state('login', {
@@ -61,17 +68,13 @@ angular
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsCtrl',
         controllerAs: 'settings',
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('settings.models', {
         abstract: true,
         url: '/models',
         template: '<ui-view/>',
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('settings.models.car', {
         url: '/car',
@@ -83,9 +86,7 @@ angular
                 return dataService.getCarProperties();
             }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('main', {
         url: '/dashboard',
@@ -96,16 +97,11 @@ angular
           getCars: function(dataService) {
             return dataService.getCars();
           }
-          // getProspects: function(dataService) {
-          //   return dataService.getProspects();
-          // }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('main.carForm', {
-        url: 'car-form',
+        url: '/car-form',
         onEnter: function($modal, dataService, $state) {
             var modalInstance = $modal.open({
                 animation: true,
@@ -135,9 +131,7 @@ angular
                 });
             });
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('roster', {
         url: '/drivers',
@@ -149,9 +143,7 @@ angular
             return dataService.getDrivers();
           }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('ptg', {
         url: '/pay-toll-gas',
@@ -166,17 +158,13 @@ angular
             return dataService.getDrivers();
           }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('logs', {
         abstract: true,
         url: '/logs',
         template: '<ui-view/>',
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('logs.cars', {
         url: '/cars',
@@ -188,9 +176,7 @@ angular
                 return dataService.getCars();
             }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('carProfile', {
         abstract: true,
@@ -205,37 +191,32 @@ angular
                 return dataService.getCars();
             }
         },
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('carProfile.data', {
         url: '/data',
         templateUrl: '/views/cardataui.html',
         controller: 'CarDataCtrl',
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     })
     .state('carProfile.logs', {
         url: '/logs',
         templateUrl: '/views/carlogsui.html',
         controller: 'CarLogCtrl',
-        sp: {
-            authenticate: true
-        }
+        sp: getsp()
     }); 
   })
     // inject ENV when grunt-ng-constant is working
-  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope, $stormpath) {
+    // add when you want stormpath: , $stormpath
+  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    $stormpath.uiRouter({
-        loginState: 'login',
-        defaultPostLoginState: 'main'
-    });
+    // $stormpath.uiRouter({
+    //     loginState: 'login',
+    //     defaultPostLoginState: 'main'
+    // });
   });
