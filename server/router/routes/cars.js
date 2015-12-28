@@ -36,19 +36,6 @@ module.exports = {
         });
     },
 
-    getModel: function(req, res) {
-        Cars.findAll({
-            where: filterByOrgId,
-            limit: 1
-        }).then(function(cars) {
-            // use underscore to just return the keys
-            console.log(cars[0].dataValues);
-            res.json(getKeys(cars[0].dataValues.data));
-        }).catch(function(err) {
-            res.status(500).json({ error: err });
-        });
-    },
-
     create: function(req, res) {
         Cars.create(req.body).then(function(car) {
             var idEachLog = function(car) {
@@ -77,16 +64,8 @@ module.exports = {
     },
 
     update: function(req, res) {
-        Cars.update({
-            licenseNumber: req.body.licenseNumber,
-            licensePlate: req.body.licensePlate,
-            mileage: req.body.mileage,
-            oilChangeRequired: req.body.oilChangeRequired,
-            description: req.body.description
-        }, {
-            where: {
-                id: req.params.id
-            }
+        Cars.update(req.body, {
+            where: { id: req.params.id }
         })
         .then(function() {
             res.status(200).json({ msg: 'Update car where id = ' + req.params.id });
@@ -99,9 +78,7 @@ module.exports = {
 
     delete: function(req, res) {
         Cars.destroy({
-            where: {
-                id: req.params.id
-            }
+            where: { id: req.params.id }
         })
         .then(function() {
             res.status(200).json({ msg: 'Deleted car where id = ' + req.params.id });

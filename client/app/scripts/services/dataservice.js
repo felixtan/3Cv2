@@ -36,6 +36,15 @@ angular.module('clientApp')
         });
       },
 
+      getDriver: function (id) {
+        return $http.get('/api/drivers/' + id)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
+      },
+
       getCars: function () {
         return $http({
             method: 'GET',
@@ -98,7 +107,7 @@ angular.module('clientApp')
       updateCar: function(car, params) {
         return $http({
           method: 'PUT',
-          url: '/api/logs/cars/' + car.id,
+          url: '/api/cars/' + car.id,
           params: params,
           data: car
         })
@@ -130,7 +139,7 @@ angular.module('clientApp')
       updateDriver: function(driver, params) {
         return $http({
           method: 'PUT',
-          url: '/api/logs/drivers/' + driver.id,
+          url: '/api/drivers/' + driver.id,
           params: params,
           data: driver
         })

@@ -30,13 +30,12 @@ module.exports = {
         });
     },
 
-    getById: function(req, res) {
+    getDriver: function(req, res) {
         Drivers.findById(req.params.id).then(function(driver) {
             if(!driver) {
-                res.status(404).json({ error: 'Resource not found.' });
-                console.log('Driver not found.');
+                res.status(404).json({ error: 'Driver not found.' });
             } else {
-                res.json(driver.dataValues);
+                res.json(driver);
             }
         })
         .catch(function(err) {
@@ -73,43 +72,10 @@ module.exports = {
     },
 
     update: function(req, res) {
-        Drivers.update({
-            givenName: req.body.givenName,
-            middleInitial: req.body.middleInitial,
-            surName: req.body.surName,
-            driversLicenseNum: req.body.driversLicenseNum,
-            phoneNumber: req.body.phoneNumber,
-            email: req.body.email,
-            address: req.body.address,
-            tlc: req.body.tlc,
-            dmv: req.body.dmv,
-            points: req.body.points,
-            accidents: req.body.accidents,
-            shift: req.body.shift,
-            paperwork: req.body.paperwork,
-            description: req.body.description,
-            payRate: req.body.payRate
-        }, {
-            where: {
-                id: req.params.id
-            }
+        Drivers.update(req.body, {
+            where: { id: req.params.id }
         })
         .then(function() {
-            
-            Drivers.findById(req.params.id).then(function(driver) {
-                if(req.body.gasDriverdId) {
-                    driver.setGasDriverds([req.body.gasDriverdId]);
-                }
-
-                if(req.body.ezPassId) {
-                    driver.setEzPasses([req.body.ezPassId]);
-                }
-
-                if(req.body.driverId) {
-                    driver.setDrivers([req.body.driverId]);   
-                }
-            });
-
             res.status(200).json({ msg: 'Update driver where id = ' + req.params.id });
         })
         .catch(function(err) {
@@ -120,9 +86,7 @@ module.exports = {
 
     delete: function(req, res) {
         Drivers.destroy({
-            where: {
-                id: req.params.id
-            }
+            where: { id: req.params.id }
         })
         .then(function() {
             res.status(200).json({ msg: 'Deleted driver where id = ' + req.params.id });

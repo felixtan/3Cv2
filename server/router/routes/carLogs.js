@@ -45,7 +45,7 @@ module.exports = {
         })
         .catch(function(err) {
             console.error(err);
-            res.status(500).json({ error: err.stack });    
+            res.status(500).json({ error: err });    
         });
 
             // CarLogs.max("mileage", { where: { carId: carLog.carId } }).then(function(previouslyCheckedMileage) {

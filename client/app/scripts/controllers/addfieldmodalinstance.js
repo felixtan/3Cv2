@@ -8,24 +8,38 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', function ($state, getCars, $scope, $modalInstance, dataService) {
+  .controller('AddFieldModalInstanceCtrl', function ($state, getCars, getDrivers, $scope, $modalInstance, dataService) {
+    
     $scope.formData = {};
-    $scope.cars = getCars.data;
+    $scope.objects = [];
+    $scope.update = function(object) { return; };
+
+    if($state.includes('carProfile')) {
+      console.log("add field modal called from carProfile");
+      $scope.objects = getCars.data;
+      $scope.update = dataService.updateCar;
+    } else if($state.includes('driverProfile')) {
+      console.log("add field modal called from driverProfile");
+      $scope.objects = getDrivers.data;
+      $scope.update = dataService.updateDriver;
+    } else {
+      console.log('add field modal calle from invalid state', $state.current);
+    }
 
     $scope.submit = function () {
-        $scope.cars.forEach(function(car) {
-            car.data[$scope.formData.field] = {
+        $scope.objects.forEach(function(object) {
+            object.data[$scope.formData.field] = {
                 value: null,
                 log: $scope.formData.log
             }
             
             if($scope.formData.log) {
-                car.logs.forEach(function(log) {
+                object.logs.forEach(function(log) {
                     log.data[$scope.formData.field] = null;
                 });
             }
 
-            dataService.updateCar(car, { updateCarData: true });
+            $scope.update(object);
         });
 
         $scope.close();

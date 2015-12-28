@@ -19,9 +19,6 @@ module.exports = function (app) {
 
     // uncomment when you want stormpath
     // app.use('/api', stormpath.loginRequired);
-    
-    // settings
-    app.get('/api/settings/cars', cars.getModel);
 
     // Car logs
     app.get('/api/logs/cars', carLogs.getForAllCars);
@@ -69,11 +66,10 @@ module.exports = function (app) {
     app.post('/api/cars', cars.create);
     app.put('/api/cars/:id', cars.update);
     app.delete('/api/cars/:id', cars.delete);
-    app.put('/api/cars', cars.rearrange);   // handles persisting changes to ordering in cars array
 
     // Driver API routes
     app.get('/api/drivers', drivers.get);
-    app.get('/api/drivers/:id', drivers.getById);
+    app.get('/api/drivers/:id', drivers.getDriver);
     app.post('/api/drivers', drivers.create);
     app.put('/api/drivers/:id', drivers.update);
     app.delete('/api/drivers/:id', drivers.delete);

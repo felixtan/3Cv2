@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalCtrl', function (dataService, $scope, $modal) {
-    
+  .controller('AddFieldModalCtrl', function ($state, dataService, $scope, $modal) {
     $scope.formData = {};
 
     $scope.open = function(size) {
@@ -20,7 +19,10 @@ angular.module('clientApp')
             size: size,
             resolve: {
                 getCars: function(dataService) {
-                    return dataService.getCars();
+                    return ($state.includes('carProfile') ? dataService.getCars() : {});
+                },
+                getDrivers: function(dataService) {
+                    return ($state.includes('driverProfile') ? dataService.getDrivers() : {});
                 }
             }
         });

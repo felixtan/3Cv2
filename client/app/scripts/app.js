@@ -214,10 +214,22 @@ angular
         url: '/cars',
         templateUrl: 'views/carLogs.html',
         controller: 'CarLogsCtrl',
-        controllerAs: 'logctrl',
+        controllerAs: 'carlogs',
         resolve: {
             getCars: function(dataService) {
                 return dataService.getCars();
+            }
+        },
+        sp: getsp()
+    })
+    .state('logs.drivers', {
+        url: '/drivers',
+        templateUrl: 'views/driverLogs.html',
+        controller: 'DriverLogsCtrl',
+        controllerAs: 'driverlogs',
+        resolve: {
+            getDrivers: function(dataService) {
+                return dataService.getDrivers();
             }
         },
         sp: getsp()
@@ -247,9 +259,33 @@ angular
         url: '/logs',
         templateUrl: '/views/carlogsui.html',
         controller: 'CarLogCtrl',
-        onEnter: function() {
-            // console.log($state.current);
+        sp: getsp()
+    })
+    .state('driverProfile', {
+        abstract: true,
+        url: '/driver/:id',
+        templateUrl: '/views/driverprofile.html',
+        controller: 'DriverProfileCtrl',
+        resolve: {
+            getDriver: function(dataService, $stateParams) {
+                return dataService.getDriver($stateParams.id);
+            },
+            getDrivers: function(dataService) {
+                return dataService.getDrivers();
+            }
         },
+        sp: getsp()
+    })
+    .state('driverProfile.data', {
+        url: '/data',
+        templateUrl: '/views/driverdataui.html',
+        controller: 'DriverDataCtrl',
+        sp: getsp()
+    })
+    .state('driverProfile.logs', {
+        url: '/logs',
+        templateUrl: '/views/driverlogsui.html',
+        controller: 'DriverLogCtrl',
         sp: getsp()
     }); 
   })

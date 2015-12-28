@@ -2,27 +2,24 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:CarlogCtrl
+ * @name clientApp.controller:DriverlogCtrl
  * @description
- * # CarlogCtrl
+ * # DriverlogCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogCtrl', function ($state, dataService, $q, $scope, getCar) {
-    $scope.car = getCar.data;
-
-    // $scope.activateTab($state);
-    $scope.activateTab = function() {
-        $scope.tabs[0].active = false;
-        $scope.tabs[1].active = true;
-    }
- 
+  .controller('DriverLogCtrl', function ($q, $scope, getDriver, dataService) {
+    $scope.driver = getDriver.data;
+    $scope.tabs = [
+        { title: 'Data', route: 'driverProfile.data' },
+        { title: 'Logs', route: 'driverProfile.logs', active: true }
+    ];
 
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {
         var arr = [];
-        _.each($scope.car.logs, function(log, index) {
+        _.each($scope.driver.logs, function(log, index) {
             arr.push(log.weekOf);
         });
         
@@ -38,12 +35,12 @@ angular.module('clientApp')
 
     $scope.date = 0;
 
-    $scope.getFieldsToBeLogged = function(car) {
+    $scope.getFieldsToBeLogged = function(driver) {
         var deffered = $q.defer();
         var fields = [];
 
-        for(var field in car.data) {
-            if(car.data[field].log === true) fields.push(field);
+        for(var field in driver.data) {
+            if(driver.data[field].log === true) fields.push(field);
         }
 
         deffered.resolve(fields);
@@ -55,13 +52,13 @@ angular.module('clientApp')
     // need to make this more efficient
     $scope.save = function(logDate) {
         if(logDate === $scope.mostRecentLogDate) {
-            // update car.data is new value isn't null
-            var mostRecentLog = _.find($scope.car.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate });
+            // update driver.data is new value isn't null
+            var mostRecentLog = _.find($scope.driver.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate });
             for(var field in mostRecentLog.data) {
-                if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') $scope.car.data[field].value = mostRecentLog.data[field];
+                if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') $scope.driver.data[field].value = mostRecentLog.data[field];
             }
         }
 
-        dataService.updateCar($scope.car);
+        dataService.updateDriver($scope.driver);
     }
   });

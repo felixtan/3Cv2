@@ -1,0 +1,47 @@
+<tabset>
+    <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
+    </tab>
+</tabset>
+
+<br>
+
+<div class="table-responsive" ng-init="tabs[0].active = true">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <td><strong>Week \ Fields</strong></td>
+                <td ng-repeat="(field, value) in driver.logs[0].data | orderBy:'$index'">
+                    {{ field }}
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='log in driver.logs | orderBy:"-weekOf"'>
+                <td>
+                    <span class='log-date'>
+                        {{ log.weekOf | date:'longDate' }}
+                    </span>
+                    <button class='btn btn-warning btn-xs btn-edit' ng-click='logform.$show()' ng-show='!logform.$visible'>
+                        Edit
+                    </button>
+                    <div class='btn-toolbar' role='toolbar'>
+                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
+                            <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs btn-group" role='group'>
+                                Save
+                            </button>
+                            <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs btn-group" role='group'>
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                </td>
+                <td ng-repeat='(field, value) in log.data | orderBy:"$index"'>
+                    <p ng-show='logform.$visible'></p>
+                    <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
+                        {{ value }}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

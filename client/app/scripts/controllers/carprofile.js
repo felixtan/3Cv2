@@ -8,14 +8,14 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarProfileCtrl', function ($scope, $window, getCar, getCars, $state) {
+  .controller('CarProfileCtrl', function ($scope, getCar, getCars) {
     $scope.getCar = function() {
         $scope.car = getCar.data;
     }
     $scope.getCar();
 
     $scope.tabs = [
-        { title: 'Data', route: 'carProfile.data', active: false },
+        { title: 'Data', route: 'carProfile.data' },
         { title: 'Logs', route: 'carProfile.logs' }
         // { title: 'Drivers', content: 'Drivers' }
     ];

@@ -11,18 +11,23 @@ angular.module('clientApp')
   .controller('DeleteFieldModalInstanceCtrl', function ($rootScope, getDrivers, getCars, thing, dataService, $scope, $modalInstance, $state) {
     $scope.input = '';
     $scope.type = Object.keys(thing)[0];
+    $scope.value = thing[$scope.type];
+    $scope.objects = [];
+    $scope.update = function(object) { return; };
 
     // determine the state or ui calling this modal
-    if($state.includes('dashboard.drivers')) {
+    if($state.includes('driverProfile')) {
         console.log('called from drivers ui');
         $scope.objects = getDrivers.data;
         $scope.update = dataService.updateDriver;
-    } else if($state.includes('dashboard.cars')) {
+    } else if($state.includes('carProfile')) {
         console.log('called from cars ui');
         $scope.objects = getCars.data;
         $scope.update = dataService.updateCar;
+    } else {
+        console.log('delete field modal calle from invalid state', $state.current);
     }
-    
+
     $scope.submit = function () {  
         // assumes car, driver, etc. have the same schema structure
         if($scope.input === 'DELETE') {
@@ -30,7 +35,7 @@ angular.module('clientApp')
                 case 'field': 
                     if($scope.objects.length > 0) {
                         $scope.objects.forEach(function(obj) {
-                            delete obj.data[thing[$scope.type]];
+                            delete obj.data[$scope.value];
                             $scope.update(obj);
                         });
                     }
@@ -39,7 +44,7 @@ angular.module('clientApp')
                     if($scope.objects.length > 0) {
                         $scope.objects.forEach(function(obj) {
                             obj.logs.forEach(function(log) {
-                                if(log.weekOf === thing[$scope.type]) {
+                                if(log.weekOf === $scope.value) {
                                     obj.logs.splice(obj.logs.indexOf(log), 1);
                                     $scope.update(obj);
                                 }
@@ -56,13 +61,12 @@ angular.module('clientApp')
     }
 
     $scope.ok = function() {
-        // send the deleted field back
-        $modalInstance.close(thing[$scope.type]);
         $state.forceReload();
-    }
+        $modalInstance.close(thing[$scope.type]);
+    };
 
     $scope.close = function () {
         $state.forceReload();
         $modalInstance.dismiss('cancel');
-    }
+    };
   });

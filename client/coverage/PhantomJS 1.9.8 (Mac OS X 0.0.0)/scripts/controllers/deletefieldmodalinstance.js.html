@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4% </span>
+        <span class="strong">2.94% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/25</span>
+        <span class='fraction'>1/34</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/7</span>
+        <span class='fraction'>0/15</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">4% </span>
+        <span class="strong">2.94% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/25</span>
+        <span class='fraction'>1/34</span>
       </div>
     </div>
   </div>
@@ -96,7 +96,22 @@
 51
 52
 53
-54</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -109,23 +124,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -159,29 +189,44 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalInstanceCtrl', <span class="fstat-no" title="function not covered" >function ($rootScope, getCars, thing, dataService, $scope, $modalInstance, $state) {</span>
+  .controller('DeleteFieldModalInstanceCtrl', <span class="fstat-no" title="function not covered" >function ($rootScope, getDrivers, getCars, thing, dataService, $scope, $modalInstance, $state) {</span>
 <span class="cstat-no" title="statement not covered" >    $scope.input = '';</span>
-<span class="cstat-no" title="statement not covered" >    $scope.cars = getCars.data;</span>
 <span class="cstat-no" title="statement not covered" >    $scope.type = Object.keys(thing)[0];</span>
+&nbsp;
+    // determine the state or ui calling this modal
+<span class="cstat-no" title="statement not covered" >    if($state.includes('dashboard.drivers')) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('called from drivers ui');</span>
+<span class="cstat-no" title="statement not covered" >        $scope.objects = getDrivers.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.update = dataService.updateDriver;</span>
+    } else <span class="cstat-no" title="statement not covered" >if($state.includes('dashboard.cars')) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log('called from cars ui');</span>
+<span class="cstat-no" title="statement not covered" >        $scope.objects = getCars.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.update = dataService.updateCar;</span>
+    }
     
 <span class="cstat-no" title="statement not covered" >    $scope.submit = <span class="fstat-no" title="function not covered" >function () {  </span></span>
+        // assumes car, driver, etc. have the same schema structure
 <span class="cstat-no" title="statement not covered" >        if($scope.input === 'DELETE') {</span>
 <span class="cstat-no" title="statement not covered" >            switch($scope.type) {</span>
                 case 'field': 
-<span class="cstat-no" title="statement not covered" >                    $scope.cars.forEach(<span class="fstat-no" title="function not covered" >function(car) {</span></span>
-<span class="cstat-no" title="statement not covered" >                        delete car.data[thing[$scope.type]];</span>
-<span class="cstat-no" title="statement not covered" >                        dataService.updateCar(car);</span>
-                    });
+<span class="cstat-no" title="statement not covered" >                    if($scope.objects.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                        $scope.objects.forEach(<span class="fstat-no" title="function not covered" >function(obj) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            delete obj.data[thing[$scope.type]];</span>
+<span class="cstat-no" title="statement not covered" >                            $scope.update(obj);</span>
+                        });
+                    }
 <span class="cstat-no" title="statement not covered" >                    break;</span>
                 case 'log':
-<span class="cstat-no" title="statement not covered" >                    $scope.cars.forEach(<span class="fstat-no" title="function not covered" >function(car) {</span></span>
-<span class="cstat-no" title="statement not covered" >                        car.logs.forEach(<span class="fstat-no" title="function not covered" >function(log) {</span></span>
-<span class="cstat-no" title="statement not covered" >                            if(log.weekOf === thing[$scope.type]) {</span>
-<span class="cstat-no" title="statement not covered" >                                car.logs.splice(car.logs.indexOf(log), 1);</span>
-<span class="cstat-no" title="statement not covered" >                                dataService.updateCar(car);</span>
-                            }
+<span class="cstat-no" title="statement not covered" >                    if($scope.objects.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                        $scope.objects.forEach(<span class="fstat-no" title="function not covered" >function(obj) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            obj.logs.forEach(<span class="fstat-no" title="function not covered" >function(log) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                if(log.weekOf === thing[$scope.type]) {</span>
+<span class="cstat-no" title="statement not covered" >                                    obj.logs.splice(obj.logs.indexOf(log), 1);</span>
+<span class="cstat-no" title="statement not covered" >                                    $scope.update(obj);</span>
+                                }
+                            });
                         });
-                    });
+                    }
 <span class="cstat-no" title="statement not covered" >                    break;</span>
                 default:
 <span class="cstat-no" title="statement not covered" >                    console.error('Invalid delete');</span>
@@ -208,7 +253,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Dec 26 2015 17:00:24 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2015 07:53:03 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

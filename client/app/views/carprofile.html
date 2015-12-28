@@ -1,5 +1,5 @@
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3' ng-init='activateTab($state)'>
-    <h2 class='sub-header'>{{ car.data.licensePlate.value }}</h2>
+    <h2 class='sub-header'>{{ ::car.data.licensePlate.value }}</h2>
     <tabset>
         <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
             <div ui-view></div>

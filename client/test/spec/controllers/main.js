@@ -97,11 +97,11 @@ describe('MainCtrl', function () {
   }));
 
   it('should direct to the correct url', function() {
-    expect(state.href('main')).toEqual('#/dashboard');
+    expect(state.href('dashboard.cars')).toEqual('#/dashboard/cars');
   });
 
   it('should load all the cars to scope', function() {
-    state.go('main');
+    state.go('dashboard.cars');
     expect(dataService.getCars).toHaveBeenCalled();
     expect(scope.cars).toBeDefined();
   });

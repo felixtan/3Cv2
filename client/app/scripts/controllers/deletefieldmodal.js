@@ -22,7 +22,10 @@ angular.module('clientApp')
                     return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                 },
                 getCars: function(dataService) {
-                    return dataService.getCars();
+                    return ($state.includes('carProfile') ? dataService.getCars() : {});
+                },
+                getDrivers: function(dataService) {
+                    return ($state.includes('driverProfile') ? dataService.getDrivers() : {});
                 }
             }
         });
