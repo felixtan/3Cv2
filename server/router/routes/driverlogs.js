@@ -2,41 +2,28 @@
 
 var DriverLog = require('../../db/models').DriverLog;
 var Driver = require('../../db/models').Driver;
-var getUserId = require('../helpers').getUserId;
-
-var opts = {};
-if(process.env.NODE_ENV === 'production' || 'staging') {
-    var organizationId = '';
-    opts = { organization: organizationId };
-}
+var helpers = require('../helpers');
+var getUserId = helpers.getUserId;
+var filterByOrgId = helpers.filterByOrgId;
 
 module.exports = {
-
-    // many drivers
     // TODO: query filter options and functionality
-    getAll: function(req, res) {
-        // getUserId(req).then(function(organizationId) {
-            Driver.findAll({ 
-                where: opts,
-                include: [{
-                    model: DriverLog,
-                    where: opts,
-                    require: false
-                }]
-            }).then(function(drivers) {
-                res.json(drivers);
-            })
-            .catch(function(err) {
-                console.error(err);
-                res.status(500).json({ error: err });
-            });
+    getForAll: function(req, res) {
+        Driver.findAll({ 
+            where: filterByOrgId(req),
+        }).then(function(drivers) {
+            res.json(drivers);
+        }).catch(function(err) {
+            console.error(err);
+            res.status(500).json({ error: err });
+        });
     },
 
     // one driver
     // TODO: query filter options and functionality
-    getByDriverId: function(req, res) {
-        DriverLog.findById(req.params.id).then(function(logs) {
-            res.json(logs);
+    getForOne: function(req, res) {
+        Driver.findById(req.params.id).then(function(driver) {
+            res.json(driver.logs);
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
@@ -77,27 +64,11 @@ module.exports = {
     },
 
     update: function(req, res) {
-        DriverLog.update({
-            uberRevenue: req.body.uberRevenue,
-                tollCosts: req.body.tollCosts,
-                gasCosts: req.body.gasCosts,
-                deposit: req.body.deposit,
-                hours: req.body.hours,
-                acceptRate: req.body.acceptRate,
-                additions: req.body.additions,
-                subtractions: req.body.subtractions,
-                payout: req.body.payout,
-                profit: req.body.profit
-        }, {
-            where: {
-                // driverId: req.params.id, 
-                id: req.params.id
-            }
-        })
-        .then(function() {
+        Driver.update(req.body, {
+            where: { id: req.params.id }
+        }).then(function() {
             res.status(200).json({ msg: 'Updated log for driver ' + req.params.id });
-        })
-        .catch(function(err) {
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });

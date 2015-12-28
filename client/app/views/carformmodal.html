@@ -17,7 +17,7 @@
 
     <br>
     
-    <div collapse='isCollapsed' class='well well-lg'>
+    <div collapse='!isCollapsed' class='well well-lg'>
         <form novalidate role='form' id='fieldForm' name='fieldForm'>
             <div class='form-group'>
                 <label for='name'>Name</label>
@@ -29,13 +29,15 @@
                 <input type='text' class='form-control' ng-model='newField.type'>
             </div> -->
             
-            <button type='submit' class='btn btn-success' ng-click='addField()'>+</button>
+            <button type='submit' class='btn btn-success' ng-click='addField()' ng-disabled='newField.name === null'>
+                +
+            </button>
         </form>
     </div>
 
     <form novalidate role='form' id='newCarForm' name='carform' ng-submit='submit($data)'>
 
-        <div class='form-group' ng-repeat='(field, value) in formData' ng-if='thereAreCars()'>
+        <div class='form-group' ng-repeat='(field, value) in formData'>
             <label for='{{ field }}'>{{ field }}</label>
             <span style='margin-left:1vw;'>
                 <input type='checkbox' ng-model='formData[field].log'> Log this

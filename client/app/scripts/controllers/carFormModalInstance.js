@@ -8,36 +8,33 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, $window, getCars, $state, dataService, $scope, $modalInstance, $modal) {
+  .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, getCars, $state, dataService, $scope, $modalInstance, $modal) {
     
-    // exposed vars
-    // var _ = $window._;
     $scope.newFieldsThisSession = [];   // store new fields created this session
-    $scope.isCollapsed = true;
+    $scope.cars = getCars.data;
 
     // if there are cars, render fields in the car form
     // else only add field caperbilities
     $scope.thereAreCars = function() {
-      return (typeof getCars.data[0] !== 'undefined');
+      return (typeof $scope.cars[0] !== 'undefined');
     };
 
-    $scope.cars = ($scope.thereAreCars()) ? (getCars.data) : [];
-
     // get $scope.fields (old fields)
-    var getFields = function () {
+    $scope.getFields = function () {
       $scope.fields = [];
       if($scope.thereAreCars()) {
-        var car = getCars.data[0];
+        var car = $scope.cars[0];
         $scope.fields = Object.keys(car.data);
       }
     };
-    getFields();
+    $scope.getFields();
 
-    var initializeForm = function() {
-      var car = getCars.data[0];
+    $scope.initializeForm = function() {
       $scope.formData = {};
       
-      if($scope.fields.length > 0) {
+      if($scope.cars.length > 0) {
+        var car = $scope.cars[0];
+        $scope.fields = Object.keys(car.data);
         _.each($scope.fields, function(field) {
           $scope.formData[field] = {
             value: null,
@@ -46,15 +43,15 @@ angular.module('clientApp')
         });
       }
     };
-    initializeForm();
+    $scope.initializeForm();
 
-    var setNewField = function() {
+    $scope.setNewField = function() {
       $scope.newField = {
         name: null,
         type: null
       };  
     };
-    setNewField();
+    $scope.setNewField();
 
     $scope.addField = function() {
       var newField = $scope.newField.name;
@@ -65,11 +62,11 @@ angular.module('clientApp')
         log: false
       }
 
-      setNewField();
+      $scope.setNewField();
 
       if($scope.thereAreCars()) {
         // add field to other cars
-        var cars = getCars.data;
+        var cars = $scope.cars;
 
         _.each(cars, function(car) {
           if(!(_.has(car.data, newField))) {
@@ -104,7 +101,9 @@ angular.module('clientApp')
     $scope.submit = function () {
       var promise = $scope.newCar($scope.formData).then(carHelpers.populateLogs);
       promise.then(function(car) {
-        dataService.createCar(car);
+        dataService.createCar(car).then(function(newCar) {
+          $scope.cars.push(newCar.data);
+        });
       });
 
       // check if log for any of the new fields was changed to true
@@ -130,13 +129,11 @@ angular.module('clientApp')
     };
 
     $scope.reset = function () {
-      initializeForm();
-      // $state.reload('main');
+      $scope.initializeForm();
     };
 
     $scope.close = function () {
       $modalInstance.dismiss('cancel');
-      $state.reload('main');
     };
 
     $scope.openDeleteFieldModal = function (size, thing) {
@@ -151,7 +148,8 @@ angular.module('clientApp')
                 },
                 getCars: function(dataService) {
                     return dataService.getCars();
-                }
+                },
+                getDrivers: function() { return {}; }
             }
         });
 

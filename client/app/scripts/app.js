@@ -44,7 +44,7 @@ angular
     }
 
     // $urlRouterProvider.otherwise('/login');
-    $urlRouterProvider.otherwise('/dashboard');
+    $urlRouterProvider.otherwise('/dashboard/cars');
 
     $stateProvider
     .state('login', {
@@ -88,8 +88,14 @@ angular
         },
         sp: getsp()
     })
-    .state('main', {
+    .state('dashboard', {
+        abstract: true,
         url: '/dashboard',
+        template: '<ui-view/>',
+        sp: getsp()
+    })
+    .state('dashboard.cars', {
+        url: '/cars',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
@@ -100,7 +106,18 @@ angular
         },
         sp: getsp()
     })
-    .state('main.carForm', {
+    .state('dashboard.drivers', {
+        url: '/drivers',
+        templateUrl: '/views/driversui.html',
+        controller: 'DriversUICtrl',
+        controllerAs: 'driversui',
+        resolve: {
+            getDrivers: function(dataService) {
+                return dataService.getDrivers();
+            }
+        }
+    })
+    .state('dashboard.cars.carForm', {
         url: '/car-form',
         onEnter: function($modal, dataService, $state) {
             var modalInstance = $modal.open({
@@ -116,16 +133,43 @@ angular
                 }
             });
 
-            modalInstance.result.then(function () {
-                // upon submit
-                $state.transitionTo('main', {}, {
+            modalInstance.result.then(function() {
+                $state.transitionTo('dashboard.cars', {}, {
                     location: true,
                     reload: true
                 });
-                console.log('Modal dismissed at: ' + new Date());
             }, function() {
-                // upon dismiss
-                $state.transitionTo('main', {}, {
+                $state.transitionTo('dashboard.cars', {}, {
+                    location: true,
+                    reload: true
+                });
+            });
+        },
+        sp: getsp()
+    })
+    .state('dashboard.drivers.driverForm', {
+        url: '/driver-form',
+        onEnter: function($modal, dataService, $state) {
+            var modalInstance = $modal.open({
+                animation: true,
+                backdrop: 'static',
+                templateUrl: 'views/driverformmodal.html',
+                controller: 'DriverFormModalInstanceCtrl',
+                size: 'md',
+                resolve: {
+                    getDrivers: function(dataService) {
+                        return dataService.getDrivers();
+                    }
+                }
+            });
+
+            modalInstance.result.then(function() {
+                $state.transitionTo('dashboard.drivers', {}, {
+                    location: true,
+                    reload: true
+                });
+            }, function() {
+                $state.transitionTo('dashboard.drivers', {}, {
                     location: true,
                     reload: true
                 });
@@ -203,6 +247,9 @@ angular
         url: '/logs',
         templateUrl: '/views/carlogsui.html',
         controller: 'CarLogCtrl',
+        onEnter: function() {
+            // console.log($state.current);
+        },
         sp: getsp()
     }); 
   })
@@ -217,6 +264,6 @@ angular
 
     // $stormpath.uiRouter({
     //     loginState: 'login',
-    //     defaultPostLoginState: 'main'
+    //     defaultPostLoginState: 'dashboard'
     // });
   });

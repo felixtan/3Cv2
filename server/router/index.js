@@ -17,7 +17,8 @@ var stormpath = require('express-stormpath');
 
 module.exports = function (app) {
 
-    app.use('/api', stormpath.loginRequired);
+    // uncomment when you want stormpath
+    // app.use('/api', stormpath.loginRequired);
     
     // settings
     app.get('/api/settings/cars', cars.getModel);
@@ -27,6 +28,12 @@ module.exports = function (app) {
     app.get('/api/logs/cars/:id', carLogs.getForOneCar);
     // app.post('/api/logs/cars/:id', carLogs.create);
     app.put('/api/logs/cars/:id', carLogs.update);
+
+    // Driver logs
+    app.get('/api/logs/drivers', driverLogs.getForAll);
+    app.get('/api/logs/drivers/:id', driverLogs.getForOne);
+    // app.post('/api/logs/drivers/:id', driverLogs.save);
+    app.put('/api/logs/drivers/:id', driverLogs.update);
 
     // Prospects
     app.get('/api/prospects', prospect.get);
@@ -49,12 +56,6 @@ module.exports = function (app) {
     app.get('/api/logs/ptg', ptgLogs.get);
     app.post('/api/logs/ptg', ptgLogs.create);
 
-    // Driver logs
-    app.get('/api/logs/drivers', driverLogs.getAll);
-    app.get('/api/logs/drivers/:id', driverLogs.getByDriverId);
-    app.post('/api/logs/drivers/:id', driverLogs.save);
-    app.put('/api/logs/drivers/:id', driverLogs.update);
-
     // Assignments
     app.get('/api/assignments', assignments.get);
     app.get('/api/assignments/drivers', assignments.getDrivers);
@@ -73,7 +74,7 @@ module.exports = function (app) {
     // Driver API routes
     app.get('/api/drivers', drivers.get);
     app.get('/api/drivers/:id', drivers.getById);
-    app.post('/api/drivers', drivers.save);
+    app.post('/api/drivers', drivers.create);
     app.put('/api/drivers/:id', drivers.update);
     app.delete('/api/drivers/:id', drivers.delete);
 };

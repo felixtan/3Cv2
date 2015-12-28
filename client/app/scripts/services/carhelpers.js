@@ -8,11 +8,8 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('carHelpers', function($q, $window, dataService) {
-  // Service logic
-  // ...
-
-  var _ = $window._;
+  .factory('carHelpers', function ($q, dataService) {
+  
   var getCars = dataService.getCars;
   
   var getLogDates = function(existingCars) {
@@ -88,13 +85,11 @@ angular.module('clientApp')
     return $q(function(resolve, reject) {
       var logData = {};
 
-      if (fields.length === 0) {
-        reject(new Error('There are no fields to be logged'));
+      if (fields.length > 0) {
+        fields.forEach(function(field) {
+          logData[field] = null;
+        });
       }
-
-      fields.forEach(function(field) {
-        logData[field] = null;
-      });
 
       resolve(logData);
       reject(new Error('Error creating log.data'));
@@ -139,7 +134,7 @@ angular.module('clientApp')
           deferred.resolve(car);
           deferred.reject(new Error('Failed to populate logs for car ' + car.id));
         }, errcb);
-      });
+      }, errcb);
 
       return deferred.promise;
     } // closes populateLogs

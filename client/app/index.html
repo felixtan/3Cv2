@@ -38,7 +38,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" ui-sref="main">{{ user.customData.organization }} <span ng-show='!user.customData.organization'>Dashboard</span></a>
+          <a class="navbar-brand" ui-sref="dashboard.cars">{{ user.customData.organization }} <span ng-show='!user.customData.organization'>Dashboard</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -64,7 +64,7 @@
         <!-- if-user this div -->
         <div class="col-sm-3 col-md-2 sidebar" ng-if="!$state.includes('settings')">
           <ul class="nav nav-sidebar">
-            <li><a ui-sref="main"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
+            <li><a ui-sref="dashboard.cars"  class='fa fa-clipboard'> Dashboard<span class="sr-only">(current)</span></a></li>
             <!-- <li><a ui-sref='roster' class='fa fa-users'>Drivers</a></li> -->
             <!-- <li><a ui-sref='ptg' class='fa fa-table'> PTG</a></li> -->
             <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
@@ -138,9 +138,7 @@
         <script src="scripts/controllers/carLogs.js"></script>
         <script src="scripts/controllers/payratemodal.js"></script>
         <script src="scripts/controllers/payratemodalinstance.js"></script>
-        <script src="scripts/controllers/driverFormModal.js"></script>
         <script src="scripts/controllers/driverFormModalInstance.js"></script>
-        <script src="scripts/controllers/cardformmodal.js"></script>
         <script src="scripts/controllers/cardformmodalinstance.js"></script>
         <script src="scripts/controllers/personEditFormModal.js"></script>
         <script src="scripts/controllers/personEditFormModalInstance.js"></script>
@@ -158,6 +156,8 @@
         <script src="scripts/services/carhelpers.js"></script>
         
         <script src="scripts/services/underscore.js"></script>
+        <script src="scripts/controllers/driversui.js"></script>
+        <script src="scripts/services/driverhelpers.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->

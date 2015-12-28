@@ -13,36 +13,36 @@
 </div> -->
 
 <!-- change to col-md-5 : !prospectListCollapsed when prospect list is operational -->
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='table-responsive col-md-offset-2 table-responsive col-collapsible' id='car-list' collapse='driverListCollapsed' if-user>  
-  <h2 class='sub-header'>
+<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='col-md-offset-2 table-responsive col-collapsible' id='car-list' collapse='driverListCollapsed'> 
+
+  <tabset>
+    <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
+
+    </tab>
+  </tabset>
+  <!-- <h2 class='sub-header'>
       Cars
-    <!-- <div class='add-btn' ng-controller="CarFormModalCtrl"> -->
-    <span style='margin-left:4vw;'>
-     <!--  <button type='button' class='btn btn-success' data-toggle='modal' ng-click='open(lg)'>
-        +
-      </button> -->
-    </span>
-      <!-- </div> -->
-  </h2>
-  <button type='button' class='btn btn-success' data-toggle='modal' ui-sref='main.carForm'>
+  </h2> -->
+  <br>
+
+  <button type='button' class='btn btn-success' data-toggle='modal' ui-sref='dashboard.cars.carForm'>
     + Car
   </button>
+
   <table class='table table-striped'>
     <thead>
-      <td><h4>#</h4></td>
+      <td><h4></h4></td>
       <td><h4>Car</h4></td>
     </thead>
-    <tbody ng-model='cars'>
-      <tr ng-repeat='car in cars | orderBy:"car.id"'>
+    <tbody>
+      <tr ng-repeat='car in cars | orderBy:"id"'>
         <td>
-          <h4>
-            {{ $index+1 }}
-          </h4>
+          <h4>{{ $index+1 }}</h4>
         </td>
         <td>
           <h4>
             <a ui-sref='carProfile.data({ id: car.id })'>
-              {{ car.data.licensePlate.value }}
+              {{ ::car.data.licensePlate.value }}
             </a>
 
             <!-- <span>

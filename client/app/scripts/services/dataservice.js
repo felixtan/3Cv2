@@ -116,6 +116,29 @@ angular.module('clientApp')
           }, function(err) {
             console.error(err);
           });
+      },
+
+      createDriver: function(driver) {
+        return $http.post('/api/drivers', driver)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
+      },
+
+      updateDriver: function(driver, params) {
+        return $http({
+          method: 'PUT',
+          url: '/api/logs/drivers/' + driver.id,
+          params: params,
+          data: driver
+        })
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
       }
     };
   });

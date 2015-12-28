@@ -34,12 +34,12 @@ var opts = (process.env.NODE_ENV === 'development') ? { force: true } : {};
 models.sequelize.sync(opts).then(function() {
   if(process.env.NODE_ENV === 'development' || 'testing') setupDevDB.populate(); 
   console.log('Connected to the threec database.');
-  app.on('stormpath.ready', function() {
-  console.log('Stormpath initialized.')
+  // app.on('stormpath.ready', function() {
+  // console.log('Stormpath initialized.')
     server.listen(port, function() {
       console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV.toUpperCase() + ' mode.');
     });
-  });
+  // });
 });
 
 server.on('error', onError);

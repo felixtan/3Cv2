@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // stormpath
+if(app.get('env') === 'production') {
 app.use(stormpath.init(app, {
   debug: 'info, error',
   website: true,
@@ -38,6 +39,7 @@ app.use(stormpath.init(app, {
     });
   }
 }));
+}
 
 // development error handler
 // will print stacktrace
@@ -73,12 +75,6 @@ if(app.get('env') === 'production') {
     });
   });
 }
-
-// attach stormpath routes
-// if(process.env.NODE_ENV === 'production' || 'staging') {
-//   spMiddleware.attachDefaults(app);
-//   app.use(spMiddleware.authenticate);
-// }
 
 // Includes all routes
 var router = require('./router')(app);

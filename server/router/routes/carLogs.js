@@ -34,18 +34,17 @@ module.exports = {
         //console.log(req.query);   // { updateCarData: 'true' }
         Car.update(req.body, { 
             where: { id: req.params.id }
-        })
-        .then(function() {
+        }).then(function() {
             // if(JSON.parse(req.query.updateCarData) === true) {
                 // console.log('Update car.data and check for oilChangeRequired');
                 // 1. compare car.data and log.data
                 // _.pluck()
                 // 2. for each key/field they have in common, set car.data.field.value = log.data.field.value
             // }
-            res.status(200).json({ msg: 'New log for car ' + req.params.id }); 
+            res.status(200).json({ msg: 'Updated log for car ' + req.params.id }); 
         })
         .catch(function(err) {
-            console.error('carLogs.update went wrong');
+            console.error(err);
             res.status(500).json({ error: err.stack });    
         });
 

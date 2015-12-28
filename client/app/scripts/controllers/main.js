@@ -8,7 +8,13 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function ($window, $state, $modal, $filter, $q, $http, $scope, getCars) {
+  .controller('MainCtrl', function ($window, $state, $modal, $filter, $q, $scope, getCars) {
+    
+    $scope.tabs = [
+        { title: 'Cars', route: 'dashboard.cars', active: true },
+        { title: 'Drivers', route: 'dashboard.drivers', active: false }
+    ];
+
     // $scope.ezPasses = getEzPasses.data;
     // $scope.gasCards = getGasCards.data;
     // $scope.carListCollapsed = false;

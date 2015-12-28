@@ -1,0 +1,35 @@
+<div class='col-md-offset-2 table-responsive' id='drivers-list'>
+    <tabset>
+        <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'></tab>
+    </tabset>
+
+    <br>
+
+    <button type='button' class='btn btn-success' data-toggle='modal' ui-sref='dashboard.drivers.driverForm'>
+        + Driver
+    </button>
+
+    <table class='table table-striped'>
+        <thead>
+            <td></td>
+            <td>
+                <h4 ng-if='thereAreDrivers()'>Driver</h4>
+                <h4 ng-if='!thereAreDrivers()'>No drivers currently.</h4>
+            </td>
+        </thead>
+        <tbody>
+            <tr ng-repeat='driver in drivers | orderBy:"id"'>
+                <td>
+                    <h4>{{ $index+1 }}</h4>
+                </td>
+                <td>
+                    <h4>
+                        <a ur-sref='driverProfile.data({ id: driver.id })'>
+                            {{ ::driver.data["First Name"].value }} {{ ::driver.data["Last Name"].value }}
+                        </a>
+                    </h4>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

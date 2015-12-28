@@ -9,7 +9,6 @@
  */
 angular.module('clientApp')
   .controller('CarLogCtrl', function ($state, $filter, $window, dataService, $q, $scope, getCar) {
-
     $scope.car = getCar.data;
 
     // $scope.activateTab($state);
