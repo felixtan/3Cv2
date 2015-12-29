@@ -9,7 +9,15 @@
     <table class="table table-bordered table-striped table-hover">
         <thead>
             <tr>
-                <td><strong>Week \ Fields</strong></td>
+                <td>
+                    <strong>
+                        Week \ Fields<span ng-if='fieldsToBeLogged.length === 0' style='font-size: 0.80em; font-style: italic;'>
+                            <a ui-sref='driverProfile.data({ id: driver.id })'>
+                                *Currently there are no fields to be logged. Add some here.
+                            </a>
+                        </span>
+                    </strong>
+                </td>
                 <td ng-repeat="(field, value) in driver.logs[0].data | orderBy:'$index'">
                     {{ field }}
                 </td>
@@ -25,7 +33,7 @@
                         Edit
                     </button>
                     <div class='btn-toolbar' role='toolbar'>
-                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
+                        <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(log.weekOf)'>
                             <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs btn-group" role='group'>
                                 Save
                             </button>

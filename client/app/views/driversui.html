@@ -5,13 +5,13 @@
 
     <br>
 
-    <button type='button' class='btn btn-success' data-toggle='modal' ui-sref='dashboard.drivers.driverForm'>
-        + Driver
-    </button>
-
     <table class='table table-striped'>
         <thead>
-            <td></td>
+            <td>
+                <button type='button' class='btn btn-success' data-toggle='modal' ui-sref='dashboard.drivers.driverForm'>
+                    + Driver
+                </button>
+            </td>
             <td>
                 <h4 ng-if='thereAreDrivers()'>Driver</h4>
                 <h4 ng-if='!thereAreDrivers()'>No drivers currently.</h4>

@@ -9,7 +9,6 @@
  */
 angular.module('clientApp')
   .controller('DeleteFieldModalCtrl', function (dataService, $scope, $modal, $state) {
-    $scope.input = '';
 
     $scope.open = function (size, thing) {
         var modalInstance = $modal.open({

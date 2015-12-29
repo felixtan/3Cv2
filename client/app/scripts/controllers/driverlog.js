@@ -15,6 +15,19 @@ angular.module('clientApp')
         { title: 'Logs', route: 'driverProfile.logs', active: true }
     ];
 
+    $scope.getFieldsToBeLogged = function() {
+        $scope.fieldsToBeLogged = [];
+        if((typeof $scope.driver !== 'undefined') && ($scope.driver !== null)) {
+            var fields = Object.keys($scope.driver.data);
+            _.each(fields, function(field) {
+                if($scope.driver.data[field].log === true) {
+                    $scope.fieldsToBeLogged.push(field);
+                }
+            });
+        }
+    };
+    $scope.getFieldsToBeLogged();
+
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {
@@ -32,22 +45,6 @@ angular.module('clientApp')
         $scope.mostRecentLogDate = $scope.dates[0];     
     }
     $scope.getMostRecentLogDate();
-
-    $scope.date = 0;
-
-    $scope.getFieldsToBeLogged = function(driver) {
-        var deffered = $q.defer();
-        var fields = [];
-
-        for(var field in driver.data) {
-            if(driver.data[field].log === true) fields.push(field);
-        }
-
-        deffered.resolve(fields);
-        deffered.reject(new Error('Error getting fields to be logged'));
-
-        return deffered.promise;
-    }
 
     // need to make this more efficient
     $scope.save = function(logDate) {

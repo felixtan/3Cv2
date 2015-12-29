@@ -148,6 +148,32 @@ angular.module('clientApp')
         }, function(err) {
           console.error(err);
         });
+      },
+
+      deleteCar: function(id, params) {
+        return $http({
+          method: 'DELETE',
+          url: '/api/cars/' + id,
+          params: params
+        })
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      deleteDriver: function(id, params) {
+        return $http({
+          method: 'DELETE',
+          url: '/api/drivers/' + id,
+          params: params
+        })
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
       }
     };
   });

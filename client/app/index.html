@@ -64,8 +64,8 @@
         <!-- if-user this div -->
         <div class="col-sm-3 col-md-2 sidebar" ng-if="!$state.includes('settings')">
           <ul class="nav nav-sidebar">
-            <li><a ui-sref="dashboard.cars"  class='fa fa-dashboard'> Dashboard<span class="sr-only">(current)</span></a></li>
-            <!-- <li><a ui-sref='roster' class='fa fa-users'>Drivers</a></li> -->
+            <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
+            <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
             <!-- <li><a ui-sref='ptg' class='fa fa-table'> PTG</a></li> -->
             <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
             <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
@@ -163,6 +163,8 @@
         <script src="scripts/controllers/driverdata.js"></script>
         <script src="scripts/controllers/driverlog.js"></script>
         <script src="scripts/controllers/driverlogs.js"></script>
+        <script src="scripts/controllers/deleteobjmodal.js"></script>
+        <script src="scripts/controllers/deleteobjmodalinstance.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->

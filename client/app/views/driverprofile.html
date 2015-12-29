@@ -1,4 +1,10 @@
+<link rel="stylesheet" type="text/css" href="styles/profile.css">
+
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='sub-header'>{{ ::driver.data["First Name"].value }} {{ ::driver.data["Last Name"].value }}</h2>
+    <div class='sub-header'>
+        <span class='identifier'>{{ ::driver.data["First Name"].value }} {{ ::driver.data["Last Name"].value }}</span>
+        <!-- <button class='btn btn-danger btn-xs delete-obj' ng-controller='DeleteObjModalCtrl' ng-click='open(lg, driver.id)'>Delete</button> -->
+    </div>
+    
     <div ui-view></div>
 </div>
