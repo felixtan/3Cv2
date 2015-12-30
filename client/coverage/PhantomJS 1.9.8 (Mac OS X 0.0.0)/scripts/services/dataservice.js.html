@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.53% </span>
+        <span class="strong">10.64% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/38</span>
+        <span class='fraction'>5/47</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>2/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.88% </span>
+        <span class="strong">6.98% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/34</span>
+        <span class='fraction'>3/43</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10.53% </span>
+        <span class="strong">10.64% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/38</span>
+        <span class='fraction'>5/47</span>
       </div>
     </div>
   </div>
@@ -187,7 +187,42 @@
 142
 143
 144
-145</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,7 +235,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43×</span>
+<span class="cline-any cline-yes">75×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,9 +245,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43×</span>
+<span class="cline-any cline-yes">75×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -221,6 +264,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -331,6 +375,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
 /**
@@ -356,8 +426,8 @@ angular.module('clientApp')
     // Public API here
     return {
 &nbsp;
-      getDrivers: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >        return $http({</span>
+      getDrivers: function() {
+        return $http({
           method: 'GET',
           url: '/api/drivers',
           params: params
@@ -367,6 +437,15 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >          console.error(err);</span>
 <span class="cstat-no" title="statement not covered" >          throw err;</span>
         });
+      },
+&nbsp;
+      getDriver: <span class="fstat-no" title="function not covered" >function (id) {</span>
+<span class="cstat-no" title="statement not covered" >        return $http.get('/api/drivers/' + id)</span>
+          .then(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >            return data;</span>
+          }, <span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >            console.error(err);</span>
+          });
       },
 &nbsp;
       getCars: function () {
@@ -431,7 +510,7 @@ angular.module('clientApp')
       updateCar: <span class="fstat-no" title="function not covered" >function(car, params) {</span>
 <span class="cstat-no" title="statement not covered" >        return $http({</span>
           method: 'PUT',
-          url: '/api/logs/cars/' + car.id,
+          url: '/api/cars/' + car.id,
           params: params,
           data: car
         })
@@ -463,9 +542,35 @@ angular.module('clientApp')
       updateDriver: <span class="fstat-no" title="function not covered" >function(driver, params) {</span>
 <span class="cstat-no" title="statement not covered" >        return $http({</span>
           method: 'PUT',
-          url: '/api/logs/drivers/' + driver.id,
+          url: '/api/drivers/' + driver.id,
           params: params,
           data: driver
+        })
+        .then(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >          return data;</span>
+        }, <span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >          console.error(err);</span>
+        });
+      },
+&nbsp;
+      deleteCar: <span class="fstat-no" title="function not covered" >function(id, params) {</span>
+<span class="cstat-no" title="statement not covered" >        return $http({</span>
+          method: 'DELETE',
+          url: '/api/cars/' + id,
+          params: params
+        })
+        .then(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >          return data;</span>
+        }, <span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >          console.error(err);</span>
+        });
+      },
+&nbsp;
+      deleteDriver: <span class="fstat-no" title="function not covered" >function(id, params) {</span>
+<span class="cstat-no" title="statement not covered" >        return $http({</span>
+          method: 'DELETE',
+          url: '/api/drivers/' + id,
+          params: params
         })
         .then(<span class="fstat-no" title="function not covered" >function(data) {</span>
 <span class="cstat-no" title="statement not covered" >          return data;</span>
@@ -481,7 +586,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2015 07:53:03 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 29 2015 19:42:52 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

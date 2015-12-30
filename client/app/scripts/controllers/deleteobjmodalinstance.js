@@ -12,7 +12,7 @@ angular.module('clientApp')
     $scope.input = null;
     $scope.objectType = null;
     $scope.delete = function(id) { return; };
-    console.log(id);
+
     // determine the state or ui calling this modal
     if($state.includes('driverProfile')) {
         console.log('called from drivers ui');
@@ -25,7 +25,7 @@ angular.module('clientApp')
     } else {
         console.log('delete field modal called from invalid state', $state.current);
     }
-    console.log($scope.objectType);
+    console.log('object type:', $scope.objectType);
 
     $scope.submit = function() {
         if($scope.input === 'DELETE') {

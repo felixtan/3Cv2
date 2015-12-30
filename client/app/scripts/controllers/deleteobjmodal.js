@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteObjModalCtrl', function (dataService, $scope, $modal, $state) {
-    $scope.input = null;
+  .controller('DeleteObjModalCtrl', function ($scope, $modal) {
 
     $scope.open = function (size, id) {
         var modalInstance = $modal.open({

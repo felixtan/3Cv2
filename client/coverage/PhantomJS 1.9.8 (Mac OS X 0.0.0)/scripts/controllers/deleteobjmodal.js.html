@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for scripts/controllers/personEditFormModal.js</title>
+    <title>Code coverage report for scripts/controllers/deleteobjmodal.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> personEditFormModal.js
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> deleteobjmodal.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.14% </span>
+        <span class="strong">14.29% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/14</span>
+        <span class='fraction'>1/7</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/8</span>
+        <span class='fraction'>0/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">7.14% </span>
+        <span class="strong">14.29% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/14</span>
+        <span class='fraction'>1/7</span>
       </div>
     </div>
   </div>
@@ -75,20 +75,7 @@
 30
 31
 32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+33</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,26 +86,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -137,42 +111,29 @@
 &nbsp;
 /**
  * @ngdoc function
- * @name clientApp.controller:PersoneditformmodalCtrl
+ * @name clientApp.controller:DeleteobjmodalCtrl
  * @description
- * # PersoneditformmodalCtrl
+ * # DeleteobjmodalCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('PersonEditFormModalCtrl', <span class="fstat-no" title="function not covered" >function ($scope, $modal, dataService) {</span>
-<span class="cstat-no" title="statement not covered" >    $scope.person = {};</span>
-<span class="cstat-no" title="statement not covered" >    $scope.animationsEnabled = true;</span>
+  .controller('DeleteObjModalCtrl', <span class="fstat-no" title="function not covered" >function ($scope, $modal) {</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    $scope.open = <span class="fstat-no" title="function not covered" >function (size, person, type) {</span></span>
-<span class="cstat-no" title="statement not covered" >        $scope.person.data = person;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.person.type = type;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.open = <span class="fstat-no" title="function not covered" >function (size, id) {</span></span>
 <span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
-                animation: $scope.animationsEnabled,
-                templateUrl: 'views/personEditFormModal.html',
-                controller: 'PersonEditFormModalInstanceCtrl',
-                size: size,
-                resolve: {
-                    getGasCards: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                        return dataService.getGasCards();</span>
-                    },
-                    getEzPasses: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                        return dataService.getEzPasses();</span>
-                    },
-                    getPerson: <span class="fstat-no" title="function not covered" >function() {</span>
-<span class="cstat-no" title="statement not covered" >                        return $scope.person;</span>
-                    },
-                    getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                        return dataService.getCars();</span>
-                    }
+            animation: true,
+            templateUrl: 'views/deleteobjmodal.html',
+            controller: 'DeleteObjModalInstanceCtrl',
+            size: size,
+            resolve: {
+                id: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return id;</span>
                 }
+            }
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (formData) {</span></span>
-<span class="cstat-no" title="statement not covered" >            $scope.formData = formData;</span>
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (input) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log('passed back from DeleteFieldModalInstanceCtrl:', input);</span>
         }, <span class="fstat-no" title="function not covered" >function () {</span>
 <span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
         });

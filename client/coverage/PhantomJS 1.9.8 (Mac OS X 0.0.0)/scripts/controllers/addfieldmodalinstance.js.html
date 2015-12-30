@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.26% </span>
+        <span class="strong">3.33% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/19</span>
+        <span class='fraction'>1/30</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>0/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.26% </span>
+        <span class="strong">3.45% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/19</span>
+        <span class='fraction'>1/29</span>
       </div>
     </div>
   </div>
@@ -88,7 +88,21 @@
 43
 44
 45
-46</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,8 +113,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,24 +171,38 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', <span class="fstat-no" title="function not covered" >function ($state, getCars, $scope, $modalInstance, dataService) {</span>
+  .controller('AddFieldModalInstanceCtrl', <span class="fstat-no" title="function not covered" >function ($state, getCars, getDrivers, $scope, $modalInstance, dataService) {</span>
+    
 <span class="cstat-no" title="statement not covered" >    $scope.formData = {};</span>
-<span class="cstat-no" title="statement not covered" >    $scope.cars = getCars.data;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.objects = [];</span>
+<span class="cstat-no" title="statement not covered" >    $scope.update = <span class="fstat-no" title="function not covered" >function(object) {</span> <span class="cstat-no" title="statement not covered" >return; </span>};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if($state.includes('carProfile')) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log("add field modal called from carProfile");</span>
+<span class="cstat-no" title="statement not covered" >      $scope.objects = getCars.data;</span>
+<span class="cstat-no" title="statement not covered" >      $scope.update = dataService.updateCar;</span>
+    } else <span class="cstat-no" title="statement not covered" >if($state.includes('driverProfile')) {</span>
+<span class="cstat-no" title="statement not covered" >      console.log("add field modal called from driverProfile");</span>
+<span class="cstat-no" title="statement not covered" >      $scope.objects = getDrivers.data;</span>
+<span class="cstat-no" title="statement not covered" >      $scope.update = dataService.updateDriver;</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      console.log('add field modal calle from invalid state', $state.current);</span>
+    }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    $scope.submit = <span class="fstat-no" title="function not covered" >function () {</span></span>
-<span class="cstat-no" title="statement not covered" >        $scope.cars.forEach(<span class="fstat-no" title="function not covered" >function(car) {</span></span>
-<span class="cstat-no" title="statement not covered" >            car.data[$scope.formData.field] = {</span>
+<span class="cstat-no" title="statement not covered" >        $scope.objects.forEach(<span class="fstat-no" title="function not covered" >function(object) {</span></span>
+<span class="cstat-no" title="statement not covered" >            object.data[$scope.formData.field] = {</span>
                 value: null,
                 log: $scope.formData.log
             }
             
 <span class="cstat-no" title="statement not covered" >            if($scope.formData.log) {</span>
-<span class="cstat-no" title="statement not covered" >                car.logs.forEach(<span class="fstat-no" title="function not covered" >function(log) {</span></span>
+<span class="cstat-no" title="statement not covered" >                object.logs.forEach(<span class="fstat-no" title="function not covered" >function(log) {</span></span>
 <span class="cstat-no" title="statement not covered" >                    log.data[$scope.formData.field] = null;</span>
                 });
             }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            dataService.updateCar(car, { updateCarData: true });</span>
+<span class="cstat-no" title="statement not covered" >            $scope.update(object);</span>
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        $scope.close();</span>
@@ -184,7 +226,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2015 07:53:03 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 29 2015 19:42:52 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

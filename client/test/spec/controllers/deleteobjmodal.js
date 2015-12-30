@@ -1,23 +1,29 @@
 'use strict';
 
-describe('Controller: DeleteobjmodalCtrl', function () {
+describe('Controller: DeleteObjModalCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var DeleteobjmodalCtrl,
-    scope;
+  var controller, scope, modal, modalInstance;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $modal, $q) {
     scope = $rootScope.$new();
-    DeleteobjmodalCtrl = $controller('DeleteobjmodalCtrl', {
+    modal = $modal;
+    modalInstance = {
+      result: function() {
+        var deferred = $q.defer();
+        deferred.resolve('modalInstance result');
+        return deferred.promise;
+      }
+    };
+
+    spyOn(modal, 'open');
+
+    controller = $controller('DeleteObjModalCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
-
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(DeleteobjmodalCtrl.awesomeThings.length).toBe(3);
-  });
 });
