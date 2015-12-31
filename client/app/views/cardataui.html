@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="styles/tables.css">
+
 <br>
 
 <div class='table-responsive table-bordered'>
@@ -55,4 +57,26 @@
         </tbody>
     </table>
     <!-- {{ car.data }} -->
+</div>
+
+<br>
+
+<!-- Driver Assignment UI -->
+<h3>Driver<span ng-if='(car.driversAssigned > 1) || (car.driversAssigned === 0)'>s</span> Assigned</h3>
+<button class='btn btn-success' ng-click='assign()'>+ Driver</button>
+<div class='table-responsive table-bordered'>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Identifier (allow user to choose from driver.data)</th>
+                <th>Date Assigned</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='driver in car.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverProfile.data({ id: driver.id })' class='table-row-link'>
+                <td>{{ driver.identifier.value }}</td>
+                <td>{{ driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ driver.dateEnded | date: 'fullDate' }}</span></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

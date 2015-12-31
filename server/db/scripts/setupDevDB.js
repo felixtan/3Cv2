@@ -66,7 +66,8 @@ module.exports = {
                     },
                     carId: 1
                 }
-            ]
+            ],
+            driversAssigned: []
         },
             car2 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -105,7 +106,8 @@ module.exports = {
                         },
                         carId: 2
                     }
-                ]
+                ],
+                driversAssigned: []
         },
             car3 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -144,7 +146,8 @@ module.exports = {
                         },
                         carId: 3
                     }
-                ]
+                ],
+                driversAssigned: []
         };
 
         Car.create(car1);

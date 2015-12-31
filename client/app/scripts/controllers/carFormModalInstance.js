@@ -90,6 +90,7 @@ angular.module('clientApp')
       var car = {
         data: carData,
         logs: [],
+        driversAssigned: [],
         organizationId: (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x'
       };
 

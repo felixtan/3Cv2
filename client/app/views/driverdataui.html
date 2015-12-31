@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="styles/tables.css">
+
 <tabset>
     <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
     </tab>
@@ -5,6 +7,7 @@
 
 <br>
 
+<!-- Data UI -->
 <div class='table-responsive table-bordered'>
     <table class='table'>
         <thead>
@@ -64,4 +67,26 @@
         </tbody>
     </table>
     <!-- {{ driver.data }} -->
+</div>
+
+<br>
+
+<!-- Car Assignment UI -->
+<h3>Car<span ng-if='(driver.carsAssigned > 1) || (driver.carsAssigned === 0)'>s</span> Assigned</h3>
+<button class='btn btn-success' ng-click='assign()'>+ Car</button>
+<div class='table-responsive table-bordered'>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Identifier (allow user to choose from car.data)</th>
+                <th>Date Assigned</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat='car in driver.carsAssigned | orderBy:"dateAssigned"' ui-sref='carProfile.data({ id: car.id })' class='table-row-link'>
+                <td>{{ car.identifier.value }}</td>
+                <td>{{ car.dateAssigned | date: 'fullDate' }}<span ng-if='car.dateUnassigned !== null'> - {{ car.dateEnded | date: 'fullDate' }}</span></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

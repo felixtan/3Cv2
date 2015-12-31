@@ -18,6 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     logs: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
       allowNull: true
+    },
+
+    carsAssigned: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
+      allowNull: true
     }
     
   });

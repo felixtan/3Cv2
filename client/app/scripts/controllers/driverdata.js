@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DriverDataCtrl', function ($state, dataService, $scope, getDriver, getDrivers) {
+  .controller('DriverDataCtrl', function ($modal, $state, dataService, $scope, getDriver, getDrivers) {
     
     $scope.driver = getDriver.data;
     $scope.oldField = '';
@@ -17,6 +17,9 @@ angular.module('clientApp')
         { title: 'Logs', route: 'driverProfile.logs' }
     ];
 
+    ///////////////////
+    // Data UI ////////
+    ///////////////////
     $scope.notName = function(field) {
         return ((field != "First Name") && (field != "Last Name"));
     };
@@ -51,6 +54,38 @@ angular.module('clientApp')
                 if ($scope.oldField !== newField) delete driver.data[$scope.oldField];
                 dataService.updateDriver(driver);
             }
+        });
+    };
+
+    /////////////////////////////
+    // Car Assignment UI ////////
+    /////////////////////////////
+    $scope.assign = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/assignmentmodal.html',
+            controller: 'AssignmentModalCtrl',
+            size: 'md',
+            resolve: {
+                getCars: function(dataService) {
+                    return dataService.getCars();
+                },
+                getDrivers: function(dataService) {
+                    return {};
+                },
+                car: function(dataService) {
+                    return {};
+                },
+                driver: function() {
+                    return $scope.driver;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (input) {
+            console.log('passed back from AssignmentModalCtrl:', input);
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
   });
