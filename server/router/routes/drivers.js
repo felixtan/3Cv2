@@ -11,12 +11,6 @@ var helpers = require('../helpers');
 var getUserId = helpers.getUserId;
 var filterByOrgId = helpers.filterByOrgId;
 
-var opts = {};
-if(process.env.NODE_ENV === 'production' || 'staging') {
-    var organizationId = '';
-    opts = { organization: organizationId };
-}
-
 module.exports = {
 
     get: function(req, res) {

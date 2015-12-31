@@ -6,9 +6,8 @@
 
 var cars = require('./routes/cars');
 var drivers = require('./routes/drivers');
-var assignments = require('./routes/assignments');
 var driverLogs = require('./routes/driverlogs');
-var ptgLogs = require('./routes/ptglogs');
+var prospectStatuses = require('./routes/prospectStatuses');
 var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
 var prospect = require('./routes/prospects');
@@ -20,17 +19,10 @@ module.exports = function (app) {
     // uncomment when you want stormpath
     // app.use('/api', stormpath.loginRequired);
 
-    // Car logs
-    app.get('/api/logs/cars', carLogs.getForAllCars);
-    app.get('/api/logs/cars/:id', carLogs.getForOneCar);
-    // app.post('/api/logs/cars/:id', carLogs.create);
-    app.put('/api/logs/cars/:id', carLogs.update);
-
-    // Driver logs
-    app.get('/api/logs/drivers', driverLogs.getForAll);
-    app.get('/api/logs/drivers/:id', driverLogs.getForOne);
-    // app.post('/api/logs/drivers/:id', driverLogs.save);
-    app.put('/api/logs/drivers/:id', driverLogs.update);
+    // Prospect Statuses
+    app.get('/api/prospectStatuses', prospectStatuses.get);
+    app.post('/api/prospectStatuses', prospectStatuses.create);
+    app.put('/api/prospectStatuses', prospectStatuses.update);
 
     // Prospects
     app.get('/api/prospects', prospect.get);
@@ -48,17 +40,6 @@ module.exports = function (app) {
     app.get('/api/assets/gas-cards', gasCards.get);
     app.post('/api/assets/gas-cards', gasCards.create);
     app.delete('/api/assets/gas-cards', gasCards.delete);
-
-    // PTG logs
-    app.get('/api/logs/ptg', ptgLogs.get);
-    app.post('/api/logs/ptg', ptgLogs.create);
-
-    // Assignments
-    app.get('/api/assignments', assignments.get);
-    app.get('/api/assignments/drivers', assignments.getDrivers);
-    app.put('/api/assignments/drivers/:id', assignments.reassignDriver);
-    app.get('/api/assignments/cars', assignments.getCars);
-    app.post('/api/assignments/driver=:driverId/car=:carId', assignments.assign);
 
     // Car API routes
     app.get('/api/cars', cars.get);
