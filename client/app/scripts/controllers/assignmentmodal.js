@@ -37,7 +37,7 @@ angular.module('clientApp')
         $scope.objectType = 'car';
         $scope.updateSubj = dataService.updateDriver;
         $scope.updateObj = dataService.updateCar;
-        $scope.subjIdentifier = $scope.subject.identifier || "First Name";
+        $scope.subjIdentifier = "fullName" || null;
         
         $scope.fullObjects = getCars.data;
         $scope.objIdentifier = $scope.fullObjects[0].identifier || "licensePlate";
@@ -52,7 +52,7 @@ angular.module('clientApp')
         $scope.subjIdentifier = $scope.subject.identifier || "licensePlate";
         
         $scope.fullObjects = getDrivers.data;
-        $scope.objIdentifier = $scope.fullObjects[0].identifier || "First Name";
+        $scope.objIdentifier = "fullName" || null;
         $scope.simpleObjects = $scope.mapObject($scope.fullObjects, $scope.objIdentifier);
     } else {
         console.log('assignment modal called from invalid state', $state.current);
@@ -163,7 +163,7 @@ angular.module('clientApp')
     // End datepicker stuff
 
     $scope.validForm = function() {
-        return (($scope.formData.objId === null) || (typeof $scope.formData.objId === "undefined") || (typeof $scope.formData.identifierValue === 'undefined') || ($scope.formData.identifierValue === null));
+        return (($scope.formData.objId === null) || (typeof $scope.formData.objId === "undefined"));
     };
 
     $scope.reset = function () {

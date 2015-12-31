@@ -19,7 +19,7 @@
                     </strong>
                 </td>
                 <td ng-repeat="(field, value) in driver.logs[0].data | orderBy:'$index'">
-                    {{ field }}
+                    {{ ::field }}
                 </td>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
             <tr ng-repeat='log in driver.logs | orderBy:"-weekOf"'>
                 <td>
                     <span class='log-date'>
-                        {{ log.weekOf | date:'longDate' }}
+                        {{ ::log.weekOf | date:'longDate' }}
                     </span>
                     <button class='btn btn-warning btn-xs btn-edit' ng-click='logform.$show()' ng-show='!logform.$visible'>
                         Edit

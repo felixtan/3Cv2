@@ -125,6 +125,20 @@ angular.module('clientApp')
     $state.forceReload();
   };
 
+  var getIdentifier = function() {
+    var deferred = $q.defer();
+    var identifier;
+    
+    dataService.getCars().then(function(results) {
+      identifier = (results.data[0]) ? (results.data[0].identifier) : null;
+      
+      deferred.resolve(identifier);
+      deferred.reject(new Error("Failed to get car identifier"));
+    });
+
+    return deferred.promise;
+  };
+
   // Public API here
   return {
 
@@ -149,6 +163,7 @@ angular.module('clientApp')
     mapObject: mapObject,
     simplify: simplify,
     updateIdentifier: updateIdentifier,
+    getIdentifier: getIdentifier,
 
     populateLogs: function(car) {
       // promise groups

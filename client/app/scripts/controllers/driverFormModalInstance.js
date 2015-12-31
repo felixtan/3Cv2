@@ -27,7 +27,7 @@ angular.module('clientApp')
     $scope.getFields();
 
     $scope.notName = function(field) {
-      return ((field != "First Name") && (field != "Last Name"));
+      return ((field != "First Name") && (field != "Last Name") && (field != "fullName"));
     };
 
     $scope.nameEntered = function() {

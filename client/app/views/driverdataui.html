@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat='(field, value) in driver.data'>
+            <tr ng-repeat='(field, value) in driver.data' ng-if='field !== "fullName"'>
                 <td>
                     <span ng-if='!notName(field)'>
                         {{ field }}
@@ -78,13 +78,13 @@
     <table class='table'>
         <thead>
             <tr>
-                <th>Identifier (allow user to choose from car.data)</th>
+                <th>{{ ::carIdentifier }}</th>
                 <th>Date Assigned</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat='car in driver.carsAssigned | orderBy:"dateAssigned"' ui-sref='carProfile.data({ id: car.id })' class='table-row-link'>
-                <td>{{ car.identifier.value }}</td>
+                <td>{{ ::car.identifier.value }}</td>
                 <td>{{ car.dateAssigned | date: 'fullDate' }}<span ng-if='car.dateUnassigned !== null'> - {{ car.dateEnded | date: 'fullDate' }}</span></td>
             </tr>
         </tbody>

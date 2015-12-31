@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DriverDataCtrl', function ($modal, $state, dataService, $scope, getDriver, getDrivers) {
+  .controller('DriverDataCtrl', function ($modal, $state, dataService, $scope, getDriver, getDrivers, carHelpers) {
     
     $scope.driver = getDriver.data;
     $scope.oldField = '';
@@ -16,12 +16,16 @@ angular.module('clientApp')
         { title: 'Data', route: 'driverProfile.data', active: true },
         { title: 'Logs', route: 'driverProfile.logs' }
     ];
+    
+    carHelpers.getIdentifier().then(function(identifier) {
+        $scope.carIdentifier = identifier;
+    });
 
     ///////////////////
     // Data UI ////////
     ///////////////////
     $scope.notName = function(field) {
-        return ((field != "First Name") && (field != "Last Name"));
+        return ((field != "First Name") && (field != "Last Name") && (field !== "fullName"));
     };
 
     $scope.getFields = function(driver) {

@@ -43,7 +43,7 @@
                     <td><strong>Week \ Driver</strong></td>
                     <td ng-repeat="driver in drivers | orderBy:'id'">
                         <a ui-sref='driverProfile.logs({ id: driver.id })'>
-                            {{ driver.data["First Name"].value }} {{ driver.data["Last Name"].value }}
+                            {{ ::driver.data["fullName"].value }}
                         </a>
                     </td>
                 </tr>
@@ -52,7 +52,7 @@
                 <tr ng-repeat='date in dates'>
                     <td>
                         <span class='log-date'>
-                            {{ date | date:'longDate' }}
+                            {{ ::date | date:'longDate' }}
                         </span>
                         <button class='btn btn-warning btn-xs' ng-click='logform.$show()' ng-show='!logform.$visible'>
                             Edit
@@ -74,9 +74,9 @@
                     <td ng-repeat='driver in drivers | orderBy:"id"'>
                         <ul ng-repeat="log in driver.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <p ng-show='logform.$visible'>{{ field }}: </p>
+                                <p ng-show='logform.$visible'>{{ ::field }}: </p>
                                 <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
-                                    {{ field }}: {{ value }}
+                                    {{ ::field }}: {{ value }}
                                 </span>
                             </li>
                         </ul>

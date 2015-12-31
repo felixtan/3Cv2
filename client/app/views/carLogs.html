@@ -74,7 +74,7 @@
                     <td ng-repeat='car in cars | orderBy:"id"'>
                         <ul ng-repeat="log in car.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <p ng-show='logform.$visible'>{{ field }}: </p>
+                                <p ng-show='logform.$visible'>{{ ::field }}: </p>
                                 <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
                                     {{ ::field }}: {{ value }}
                                 </span>

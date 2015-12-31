@@ -71,14 +71,14 @@
     <table class='table'>
         <thead>
             <tr>
-                <th>Identifier (allow user to choose from driver.data)</th>
+                <th>Name</th>
                 <th>Date Assigned</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat='driver in car.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverProfile.data({ id: driver.id })' class='table-row-link'>
-                <td>{{ driver.identifier.value }}</td>
-                <td>{{ driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ driver.dateEnded | date: 'fullDate' }}</span></td>
+                <td>{{ ::driver.identifier.value }}</td>
+                <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ driver.dateEnded | date: 'fullDate' }}</span></td>
             </tr>
         </tbody>
     </table>

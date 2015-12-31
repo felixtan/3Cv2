@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3 class="modal-title">Assign {{ objectType }}</h3>
+    <h3 class="modal-title">Assign {{ ::objectType }}</h3>
     <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
         &times;
     </button>
@@ -8,12 +8,12 @@
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='submit()'>
         <div class='form-group'>
-            Select {{ objIdentifier }}
+            Select <span ng-if='objIdentifier !== "fullName"'>{{ ::objIdentifier }}</span><span ng-if='objIdentifier === "fullName"'>Driver</span>
             <select class='form-control' ng-model='formData.objId'>
                 <option ng-repeat='object in simpleObjects | orderBy:"id"' 
                 value='{{ object.id }}'>
                     <!-- Do not show inactive cars -->
-                    {{ object.identifierValue }}
+                    {{ ::object.identifierValue }}
                 </option>
             </select>
         </div>

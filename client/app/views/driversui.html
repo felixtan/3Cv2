@@ -20,12 +20,12 @@
         <tbody>
             <tr ng-repeat='driver in drivers | orderBy:"id"'>
                 <td>
-                    <h4>{{ $index+1 }}</h4>
+                    <h4>{{ ::$index+1 }}</h4>
                 </td>
                 <td>
                     <h4>
                         <a ui-sref='driverProfile.data({ id: driver.id })'>
-                            {{ ::driver.data["First Name"].value }} {{ ::driver.data["Last Name"].value }}
+                            {{ ::driver.data["fullName"].value }}
                         </a>
                     </h4>
                 </td>

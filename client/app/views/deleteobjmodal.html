@@ -2,7 +2,7 @@
 
 <div class="modal-header">
     <h3 class="modal-title">
-        Delete {{ objectType.toUpperCase() }}
+        Delete {{ ::objectType.toUpperCase() }}
     </h3>
     <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
         &times;
@@ -13,7 +13,7 @@
     <form novalidate role='form'>
         <div class='form-group'>
             <label for='input'>
-                Deleting this {{objectType}} and is irreversible. Its logs will not be deleted. Enter "DELETE" below to confirm you want to permanently delete:
+                Deleting this {{ ::objectType }} and is irreversible. Its logs will not be deleted. Enter "DELETE" below to confirm you want to permanently delete:
             </label>
             <input class='form-control delete-confirmation' type='text' ng-model='input'>
         </div>

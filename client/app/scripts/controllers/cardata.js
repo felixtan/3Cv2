@@ -65,6 +65,7 @@ angular.module('clientApp')
     // Driver Assignment UI /////
     /////////////////////////////
     $scope.assign = function () {
+
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/assignmentmodal.html',
