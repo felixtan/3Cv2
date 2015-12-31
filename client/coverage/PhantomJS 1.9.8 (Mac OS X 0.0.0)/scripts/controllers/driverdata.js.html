@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">77.78% </span>
+        <span class="strong">60.53% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/27</span>
+        <span class='fraction'>23/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.57% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/7</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">33.33% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>2/6</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">71.43% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>5/7</span>
+        <span class='fraction'>5/15</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80.77% </span>
+        <span class="strong">62.16% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>21/26</span>
+        <span class='fraction'>23/37</span>
       </div>
     </div>
   </div>
@@ -99,7 +99,46 @@
 54
 55
 56
-57</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,6 +153,13 @@
 <span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -155,6 +201,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
 &nbsp;
 /**
@@ -165,7 +243,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DriverDataCtrl', function ($state, dataService, $scope, getDriver, getDrivers) {
+  .controller('DriverDataCtrl', function ($modal, $state, dataService, $scope, getDriver, getDrivers, carHelpers) {
     
     $scope.driver = getDriver.data;
     $scope.oldField = '';
@@ -173,9 +251,16 @@ angular.module('clientApp')
         { title: 'Data', route: 'driverProfile.data', active: true },
         { title: 'Logs', route: 'driverProfile.logs' }
     ];
+    
+    carHelpers.getIdentifier().then(<span class="fstat-no" title="function not covered" >function(identifier) {</span>
+<span class="cstat-no" title="statement not covered" >        $scope.carIdentifier = identifier;</span>
+    });
 &nbsp;
+    ///////////////////
+    // Data UI ////////
+    ///////////////////
     $scope.notName = <span class="fstat-no" title="function not covered" >function(field) {</span>
-<span class="cstat-no" title="statement not covered" >        return ((field != "First Name") &amp;&amp; (field != "Last Name"));</span>
+<span class="cstat-no" title="statement not covered" >        return ((field != "First Name") &amp;&amp; (field != "Last Name") &amp;&amp; (field !== "fullName"));</span>
     };
 &nbsp;
     $scope.getFields = function(driver) {
@@ -210,6 +295,38 @@ angular.module('clientApp')
             }
         });
     };
+&nbsp;
+    /////////////////////////////
+    // Car Assignment UI ////////
+    /////////////////////////////
+    $scope.assign = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
+            animation: true,
+            templateUrl: 'views/assignmentmodal.html',
+            controller: 'AssignmentModalCtrl',
+            size: 'md',
+            resolve: {
+                getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return dataService.getCars();</span>
+                },
+                getDrivers: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return {};</span>
+                },
+                car: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return {};</span>
+                },
+                driver: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return $scope.driver;</span>
+                }
+            }
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (input) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log('passed back from AssignmentModalCtrl:', input);</span>
+        }, <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
+        });
+    };
   });
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -217,7 +334,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 29 2015 19:42:52 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Dec 31 2015 09:09:38 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

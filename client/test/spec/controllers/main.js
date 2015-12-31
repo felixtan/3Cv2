@@ -1,7 +1,7 @@
 'use strict';
 
 describe('MainCtrl', function () {
-  var controller, rootScope, httpBackend, state, dataService, scope;
+  var controller, rootScope, carHelpers, state, dataService, scope;
   var car1 = {
       id: 1,
       organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -38,7 +38,9 @@ describe('MainCtrl', function () {
                 mileage: '14081'
             }
         }
-    ]
+    ],
+    driversAssigned: [],
+    identifier: 'licensePlate'
   };
   var car2 = {
     id: 2,
@@ -76,7 +78,9 @@ describe('MainCtrl', function () {
               mileage: '120461'
           }
       }
-    ]
+    ],
+    driversAssigned: [],
+    identifier: 'licensePlate'
   };
   var getCars = { data: [car1, car2] };
 
@@ -84,15 +88,20 @@ describe('MainCtrl', function () {
   beforeEach(module('clientApp'));
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $state, _dataService_) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $state, _dataService_, _carHelpers_) {
     rootScope = $rootScope;
     scope = $rootScope.$new();
     dataService = _dataService_;
+    carHelpers = _carHelpers_;
     state = $state;
+
     spyOn(dataService, 'getCars');
+    spyOn(carHelpers, 'mapObject');
+    spyOn(carHelpers, 'getIdentifier');
+
     controller = $controller('MainCtrl', { 
       $scope: scope,
-      getCars: getCars 
+      getCars: getCars
     });
   }));
 
@@ -106,4 +115,11 @@ describe('MainCtrl', function () {
     expect(scope.cars).toBeDefined();
   });
 
+  it('should load the car identifier to scope', function() {
+    expect(scope.identifier).toBeDefined();
+  });
+
+  it('should simplify car objects', function() {
+    expect(carHelpers.getIdentifier).toHaveBeenCalled();
+  });
 });
