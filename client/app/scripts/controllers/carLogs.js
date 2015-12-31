@@ -8,10 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogsCtrl', function (dataService, $q, $scope, getCars, $state) {
+  .controller('CarLogsCtrl', function (carHelpers, dataService, $q, $scope, getCars, $state) {
 
     $scope.getCars = function() {
         $scope.cars = getCars.data;
+        $scope.identifier = $scope.cars[0].identifier || null;
+        $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
     }
     $scope.getCars();
 

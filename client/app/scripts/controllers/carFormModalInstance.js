@@ -12,6 +12,8 @@ angular.module('clientApp')
     
     $scope.newFieldsThisSession = [];   // store new fields created this session
     $scope.cars = getCars.data;
+    $scope.currentIdentifier = { name: $scope.cars[0].identifier || null };
+    $scope.identifier = { name: $scope.cars[0].identifier || null }; // apprently, mg-model only works with objects
 
     // if there are cars, render fields in the car form
     // else only add field caperbilities
@@ -85,10 +87,11 @@ angular.module('clientApp')
     };
 
     // pass in $scope.formData
-    $scope.newCar = function(carData) {
+    $scope.newCar = function(formData) {
       var deferred = $q.defer();
       var car = {
-        data: carData,
+        identifier: $scope.identifier.name,
+        data: formData,
         logs: [],
         driversAssigned: [],
         organizationId: (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x'
@@ -104,6 +107,8 @@ angular.module('clientApp')
       promise.then(function(car) {
         dataService.createCar(car).then(function(newCar) {
           $scope.cars.push(newCar.data);
+          console.log(newCar.data);
+          carHelpers.updateIdentifier(newCar.data.identifier);
         });
       });
 

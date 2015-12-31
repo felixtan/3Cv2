@@ -10,6 +10,11 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false
     },
     
+    identifier: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    
     data: {
       type: DataTypes.JSONB,
       allowNull: false

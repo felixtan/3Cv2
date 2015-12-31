@@ -31,6 +31,7 @@ module.exports = {
         // Cars
         var car1 = {
             organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y',
+            identifier: "licensePlate",
             data: {
                 licensePlate: {
                     value: 'T646853C',
@@ -71,6 +72,7 @@ module.exports = {
         },
             car2 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+                identifier: "licensePlate",
                 data: {
                     licensePlate: {
                         value: 'T627067C',
@@ -111,6 +113,7 @@ module.exports = {
         },
             car3 = {
                 organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+                identifier: "licensePlate",
                 data: {
                     licensePlate: {
                         value: 'T657227C',

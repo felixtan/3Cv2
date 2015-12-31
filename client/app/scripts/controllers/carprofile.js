@@ -8,9 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarProfileCtrl', function ($scope, getCar, getCars) {
+  .controller('CarProfileCtrl', function (carHelpers, $scope, getCar, getCars) {
+
+
     $scope.getCar = function() {
         $scope.car = getCar.data;
+        $scope.simpleCar = carHelpers.simplify($scope.car, $scope.car.identifier);
     }
     $scope.getCar();
 

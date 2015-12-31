@@ -13,16 +13,14 @@
 </div> -->
 
 <!-- change to col-md-5 : !prospectListCollapsed when prospect list is operational -->
-<div ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" class='col-md-offset-2 table-responsive col-collapsible' id='car-list' collapse='driverListCollapsed'> 
-
+<!-- ng-class="{ 'col-md-9' : prospectListCollapsed, 'col-md-10' : !prospectListCollapsed  }" -->
+<!-- collapse='driverListCollapsed' -->
+<!-- col-collapsible -->
+<div class='col-md-offset-2 table-responsive' id='car-list'> 
   <tabset>
-    <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
-
-    </tab>
+    <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'></tab>
   </tabset>
-  <!-- <h2 class='sub-header'>
-      Cars
-  </h2> -->
+
   <br>
 
   <table class='table table-striped'>
@@ -35,14 +33,14 @@
       <td><h4>Car</h4></td>
     </thead>
     <tbody>
-      <tr ng-repeat='car in cars | orderBy:"id"'>
+      <tr ng-repeat='car in simpleCars | orderBy:"id"'>
         <td>
           <h4>{{ $index+1 }}</h4>
         </td>
         <td>
           <h4>
             <a ui-sref='carProfile.data({ id: car.id })'>
-              {{ ::car.data.licensePlate.value }}
+              {{ ::car.identifierValue }}
             </a>
 
             <!-- <span>

@@ -8,11 +8,13 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarDataCtrl', function ($state, dataService, $scope, getCar, getCars, $modal) {
+  .controller('CarDataCtrl', function (carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {
     // var _ = underscore._;     
     $scope.car = getCar.data;
     $scope.oldField = '';
-    
+    $scope.currentIdentifier = { name: $scope.car.identifier || null };
+    $scope.identifier = { name: $scope.car.identifier || null };
+
     // Read
     var getFields = function(car) {
         $scope.fields = Object.keys($scope.car.data);
@@ -35,6 +37,7 @@ angular.module('clientApp')
 
     // Update
     $scope.save = function (data) {
+        console.log(data);
         var newField = data.name;
         $scope.cars = getCars.data;
         var logVal = data.log;
@@ -54,6 +57,8 @@ angular.module('clientApp')
                 dataService.updateCar(car);
             }
         });
+
+        carHelpers.updateIdentifier($scope.cars, $scope.currentIdentifier.name, $scope.identifier.name);
     };
 
     /////////////////////////////

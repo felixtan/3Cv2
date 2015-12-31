@@ -87,25 +87,5 @@ module.exports = {
             console.error(err);
             res.status(500).json({ error: err });
         });
-    },
-
-    rearrange: function(req, res) {
-        // getUserId(req).then(function(organizationId) {
-            Cars.findAll({
-                where: filterByOrgId
-            }).then(function(cars) {
-                console.log('before rearrange:', cars);
-                console.log('oldIndex:', req.body.oldIndex - 1);
-                console.log('newIndex:', req.body.newIndex - 1);
-                cars.splice(req.body.newIndex - 1, 0, cars.splice(req.body.oldIndex - 1, 1)[0]);
-                return cars;
-            }).then(function(cars) {
-                console.log('after rearrange:',cars);
-                Cars.update(cars);
-            }).catch(function(err) {
-                console.error(err);
-                res.status(500).json({ error: err });
-            });
-        // });
     }
 };

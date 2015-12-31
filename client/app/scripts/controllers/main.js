@@ -21,7 +21,19 @@ angular.module('clientApp')
     // $scope.prospects = getProspects.data;
     // $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];
     // $scope.sortableConfigs = [];
+
+    $scope.mapObject = function(objects, identifier) {
+        return _.map(objects, function(object) {
+            return {
+                id: object.id,
+                identifierValue: object.data[identifier].value
+            };
+        });
+    };
+
     $scope.cars = getCars.data;
+    $scope.identifier = $scope.cars[0].identifier;
+    $scope.simpleCars = $scope.mapObject($scope.cars, $scope.identifier);
 
     // reload page
     // $scope.collapse = function(listType) {

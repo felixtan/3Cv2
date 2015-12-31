@@ -100,11 +100,22 @@ angular.module('clientApp')
       }
     };
 
+    $scope.addFullName = function(formData) {
+      var driverData = formData;
+      driverData.fullName = {
+        value: (formData["First Name"].value + " " + formData["Last Name"].value),
+        log: false
+      };
+
+      return driverData;
+    };
+
     // pass in $scope.formData
     $scope.newDriver = function(driverData) {
       var deferred = $q.defer();
       var driver = {
-        data: driverData,
+        identifier: "fullName",
+        data: $scope.addFullName(driverData),
         logs: [],
         carsAssigned: [],
         organizationId: (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x'

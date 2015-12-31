@@ -29,7 +29,7 @@
         </div>
         <div class='btn-group' role='group'>
             <p id='datepicker-instructions'>
-                * Choose the {{ getStartingDayWord() }} of the week to be logged.
+                * Choose the {{ ::getStartingDayWord() }} of the week to be logged.
             </p>
         </div>
     </div>
@@ -41,9 +41,9 @@
             <thead>
                 <tr>
                     <td><strong>Week \ Car</strong></td>
-                    <td ng-repeat="car in cars | orderBy:'id'">
+                    <td ng-repeat="car in simpleCars | orderBy:'id'">
                         <a ui-sref='carProfile.logs({ id: car.id })'>
-                            {{ car.data.licensePlate.value }}
+                            {{ ::car.identifierValue }}
                         </a>
                     </td>
                 </tr>
@@ -52,7 +52,7 @@
                 <tr ng-repeat='date in dates'>
                     <td>
                         <span class='log-date'>
-                            {{ date | date:'longDate' }}
+                            {{ ::date | date:'longDate' }}
                         </span>
                         <button class='btn btn-warning btn-xs' ng-click='logform.$show()' ng-show='!logform.$visible'>
                             Edit
@@ -76,7 +76,7 @@
                             <li ng-repeat='(field, value) in log.data'>
                                 <p ng-show='logform.$visible'>{{ field }}: </p>
                                 <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
-                                    {{ field }}: {{ value }}
+                                    {{ ::field }}: {{ value }}
                                 </span>
                             </li>
                         </ul>

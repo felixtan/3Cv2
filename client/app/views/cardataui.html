@@ -14,6 +14,7 @@
                 </th>
                 <th>Value</th>
                 <th>Logged</th>
+                <th>Identifier</th>
                 <th>Edit</th>
             </tr>
         </thead>
@@ -31,9 +32,11 @@
                 </td>
                 <td>
                     <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
-                    <!-- <span editable-checklist='value.log' e-name='log' e-form='rowform' e-required>
-                    </span> --> 
                     <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible'></input>                  
+                </td>
+                <td>
+                    <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible'></input>
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>

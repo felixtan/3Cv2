@@ -24,11 +24,6 @@
                 <input type='text' class='form-control' ng-model='newField.name' ng-required>
             </div>
             
-            <!-- <div class='form-group'>
-                <label for='type'>Type of input</label>
-                <input type='text' class='form-control' ng-model='newField.type'>
-            </div> -->
-            
             <button type='submit' class='btn btn-success' ng-click='addField()' ng-disabled='newField.name === null'>
                 +
             </button>
@@ -42,24 +37,28 @@
             <span style='margin-left:1vw;'>
                 <input type='checkbox' ng-model='formData[field].log'> Log this
             </span>
-            <span style='float:right;'>
-                <button class='btn btn-danger btn-xs' type='button' ng-click='openDeleteFieldModal(lg, { "field": field })'>
+            <span style='margin-left:1vw;'>
+                <label>
+                    <input type="radio" name='identifier' ng-model="identifier.name" value="{{ field }}"> Sort cars with this field.
+                </label>
+            </span>
+            <span>
+                <button class='btn btn-danger btn-xs' type='button' ng-click='openDeleteFieldModal(lg, { "field": field })' style='float:right;'>
                     Delete
                 </button>
-                <!-- ng-click='deleteField(field)' -->
             </span>
             <input type='text' class='form-control' ng-model="formData[field].value">
         </div>
 
     </form>
 
-    <div>
-        <!-- {{ formData }} -->
-    </div>  
+    <!-- <div>
+        <p ng-repeat='car in cars | orderBy:"id"'>{{ car.id }}: {{ car.identifier }}</p>
+    </div> -->  
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='carForm.$invalid'>Submit</button>
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='identifier.name === null'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

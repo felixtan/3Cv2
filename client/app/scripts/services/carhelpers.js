@@ -8,10 +8,10 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('carHelpers', function ($q, dataService) {
+  .factory('carHelpers', function ($q, dataService, $state) {
   
   var getCars = dataService.getCars;
-  
+
   var getLogDates = function(existingCars) {
     return $q(function(resolve, reject) {
       var logDates = [];
@@ -96,6 +96,35 @@ angular.module('clientApp')
     });
   };
 
+  var mapObject = function(objects, identifier) {
+    return _.map(objects, function(object) {
+        return {
+            id: object.id,
+            identifierValue: object.data[identifier].value
+        };
+    });
+  };
+
+  // same as map except for one
+  var simplify = function(object, identifier) {
+    return {
+      id: object.id,
+      identifierValue: object.data[identifier].value
+    }
+  };
+
+  var updateIdentifier = function(cars, current, ngmodel) {
+    if(current !== ngmodel) {
+      _.each(cars, function(car) {    
+          car.identifier = ngmodel;
+          console.log('updating identifier:',car);
+          dataService.updateCar(car);
+      });
+    }
+
+    $state.forceReload();
+  };
+
   // Public API here
   return {
 
@@ -116,6 +145,10 @@ angular.module('clientApp')
     createLog: function(data, weekOf) {
       return createLog(data, weekOf);
     },
+
+    mapObject: mapObject,
+    simplify: simplify,
+    updateIdentifier: updateIdentifier,
 
     populateLogs: function(car) {
       // promise groups
