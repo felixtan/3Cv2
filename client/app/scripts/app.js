@@ -121,6 +121,19 @@ angular
             }
         }
     })
+    .state('dashboard.prospects', {
+        url: '/prospects',
+        templateUrl: '/views/prospectList.html',
+        controller: 'ProspectListCtrl',
+        resolve: {
+            getProspectStatuses: function(dataService) {
+                return dataService.getProspectStatuses();
+            }
+            // getProspects: function(dataService) {
+            //     return dataService.getProspects();
+            // }
+        }
+    })
     .state('dashboard.cars.carForm', {
         url: '/car-form',
         onEnter: function($modal, dataService, $state) {
@@ -178,33 +191,6 @@ angular
                     reload: true
                 });
             });
-        },
-        sp: getsp()
-    })
-    .state('roster', {
-        url: '/drivers',
-        templateUrl: 'views/roster.html',
-        controller: 'RosterCtrl',
-        controllerAs: 'roster',
-        resolve: {
-          getDrivers: function(dataService) {
-            return dataService.getDrivers();
-          }
-        },
-        sp: getsp()
-    })
-    .state('ptg', {
-        url: '/pay-toll-gas',
-        templateUrl: 'views/ptg.html',
-        controller: 'PtgCtrl',
-        controllerAs: 'ptg',
-        resolve: {
-          getPtgLogs: function(dataService) {
-            return dataService.getPtgLogs();
-          },
-          basicDriverData: function(dataService) {
-            return dataService.getDrivers();
-          }
         },
         sp: getsp()
     })

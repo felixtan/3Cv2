@@ -10,7 +10,8 @@ var filterByOrgId = helpers.filterByOrgId;
 module.exports = {
     get: function(req, res) {
         ProspectStatuses.findAll({ 
-            where: filterByOrgId(req)
+            where: filterByOrgId(req),
+            limit: 1
         }).then(function(statuses) {
             res.json(statuses);
         }).catch(function(err) {

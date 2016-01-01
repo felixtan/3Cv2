@@ -4,15 +4,14 @@
  * The Index of Routes
  */
 
+var stormpath = require('express-stormpath');
 var cars = require('./routes/cars');
 var drivers = require('./routes/drivers');
-var driverLogs = require('./routes/driverlogs');
+var prospects = require('./routes/prospects');
 var prospectStatuses = require('./routes/prospectStatuses');
+
 var gasCards = require('./routes/gasCards');
 var ezPass = require('./routes/ezpass');
-var prospect = require('./routes/prospects');
-var carLogs = require('./routes/carLogs');
-var stormpath = require('express-stormpath');
 
 module.exports = function (app) {
 
@@ -20,16 +19,16 @@ module.exports = function (app) {
     // app.use('/api', stormpath.loginRequired);
 
     // Prospect Statuses
-    app.get('/api/prospectStatuses', prospectStatuses.get);
-    app.post('/api/prospectStatuses', prospectStatuses.create);
-    app.put('/api/prospectStatuses', prospectStatuses.update);
+    app.get('/api/prospect-statuses', prospectStatuses.get);
+    app.post('/api/prospect-statuses', prospectStatuses.create);
+    app.put('/api/prospect-statuses', prospectStatuses.update);
 
     // Prospects
-    app.get('/api/prospects', prospect.get);
-    app.get('/api/prospects/:id', prospect.getById);
-    app.post('/api/prospects', prospect.save);
-    app.put('/api/prospects/:id', prospect.update);
-    app.delete('/api/prospects/:id', prospect.delete);
+    app.get('/api/prospects', prospects.get);
+    app.get('/api/prospects/:id', prospects.getById);
+    app.post('/api/prospects', prospects.save);
+    app.put('/api/prospects/:id', prospects.update);
+    app.delete('/api/prospects/:id', prospects.delete);
 
     // EZ pass
     app.get('/api/assets/ez-passes', ezPass.get);

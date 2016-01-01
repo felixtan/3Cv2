@@ -23,6 +23,95 @@ angular.module('clientApp')
     // Public API here
     return {
 
+      ///////////////
+      // Prospects //
+      ///////////////
+
+      getProspectStatuses: function() {
+        return $http({
+          method: 'GET',
+          url: '/api/prospect-statuses',
+          params: params
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      updateProspectStatuses: function(statuses) {
+        return $http({
+          method: 'PUT',
+          url: '/api/prospect-statuses',
+          params: params,
+          data: statuses
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      getProspects: function() {
+        return $http({
+          method: 'GET',
+          url: '/api/prospects',
+          params: params
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      getProspect: function(id) {
+        return $http('/api/prospects' + id)
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      createProspect: function(prospect) {
+        return $http.post('/api/prospects', prospect)
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      updateProspect: function(prospect) {
+        return $http({
+          method: 'PUT',
+          url: '/api/prospects/' + prospect.id,
+          params: params,
+          data: prospect
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      deleteProspect: function(id, params) {
+        return $http({
+          method: 'DELETE',
+          url: '/api/prospects/' + id,
+          params: params
+        })
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      ///////////////
+      /// Drivers ///
+      ///////////////
+
       getDrivers: function() {
         return $http({
           method: 'GET',
@@ -44,6 +133,45 @@ angular.module('clientApp')
             console.error(err);
           });
       },
+
+      createDriver: function(driver) {
+        return $http.post('/api/drivers', driver)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
+      },
+
+      updateDriver: function(driver) {
+        return $http({
+          method: 'PUT',
+          url: '/api/drivers/' + driver.id,
+          params: params,
+          data: driver
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      deleteDriver: function(id, params) {
+        return $http({
+          method: 'DELETE',
+          url: '/api/drivers/' + id,
+          params: params
+        })
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      ////////////
+      /// Cars ///
+      ////////////
 
       getCars: function () {
         return $http({
@@ -68,43 +196,7 @@ angular.module('clientApp')
           });
       },
 
-      getCarProperties: function () {
-        return $http.get('/api/settings/cars', params)
-          .then(function(data) {
-            return data;
-          }, function(err) {
-            console.error(err);
-          });
-      },
-
-      getGasCards: function() {
-        return $http.get('/api/assets/gas-cards', params)
-          .then(function(data) {
-            return data;
-          }, function(err) {
-            console.error(err);
-          });
-      },
-
-      getEzPasses: function() {
-        return $http.get('/api/assets/ez-passes', params)
-          .then(function(data) {
-            return data;
-          }, function(err) {
-            console.error(err);
-          });
-      },
-
-      getProspects: function() {
-        return $http.get('/api/prospects', params)
-          .then(function(data) {
-            return data;
-          }, function(err) {
-            console.error(err);
-          });
-      },
-
-      updateCar: function(car, params) {
+      updateCar: function(car) {
         return $http({
           method: 'PUT',
           url: '/api/cars/' + car.id,
@@ -127,29 +219,6 @@ angular.module('clientApp')
           });
       },
 
-      createDriver: function(driver) {
-        return $http.post('/api/drivers', driver)
-          .then(function(data) {
-            return data;
-          }, function(err) {
-            console.error(err);
-          });
-      },
-
-      updateDriver: function(driver, params) {
-        return $http({
-          method: 'PUT',
-          url: '/api/drivers/' + driver.id,
-          params: params,
-          data: driver
-        })
-        .then(function(data) {
-          return data;
-        }, function(err) {
-          console.error(err);
-        });
-      },
-
       deleteCar: function(id, params) {
         return $http({
           method: 'DELETE',
@@ -163,17 +232,22 @@ angular.module('clientApp')
         });
       },
 
-      deleteDriver: function(id, params) {
-        return $http({
-          method: 'DELETE',
-          url: '/api/drivers/' + id,
-          params: params
-        })
-        .then(function(data) {
-          return data;
-        }, function(err) {
-          console.error(err);
-        });
+      getGasCards: function() {
+        return $http.get('/api/assets/gas-cards', params)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
+      },
+
+      getEzPasses: function() {
+        return $http.get('/api/assets/ez-passes', params)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       }
     };
   });

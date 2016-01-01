@@ -3,14 +3,10 @@
 var models = require('../models');
 var Car = models.Car;
 var Driver = models.Driver;
-var driverLog = models.DriverLog;
-var ptgLog = models.PtgLog;
 var Prospects = models.Prospect; 
-var CarLog = models.CarLog;
-var maintenanceLog = models.MaintenanceLog;
+var ProspectStatuses = models.ProspectStatuses;
 var EzPass = models.EzPass;
 var GasCard = models.GasCard;
-var User = models.User;
 
 // Populate the db with fake data
 module.exports = {
@@ -156,6 +152,30 @@ module.exports = {
         Car.create(car1);
         Car.create(car2);
         Car.create(car3);
+
+        // This should be default to the production app
+        ProspectStatuses.create({
+            organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+            data: {},
+            statuses: [
+                {
+                    name: 'Callers'
+                },
+                {
+                    name: 'Interviewed'
+                },
+                {
+                    name: 'Waiting List'
+                },
+                {
+                    name: 'Rejected'
+                },
+                {
+                    name: 'Unassigned',
+                    special: true
+                }
+            ]
+        });
     }
 }
 

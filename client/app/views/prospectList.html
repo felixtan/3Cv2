@@ -1,0 +1,66 @@
+<div class='col-md-offset-2' id='prospect-list'>
+    <h2 style='padding-left:8px;'>Prospects</h2>
+
+    <br>
+
+    <div style='padding-left:8px;'>
+        <button class='btn btn-success' ng-click='addStatus()'>+ Status</button>
+    </div>
+
+    <!-- Order by user provided order -->
+    {{ statuses }}
+    {{ order }}
+    {{ newIndex }}
+    <div ng-repeat='status in statuses'>
+        <h3>
+            <span ng-show='!rowform.$visible'>
+                {{ status.name }}
+            </span>
+
+            <span ng-show='rowform.$visible'>Name: </span>
+            <span editable-text='status.name' e-name='name' e-form='rowform' onbeforesave='saveStatusName()' ng-show='rowform.$visible'>
+                {{ status.name }}
+            </span>
+
+            <span ng-show='rowform.$visible'>Order: </span>
+            <span ng-show='rowform.$visible' e-form='rowform'>
+                <select ng-model='newIndex.val'>
+                    <option ng-repeat='index in order' value='{{ index }}'>
+                        {{ index }}
+                    </option>
+                </select>
+            </span>
+
+            <button ng-click='rowform.$show()' ng-show='!rowform.$visible' class='btn btn-xs btn-warning' style='float:right;'>
+                Edit
+            </button>
+
+            <form editable-form name='rowform' onbeforesave='saveStatus($data, $index)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
+                <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-primary btn-xs'>
+                    Save
+                </button>
+                <button class='btn btn-xs btn-danger' ng-click='deleteStatus($index)' type='button' ng-if='!status.special'>
+                    Delete
+                </button>
+                <button class='btn btn-xs btn-default' ng-click="rowform.$cancel()" type='button' ng-disabled='rowform.$waiting'>
+                    Cancel
+                </button>
+            </form>
+        </h3>
+        <table class='table table-striped'>
+            <tbody>
+                <!-- filter prospects with status -->
+                <tr ng-repeat='prospect in simpleProspects'>
+                    <td>
+                        <h4>{{ $index+1 }}</h4>
+                    </td>
+                    <td>
+                        <a ui-sref='prospectProfile.data({ id: prospect.id })'>
+                            {{ ::prospect.identifierValue }}
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

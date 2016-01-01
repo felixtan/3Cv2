@@ -25,6 +25,8 @@ module.exports = {
     // in production or staging, organiizationId will be in req.user.customData thanks to stormpath.postRegistrationHandler
     // used for where filtering sequelize querying
     filterByOrgId: function(req) {
+        // console.log(req.query);
+        console.log(req.params);
         if(process.env.NODE_ENV === ('production' || 'staging')) {
             opts = { organizationId: req.user.customData.organizationId };
         } else {
