@@ -2,16 +2,27 @@
 
 <br>
 
+<div class='btn-toolbar' role='toolbar'>
+    <div class='btn-group' role='group'>
+        <button class='btn btn-success' ng-click='open(lg)' ng-controller='AddFieldModalCtrl'>
+            + Field
+        </button>
+    </div>
+    
+    <!-- <div class='btn-group' role='group' style='float:right;'>
+        <button class='btn btn-danger' role='group' ng-click='open(prospect.id)' ng-controller='DeleteObjModalCtrl'>
+            Delete
+        </button>
+    </div> -->
+</div>
+
+<br>
+
 <div class='table-responsive table-bordered'>
     <table class='table'>
         <thead>
             <tr>
-                <th>
-                    Field
-                    <button class='btn btn-success btn-xs' ng-click='open(lg)' ng-controller='AddFieldModalCtrl' style='margin-left: 1vw;'>
-                        +
-                    </button>
-                </th>
+                <th>Field</th>
                 <th>Value</th>
                 <th>Logged</th>
                 <th>Identifier</th>
@@ -21,26 +32,26 @@
         <tbody>
             <tr ng-repeat='(field, value) in car.data'>
                 <td>
-                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' data-field='{{ ::field }}' onbeforesave='nameChanged($data, field)' e-required>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)'>
                         {{ field }}
                     </span>
                 </td>
                 <td>
-                    <span editable-text='value.value' e-name='value' e-form='rowform' e-required>
+                    <span editable-text='value.value' e-name='value' e-form='rowform' onbeforesave='checkFieldValue($data, value.value)'>
                         {{ value.value }}
                     </span>
                 </td>
                 <td>
                     <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
-                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible'></input>                  
+                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)'></input>                 
                 </td>
                 <td>
                     <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>
-                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible'></input>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input>
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>
-                        <form editable-form name='rowform' onaftersave='save($data)' ng-show='rowform.$visible' class='form-buttons form-inline'>
+                        <form editable-form name='rowform' onaftersave='save($data, field)' ng-show='rowform.$visible' class='form-buttons form-inline'>
                             <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-success btn-xs'>
                                 Save
                             </button>
@@ -66,7 +77,15 @@
 
 <!-- Driver Assignment UI -->
 <h3>Driver<span ng-if='(car.driversAssigned > 1) || (car.driversAssigned === 0)'>s</span> Assigned</h3>
-<button class='btn btn-success' ng-click='assign()'>+ Driver</button>
+
+<div class='btn-toolbar' role='toolbar'>
+    <div class='btn-group' role='group'>
+        <button class='btn btn-success' ng-click='assign()'>+ Driver</button>
+    </div>
+</div>
+
+<br>
+
 <div class='table-responsive table-bordered'>
     <table class='table'>
         <thead>
@@ -78,7 +97,7 @@
         <tbody>
             <tr ng-repeat='driver in car.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverProfile.data({ id: driver.id })' class='table-row-link'>
                 <td>{{ ::driver.identifier.value }}</td>
-                <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ driver.dateEnded | date: 'fullDate' }}</span></td>
+                <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ ::driver.dateEnded | date: 'fullDate' }}</span></td>
             </tr>
         </tbody>
     </table>

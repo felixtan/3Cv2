@@ -35,8 +35,6 @@ angular.module('clientApp')
     $scope.checkFieldName = function(newName, currentName) {
         $scope.newFieldName = newName;
         $scope.currentFieldName = currentName;
-        console.log(newName);
-        console.log(currentName);
     };
 
     $scope.fieldNameChanged = function() {

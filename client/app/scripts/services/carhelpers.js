@@ -113,11 +113,11 @@ angular.module('clientApp')
     }
   };
 
-  var updateIdentifier = function(cars, current, ngmodel) {
-    if(current !== ngmodel) {
+  var updateIdentifier = function(cars, currentVal, newVal) {
+    if(currentVal !== newVal) {
       _.each(cars, function(car) {    
-          car.identifier = ngmodel;
-          console.log('updating identifier:',car);
+          car.identifier = newVal;
+          // console.log('updating identifier:',car);
           dataService.updateCar(car);
       });
     }
