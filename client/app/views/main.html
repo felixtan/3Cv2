@@ -17,7 +17,7 @@
 <!-- collapse='driverListCollapsed' -->
 <!-- col-collapsible -->
 <div class='col-md-offset-2 table-responsive' id='car-list'> 
-  <h3 style='padding-left:8px;'>Cars</h3>
+  <h2 class='page-header'>Cars</h2>
 
   <br>
 
@@ -28,7 +28,10 @@
           + Car
         </button>
       </td>
-      <td><h4>Car</h4></td>
+      <td>
+        <h4 ng-if='thereAreCars()'>{{ cars[0].identifier }}</h4>
+        <h4 ng-if='!thereAreCars()'>No cars currently.</h4>
+      </td>
     </thead>
     <tbody>
       <tr ng-repeat='car in simpleCars | orderBy:"id"'>

@@ -10,12 +10,12 @@
 angular.module('clientApp')
   .controller('DeleteObjModalCtrl', function ($scope, $modal) {
 
-    $scope.open = function (size, id) {
+    $scope.open = function (id) {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/deleteobjmodal.html',
             controller: 'DeleteObjModalInstanceCtrl',
-            size: size,
+            size: 'md',
             resolve: {
                 id: function() {
                     return id;

@@ -26,7 +26,7 @@ module.exports = {
     // used for where filtering sequelize querying
     filterByOrgId: function(req) {
         // console.log(req.query);
-        console.log(req.params);
+        // console.log(req.params);
         if(process.env.NODE_ENV === ('production' || 'staging')) {
             opts = { organizationId: req.user.customData.organizationId };
         } else {

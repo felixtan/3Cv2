@@ -65,7 +65,7 @@ angular.module('clientApp')
       },
 
       getProspect: function(id) {
-        return $http('/api/prospects' + id)
+        return $http.get('/api/prospects/' + id)
         .then(function(data) {
           return data;
         }, function(err) {

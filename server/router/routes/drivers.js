@@ -68,11 +68,9 @@ module.exports = {
     update: function(req, res) {
         Drivers.update(req.body, {
             where: { id: req.params.id }
-        })
-        .then(function() {
-            res.status(200).json({ msg: 'Update driver where id = ' + req.params.id });
-        })
-        .catch(function(err) {
+        }).then(function() {
+            res.status(200).json({ msg: 'Updated driver where id = ' + req.params.id });
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });
@@ -81,11 +79,9 @@ module.exports = {
     delete: function(req, res) {
         Drivers.destroy({
             where: { id: req.params.id }
-        })
-        .then(function() {
+        }).then(function() {
             res.status(200).json({ msg: 'Deleted driver where id = ' + req.params.id });
-        })
-        .catch(function(err) {
+        }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
         });

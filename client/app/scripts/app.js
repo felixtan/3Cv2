@@ -128,10 +128,10 @@ angular
         resolve: {
             getProspectStatuses: function(dataService) {
                 return dataService.getProspectStatuses();
+            },
+            getProspects: function(dataService) {
+                return dataService.getProspects();
             }
-            // getProspects: function(dataService) {
-            //     return dataService.getProspects();
-            // }
         }
     })
     .state('dashboard.cars.carForm', {
@@ -187,6 +187,39 @@ angular
                 });
             }, function() {
                 $state.transitionTo('dashboard.drivers', {}, {
+                    location: true,
+                    reload: true
+                });
+            });
+        },
+        sp: getsp()
+    })
+    .state('dashboard.prospects.prospectForm', {
+        url: '/prospect-form',
+        onEnter: function($modal, dataService, $state) {
+            var modalInstance = $modal.open({
+                animation: true,
+                backdrop: 'static',
+                templateUrl: 'views/prospectformmodal.html',
+                controller: 'ProspectFormModalCtrl',
+                size: 'md',
+                resolve: {
+                    getProspects: function(dataService) {
+                        return dataService.getProspects();
+                    },
+                    getProspectStatuses: function(dataService) {
+                        return dataService.getProspectStatuses();
+                    }
+                }
+            });
+
+            modalInstance.result.then(function() {
+                $state.transitionTo('dashboard.prospects', {}, {
+                    location: true,
+                    reload: true
+                });
+            }, function() {
+                $state.transitionTo('dashboard.prospects', {}, {
                     location: true,
                     reload: true
                 });
@@ -276,6 +309,30 @@ angular
         url: '/logs',
         templateUrl: '/views/driverlogsui.html',
         controller: 'DriverLogCtrl',
+        sp: getsp()
+    })
+    .state('prospectProfile', {
+        abstract: true,
+        url: '/prospect/:id',
+        templateUrl: '/views/prospectprofile.html',
+        controller: 'ProspectProfileCtrl',
+        resolve: {
+            getProspect: function(dataService, $stateParams) {
+                return dataService.getProspect($stateParams.id);
+            },
+            getProspects: function(dataService) {
+                return dataService.getProspects();
+            },
+            getProspectStatuses: function(dataService) {
+                return dataService.getProspectStatuses();
+            }
+        },
+        sp: getsp()
+    })
+    .state('prospectProfile.data', {
+        url: '/data',
+        templateUrl: '/views/prospectdata.html',
+        controller: 'ProspectDataCtrl',
         sp: getsp()
     }); 
   })

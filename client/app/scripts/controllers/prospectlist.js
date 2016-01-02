@@ -8,14 +8,21 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ProspectListCtrl', function (prospectHelpers, getProspectStatuses, dataService, $scope, $modal, $state) {
+  .controller('ProspectListCtrl', function (prospectHelpers, getProspects, getProspectStatuses, dataService, $scope, $modal, $state) {
     $scope.prospectStatuses = getProspectStatuses.data[0];
     $scope.statuses = $scope.prospectStatuses.statuses;
     $scope.order = [];
     $scope.newIndex = { val: null };    // stores index changes
+    for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;    // populate order select
+    $scope.prospects = getProspects.data;
 
-    // populate order select
-    for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;
+    $scope.thereAreProspects = function() {
+        return (typeof $scope.prospects[0] !== 'undefined');
+    };
+
+    $scope.belongsToStatus = function(prospect, status) {
+        return prospect.status.value === status.value;
+    };
 
     // http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
     Array.prototype.move = function (old_index, new_index) {
@@ -26,7 +33,6 @@ angular.module('clientApp')
             }
         }
         this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-        // return this; // for testing purposes
     };
 
     $scope.updateOrder = function(oldIndex, newIndex) {
@@ -34,18 +40,47 @@ angular.module('clientApp')
         $scope.prospectStatuses.statuses = $scope.statuses;
     };
 
-    $scope.saveStatus = function(data, oldIndex) {
+    // when status name changes
+    $scope.updateStatusInProspects = function(oldName, newName) {
+        _.each($scope.prospects, function(prospect) {
+            if(prospect.status.value === oldName) {
+                prospect.status.value = newName;
+                prospect.data.status.value = newName;
+                dataService.updateProspect(prospect);
+            }
+        });
+    };
+
+    $scope.saveStatus = function(data, oldIndex, oldName) {
         if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val)
         dataService.updateProspectStatuses($scope.prospectStatuses);
+        $scope.updateStatusInProspects(oldName, data.name);
         $state.forceReload();
     };
 
+    $scope.getDefaultStatus = function() {
+        return _.findWhere($scope.statuses, { special: true });
+    };
+
+    // when a status is deleted
+    $scope.unassignProspects = function(statusName) {
+        var defaultStatus = $scope.getDefaultStatus();
+        _.each($scope.prospects, function(prospect) {
+            if(prospect.status.value === statusName) {
+                prospect.status = defaultStatus;
+                prospect.data.status = defaultStatus;
+                dataService.updateProspect(prospect);
+            }
+        });
+    }
+
     // TODO add warning for user
     // Prospects with the deleted status are reassigned to Unassigned
-    $scope.deleteStatus = function(index) {
+    $scope.deleteStatus = function(index, statusName) {
         $scope.statuses.splice(index, 1);
         $scope.prospectStatuses.statuses = $scope.statuses;
         dataService.updateProspectStatuses($scope.prospectStatuses);
+        $scope.unassignProspects(statusName);
         $state.forceReload();
     };
 

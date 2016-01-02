@@ -15,7 +15,7 @@
             <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' >
         </div>
 
-        <div class='checkbox'>
+        <div class='checkbox' ng-if='objectType != "prospect"'>
             <label for='log'>
                 <input type='checkbox' ng-model='formData.log'> Log it?
             </label>

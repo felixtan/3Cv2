@@ -19,6 +19,9 @@ angular.module('clientApp')
         $scope.cars = getCars.data;
         $scope.identifier = identifier;
         $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
+        $scope.thereAreCars = function() {
+            return (typeof $scope.cars[0] !== 'undefined');
+        };
     });
 
     // submit xeditable row form by pressing enter

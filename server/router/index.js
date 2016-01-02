@@ -25,8 +25,8 @@ module.exports = function (app) {
 
     // Prospects
     app.get('/api/prospects', prospects.get);
-    app.get('/api/prospects/:id', prospects.getById);
-    app.post('/api/prospects', prospects.save);
+    app.get('/api/prospects/:id', prospects.getProspect);
+    app.post('/api/prospects', prospects.create);
     app.put('/api/prospects/:id', prospects.update);
     app.delete('/api/prospects/:id', prospects.delete);
 

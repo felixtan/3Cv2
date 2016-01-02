@@ -8,10 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ProspectprofileCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('ProspectProfileCtrl', function ($scope, getProspect, getProspects, getProspectStatuses) {
+    $scope.getProspect = function() {
+        $scope.prospect = getProspect.data;
+    };
+    $scope.getProspect();
   });

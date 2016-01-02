@@ -23,6 +23,9 @@ angular.module('clientApp')
                 },
                 getDrivers: function(dataService) {
                     return ($state.includes('driverProfile') ? dataService.getDrivers() : {});
+                },
+                getProspects: function(dataService) {
+                    return ($state.includes('prospectProfile') ? dataService.getProspects() : {});  
                 }
             }
         });

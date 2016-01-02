@@ -1,25 +1,31 @@
 <div class='col-md-offset-2' id='prospect-list'>
-    <h2 style='padding-left:8px;'>Prospects</h2>
+    <h2 class='page-header'>Prospects</h2>
 
     <br>
 
-    <div style='padding-left:8px;'>
-        <button class='btn btn-success' ng-click='addStatus()'>+ Status</button>
+    <div>
+        <button class='btn btn-success' data-toggle='modal' ui-sref='dashboard.prospects.prospectForm'>
+            + Prospect
+        </button>
+        <button class='btn btn-success' ng-click='addStatus()'>
+            + Status
+        </button>
+        <h4 ng-if='!thereAreProspects()' style='text-align:center;'>No prospects currently.</h4>
     </div>
 
     <!-- Order by user provided order -->
-    {{ statuses }}
+    <!-- {{ statuses }}
     {{ order }}
-    {{ newIndex }}
+    {{ newIndex }} -->
     <div ng-repeat='status in statuses'>
         <h3>
             <span ng-show='!rowform.$visible'>
-                {{ status.name }}
+                {{ status.value }}
             </span>
 
             <span ng-show='rowform.$visible'>Name: </span>
-            <span editable-text='status.name' e-name='name' e-form='rowform' onbeforesave='saveStatusName()' ng-show='rowform.$visible'>
-                {{ status.name }}
+            <span editable-text='status.value' e-name='name' e-form='rowform' onbeforesave='saveStatusName()' ng-show='rowform.$visible'>
+                {{ status.value }}
             </span>
 
             <span ng-show='rowform.$visible'>Order: </span>
@@ -35,11 +41,11 @@
                 Edit
             </button>
 
-            <form editable-form name='rowform' onbeforesave='saveStatus($data, $index)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
+            <form editable-form name='rowform' onbeforesave='saveStatus($data, $index, status.value)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
                 <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-primary btn-xs'>
                     Save
                 </button>
-                <button class='btn btn-xs btn-danger' ng-click='deleteStatus($index)' type='button' ng-if='!status.special'>
+                <button class='btn btn-xs btn-danger' ng-click='deleteStatus($index, status.value)' type='button' ng-if='!status.special'>
                     Delete
                 </button>
                 <button class='btn btn-xs btn-default' ng-click="rowform.$cancel()" type='button' ng-disabled='rowform.$waiting'>
@@ -50,17 +56,18 @@
         <table class='table table-striped'>
             <tbody>
                 <!-- filter prospects with status -->
-                <tr ng-repeat='prospect in simpleProspects'>
+                <tr ng-repeat='prospect in prospects' ng-if='belongsToStatus(prospect, status)'>
                     <td>
-                        <h4>{{ $index+1 }}</h4>
-                    </td>
-                    <td>
-                        <a ui-sref='prospectProfile.data({ id: prospect.id })'>
-                            {{ ::prospect.identifierValue }}
-                        </a>
+                        <h4>
+                            <a ui-sref='prospectProfile.data({ id: prospect.id })'>
+                                <!-- {{ ::prospect.identifierValue }} -->
+                                {{ prospect.data.fullName.value }}
+                            </a>
+                        </h4>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <br>
     </div>
 </div>

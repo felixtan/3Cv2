@@ -159,19 +159,19 @@ module.exports = {
             data: {},
             statuses: [
                 {
-                    name: 'Callers'
+                    value: 'Callers'
                 },
                 {
-                    name: 'Interviewed'
+                    value: 'Interviewed'
                 },
                 {
-                    name: 'Waiting List'
+                    value: 'Waiting List'
                 },
                 {
-                    name: 'Rejected'
+                    value: 'Rejected'
                 },
                 {
-                    name: 'Unassigned',
+                    value: 'Unassigned',
                     special: true
                 }
             ]
