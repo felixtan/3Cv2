@@ -5,7 +5,7 @@
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
-            <button class='btn btn-success' ng-click='logctrl.newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'>
+            <button class='btn btn-success' ng-click='newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'>
                 + Log 
             </button>
         </div>
@@ -58,7 +58,7 @@
                             Edit
                         </button>
                         <div class='btn-toolbar' role='toolbar'>
-                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='logctrl.save(date)'>
+                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
                                 <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs">
                                     Save
                                 </button>
@@ -71,11 +71,13 @@
                             </form>
                         </div>
                     </td>
-                    <td ng-repeat='car in cars | orderBy:"id"'>
-                        <ul ng-repeat="log in car.logs" ng-if='log.weekOf === date' class='log'>
-                            <li ng-repeat='(field, value) in log.data'>
-                                <p ng-show='logform.$visible'>{{ ::field }}: </p>
-                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
+                    <td ng-repeat='car in cars track by car.id | orderBy:"id"'>
+                        <ul ng-repeat="log in car.logs track by $index" ng-if='log.weekOf === date' class='log'>
+                            <li ng-repeat='(field, value) in log.data track by $index'>
+                                <span ng-show='logform.$visible'>
+                                    {{ ::field }}: 
+                                </span>
+                                <span editable-text='{{ field }}' e-name='{{ field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                             </li>

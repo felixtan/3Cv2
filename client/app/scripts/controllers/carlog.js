@@ -11,13 +11,6 @@ angular.module('clientApp')
   .controller('CarLogCtrl', function ($state, dataService, $q, $scope, getCar) {
     $scope.car = getCar.data;
 
-    // $scope.activateTab($state);
-    $scope.activateTab = function() {
-        $scope.tabs[0].active = false;
-        $scope.tabs[1].active = true;
-    }
- 
-
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {

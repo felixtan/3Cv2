@@ -191,7 +191,7 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
-    this.newLog = function() {
+    $scope.newLog = function() {
         // 1. show date picker
         // 2. user picks date -> store in log.date
         // 3. start of week -> stored in log.weekStarting
@@ -209,7 +209,7 @@ angular.module('clientApp')
 
         if(!(_.contains($scope.dates, weekOf))) {
             $q.all([promise]).then(function(values) {
-                createNewRow(weekOf);
+                $scope.createNewRow(weekOf);
             }).catch(function(err) {
                 console.error(err);
             });
@@ -219,7 +219,7 @@ angular.module('clientApp')
     }
 
     // need to make this more efficient
-    this.save = function(logDate) {
+    $scope.save = function(logDate) {
         _.each($scope.cars, function(car) {
             if(logDate === $scope.mostRecentLogDate) {
                 // update car.data is new value isn't null
@@ -233,7 +233,7 @@ angular.module('clientApp')
         });
     };
 
-    var createNewRow = function(date) {
+    $scope.createNewRow = function(date) {
         // add new date to array of log dates
         $scope.dates.push(date);
         $state.forceReload();

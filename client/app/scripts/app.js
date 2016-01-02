@@ -237,7 +237,6 @@ angular
         url: '/cars',
         templateUrl: 'views/carLogs.html',
         controller: 'CarLogsCtrl',
-        controllerAs: 'carlogs',
         resolve: {
             getCars: function(dataService) {
                 return dataService.getCars();

@@ -98,54 +98,66 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
+    $scope.addFieldToLogs = function(car, field) {
+        var deferred = $q.defer();
+        _.each(car.logs, function(log) {
+            log.data[field] = null;    
+        });
+        deferred.resolve(car);
+        deferred.reject(new Error('Error adding field to all logs'));
+        return deferred.promise;
+    };
+
     $scope.save = function (data, field) {
         // console.log('data:', data);
-        // console.log('field:', field);
+            // data.name -> updated field name
+            // data.value -> updated field value
+            // data.log -> updated field log
+
         var cars = getCars.data;
 
-        ///////////////////////////////
-        //// Update the scope car /////
-        ///////////////////////////////
-
-        if($scope.fieldNameChanged()) {
-            $scope.updateFieldName($scope.car).then(function(car) {
-                dataService.updateCar(car);
-                $state.forceReload();
+        if($scope.fieldNameChanged() && !$scope.logValChanged()) {
+            _.each(cars, function(car) {
+                $scope.updateFieldName(car).then(function(carWithUpdatedFieldName) {
+                    // console.log('saving:', carWithUpdatedFieldName);
+                    dataService.updateCar(carWithUpdatedFieldName);
+                    if(carWithUpdatedFieldName.id == $scope.car.id) $state.forceReload();
+                });
+            });
+        } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
+            _.each(cars, function(car) {
+                $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
+                    $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
+                        // console.log('saving:', carWithUpdatedLogs);
+                        dataService.updateCar(carWithUpdatedLogs);
+                        if(carWithUpdatedLogs.id == $scope.car.id) $state.forceReload();
+                    });
+                });
+            });
+        } else if($scope.logValChanged() && $scope.fieldNameChanged()) {
+            _.each(cars, function(car) {
+               $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
+                    $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
+                        $scope.updateFieldName(carWithUpdatedLogs).then(function(carWithUpdatedFieldName) {
+                            // console.log('saving:', carWithUpdatedFieldName);
+                            dataService.updateCar(carWithUpdatedFieldName);
+                            if(carWithUpdatedFieldName.id == $scope.car.id) $state.forceReload();
+                        });
+                    });
+                });
             });
         } else {
             dataService.updateCar($scope.car);
             $state.forceReload();
         }
 
-        ///////////////////////////////
-        //// Update other drivers /////
-        ///////////////////////////////
-
-        if($scope.fieldNameChanged()) {
-            _.each(cars, function(car) {
-                $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
-                    $scope.updateFieldName(carWithUpdatedLogVal).then(function(carWithUpdatedFieldName) {
-                        dataService.updateCar(carWithUpdatedFieldName);
-                    });
-                });
-            });
-        } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
-            _.each(cars, function(car) {
-                $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
-                    dataService.updateCar(carWithUpdatedLogVal);
-                });
-            });
-        } else {
-            // do nothing
-        }
-
         carHelpers.updateIdentifier(cars, $scope.currentIdentifier.name, $scope.identifier.name);
-        $state.forceReload();
     };
 
     /////////////////////////////
     // Driver Assignment UI /////
     /////////////////////////////
+
     $scope.assign = function () {
 
         var modalInstance = $modal.open({

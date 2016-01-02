@@ -12,13 +12,25 @@
 
         <div class='form-group'>
             <label for='field'>Field</label>
-            <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' >
+
+            <span class='checkbox' ng-if='objectType != "prospect"' style='float:right;'>
+                <label for='log'>
+                    <input type='checkbox' ng-model='formData.log'> Log it?
+                </label>
+            </span>
+
+            <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' ng-pattern="/^[a-zA-Z0-9_-]*$/">
         </div>
 
-        <div class='checkbox' ng-if='objectType != "prospect"'>
-            <label for='log'>
-                <input type='checkbox' ng-model='formData.log'> Log it?
-            </label>
+        <div ng-messages="form.field.$error" ng-show='form.field.$dirty && form.field.$invalid' class="alert alert-danger" role="alert">
+            <div>
+                Field must
+                <ul>
+                    <li>be alphanumeric</li>
+                    <li>contain no special characters except "-" or "_"</li>
+                    <li>contain no spaces</li>
+                </ul>
+            </div>
         </div>
 
     </form>

@@ -19,20 +19,21 @@ angular.module('clientApp')
             size: size,
             resolve: {
                 getCars: function(dataService) {
-                    return ($state.includes('carProfile') ? dataService.getCars() : {});
+                    return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
                 },
                 getDrivers: function(dataService) {
-                    return ($state.includes('driverProfile') ? dataService.getDrivers() : {});
+                    return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
                 },
                 getProspects: function(dataService) {
-                    return ($state.includes('prospectProfile') ? dataService.getProspects() : {});  
+                    return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
                 }
             }
         });
 
         modalInstance.result.then(function (formData) {
-            $scope.formData = formData;
+            $state.forceReload();
         }, function() {
+            $state.forceReload();
             console.log('Modal dismissed at: ' + new Date());
         });
     }

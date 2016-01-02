@@ -15,17 +15,17 @@ angular.module('clientApp')
     $scope.objectType = null;
     $scope.update = function(object) { return; };
 
-    if($state.includes('carProfile')) {
+    if($state.includes('carProfile') || $state.includes('dashboard.cars')) {
       console.log("add field modal called from carProfile");
       $scope.objects = getCars.data;
       $scope.objectType = 'car';
       $scope.update = dataService.updateCar;
-    } else if($state.includes('driverProfile')) {
+    } else if($state.includes('driverProfile') || $state.includes('dashboard.drivers')) {
       console.log("add field modal called from driverProfile");
       $scope.objects = getDrivers.data;
       $scope.objectType = 'driver';
       $scope.update = dataService.updateDriver;
-    } else if($state.includes('prospectProfile')) {
+    } else if($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) {
       console.log("add field modal called from prospectProfile");
       $scope.objects = getProspects.data;
       $scope.objectType = 'prospect';
@@ -35,14 +35,17 @@ angular.module('clientApp')
     }
 
     $scope.submit = function () {
-        $scope.objects.forEach(function(object) {
+        _.each($scope.objects, function(object) {
+            
+            // add field to each object
             object.data[$scope.formData.field] = {
                 value: null,
-                log: $scope.formData.log
-            }
+                log: $scope.formData.log || false
+            };
             
-            if($scope.formData.log) {
-                object.logs.forEach(function(log) {
+            // add field to each log
+            if($scope.formData.log && ($scope.objectType != 'prospect')) {
+                _.each(object.logs, function(log) {
                     log.data[$scope.formData.field] = null;
                 });
             }

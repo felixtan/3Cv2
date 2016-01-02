@@ -150,17 +150,21 @@ angular.module('clientApp')
         // To simplify things, update log val anyway handle both cases
         if($scope.fieldNameChanged()) {
             _.each(drivers, function(driver) {
-                $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
-                    $scope.updateFieldName(driverWithUpdatedLogVal).then(function(driverWithUpdatedFieldName) {
-                        dataService.updateDriver(driverWithUpdatedFieldName);
+                if(driver.id != $scope.driver.id) {
+                    $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
+                        $scope.updateFieldName(driverWithUpdatedLogVal).then(function(driverWithUpdatedFieldName) {
+                            dataService.updateDriver(driverWithUpdatedFieldName);
+                        });
                     });
-                });
+                }
             });
         } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
             _.each(drivers, function(driver) {
-                $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
-                    dataService.updateDriver(driverWithUpdatedLogVal);
-                });
+                if(driver.id != $scope.driver.id) {
+                    $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
+                        dataService.updateDriver(driverWithUpdatedLogVal);
+                    });
+                }
             });
         } else {
             // do nothing
