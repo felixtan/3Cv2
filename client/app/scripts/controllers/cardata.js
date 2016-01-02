@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarDataCtrl', function (carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {
-    // var _ = underscore._;     
+  .controller('CarDataCtrl', function (carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     $scope.car = getCar.data;
     $scope.oldField = '';
     $scope.currentIdentifier = { name: $scope.car.identifier || null };

@@ -36,10 +36,10 @@
             <tr ng-repeat='(field, value) in prospect.data' ng-if='field !== "fullName"'>
                 <td>
                     <span ng-if='!notNameOrStatus(field)'>
-                        {{ field.capitalize() }}
+                        {{ field.capitalizeIfStatus() }}
                     </span>
 
-                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' data-field='{{ ::field }}' ng-if='notNameOrStatus(field)' onbeforesave='queueUpdateFieldName($data, field)'>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' ng-if='notNameOrStatus(field)' onbeforesave='queueUpdateFieldName($data, field)'>
                         {{ field }}
                     </span>
                 </td>

@@ -9,21 +9,20 @@
  */
 angular.module('clientApp')
   .controller('ProspectDataCtrl', function ($modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses) {
+    
     $scope.prospect = getProspect.data;
     $scope.prospectStatuses = getProspectStatuses.data[0];
     $scope.statuses = $scope.prospectStatuses.statuses;
-    $scope.currentStatus = {};
-    angular.copy($scope.prospect.status, $scope.currentStatus);
 
     ///////////////////
-    // Data UI ////////
+    ///// Data UI /////
     ///////////////////
 
     $scope.notStatus = function(field) {
         return (field.toLowerCase() != "status");
     };
 
-    String.prototype.capitalize = function() {
+    String.prototype.capitalizeIfStatus = function() {
         return (this === 'status') ? (this.charAt(0).toUpperCase() + this.slice(1)) : this;
     };
 
@@ -95,7 +94,7 @@ angular.module('clientApp')
     $scope.updateOtherProspects = function() {
         var prospects = getProspects.data;
         prospects.forEach(function(prospect) {
-            if(prospect.id !== $scope.prospect.id) {
+            if(prospect.id != $scope.prospect.id) {
                 prospect.data[$scope.newFieldName] = prospect.data[$scope.oldFieldName];
                 delete prospect.data[$scope.oldFieldName];
                 dataService.updateProspect(prospect);
