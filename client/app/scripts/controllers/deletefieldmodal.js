@@ -21,13 +21,13 @@ angular.module('clientApp')
                     return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                 },
                 getCars: function(dataService) {
-                    return ($state.includes('carProfile') ? dataService.getCars() : {});
+                    return (($state.includes('carProfile') || ($state.includes('dashboard.cars'))) ? dataService.getCars() : {});
                 },
                 getDrivers: function(dataService) {
-                    return ($state.includes('driverProfile') ? dataService.getDrivers() : {});
+                    return (($state.includes('driverrProfile') || ($state.includes('dashboard.drivers'))) ? dataService.getDrivers() : {});
                 },
                 getProspects: function(dataService) {
-                    return ($state.includes('prospectProfile') ? dataService.getProspects() : {});
+                    return (($state.includes('prospectProfile') || ($state.includes('dashboard.prospects'))) ? dataService.getProspects() : {});
                 }
             }
         });

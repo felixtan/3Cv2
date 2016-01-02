@@ -46,8 +46,8 @@
                     </span>
                 </td>
                 <td>
-                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
-                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)'></input>                  
+                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible' ng-if='notName(field)'></i>
+                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)' ng-if='notName(field)'></input>                  
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>

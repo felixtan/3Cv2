@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ProspectDataCtrl', function ($modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses) {
+  .controller('ProspectDataCtrl', function ($q, $modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses) {
     
     $scope.prospect = getProspect.data;
     $scope.prospectStatuses = getProspectStatuses.data[0];
@@ -36,17 +36,28 @@ angular.module('clientApp')
     };
     $scope.getFields();
 
-    // when status name changes
-    $scope.updateStatusInProspect = function(statusName) {
+    $scope.statusChanged = false;
+    $scope.status = $scope.prospect.status.value;
+    $scope.setStatusChanged = function(statusName) {
         var prospect = $scope.prospect;
         if((prospect.status.value != statusName) 
             || (prospect.data.status.value != statusName)
             && (typeof statusName !== 'undefined') 
             && (statusName !== null)) {
-                prospect.status.value = statusName;
-                prospect.data.status.value = statusName;
-            // console.log(prospect);
+            $scope.statusChanged = true;
+            $scope.status = statusName;
         }
+    };
+
+    // when status name changes
+    $scope.updateStatus = function(prospect) {
+        console.log(prospect);
+        var deferred = $q.defer();
+        prospect.status.value = $scope.status;
+        prospect.data.status.value = $scope.status;
+        deferred.resolve(prospect);
+        deferred.reject(new Error("Error updating status of prospect" + prospect.id));
+        return deferred.promise;
     };
 
     // all other fields
@@ -65,55 +76,67 @@ angular.module('clientApp')
         }
     };
 
+    $scope.fieldNameChanged = false;
     $scope.newFieldName = null;
-    $scope.oldFieldName = null;
-    $scope.queueUpdateFieldName = function(newName, oldName) {        
+    $scope.currentFieldName = null;
+    $scope.setFieldNameChanged = function(newName, currentName) {
         $scope.newFieldName = newName;
-        $scope.oldFieldName = oldName;
-    };
-
-    $scope.validFieldNameChange = function() {
-        if(($scope.newFieldName !== null) 
-            && (typeof $scope.newFieldName !== 'undefined') 
-            && ($scope.oldFieldName !== null) 
-            && (typeof $scope.oldFieldName !== 'undefined') 
-            && ($scope.oldFieldName !== $scope.newFieldName)) {
-            return true;
-        } else {
-            return false;
+        $scope.currentFieldName = currentName;
+        if((newName !== null) 
+            && (typeof newName !== 'undefined') 
+            && (currentName !== null) 
+            && (typeof currentName !== 'undefined') 
+            && (currentName != newName)) {
+            $scope.fieldNameChanged = true;
         }
     };
 
-    $scope.updateFieldName = function() {
-        var prospect = $scope.prospect;
-        prospect.data[$scope.newFieldName] = prospect.data[$scope.oldFieldName];
-        delete prospect.data[$scope.oldFieldName];
-        // console.log('name replaced:', prospect);
+    $scope.updateFieldName = function(prospect) {
+        var deferred = $q.defer();
+        prospect.data[$scope.newFieldName] = prospect.data[$scope.currentFieldName];
+        delete prospect.data[$scope.currentFieldName];
+        deferred.resolve(prospect);
+        deferred.reject(new Error('Error updating prospect field name, id: ' + prospect.id));
+        return deferred.promise;
     };
 
-    $scope.updateOtherProspects = function() {
-        var prospects = getProspects.data;
-        prospects.forEach(function(prospect) {
-            if(prospect.id != $scope.prospect.id) {
-                prospect.data[$scope.newFieldName] = prospect.data[$scope.oldFieldName];
-                delete prospect.data[$scope.oldFieldName];
-                dataService.updateProspect(prospect);
-            }
-        });
+    // pass in prospect and data.name
+    $scope.updateProspectName = function(prospect) {
+        var deferred = $q.defer();
+        prospect.data.fullName.value = prospect.data["First Name"].value + " " + prospect.data["Last Name"].value;
+        deferred.resolve(prospect);
+        deferred.reject(new Error('Error updating driver fullName, id: ' + prospect.id));
+        return deferred.promise;
     };
 
     // Update
     $scope.save = function (data, field) {
-        // console.log(data.value);     // stores new value of field
-        // console.log($scope.prospect);   // already updated? -> yes due to onbeforesave
+        // console.log(data);
+        // console.log($scope.fieldNameChanged);
+        // console.log($scope.statusChanged);
 
-        if($scope.validFieldNameChange()) {
-            $scope.updateFieldName();
-            $scope.updateOtherProspects();
+        var prospects = getProspects.data;
+
+        if($scope.fieldNameChanged) {
+            _.each(prospects, function(prospect) {
+                $scope.updateFieldName(prospect).then(function(prospectWithUpdatedFieldName) {
+                    // console.log(prospectWithUpdatedFieldName);
+                    dataService.updateProspect(prospectWithUpdatedFieldName);    
+                    // if(prospectWithUpdatedFieldName.id == $scope.prospect.id) $state.forceReload();
+                    $state.forceReload();
+                });
+            });
+        } else if($scope.statusChanged) {
+            $scope.updateStatus($scope.prospect).then(function(prospectWithUpdatedStatus) {
+                // console.log(prospectWithUpdatedStatus);
+                dataService.updateProspect(prospectWithUpdatedStatus);
+                $state.forceReload();
+            });
+        } else {
+            $scope.updateProspectName($scope.prospect).then(function(prospectWithUpdatedName) {
+                dataService.updateProspect(prospectWithUpdatedName);
+                $state.forceReload();
+            })
         }
-        
-        // console.log('saving this:', $scope.prospect);
-        dataService.updateProspect($scope.prospect);
-        $state.forceReload();
     };
   });

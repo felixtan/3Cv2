@@ -110,6 +110,7 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
+    // pass in driver and data.name
     $scope.updateDriverName = function(driver) {
         var deferred = $q.defer();
         driver.data.fullName.value = driver.data["First Name"].value + " " + driver.data["Last Name"].value;
@@ -118,23 +119,59 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
-    $scope.save = function (data, field) {
-        console.log('data:', data);
-        var drivers = getDrivers.data;
+    $scope.addFieldToLogs = function(driver, field) {
+        var deferred = $q.defer();
+        _.each(driver.logs, function(log) {
+            log.data[field] = null;    
+        });
+        deferred.resolve(driver);
+        deferred.reject(new Error('Error adding field to all logs'));
+        return deferred.promise;
+    };
 
-        ///////////////////////////////
-        /// Update the scope driver ///
-        ///////////////////////////////
+    $scope.save = function (data, field) {
+        // console.log('data:', data);
+            // data.name -> updated field name
+            // data.value -> updated field value
+            // data.log -> updated field log
+
+        var drivers = getDrivers.data;
 
         // the scope driver's field value and log value are already changed,
         // so only need to check if field name changed
         // "First Name" and "Last Name" can't be changed so don't need to update fullName here
         // check it:
         // console.log('did it change?', $scope.driver);
-        if($scope.fieldNameChanged()) {
-            $scope.updateFieldName($scope.driver).then(function(driver) {
-                dataService.updateDriver(driver);
-                $state.forceReload();
+       
+        if($scope.fieldNameChanged() && !$scope.logValChanged()) {
+            _.each(drivers, function(driver) {
+                $scope.updateFieldName(driver).then(function(driverWithUpdatedFieldName) {
+                    // console.log('saving:', driverWithUpdatedFieldName);
+                    dataService.updateDriver(driverWithUpdatedFieldName);
+                    if(driverWithUpdatedFieldName.id == $scope.driver.id) $state.forceReload();
+                });
+            });
+        } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
+            _.each(drivers, function(driver) {
+                $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
+                    $scope.addFieldToLogs(driverWithUpdatedLogVal, data.name).then(function(driverWithUpdatedLogs) {
+                        // console.log('saving:', driverWithUpdatedLogs);
+                        dataService.updateDriver(driverWithUpdatedLogs);
+                        if(driverWithUpdatedLogs.id == $scope.driver.id) $state.forceReload();
+                    });
+                });
+            });
+        } else if($scope.logValChanged() && $scope.fieldNameChanged()) {
+            _.each(drivers, function(driver) {
+               $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
+                    $scope.addFieldToLogs(driverWithUpdatedLogVal, data.name).then(function(driverWithUpdatedLogs) {
+                        $scope.updateFieldName(driverWithUpdatedLogs).then(function(driverWithUpdatedFieldName) {
+                            // console.log('saving:', driverWithUpdatedFieldName);
+                            dataService.updateDriver(driverWithUpdatedFieldName);
+                            if(driverWithUpdatedFieldName.id == $scope.driver.id) $state.forceReload();
+                        });
+                    });
+                });
             });
         } else {
             $scope.updateDriverName($scope.driver).then(function(driver) {
@@ -142,39 +179,6 @@ angular.module('clientApp')
                 $state.forceReload();
             });
         }
-
-        ///////////////////////////////
-        //// Update other drivers /////
-        ///////////////////////////////
-
-        // To simplify things, update log val anyway handle both cases
-        if($scope.fieldNameChanged()) {
-            _.each(drivers, function(driver) {
-                if(driver.id != $scope.driver.id) {
-                    $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
-                        $scope.updateFieldName(driverWithUpdatedLogVal).then(function(driverWithUpdatedFieldName) {
-                            dataService.updateDriver(driverWithUpdatedFieldName);
-                        });
-                    });
-                }
-            });
-        } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
-            _.each(drivers, function(driver) {
-                if(driver.id != $scope.driver.id) {
-                    $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
-                        dataService.updateDriver(driverWithUpdatedLogVal);
-                    });
-                }
-            });
-        } else {
-            // do nothing
-        }
-        
-        // if($scope.logValChanged()) console.log('log val changed');
-        // if($scope.fieldValChanged()) {
-        //     console.log('field val changed');
-        //     if($scope.driverName(field)) console.log('driver name changed');
-        // }
     };
 
     /////////////////////////////

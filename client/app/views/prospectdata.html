@@ -39,7 +39,7 @@
                         {{ field.capitalizeIfStatus() }}
                     </span>
 
-                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' ng-if='notNameOrStatus(field)' onbeforesave='queueUpdateFieldName($data, field)'>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' ng-if='notNameOrStatus(field)' onbeforesave='setFieldNameChanged($data, field)'>
                         {{ field }}
                     </span>
                 </td>
@@ -49,7 +49,7 @@
                     </span>
                 </td>
                 <td ng-if='!notStatus(field)'>
-                     <option e-form='rowform' e-name='status' editable-select='value.value' e-ng-options='status.value as status.value for status in statuses' onbeforesave='updateStatusInProspect($data)'>
+                     <option e-form='rowform' e-name='status' editable-select='value.value' e-ng-options='status.value as status.value for status in statuses' onbeforesave='setStatusChanged($data)'>
                         {{ value.value }}
                     </option>
                 </td>
