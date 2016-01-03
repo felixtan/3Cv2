@@ -53,11 +53,11 @@
                     <input type='checkbox' ng-model='formData[field].log'> Log this
                 </span>
                 
-                <span style='float:right;'>
-                    <button class='btn btn-danger btn-xs' type='button' ng-click='openDeleteFieldModal(lg, { "field": field })'>
+                <!-- <span style='float:right;'>
+                    <button class='btn btn-danger btn-xs' type='button' ng-click='open({ "field": field })' ng-controller='DeleteFieldModalCtrl'>
                         Delete
                     </button>
-                </span>
+                </span> -->
 
                 <input type='text' class='form-control' ng-model="formData[field].value">
             </div>

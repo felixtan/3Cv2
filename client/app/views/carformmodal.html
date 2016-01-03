@@ -42,11 +42,11 @@
                     <input type="radio" name='identifier' ng-model="identifier.name" value="{{ field }}"> Sort cars with this field.
                 </label>
             </span>
-            <span>
-                <button class='btn btn-danger btn-xs' type='button' ng-click='openDeleteFieldModal(lg, { "field": field })' style='float:right;'>
+            <!-- <span style='float:right;'>
+                <button class='btn btn-danger btn-xs' type='button' ng-click='open({ "field": field })' ng-controller='DeleteFieldModalCtrl'>
                     Delete
                 </button>
-            </span>
+            </span> -->
             <input type='text' class='form-control' ng-model="formData[field].value">
         </div>
 

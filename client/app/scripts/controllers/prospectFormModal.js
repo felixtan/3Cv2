@@ -152,34 +152,5 @@ angular.module('clientApp')
     $scope.close = function () {
       $modalInstance.dismiss('cancel');
     };
-
-    $scope.openDeleteFieldModal = function (size, thing) {
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'views/deletefieldmodal.html',
-            controller: 'DeleteFieldModalInstanceCtrl',
-            size: size,
-            resolve: {
-                thing: function() {
-                    return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
-                },
-                getProspects: function(dataService) {
-                    return dataService.getProspects();
-                },
-                getCars: function() { 
-                    return []; 
-                },
-                getDrivers: function() {
-                    return [];
-                }
-            }
-        });
-
-        modalInstance.result.then(function (field) {
-            if(typeof field !== 'undefined') delete $scope.formData[field];
-        }, function () {
-            console.log('Modal dismissed at: ' + new Date());
-        });
-    };
 });
  
