@@ -11,6 +11,10 @@ angular.module('clientApp')
   .controller('DriverDataCtrl', function ($q, $modal, $state, dataService, $scope, getDriver, getDrivers, carHelpers) {
     
     $scope.driver = getDriver.data;
+    $scope.tabs = [
+        { title: 'Data', active: true, state: 'driverProfile.data({ id: driver.id })' },
+        { title: 'Logs', active: false, state: 'driverProfile.logs({ id: driver.id })' }
+    ];
     
     carHelpers.getIdentifier().then(function(identifier) {
         $scope.carIdentifier = identifier;

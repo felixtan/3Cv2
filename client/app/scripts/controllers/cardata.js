@@ -13,6 +13,10 @@ angular.module('clientApp')
     $scope.car = getCar.data;
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
     $scope.identifier = { name: $scope.car.identifier || null };
+    $scope.tabs = [
+        { title: 'Data', active: true, state: 'carProfile.data({ id: car.id })' },
+        { title: 'Logs', active: false, state: 'carProfile.logs({ id: car.id })' }
+    ];
 
     ///////////////////
     ///// Data UI /////

@@ -11,8 +11,8 @@ angular.module('clientApp')
   .controller('DriverLogCtrl', function ($q, $scope, getDriver, dataService) {
     $scope.driver = getDriver.data;
     $scope.tabs = [
-        { title: 'Data', route: 'driverProfile.data' },
-        { title: 'Logs', route: 'driverProfile.logs', active: true }
+        { title: 'Data', active: false, state: 'driverProfile.data({ id: driver.id })' },
+        { title: 'Logs', active: true, state: 'driverProfile.logs({ id: driver.id })' }
     ];
 
     $scope.getFieldsToBeLogged = function() {
