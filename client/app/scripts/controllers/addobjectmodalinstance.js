@@ -18,6 +18,8 @@ angular.module('clientApp')
     $scope.fieldsToHide = []
     $scope.fieldsToNotLog = [];
     $scope.newFields = [];
+    $scope.statuses = [];
+    $scope.status = {};
 
     $scope.getNewFieldsToLog = function(formData) {
         return _.filter(Object.keys(formData), function(field) {
@@ -89,14 +91,19 @@ angular.module('clientApp')
         $scope.create = prospectHelpers.createProspect;
         $scope.save = prospectHelpers.saveProspect;
         prospectHelpers.getFormData().then(function(formData) {
-            // console.log('prospect form data:', formData);
-            $scope.fieldsToHide.push("fullName");
-            $scope.fieldsToNotLog.push("First Name");
-            $scope.fieldsToNotLog.push("Last Name");
-            $scope.currentIdentifier.value = "fullName";
-            angular.copy($scope.currentIdentifier, $scope.identifier);
-            $scope.formData = formData;
-            $scope.disableConditions = prospectHelpers.namesNotNull;
+            prospectHelpers.getProspectStatuses().then(function(result) {
+                console.log('prospect form data:', formData);
+                // console.log(statuses);
+                $scope.fieldsToHide.push("fullName");
+                $scope.fieldsToHide.push("status");
+                $scope.fieldsToNotLog.push("First Name");
+                $scope.fieldsToNotLog.push("Last Name");
+                $scope.currentIdentifier.value = "fullName";
+                angular.copy($scope.currentIdentifier, $scope.identifier);
+                $scope.formData = formData;
+                $scope.statuses = result.data[0].statuses;
+                $scope.disableConditions = prospectHelpers.namesNotNull;
+            });
         });
     } else {
         console.log('add object modal called from invalid state', $state.current);
@@ -106,11 +113,18 @@ angular.module('clientApp')
         $scope.create($scope.formData).then(function(object) {
             // console.log('saving:', object);
 
+            // TODO: better pre-save processing
+
             if($scope.objectType === 'car') {
                 if($scope.differentIdentifier()) {    // setIdentifier
                     carHelpers._updateIdentifier($scope.identifier.value);
                     object.identifier = $scope.identifier.value;
                 }
+            }
+
+            if($scope.objectType === 'prospect') {
+                object.status = { value: $scope.status.value };
+                object.data.status = { value: $scope.status.value, log: false };
             }
 
             $scope.save(object).then(function(result) {

@@ -109,25 +109,27 @@ angular.module('clientApp')
       var deferred = $q.defer();
       var formData = {};
 
-      if(thereAreDrivers()) {
-        // console.log('there are drivers');
-        getDrivers().then(function(result) {
-          var driverData = result.data[0].data;
-          // console.log(driver);
-          _.each(Object.keys(driverData), function(field) {
-            formData[field] = {
-              value: null,
-              log: driverData[field].log
-            }
+      thereAreDrivers().then(function(ans) {
+        if(ans) {
+          // console.log('there are drivers');
+          getDrivers().then(function(result) {
+            var driverData = result.data[0].data;
+            // console.log(driver);
+            _.each(Object.keys(driverData), function(field) {
+              formData[field] = {
+                value: null,
+                log: driverData[field].log
+              }
+            });
+            deferred.resolve(formData);
+            deferred.reject(new Error('Error initializing driver form data'));
           });
-          deferred.resolve(formData);
+        } else {
+          console.log('there are no drivers');
+          deferred.resolve(getDefaultDriver().data);
           deferred.reject(new Error('Error initializing driver form data'));
-        });
-      } else {
-        console.log('there are no drivers');
-        deferred.resolve(getDefaultDriver().data);
-        deferred.reject(new Error('Error initializing driver form data'));
-      }
+        }
+      });
 
       return deferred.promise;
     };

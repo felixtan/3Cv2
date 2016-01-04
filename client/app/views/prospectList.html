@@ -2,7 +2,7 @@
     <h2 class='page-header'>Prospects</h2>
 
     <div>
-        <button class='btn btn-success' data-toggle='modal' ui-sref='dashboard.prospects.prospectForm'>
+        <button class='btn btn-success' data-toggle='modal' ng-controller='AddObjectModalCtrl' ng-click='open()'>
             + Prospect
         </button>
         <button class='btn btn-success' ng-click='addStatus()'>

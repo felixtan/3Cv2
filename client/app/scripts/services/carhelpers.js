@@ -91,25 +91,27 @@ angular.module('clientApp')
     var deferred = $q.defer();
     var formData = {};
 
-    if(thereAreCars()) {
-      // console.log('there are cars');
-      getCars().then(function(result) {
-        var carData = result.data[0].data;
-        // console.log(car);
-        _.each(Object.keys(carData), function(field) {
-          formData[field] = {
-            value: null,
-            log: carData[field].log
-          }
+    thereAreCars().then(function(ans) {
+      if(ans) {
+        // console.log('there are cars');
+        getCars().then(function(result) {
+          var carData = result.data[0].data;
+          // console.log(car);
+          _.each(Object.keys(carData), function(field) {
+            formData[field] = {
+              value: null,
+              log: carData[field].log
+            }
+          });
+          deferred.resolve(formData);
+          deferred.reject(new Error('Error initializing car form data'));
         });
-        deferred.resolve(formData);
+      } else {
+        console.log('there are no cars');
+        deferred.resolve(getDefaultCar().data);
         deferred.reject(new Error('Error initializing car form data'));
-      });
-    } else {
-      console.log('there are no cars');
-      deferred.resolve(getDefaultCar().data);
-      deferred.reject(new Error('Error initializing car form data'));
-    }
+      }
+    });
 
     return deferred.promise;
   };
