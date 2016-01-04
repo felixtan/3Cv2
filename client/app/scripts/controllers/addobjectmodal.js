@@ -15,18 +15,7 @@ angular.module('clientApp')
             animation: true,
             templateUrl: 'views/addobjectmodal.html',
             controller: 'AddObjectModalInstanceCtrl',
-            size: 'md',
-            resolve: {
-                // getCars: function(dataService) {
-                //     return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
-                // },
-                // getDrivers: function(dataService) {
-                //     return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
-                // },
-                // getProspects: function(dataService) {
-                //     return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
-                // }
-            }
+            size: 'md'
         });
 
         modalInstance.result.then(function (formData) {

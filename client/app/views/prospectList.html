@@ -18,7 +18,7 @@
     <div ng-repeat='status in statuses'>
         <h3>
             <span ng-show='!rowform.$visible'>
-                {{ status.value }}
+                {{ ::status.value }}
             </span>
 
             <span ng-show='rowform.$visible'>Name: </span>
@@ -30,7 +30,7 @@
             <span ng-show='rowform.$visible' e-form='rowform'>
                 <select ng-model='newIndex.val'>
                     <option ng-repeat='index in order' value='{{ index }}'>
-                        {{ index }}
+                        {{ ::index }}
                     </option>
                 </select>
             </span>
@@ -59,7 +59,7 @@
                         <h4>
                             <a ui-sref='prospectProfile.data({ id: prospect.id })'>
                                 <!-- {{ ::prospect.identifierValue }} -->
-                                {{ prospect.data.fullName.value }}
+                                {{ ::prospect.data.fullName.value }}
                             </a>
                         </h4>
                     </td>
