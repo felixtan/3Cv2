@@ -8,10 +8,13 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddObjectModalInstanceCtrl', function ($modal, prospectHelpers, carHelpers, driverHelpers, getProspects, getDrivers, getCars, dataService, $scope, $modalInstance, $state) {
+  .controller('AddObjectModalInstanceCtrl', function ($modal, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
     $scope.formData = {};
     $scope.objects = [];
     $scope.objectType = null;
+    $scope.identifier = { value: null };
+    $scope.currentIdentifier = { value: null };
+    $scope.fields = [];
     $scope.fieldsToHide = []
     $scope.fieldsToNotLog = [];
     $scope.newFields = [];
@@ -38,6 +41,14 @@ angular.module('clientApp')
         return _.contains($scope.fieldsToNotLog, field);
     };
 
+    $scope.invalidIdentifier = function(identifier) {
+        return ((identifier.value === null) || (typeof identifier.value === 'undefined')) ? true : false;
+    };
+
+    $scope.differentIdentifier = function() {
+        return ($scope.identifier.value !== $scope.currentIdentifier.value);
+    };
+
     // determine the state or ui calling this modal
     if($state.includes('dashboard.drivers')) {
         console.log('called from drivers ui');
@@ -50,19 +61,43 @@ angular.module('clientApp')
             $scope.fieldsToHide.push("fullName");
             $scope.fieldsToNotLog.push("First Name");
             $scope.fieldsToNotLog.push("Last Name");
+            $scope.currentIdentifier.value = "fullName";
+            angular.copy($scope.currentIdentifier, $scope.identifier);
             $scope.formData = formData;
             $scope.disableConditions = driverHelpers.namesNotNull;
         });
     } else if($state.includes('dashboard.cars')) {
         console.log('called from cars ui');
         $scope.objectType = 'car';
-        $scope.object = (getCars.data > 0) ? getCars.data[0] : {};
-        $scope.create = dataService.createCar;
+        $scope.update = carHelpers.updateCar;
+        $scope.create = carHelpers.createCar;
+        $scope.save = carHelpers.saveCar;
+        carHelpers.getFormData().then(function(formData) {
+            carHelpers.getIdentifier().then(function(identifier) {
+                // console.log('car form data:', formData);
+                $scope.formData = formData;
+                $scope.fields = Object.keys(formData);
+                $scope.currentIdentifier.value = identifier;
+                angular.copy($scope.currentIdentifier, $scope.identifier);
+                $scope.disableConditions = function(formData) { return true; };
+            });
+        });
     } else if($state.includes('dashboard.prospects')) {
         console.log('called from prospects ui');
         $scope.objectType = 'prospect';
-        $scope.object = (getProspects.data > 0) ? getProspects.data[0] : {};
-        $scope.create = dataService.createProspect;
+        $scope.update = prospectHelpers.updateProspect;
+        $scope.create = prospectHelpers.createProspect;
+        $scope.save = prospectHelpers.saveProspect;
+        prospectHelpers.getFormData().then(function(formData) {
+            // console.log('prospect form data:', formData);
+            $scope.fieldsToHide.push("fullName");
+            $scope.fieldsToNotLog.push("First Name");
+            $scope.fieldsToNotLog.push("Last Name");
+            $scope.currentIdentifier.value = "fullName";
+            angular.copy($scope.currentIdentifier, $scope.identifier);
+            $scope.formData = formData;
+            $scope.disableConditions = prospectHelpers.namesNotNull;
+        });
     } else {
         console.log('add object modal called from invalid state', $state.current);
     }
@@ -70,6 +105,14 @@ angular.module('clientApp')
     $scope.submit = function() {
         $scope.create($scope.formData).then(function(object) {
             // console.log('saving:', object);
+
+            if($scope.objectType === 'car') {
+                if($scope.differentIdentifier()) {    // setIdentifier
+                    carHelpers._updateIdentifier($scope.identifier.value);
+                    object.identifier = $scope.identifier.value;
+                }
+            }
+
             $scope.save(object).then(function(result) {
                 // var newObject = result.data;
                 // if log = true for fields created in this session, update all objects and object logs

@@ -19,30 +19,16 @@
     </div>
 
     <br>
-
-    <!-- Collapsible add field form -->
-    <!-- <form novalidate>
-        <button class='btn btn-info' type='button' ng-click='isCollapsed = !isCollapsed'>
-            + Field
-        </button>
-    </form>
-
-    <br>
-
-    <div collapse='!isCollapsed' class='well well-lg'>
-        <form novalidate role='form' id='fieldForm' name='fieldForm'>
-            <div class='form-group'>
-                <label for='name'>Field Name</label>
-                <input type='text' class='form-control' ng-model='newField.name' ng-required>
-            </div>
-
-            <button type='submit' class='btn btn-success' ng-click='addField()' ng-disabled='newField.name === null'>
-                +
-            </button>
-        </form>
-    </div> -->
-
+    
     <form novalidate role='form' id='newObjectForm' name='form' ng-submit='submit($data)'>
+
+        <div class='form-group' ng-if='objectType === "car"'>
+            <label>Organize cars with this identifier:</label>
+
+            <select ng-model='identifier.value' class='form-control'>
+                <option ng-repeat='field in fields' value='{{ ::field }}'>{{ ::field }}</option>
+            </select>
+        </div>
 
         <div class='form-group' ng-repeat='(field, value) in formData' ng-if='!hide(field)'>
             <label for="{{ ::field }}">{{ ::field }}</label>
@@ -61,7 +47,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData)'>Submit</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || nullIdentifier(identifier)'>Submit</button>
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

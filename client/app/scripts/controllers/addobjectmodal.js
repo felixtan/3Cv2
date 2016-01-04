@@ -17,15 +17,15 @@ angular.module('clientApp')
             controller: 'AddObjectModalInstanceCtrl',
             size: 'md',
             resolve: {
-                getCars: function(dataService) {
-                    return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
-                },
-                getDrivers: function(dataService) {
-                    return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
-                },
-                getProspects: function(dataService) {
-                    return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
-                }
+                // getCars: function(dataService) {
+                //     return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
+                // },
+                // getDrivers: function(dataService) {
+                //     return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
+                // },
+                // getProspects: function(dataService) {
+                //     return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
+                // }
             }
         });
 
