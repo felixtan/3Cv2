@@ -31,7 +31,7 @@ angular.module('clientApp')
       $scope.objectType = 'prospect';
       $scope.update = dataService.updateProspect;
     } else {
-      console.log('add field modal calle from invalid state', $state.current);
+      console.log('add field modal called from invalid state', $state.current);
     }
 
     $scope.submit = function () {
@@ -44,27 +44,32 @@ angular.module('clientApp')
             };
             
             // add field to each log
-            if($scope.formData.log && ($scope.objectType != 'prospect')) {
-                _.each(object.logs, function(log) {
-                    log.data[$scope.formData.field] = null;
-                });
-            }
+            // if($scope.formData.log && ($scope.objectType != 'prospect')) {
+            //     _.each(object.logs, function(log) {
+            //         log.data[$scope.formData.field] = null;
+            //     });
+            // }
 
             $scope.update(object);
         });
 
-        $scope.close();
-    }
+        $scope.ok($scope.formData.field);
+    };
 
     $scope.reset = function () {
       $scope.formData = {};
       $scope.form.$setPristine();
       $scope.form.$setUntouched();
       $state.forceReload();
-    }
+    };
+
+    $scope.ok = function(newField) {
+      $modalInstance.close(newField)
+      $state.forceReload();
+    };
 
     $scope.close = function () {
         $state.forceReload();
         $modalInstance.dismiss('cancel');
-    }
+    };
   });

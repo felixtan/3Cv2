@@ -45,6 +45,7 @@ angular.module('clientApp')
                         $scope.objects.forEach(function(obj) {
                             delete obj.data[$scope.value];
                             $scope.update(obj);
+                            // TODO: What to do with logs containing this field?
                         });
                     }
                     break;

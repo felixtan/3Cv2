@@ -2,22 +2,20 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AddfieldmodalCtrl
+ * @name clientApp.controller:AddobjectmodalCtrl
  * @description
- * # AddfieldmodalCtrl
+ * # AddobjectmodalCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalCtrl', function ($state, dataService, $scope, $modal) {
+  .controller('AddObjectModalCtrl', function ($state, dataService, $scope, $modal) {
     
-    $scope.newField = null;
-
-    $scope.open = function(size) {
+    $scope.open = function() {
         var modalInstance = $modal.open({
             animation: true,
-            templateUrl: 'views/addfieldmodal.html',
-            controller: 'AddFieldModalInstanceCtrl',
-            size: size,
+            templateUrl: 'views/addobjectmodal.html',
+            controller: 'AddObjectModalInstanceCtrl',
+            size: 'md',
             resolve: {
                 getCars: function(dataService) {
                     return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
@@ -31,8 +29,7 @@ angular.module('clientApp')
             }
         });
 
-        modalInstance.result.then(function (newField) {
-            $scope.newField = newField;
+        modalInstance.result.then(function (formData) {
             $state.forceReload();
         }, function() {
             $state.forceReload();

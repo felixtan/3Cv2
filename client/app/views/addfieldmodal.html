@@ -11,15 +11,15 @@
     <form novalidate role='form' name='form' ng-submit='submit()'>
 
         <div class='form-group'>
-            <label for='field'>Field</label>
+            <label for='field'>Name</label>
 
-            <span class='checkbox' ng-if='objectType != "prospect"' style='float:right;'>
+            <!-- <span class='checkbox' ng-if='objectType != "prospect"' style='float:right;'>
                 <label for='log'>
                     <input type='checkbox' ng-model='formData.log'> Log it?
                 </label>
-            </span>
+            </span> -->
 
-            <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' ng-pattern="/^[a-zA-Z0-9_-]*$/">
+            <input name='field' type='text' class='form-control' ng-model='formData.field' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
         </div>
 
         <div ng-messages="form.field.$error" ng-show='form.field.$dirty && form.field.$invalid' class="alert alert-danger" role="alert">
@@ -27,7 +27,7 @@
                 Field must
                 <ul>
                     <li>be alphanumeric</li>
-                    <li>contain no special characters except "-" or "_"</li>
+                    <li>contain no special characters except "_"</li>
                     <li>contain no spaces</li>
                 </ul>
             </div>
