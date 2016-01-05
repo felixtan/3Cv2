@@ -120,14 +120,30 @@ angular.module('clientApp')
                     carHelpers._updateIdentifier($scope.identifier.value);
                     object.identifier = $scope.identifier.value;
                 }
+
+                $scope.save(object).then(function(result) {
+                    $scope.close(object);
+                });
             }
 
             if($scope.objectType === 'prospect') {
-                object.status = { value: $scope.status.value };
-                object.data.status = { value: $scope.status.value, log: false };
+                prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
+                    object.status = { value: ($scope.status.value || defaultStatus.value) };
+                    object.data.status = { value: ($scope.status.value || defaultStatus.value), log: false };
+
+                    $scope.save(object).then(function(result) {
+                        $scope.close(object);
+                    });
+                });
             }
 
-            $scope.save(object).then(function(result) {
+            if($scope.objectType === 'driver') {
+                $scope.save(object).then(function(result) {
+                    $scope.close(object);
+                });
+            }
+
+            // $scope.save(object).then(function(result) {
                 // var newObject = result.data;
                 // if log = true for fields created in this session, update all objects and object logs
                 // var fieldsToLog = $scope.getNewFieldsToLog($scope.formData);
@@ -145,8 +161,8 @@ angular.module('clientApp')
                 //     });
                 // });
 
-                $scope.close(object);
-            });     
+                // $scope.close(object);
+            // });     
         });
     };
 
