@@ -1,5 +1,10 @@
 <link rel="stylesheet" type="text/css" href="styles/tables.css">
 
+<tabset>
+    <tab ng-repeat='tab in tabs' heading='{{ ::tab.title }}' active='tab.active' ui-sref='{{ ::tab.state }}'>
+    </tab>
+</tabset>
+
 <br>
 
 <div class='btn-toolbar' role='toolbar'>

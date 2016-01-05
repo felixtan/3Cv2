@@ -121,12 +121,15 @@ angular.module('clientApp')
                 log: driverData[field].log
               }
             });
+
+            // console.log('there are cars, driver data:', formData);
             deferred.resolve(formData);
             deferred.reject(new Error('Error initializing driver form data'));
           });
         } else {
-          console.log('there are no drivers');
-          deferred.resolve(getDefaultDriver().data);
+          var defaultDriverData = getDefaultDriver().data;
+          deferred.resolve(defaultDriverData);
+          // console.log('there are no drivers, default driver data:', defaultDriverData);
           deferred.reject(new Error('Error initializing driver form data'));
         }
       });

@@ -17,6 +17,7 @@ angular.module('clientApp')
     var getProspects = dataService.getProspects;
     var saveProspect = dataService.createProspect;
     var updateProspect = dataService.updateProspect;
+    var deleteProspect = dataService.deleteProspect;
     var getProspectStatuses = dataService.getProspectStatuses;
 
     var getOrganizationId = function() {
@@ -36,7 +37,7 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var getFields = function() {
+    var _getFields = function() {
       var deferred = $q.defer();
       getProspects().then(function(result) {
         deferred.resolve(Object.keys(result.data[0].data));
@@ -45,8 +46,12 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
+    var getFields = function(prospect) {
+      return Object.keys(prospect.data); 
+    };
+
     var notName = function(field) {
-      return ((field != "First Name") && (field != "Last Name") && (field != "fullName"));
+      return ((field !== "First Name") && (field !== "Last Name") && (field !== "fullName"));
     };
 
     var namesNotNull = function(prospectData) {
@@ -180,7 +185,9 @@ angular.module('clientApp')
       saveProspect: saveProspect,
       updateProspect: updateProspect,
       createProspect: createProspect,
+      deleteProspect: deleteProspect,
       thereAreProspects: thereAreProspects,
+      _getFields: _getFields,
       getFields: getFields,
       notName: notName,
       namesNotNull: namesNotNull,

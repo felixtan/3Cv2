@@ -92,7 +92,7 @@ angular.module('clientApp')
         $scope.save = prospectHelpers.saveProspect;
         prospectHelpers.getFormData().then(function(formData) {
             prospectHelpers.getProspectStatuses().then(function(result) {
-                console.log('prospect form data:', formData);
+                // console.log('prospect form data:', formData);
                 // console.log(statuses);
                 $scope.fieldsToHide.push("fullName");
                 $scope.fieldsToHide.push("status");

@@ -8,11 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ProspectDataCtrl', function ($q, $modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses) {
+  .controller('ProspectDataCtrl', function ($q, $modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses, prospectHelpers, driverHelpers) {
     
     $scope.prospect = getProspect.data;
     $scope.prospectStatuses = getProspectStatuses.data[0];
     $scope.statuses = $scope.prospectStatuses.statuses;
+    $scope.fields = prospectHelpers.getFields($scope.prospect);
 
     ///////////////////
     ///// Data UI /////
@@ -29,12 +30,6 @@ angular.module('clientApp')
     $scope.notNameOrStatus = function(field) {
         return ((field != "First Name") && (field != "Last Name") && (field !== "fullName") && (field.toLowerCase() != "status"));
     };
-
-    $scope.getFields = function(prospect) {
-        $scope.fields = Object.keys($scope.prospect.data);
-        return $scope.fields;
-    };
-    $scope.getFields();
 
     $scope.statusChanged = false;
     $scope.status = $scope.prospect.status.value;
@@ -138,5 +133,81 @@ angular.module('clientApp')
                 $state.forceReload();
             })
         }
+    };
+
+    $scope.getUniqueFieldName = function(fields, field) {
+        return (_.contains(fields, field)) ? $scope.getUniqueFieldName(fields, "_" + field) : field;
+    };
+
+    // prospectData = $scope.prospect.data
+    $scope.splitProspectData = function(driverData, prospectData, fieldsInCommon) {
+        var deferred = $q.defer();
+        var prospectDataMinusFieldsInCommon = {};
+        var prospectDataOnlyFieldsInCommon = {};
+        angular.copy(prospectData, prospectDataMinusFieldsInCommon);
+
+        var prospectFieldsToAddToAllDrivers = _.difference(Object.keys(prospectData), Object.keys(driverData));
+        // console.log(Object.keys(driverData));
+        // console.log(Object.keys(prospectData));
+        // console.log(prospectFieldsToAddToAllDrivers);
+
+        prospectFieldsToAddToAllDrivers = _.reject(prospectFieldsToAddToAllDrivers, function(field) {
+            return _.contains(Object.keys(driverData), field);
+        });
+
+        _.each(fieldsInCommon, function(field) {
+            delete prospectDataMinusFieldsInCommon[field];
+            prospectDataOnlyFieldsInCommon[field] = prospectData[field];
+            if(prospectHelpers.notName(field)) {
+                var renamedField = $scope.getUniqueFieldName(Object.keys(driverData), field);
+                prospectFieldsToAddToAllDrivers.push(renamedField);
+                prospectDataOnlyFieldsInCommon[renamedField] = prospectDataOnlyFieldsInCommon[field];
+                delete prospectDataOnlyFieldsInCommon[field];
+            }
+        });
+
+        deferred.resolve({
+            prospectDataMinusFieldsInCommon: prospectDataMinusFieldsInCommon,
+            prospectDataOnlyFieldsInCommon: prospectDataOnlyFieldsInCommon,
+            prospectFieldsToAddToAllDrivers: _.without(prospectFieldsToAddToAllDrivers, "status")
+        });
+
+        deferred.reject(new Error('Error splitting prospect data via fields in common with driver data.'));
+        return deferred.promise;
+    };
+
+    $scope.convert = function() {
+        driverHelpers.getFormData().then(function(blankDriverData) {        
+            var fieldsInCommon = _.intersection(Object.keys(blankDriverData), Object.keys($scope.prospect.data));
+            $scope.splitProspectData(blankDriverData, $scope.prospect.data, fieldsInCommon).then(function(result) {
+                // console.log(result.prospectFieldsToAddToAllDrivers);
+                var newDriverData = _.extend(blankDriverData, result.prospectDataOnlyFieldsInCommon, result.prospectDataMinusFieldsInCommon);
+                delete newDriverData.status;
+                // console.log('newDriverData:', newDriverData);
+                // console.log('add these fields to all drivers:', result.prospectFieldsToAddToAllDrivers);
+                driverHelpers.createDriver(newDriverData).then(function(newDriverObj) {
+                    // console.log('newDriverObj:', newDriverObj);
+                    driverHelpers.saveDriver(newDriverObj).then(function(newDriver) {
+                        // console.log(newDriver.data);
+                        driverHelpers.getDrivers().then(function(promiseResult) {
+                            var drivers = promiseResult.data;
+                            _.each(drivers, function(driver) {
+                                if(driver.id !== newDriver.data.id) {
+                                    _.each(result.prospectFieldsToAddToAllDrivers, function(field) {
+                                        driver.data[field] = { value: null, log: false };
+                                    });
+                                    // console.log(driver);
+                                    driverHelpers.updateDriver(driver);
+                                }
+                            });
+                        });
+                            
+                        prospectHelpers.deleteProspect($scope.prospect.id).then(function() {
+                            $state.go('dashboard.prospects');
+                        });
+                    });
+                });
+            });
+        });
     };
   });

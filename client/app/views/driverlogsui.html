@@ -1,5 +1,7 @@
+<!-- <link rel="stylesheet" href="styles/partials/logs.cars.css"> -->
+
 <tabset>
-    <tab ng-repeat='tab in tabs' heading='{{ tab.title }}' ui-sref='{{ tab.route }}'>
+    <tab ng-repeat='tab in tabs' heading='{{ ::tab.title }}' active='tab.active' ui-sref='{{ ::tab.state }}'>
     </tab>
 </tabset>
 
