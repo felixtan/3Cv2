@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
 
     identifier: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
 
     status: {

@@ -2,17 +2,17 @@
 
 var models = require('../../db/models');
 var sequelize = models.sequelize;
-var ProspectStatuses = models.ProspectStatuses;
+var AssetTypes = models.AssetTypes;
 var helpers = require('../helpers');
 var getUserId = helpers.getUserId;
 var filterByOrgId = helpers.filterByOrgId;
 
 module.exports = {
     get: function(req, res) {
-        ProspectStatuses.findOne({ 
+        AssetTypes.findOne({ 
             where: filterByOrgId(req)
-        }).then(function(statuses) {
-            res.json(statuses);
+        }).then(function(types) {
+            res.json(types);
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
@@ -20,9 +20,9 @@ module.exports = {
     },
 
     create: function(req, res) {
-        ProspectStatuses.create(req.body)
-        .then(function(statuses) {
-            res.json(statuses);
+        AssetTypes.create(req.body)
+        .then(function(types) {
+            res.json(types);
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });
@@ -30,10 +30,10 @@ module.exports = {
     },
 
     update: function(req, res) {
-        ProspectStatuses.update(req.body, {
+        AssetTypes.update(req.body, {
             where: filterByOrgId(req)
         }).then(function() {
-            res.status(200).json({ msg: 'Update a prospect status' });
+            res.status(200).json({ msg: 'Update a asset type' });
         }).catch(function(err) {
             console.error(err);
             res.status(500).json({ error: err });

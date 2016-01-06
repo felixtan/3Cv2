@@ -9,10 +9,6 @@
  */
 angular.module('clientApp')
   .controller('DriversUICtrl', function (getDrivers, $scope, $modal) {
-    $scope.tabs = [
-        { title: 'Cars', route: 'dashboard.cars' },
-        { title: 'Drivers', route: 'dashboard.drivers', active: true }
-    ];
 
     $scope.drivers = getDrivers.data;
 

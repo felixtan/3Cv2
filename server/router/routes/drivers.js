@@ -2,11 +2,6 @@
 
 var models = require('../../db/models');
 var Drivers = models.Driver;
-var DriverLog = models.DriverLog;
-var PtgLogs = models.PtgLog;
-var GasDriverds = models.GasDriverd;
-var EzPasses = models.EzPass;
-var Drivers = models.Driver;
 var helpers = require('../helpers');
 var getUserId = helpers.getUserId;
 var filterByOrgId = helpers.filterByOrgId;

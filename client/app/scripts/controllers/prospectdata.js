@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('ProspectDataCtrl', function ($q, $modal, $state, dataService, $scope, getProspect, getProspects, getProspectStatuses, prospectHelpers, driverHelpers) {
     
     $scope.prospect = getProspect.data;
-    $scope.prospectStatuses = getProspectStatuses.data[0];
+    $scope.prospectStatuses = getProspectStatuses.data;
     $scope.statuses = $scope.prospectStatuses.statuses;
     $scope.fields = prospectHelpers.getFields($scope.prospect);
 

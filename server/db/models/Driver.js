@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     
     identifier: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
     
     data: {
@@ -22,13 +22,17 @@ module.exports = function(sequelize, DataTypes) {
 
     logs: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
-      allowNull: true
+      allowNull: false
     },
 
     carsAssigned: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
-      allowNull: true
+      allowNull: false
+    },
+
+    assetsAssigned: {
+      type: DataTypes.ARRAY(DataTypes.JSONB),
+      allowNull: false
     }
-    
   });
 };

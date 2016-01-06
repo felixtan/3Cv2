@@ -91,7 +91,7 @@ angular.module('clientApp')
       var deferred = $q.defer();
 
       getProspectStatuses().then(function(result) {
-        var statuses = result.data[0].statuses;
+        var statuses = result.data.statuses;
         // console.log(statuses);
         var defaultStatus = _.find(statuses, function(status) { return status.special; });
         deferred.resolve(defaultStatus);
@@ -175,6 +175,10 @@ angular.module('clientApp')
       });
     };
 
+    var belongsToStatus = function(prospect, status) {
+        return prospect.status.value === status.value;
+    };
+
     return {
 
       // Data
@@ -195,7 +199,8 @@ angular.module('clientApp')
       updateFullName: updateFullName,
       getDefaultProspect: getDefaultProspect,
       getFormData: getFormData,
-      getDefaultStatus: getDefaultStatus
+      getDefaultStatus: getDefaultStatus,
+      belongsToStatus: belongsToStatus
 
     };
   });

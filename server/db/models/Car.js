@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 
     identifier: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
     
     data: {
@@ -20,12 +20,12 @@ module.exports = function(sequelize, DataTypes) {
 
     logs: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
-      allowNull: true
+      allowNull: false
     },
 
     driversAssigned: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
-      allowNull: true
+      allowNull: false
     }
   });
 };

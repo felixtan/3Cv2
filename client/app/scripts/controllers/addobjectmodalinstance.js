@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddObjectModalInstanceCtrl', function ($modal, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
+  .controller('AddObjectModalInstanceCtrl', function ($modal, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
     $scope.formData = {};
     $scope.objects = [];
     $scope.objectType = null;
@@ -101,10 +101,11 @@ angular.module('clientApp')
                 $scope.currentIdentifier.value = "fullName";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.formData = formData;
-                $scope.statuses = result.data[0].statuses;
+                $scope.statuses = result.data.statuses;
                 $scope.disableConditions = prospectHelpers.namesNotNull;
             });
         });
+    } else if($state.includes('dashboard.assets')) {
     } else {
         console.log('add object modal called from invalid state', $state.current);
     }

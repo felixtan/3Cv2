@@ -1,0 +1,69 @@
+<div class='col-md-offset-2' id='asset-list'>
+    <h2 class='page-header'>Assets</h2>
+<!-- {{ assetTypes }}
+{{ types }}
+{{ assets }} -->
+    <div>
+        <button class='btn btn-success' data-toggle='modal' ng-controller='AddObjectModalCtrl' ng-click='open()'>
+            + Asset
+        </button>
+        <button class='btn btn-success' ng-click='addType()'>
+            + Type
+        </button>
+        <h4 ng-if='!thereAreAssets()' style='text-align:center;'>No assets currently.</h4>
+    </div>
+
+    <div ng-repeat='type in types'>
+        <h3>
+            <span ng-show='!rowform.$visible'>
+                {{ ::type.value }}
+            </span>
+
+            <span ng-show='rowform.$visible'>Type: </span>
+            <span editable-text='type.value' e-name='name' e-form='rowform' onbeforesave='saveTypeName()' ng-show='rowform.$visible'>
+                {{ type.value }}
+            </span>
+
+            <span ng-show='rowform.$visible'>Order: </span>
+            <span ng-show='rowform.$visible' e-form='rowform'>
+                <select ng-model='newIndex.val'>
+                    <option ng-repeat='index in order' value='{{ index }}'>
+                        {{ ::index }}
+                    </option>
+                </select>
+            </span>
+
+            <button ng-click='rowform.$show()' ng-show='!rowform.$visible' class='btn btn-xs btn-warning' style='float:right;'>
+                Edit
+            </button>
+
+            <form editable-form name='rowform' onbeforesave='saveType($data, $index, type.value)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
+                <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-primary btn-xs'>
+                    Save
+                </button>
+                <!-- <button class='btn btn-xs btn-danger' ng-click='deleteType($index, type.value)' type='button' ng-if='!type.special'>
+                    Delete
+                </button> -->
+                <button class='btn btn-xs btn-default' ng-click="rowform.$cancel()" type='button' ng-disabled='rowform.$waiting'>
+                    Cancel
+                </button>
+            </form>
+        </h3>
+        <table class='table table-striped'>
+            <tbody>
+                <!-- filter assets with type -->
+                <tr ng-repeat='asset in assets' ng-if='belongsToType(asset, type)'>
+                    <td>
+                        <h4>
+                            <a ui-sref='assetProfile.data({ type: asset.type, id: asset.id })'>
+                                <!-- {{ ::asset.identifierValue }} -->
+                                {{ ::asset.data.fullName.value }}
+                            </a>
+                        </h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+    </div>
+</div>

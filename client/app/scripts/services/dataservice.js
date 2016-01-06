@@ -26,6 +26,32 @@ angular.module('clientApp')
       ////////////////
       //// Assets ////
       ////////////////
+
+      getAssetTypes: function() {
+        return $http({
+          method: 'GET',
+          url: '/api/asset-types',
+          params: params
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      updateAssetTypes: function(types) {
+        return $http({
+          method: 'PUT',
+          url: '/api/asset-types',
+          params: params,
+          data: types
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
       getAssets: function() {
         return $http({
           method: 'GET',
@@ -39,12 +65,12 @@ angular.module('clientApp')
       },
 
       getAsset: function(id) {
-      return $http.get('/api/assets/' + id,
-        }).then(function(data) {
-          return data;
-        }, function(err) {
-          console.error(err);
-        });
+        return $http.get('/api/assets/' + id)
+          .then(function(data) {
+            return data;
+          }, function(err) {
+            console.error(err);
+          });
       },
 
       createAsset: function(asset) {

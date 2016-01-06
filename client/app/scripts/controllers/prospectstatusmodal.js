@@ -10,7 +10,7 @@
 angular.module('clientApp')
   .controller('ProspectStatusModalCtrl', function (dataService, $scope, getProspectStatuses, $state, $modalInstance) {
     
-    $scope.statuses = getProspectStatuses.data[0];
+    $scope.statuses = getProspectStatuses.data;
     $scope.newStatus = { value: null };
 
     $scope.validForm = function() {

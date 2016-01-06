@@ -47,10 +47,10 @@ angular
     $urlRouterProvider.otherwise('/dashboard/cars');
 
     $stateProvider
-    .state('wtf', {
-        url: '/',
-        templateUrl: '<div></div>'
-    })
+    // .state('wtf', {
+    //     url: '/',
+    //     templateUrl: '<div></div>'
+    // })
     .state('login', {
         url: '/login',
         templateUrl: 'login.html'
@@ -139,6 +139,9 @@ angular
         templateUrl: '/views/assetList.html',
         controller: 'AssetListCtrl',
         resolve: {
+            getAssetTypes: function(dataService) {
+                return dataService.getAssetTypes();
+            },
             getAssets: function(dataService) {
                 return dataService.getAssets();
             }
@@ -169,6 +172,17 @@ angular
         resolve: {
             getDrivers: function(dataService) {
                 return dataService.getDrivers();
+            }
+        },
+        sp: getsp()
+    })
+    .state('logs.asset', {  // logs for assets of a certain type
+        url: '/assets/:type/:id',
+        templateUrl: '/views/assetTypeLogs.html',
+        controller: 'AssetTypeLogsCtrl',
+        resolve: {
+            getAssets: function(dataService) {
+                return dataService.getAssets();
             }
         },
         sp: getsp()
@@ -249,6 +263,36 @@ angular
         url: '/data',
         templateUrl: '/views/prospectdata.html',
         controller: 'ProspectDataCtrl',
+        sp: getsp()
+    })
+    .state('assetProfile', {
+        abstract: true,
+        url: '/assets/:type/:id',
+        templateUrl: '/views/assetProfile.html',
+        controller: 'AssetProfileCtrl',
+        resolve: {
+            getAsset: function(dataService, $stateParams) {
+                return dataService.getAsset($stateParams.id);
+            },
+            getAssets: function(dataService) {
+                return dataService.getAssets();
+            },
+            getAssetTypes: function(dataService) {
+                return dataService.getAssetTypes();
+            },
+        },
+        sp: getsp()
+    })
+    .state('assetProfile.data', {
+        url: '/data',
+        templateUrl: '/views/assetData.html',
+        controller: 'AssetDataCtrl',
+        sp: getsp()
+    })
+    .state('assetProfile.logs', {
+        url: '/logs',
+        templateUrl: '/views/assetLogs.html',
+        controller: 'AssetLogsCtrl',
         sp: getsp()
     }); 
   })

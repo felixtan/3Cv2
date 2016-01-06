@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ProspectListCtrl', function (prospectHelpers, getProspects, getProspectStatuses, dataService, $scope, $modal, $state) {
-    $scope.prospectStatuses = getProspectStatuses.data[0];
+    $scope.prospectStatuses = getProspectStatuses.data;
     $scope.statuses = $scope.prospectStatuses.statuses;
     $scope.order = [];
     $scope.newIndex = { val: null };    // stores index changes
@@ -20,9 +20,11 @@ angular.module('clientApp')
         return (typeof $scope.prospects[0] !== 'undefined');
     };
 
-    $scope.belongsToStatus = function(prospect, status) {
-        return prospect.status.value === status.value;
-    };
+    /* accepts
+        1. prospect object
+        2. status object
+    */
+    $scope.belongsToStatus = prospectHelpers.belongsToStatus;
 
     // http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
     Array.prototype.move = function (old_index, new_index) {

@@ -5,8 +5,8 @@ var Car = models.Car;
 var Driver = models.Driver;
 var Prospects = models.Prospect; 
 var ProspectStatuses = models.ProspectStatuses;
-var EzPass = models.EzPass;
-var GasCard = models.GasCard;
+var Assets = models.Asset;
+var AssetTypes = models.AssetTypes;
 
 // Populate the db with fake data
 module.exports = {
@@ -173,6 +173,19 @@ module.exports = {
                 {
                     value: 'Unassigned',
                     special: true
+                }
+            ]
+        });
+
+        AssetTypes.create({
+            organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+            data: {},
+            types: [
+                {
+                    value: 'Gas Cards'
+                },
+                {
+                    value: 'EZ Passes'
                 }
             ]
         });
