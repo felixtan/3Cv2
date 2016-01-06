@@ -71,13 +71,13 @@
                             </form>
                         </div>
                     </td>
-                    <td ng-repeat='car in cars track by car.id | orderBy:"id"'>
-                        <ul ng-repeat="log in car.logs track by $index" ng-if='log.weekOf === date' class='log'>
-                            <li ng-repeat='(field, value) in log.data track by $index'>
+                    <td ng-repeat='car in cars | orderBy:"id"'>
+                        <ul ng-repeat="log in car.logs" ng-if='log.weekOf === date' class='log'>
+                            <li ng-repeat='(field, value) in log.data'>
                                 <span ng-show='logform.$visible'>
                                     {{ ::field }}: 
                                 </span>
-                                <span editable-text='{{ field }}' e-name='{{ field }}' e-form='logform'>
+                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                             </li>

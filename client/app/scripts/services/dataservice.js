@@ -23,6 +23,61 @@ angular.module('clientApp')
     // Public API here
     return {
 
+      ////////////////
+      //// Assets ////
+      ////////////////
+      getAssets: function() {
+        return $http({
+          method: 'GET',
+          url: '/api/assets',
+          params: params
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      getAsset: function(id) {
+      return $http.get('/api/assets/' + id,
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      createAsset: function(asset) {
+        return $http.post('/api/assets', asset)
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      updateAsset: function(asset) {
+        return $http({
+          method: 'PUT',
+          url: '/api/assets/' + asset.id,
+          params: params,
+          data: asset
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
+      deleteAsset: function(id) {
+        return $http.delete('/api/assets/' + id)
+        .then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
       ///////////////
       // Prospects //
       ///////////////

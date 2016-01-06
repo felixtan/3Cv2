@@ -134,6 +134,16 @@ angular
             }
         }
     })
+    .state('dashboard.assets', {
+        url: '/assets',
+        templateUrl: '/views/assetList.html',
+        controller: 'AssetListCtrl',
+        resolve: {
+            getAssets: function(dataService) {
+                return dataService.getAssets();
+            }
+        }
+    })
     .state('logs', {
         abstract: true,
         url: '/logs',

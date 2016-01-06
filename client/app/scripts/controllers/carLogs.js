@@ -237,5 +237,6 @@ angular.module('clientApp')
         // add new date to array of log dates
         $scope.dates.push(date);
         $state.forceReload();
+        $state.forceReload();
     };
   });

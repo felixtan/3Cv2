@@ -74,8 +74,10 @@
                     <td ng-repeat='driver in drivers | orderBy:"id"'>
                         <ul ng-repeat="log in driver.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <p ng-show='logform.$visible'>{{ ::field }}: </p>
-                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
+                                <span ng-show='logform.$visible'>
+                                    {{ ::field }}: 
+                                </span>
+                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                             </li>
