@@ -24,15 +24,12 @@ angular.module('clientApp')
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
     };
 
-    var getFullName = function(assetData) {
-      return assetData["First Name"].value + " " + assetData["Last Name"].value;
-    };
-
-    var thereAreAssetsOfType = function() {
+    var thereAreAssetsOfType = function(assetType) {
       var deferred = $q.defer();
       getAssets().then(function(result) {
+        // console.log('checking if there are assets of type', result);
         var assets = _.filter(result.data, function(asset) {
-            return asset.type.value === type;
+            return asset.assetType === assetType;
         });
 
         deferred.resolve((assets.length > 0));
@@ -54,134 +51,91 @@ angular.module('clientApp')
       return Object.keys(asset.data); 
     };
 
-    var notName = function(field) {
-      return ((field !== "First Name") && (field !== "Last Name") && (field !== "fullName"));
-    };
-
-    var namesNotNull = function(assetData) {
-      // console.log(assetData);
-      return ((assetData["First Name"].value !== null) && (assetData["Last Name"].value !== null));
-    };
-
-    var updateFullName = function(assetData) {
+    var createAsset = function(assetData, identifier, assetType) {
       var deferred = $q.defer();
 
-      assetData.fullName = {
-        value: getFullName(assetData),
-        log: false
-      };
-
-      deferred.resolve(assetData);
-      deferred.reject(new Error('Failed to inject full name'));
-      return deferred.promise;
-    };
-
-    var createAsset = function(assetData) {
-      var deferred = $q.defer();
-      updateFullName(assetData).then(function(assetDataWithFullName) {
-        deferred.resolve({
-          identifier: "fullName",
-          data: assetDataWithFullName,
-          organizationId: getOrganizationId()
-        });
-        
-        deferred.reject(new Error('Error creating asset'));
+      deferred.resolve({
+        identifier: identifier,
+        assetType: assetType,
+        data: assetData,
+        logs: [],
+        driversAssigned: [],
+        organizationId: getOrganizationId()
       });
+      
+      deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
 
       return deferred.promise;
     };
 
-    var getDefaultType = function() {
+    var getIdentifier = function(assetType) {
       var deferred = $q.defer();
-
-      getAssetTypes().then(function(result) {
-        var types = result.data[0].types;
-        // console.log(types);
-        var defaultType = _.find(types, function(status) { return status.special; });
-        deferred.resolve(defaultType);
-        deferred.reject(new Error('Error getting default asset status'));
-      });
-
-      return deferred.promise;
-    };
-
-    var getDefaultAsset = function() {
-      var deferred = $q.defer();
-      getDefaultType().then(function(defaultType) {
-        deferred.resolve({
-          identifier: "fullName",
-          status: defaultType,
-          data: {
-            "First Name": {
-              value: null,
-              log: false
-            },
-            "Last Name": {
-              value: null,
-              log: false
-            },
-            fullName: {
-              value: null,
-              log: false
-            },
-            status: {
-              value: defaultType.value,
-              log: false
-            }
-          },
-          organizationId: getOrganizationId()
+      
+      getAssets().then(function(result) {
+        var assets = _.filter(result.data, function(asset) {
+          return (asset.assetType === assetType);
         });
 
-        deferred.reject(new Error('Error getting default asset.'));
+        if(assets.length) {
+          deferred.resolve(assets[0].identifier);
+          deferred.reject(new Error("Error getting identifier."));
+        } else {
+          deferred.resolve(null);   // there are no assets of assetType
+          deferred.reject(new Error("Error getting identifier."));
+        }
       });
 
       return deferred.promise;
     };
 
     // Needs overhaul
-    var getFormData = function() {
-      // var deferred = $q.defer();
-      // var formData = {};
-
-      // thereAreAssets().then(function(ans) {
-      //   if(ans) {
-      //     console.log('there are assets');
-      //     getAssets().then(function(result) {
-      //       // console.log(result);
-      //       var assetData = result.data[0].data;
-      //       // console.log(asset);
-      //       _.each(Object.keys(assetData), function(field) {
-      //         formData[field] = {
-      //           value: null,
-      //           log: assetData[field].log
-      //         }
-      //       });
-      //       deferred.resolve(formData);
-      //       deferred.reject(new Error('Error initializing asset form data'));
-      //     });
-      //   } else {
-      //     getDefaultAsset().then(function(defaultAsset) {
-      //       console.log('there are no assets');
-      //       deferred.resolve(defaultAsset.data);
-      //       deferred.reject(new Error('Error initializing asset form data'));
-      //     });
-      //   }  
-      // });
+    var getFormData = function(assetType) {
+      var deferred = $q.defer();
+      var formData = {};
       
-      // return deferred.promise;
+      getAssets().then(function(result) {
+        if(result.data.length) {
+          // console.log('there are assets of type ' + assetType);
+          var assets = _.filter(result.data[0], function(asset) {
+            return (asset.assetType === assetType);
+          });
+
+          _.each(Object.keys(assets), function(field) {
+            formData[field] = {
+              value: ((field === 'assetType') ? assetType : null),
+              log: asset.data[field].log
+            }
+          });
+
+          deferred.resolve(formData);
+          deferred.reject(new Error('Error initializing asset form data'));
+        } else {
+          // console.log(result);
+          // console.log('there are no assets of type ' + assetType);
+          deferred.resolve({ assetType: { value: assetType, log: false } });
+          deferred.reject(new Error('Error initializing asset form data'));
+        }
+      });
+      
+      return deferred.promise;
     };
 
     var mapObject = function(objects, identifier) {
       return _.map(objects, function(object) {
           return {
               id: object.id,
-              identifierValue: object.data[identifier].value
+              identifierValue: object.data[object.identifier].value,
+              assetType: object.assetType
           };
       });
     };
 
     var belongsToType = function(asset, type) {
-      return asset.type.value === type.value;
+      return asset.assetType === type.value;
+    };
+
+    var invalidAssetType = function(formData) {
+      return ((formData.assetType.value !== null) || (typeof formData.assetType.value === 'undefined'));
     };
 
     return {
@@ -198,14 +152,10 @@ angular.module('clientApp')
       thereAreAssetsOfType: thereAreAssetsOfType,
       _getFields: _getFields,
       getFields: getFields,
-      notName: notName,
-      namesNotNull: namesNotNull,
-      getFullName: getFullName,
-      updateFullName: updateFullName,
-      getDefaultAsset: getDefaultAsset,
       getFormData: getFormData,
-      getDefaultType: getDefaultType,
-      belongsToType: belongsToType
+      belongsToType: belongsToType,
+      invalidAssetType: invalidAssetType,
+      getIdentifier: getIdentifier
 
     };
   });

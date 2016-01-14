@@ -8,11 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', function ($state, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
+  .controller('AddFieldModalInstanceCtrl', function ($state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
     
     $scope.formData = {};
     $scope.objects = [];
     $scope.objectType = null;
+    $scope.assetType = null;
     $scope.update = function(object) { return; };
 
     if($state.includes('carProfile') || $state.includes('dashboard.cars')) {
@@ -30,6 +31,12 @@ angular.module('clientApp')
       $scope.objects = getProspects.data;
       $scope.objectType = 'prospect';
       $scope.update = dataService.updateProspect;
+    } else if($state.includes('assetProfile') || $state.includes('dashboard.assets')) {
+      console.log("add field modal called from assetProfile");
+      $scope.assetType = getAssets.type;
+      $scope.objects = _.filter(getAssets.data.data, function(asset) { return (asset.identifier.value === $scope.assetType); });
+      $scope.objectType = 'asset';
+      $scope.update = dataService.updateAsset;
     } else {
       console.log('add field modal called from invalid state', $state.current);
     }
@@ -42,13 +49,6 @@ angular.module('clientApp')
                 value: null,
                 log: $scope.formData.log || false
             };
-            
-            // add field to each log
-            // if($scope.formData.log && ($scope.objectType != 'prospect')) {
-            //     _.each(object.logs, function(log) {
-            //         log.data[$scope.formData.field] = null;
-            //     });
-            // }
 
             $scope.update(object);
         });

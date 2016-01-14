@@ -9,7 +9,7 @@
 
 <div class='btn-toolbar' role='toolbar'>
     <div class='btn-group' role='group'>
-        <button class='btn btn-success' ng-click='open(lg)' ng-controller='AddFieldModalCtrl'>
+        <button class='btn btn-success' ng-click='open(md)' ng-controller='AddFieldModalCtrl'>
             + Field
         </button>
     </div>
@@ -23,7 +23,6 @@
 
 <br>
 
-<!-- Data UI -->
 <div class='table-responsive table-bordered'>
     <table class='table'>
         <thead>
@@ -31,17 +30,14 @@
                 <th>Field</th>
                 <th>Value</th>
                 <th>Logged</th>
+                <th>Identifier</th>
                 <th>Edit</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat='(field, value) in driver.data' ng-if='field !== "fullName"'>
+            <tr ng-repeat='(field, value) in asset.data' ng-if='field !== "assetType"'>
                 <td>
-                    <span ng-if='!notName(field)'>
-                        {{ field }}
-                    </span>
-
-                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)' ng-if='notName(field)'>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)'>
                         {{ field }}
                     </span>
                 </td>
@@ -51,8 +47,12 @@
                     </span>
                 </td>
                 <td>
-                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible' ng-if='notName(field)'></i>
-                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)' ng-if='notName(field)'></input>                  
+                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
+                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)'></input>                 
+                </td>
+                <td>
+                    <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input>
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>
@@ -63,7 +63,7 @@
                             <button type='button' ng-disabled='rowform.$waiting' ng-click='rowform.$cancel()' class='btn btn-default btn-xs'>
                                 Cancel
                             </button>
-                            <button class='btn btn-danger btn-xs' style='margin-left:1vw' data-toggle='modal' ng-click='open(lg, { "field": field })' ng-controller='DeleteFieldModalCtrl' ng-if='notName(field)'>
+                            <button class='btn btn-danger btn-xs' style='margin-left:1vw' data-toggle='modal' ng-click='open(lg, { "field": field })' ng-controller='DeleteFieldModalCtrl'>
                                 Delete
                             </button>
                         </form>
@@ -75,17 +75,17 @@
             </tr>
         </tbody>
     </table>
-    <!-- {{ driver.data }} -->
+    <!-- {{ asset.data }} -->
 </div>
 
 <br>
 
-<!-- Car Assignment UI -->
-<h3>Car<span ng-if='(driver.carsAssigned > 1) || (driver.carsAssigned === 0)'>s</span> Assigned</h3>
+<!-- Driver Assignment UI -->
+<h3>Driver<span ng-if='(asset.driversAssigned > 1) || (asset.driversAssigned === 0)'>s</span> Assigned</h3>
 
 <div class='btn-toolbar' role='toolbar'>
     <div class='btn-group' role='group'>
-        <button class='btn btn-success' ng-click='assign("car")'>+ Car</button>
+        <button class='btn btn-success' ng-click='assign("driver")'>+ Driver</button>
     </div>
 </div>
 
@@ -95,42 +95,14 @@
     <table class='table'>
         <thead>
             <tr>
-                <th>{{ ::carIdentifier }}</th>
+                <th>Name</th>
                 <th>Date Assigned</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat='car in driver.carsAssigned | orderBy:"dateAssigned"' ui-sref='carProfile.data({ id: car.id })' class='table-row-link'>
-                <td>{{ ::car.identifier.value }}</td>
-                <td>{{ ::car.dateAssigned | date: 'fullDate' }}<span ng-if='car.dateUnassigned !== null'> - {{ ::car.dateEnded | date: 'fullDate' }}</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Asset Assignment UI -->
-<h3>Asset<span ng-if='(driver.assetsAssigned > 1) || (driver.assetsAssigned === 0)'>s</span> Assigned</h3>
-
-<div class='btn-toolbar' role='toolbar'>
-    <div class='btn-group' role='group'>
-        <button class='btn btn-success' ng-click='assign("asset")'>+ Asset</button>
-    </div>
-</div>
-
-<br>
-
-<div class='table-responsive table-bordered'>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>{{ ::asset.identifier }}</th>
-                <th>Date Assigned</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat='asset in driver.assetsAssigned | orderBy:"dateAssigned"' ui-sref='assetProfile.data({ type: asset.assetType, id: asset.id })' class='table-row-link'>
-                <td>{{ ::asset.identifier.value }}</td>
-                <td>{{ ::asset.dateAssigned | date: 'fullDate' }}<span ng-if='asset.dateUnassigned !== null'> - {{ ::asset.dateEnded | date: 'fullDate' }}</span></td>
+            <tr ng-repeat='driver in asset.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverProfile.data({ id: driver.id })' class='table-row-link'>
+                <td>{{ ::driver.identifier.value }}</td>
+                <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ ::driver.dateEnded | date: 'fullDate' }}</span></td>
             </tr>
         </tbody>
     </table>

@@ -6,27 +6,41 @@
         &times;
     </button>
 </div>
-
+<!-- {{ formData }} -->
 <div class="modal-body">
 
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
             <!-- opens add field modal -->
-            <button class='btn btn-info' type='button' ng-click='addField()'>
+            <button class='btn btn-info' type='button' ng-click='addField(identifier.value)' ng-disabled='disableAddField()' name='addFieldBtn'>
                 + Field
             </button>
         </div>
     </div>
 
-    <br>
+    <br ng-show='disableAddField()'>
+
+    <div class="alert alert-danger" role="alert" ng-show='disableAddField()'>
+        Please add an asset type before adding fields.
+    </div>
     
+    <br ng-show='!disableAddField()'>
+
     <form novalidate role='form' id='newObjectForm' name='form' ng-submit='submit($data)'>
 
-        <div class='form-group' ng-if='objectType === "car"'>
-            <label>Organize cars with this identifier</label>
+        <div class='form-group' ng-if='objectType === "asset"'>
+            <label>Type</label>
+
+            <select ng-model='assetType.value' ng-change='renderForm(assetType.value)' class='form-control'>
+                <option ng-repeat='type in assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
+            </select>
+        </div>
+
+        <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
+            <label>Organize {{  assetType.value || objectType }}<span ng-if='!assetType.value'>s</span> with this identifier</label>
 
             <select ng-model='identifier.value' class='form-control'>
-                <option ng-repeat='field in fields' value='{{ ::field }}'>{{ ::field }}</option>
+                <option ng-repeat='field in fields' value='{{ ::field }}' ng-if='field !== "assetType"'>{{ ::field }}</option>
             </select>
         </div>
 
@@ -55,7 +69,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || nullIdentifier(identifier)'>Submit</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier)'>Submit</button>
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

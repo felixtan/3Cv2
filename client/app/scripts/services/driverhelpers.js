@@ -73,6 +73,7 @@ angular.module('clientApp')
           data: driverDataWithFullName,
           logs: [],
           carsAssigned: [],
+          assetsAssigned: [],
           organizationId: getOrganizationId()
         });
         
@@ -101,6 +102,7 @@ angular.module('clientApp')
         },
         logs: [],
         carsAssigned: [],
+        assetsAssigned: [],
         organizationId: getOrganizationId()
       };
     };

@@ -85,7 +85,7 @@
 
 <div class='btn-toolbar' role='toolbar'>
     <div class='btn-group' role='group'>
-        <button class='btn btn-success' ng-click='assign()'>+ Driver</button>
+        <button class='btn btn-success' ng-click='assign("driver")'>+ Driver</button>
     </div>
 </div>
 
@@ -101,7 +101,7 @@
         </thead>
         <tbody>
             <tr ng-repeat='driver in car.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverProfile.data({ id: driver.id })' class='table-row-link'>
-                <td>{{ ::driver.identifier.value }}</td>
+                <td>{{ ::driver.identifier }}</td>
                 <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ ::driver.dateEnded | date: 'fullDate' }}</span></td>
             </tr>
         </tbody>

@@ -162,7 +162,7 @@ angular.module('clientApp')
     // Driver Assignment UI /////
     /////////////////////////////
 
-    $scope.assign = function () {
+    $scope.assign = function (objectType) {
 
         var modalInstance = $modal.open({
             animation: true,
@@ -181,6 +181,12 @@ angular.module('clientApp')
                 },
                 car: function() {
                     return $scope.car;
+                },
+                subjectType: function() {
+                    return "car";
+                },
+                objectType: function() {
+                    return objectType;
                 }
             }
         });

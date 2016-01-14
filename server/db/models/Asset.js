@@ -10,8 +10,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },  
 
-        indentifier: {      // alias: type or name (of asset)
-            type: DataTypes.JSONB,
+        identifier: {      // alias: type or name (of asset)
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+
+        assetType: {
+            type: DataTypes.STRING,
             allowNull: false
         },
 

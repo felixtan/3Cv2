@@ -15,7 +15,7 @@ angular.module('clientApp')
         { title: 'Data', active: true, state: 'driverProfile.data({ id: driver.id })' },
         { title: 'Logs', active: false, state: 'driverProfile.logs({ id: driver.id })' }
     ];
-    
+    // console.log($scope.driver);
     carHelpers.getIdentifier().then(function(identifier) {
         $scope.carIdentifier = identifier;
     });
@@ -189,7 +189,7 @@ angular.module('clientApp')
     ///// Car Assignment UI /////
     /////////////////////////////
 
-    $scope.assign = function () {
+    $scope.assign = function (objectType) {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/assignmentmodal.html',
@@ -202,11 +202,26 @@ angular.module('clientApp')
                 getDrivers: function(dataService) {
                     return {};
                 },
+                getAssets: function(dataService) {
+                    return dataService.getAssets();
+                },
+                getAssetTypes: function(dataService) {
+                    return dataService.getAssetTypes();
+                },
                 car: function(dataService) {
                     return {};
                 },
                 driver: function() {
                     return $scope.driver;
+                },
+                subjectType: function() {
+                    return "driver";
+                },
+                objectType: function() {
+                    return objectType;
+                },
+                asset: function() {
+                    return {};
                 }
             }
         });

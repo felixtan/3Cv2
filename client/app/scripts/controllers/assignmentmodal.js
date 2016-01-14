@@ -8,52 +8,79 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AssignmentModalCtrl', function ($q, $scope, getCars, getDrivers, car, driver, dataService, $modalInstance, $state) {
+  .controller('AssignmentModalCtrl', function (objectType, subjectType, $q, $scope, getAssetTypes, getAssets, getCars, getDrivers, asset, car, driver, dataService, $modalInstance, $state) {
     
     $scope.objIdentifier = null;   // get this from settings
     $scope.formData = {};
     $scope.subject = {};
-    $scope.subjectType = null;
-    $scope.objectType = null;
+    $scope.subjectType = subjectType;
+    $scope.objectType = objectType;
     $scope.simpleObjects = [];
     $scope.fullObjects = [];
+    $scope.assetTypes = getAssetTypes.data;
     $scope.updateObj = function(object) { return; };
     $scope.updateSubj = function(subject) { return; };
 
     // returns array of simpler objects with id, and identifier value
-    $scope.mapObject = function(objects, identifier) {
+    $scope.mapObject = function(objects) {
         return _.map(objects, function(object) {
+            // console.log(object);
             return {
                 id: object.id,
-                identifierValue: object.data[identifier].value
+                identifierValue: object.data[object.identifier].value,
+                identifier: object.identifier,
+                assetType: (!(object.assetType === null) && (typeof object.assetType === 'string')) ? object.assetType : null
             };
         });
     };
 
-    if($state.includes("driverProfile")) {
+    $scope.getAssetTypeIdentifier = function() {
+        if(($scope.formData.assetType !== null) && (typeof $scope.formData.assetType !== "undefined")) {
+            // return 
+        }
+    };
+
+    if($scope.subjectType === 'driver') {
         console.log("assignment modal called from driverProfile");
         $scope.subject = driver;
-        $scope.subjectType = 'driver';
-        $scope.objectType = 'car';
         $scope.updateSubj = dataService.updateDriver;
-        $scope.updateObj = dataService.updateCar;
         $scope.subjIdentifier = "fullName" || null;
-        
-        $scope.fullObjects = getCars.data;
-        $scope.objIdentifier = $scope.fullObjects[0].identifier || "licensePlate";
-        $scope.simpleObjects = $scope.mapObject($scope.fullObjects, $scope.objIdentifier);
-    } else if($state.includes("carProfile")) {
+
+        if($scope.objectType === 'car') {
+            $scope.updateObj = dataService.updateCar;
+            $scope.fullObjects = getCars.data;
+            $scope.objIdentifier = $scope.fullObjects[0].identifier;
+            $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+        } else if($scope.objectType === 'asset') {
+            $scope.updateObj = dataService.updateAsset;
+            $scope.fullObjects = getAssets.data;
+            
+            $scope.objIdentifiers = _.uniq(_.map($scope.fullObjects, function(asset) {
+                return asset.assetType;
+            }));
+
+            // console.log($scope.fullObjects);
+            $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+            // console.log($scope.simpleObjects);
+        }
+    } else if($scope.subjectType === 'car') {
         console.log("assignment modal called from carProfile");
         $scope.subject = car;
-        $scope.subjectType = 'car';
-        $scope.objectType = 'driver';
         $scope.updateSubj = dataService.updateCar;
         $scope.updateObj = dataService.updateDriver;
-        $scope.subjIdentifier = $scope.subject.identifier || "licensePlate";
-        
+        $scope.subjIdentifier = $scope.subject.identifier;  
         $scope.fullObjects = getDrivers.data;
         $scope.objIdentifier = "fullName" || null;
-        $scope.simpleObjects = $scope.mapObject($scope.fullObjects, $scope.objIdentifier);
+        $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+    } else if($scope.subjectType === 'asset') {
+        console.log("assignment modal called from assetProfile");
+        $scope.subject = asset;
+        $scope.updateSubj = dataService.updateAsset;
+        $scope.updateObj = dataService.updateDriver;
+        $scope.subjIdentifier = $scope.subject.identifier;
+        $scope.fullObjects = getDrivers.data;
+        $scope.objIdentifier = "fullName" || null;
+        $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
     } else {
         console.log('assignment modal called from invalid state', $state.current);
     }
@@ -175,7 +202,7 @@ angular.module('clientApp')
 
     $scope.close = function () {
         $state.forceReload();
-        $modalInstance.dismiss('ok');
+        $modalInstance.close('ok');
     };
 
     $scope.getObjectIdentifierValue = function(id) {
@@ -194,8 +221,9 @@ angular.module('clientApp')
             id: $scope.subject.id,
             identifier: {
                 name: $scope.subjIdentifier,
-                value: $scope.subject.data[$scope.subjIdentifier].value
+                value: $scope.subject.data[$scope.subjIdentifier].value,
             },
+            assetType: ($scope.subjectType === 'asset') ? $scope.subject.assetType : null,
             dateAssigned: $scope.dt.getTime(),
             dateUnassigned: null
         };
@@ -204,12 +232,16 @@ angular.module('clientApp')
             return object.id == $scope.formData.objId;
         });
 
-        // console.log('assigning', subject);
-        // console.log('to:', obj);
-
+        // setting the correct reciprocal update call
         if($scope.objectType === 'driver') {
-            obj.carsAssigned.push(subject);
+            if($scope.subjectType === 'car') {
+                obj.carsAssigned.push(subject);
+            } else if($scope.subjectType === 'asset') {
+                obj.assetsAssigned.push(subject);
+            }
         } else if($scope.objectType === 'car') {
+            obj.driversAssigned.push(subject);
+        } else if($scope.objectType === 'asset') {
             obj.driversAssigned.push(subject);
         } else {
             console.log('Invalid assignment operation', {
@@ -231,17 +263,23 @@ angular.module('clientApp')
                     name: $scope.objIdentifier,
                     value: identifierValue
                 },
+                assetType: ($scope.objectType === 'asset') ? $scope.assetType : null,
                 dateAssigned: $scope.dt.getTime(),
                 dateUnassigned: null
             };
-
-            // console.log('assigning', object);
-            // console.log('to:', $scope.subject);
             
             if($scope.subjectType === 'driver') {
-                $scope.subject.carsAssigned.push(object);
+                if($scope.objectType === 'car') {
+                    $scope.subject.carsAssigned.push(object);
+                } else if($scope.objectType === 'asset') {
+                    $scope.subject.assetsAssigned.push(object);
+                }
+
                 $scope.updateSubj($scope.subject);
             } else if($scope.subjectType === 'car') {
+                $scope.subject.driversAssigned.push(object);
+                $scope.updateSubj($scope.subject);
+            } else if($scope.subjectType === 'asset') {
                 $scope.subject.driversAssigned.push(object);
                 $scope.updateSubj($scope.subject);
             } else {

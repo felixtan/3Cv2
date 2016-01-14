@@ -17,9 +17,10 @@ angular.module('clientApp')
     $scope.fields = [];
     $scope.fieldsToHide = []
     $scope.fieldsToNotLog = [];
-    $scope.newFields = [];
     $scope.statuses = [];
     $scope.status = {};
+    $scope.assetTypes = [];
+    $scope.assetType = { value: null };
 
     $scope.getNewFieldsToLog = function(formData) {
         return _.filter(Object.keys(formData), function(field) {
@@ -50,6 +51,13 @@ angular.module('clientApp')
     $scope.differentIdentifier = function() {
         return ($scope.identifier.value !== $scope.currentIdentifier.value);
     };
+
+    $scope.disableAddField = function() {
+        return (($scope.objectType === "asset") && (($scope.assetType.value === null) || (typeof $scope.assetType.value === 'undefined')));
+    };
+
+    // only for assets
+    $scope.renderForm = function() {};
 
     // determine the state or ui calling this modal
     if($state.includes('dashboard.drivers')) {
@@ -106,15 +114,41 @@ angular.module('clientApp')
             });
         });
     } else if($state.includes('dashboard.assets')) {
+        console.log('called from assets ui');
+        $scope.objectType = 'asset';
+        $scope.update = assetHelpers.updateAsset;
+        $scope.create = assetHelpers.createAsset;
+        $scope.save = assetHelpers.saveAsset;
+        $scope.fieldsToHide.push("assetType");
+        $scope.fieldsToNotLog.push("assetType");
+        
+        assetHelpers.getAssetTypes().then(function(result){
+            $scope.assetTypes = result.data.types;
+            $scope.renderForm = function(assetType) {
+                assetHelpers.getFormData(assetType).then(function(formData) {
+                    assetHelpers.getIdentifier(assetType).then(function(identifier) {
+                        $scope.fields = Object.keys(formData);
+                        $scope.formData = formData;
+                        $scope.disableConditions = assetHelpers.invalidAssetType;
+                        $scope.currentIdentifier.value = identifier;
+                        angular.copy($scope.currentIdentifier, $scope.identifier);
+                    });
+                });
+            };
+        });
     } else {
         console.log('add object modal called from invalid state', $state.current);
     }
 
     $scope.submit = function() {
-        $scope.create($scope.formData).then(function(object) {
+        $scope.create($scope.formData, $scope.identifier.value, $scope.assetType.value).then(function(object) {
             // console.log('saving:', object);
 
             // TODO: better pre-save processing
+
+            // if($scope.objectType === 'asset') {
+            //     $scope
+            // }
 
             if($scope.objectType === 'car') {
                 if($scope.differentIdentifier()) {    // setIdentifier
@@ -138,7 +172,8 @@ angular.module('clientApp')
                 });
             }
 
-            if($scope.objectType === 'driver') {
+            if(($scope.objectType === 'driver') || ($scope.objectType === 'asset')) {
+                // console.log(object);
                 $scope.save(object).then(function(result) {
                     $scope.close(object);
                 });
@@ -184,7 +219,8 @@ angular.module('clientApp')
         $modalInstance.dismiss('close');
     };
 
-    $scope.addField = function() {
+    $scope.addField = function(assetType) {
+
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/addfieldmodal.html',
@@ -199,12 +235,18 @@ angular.module('clientApp')
                 },
                 getProspects: function(dataService) {
                     return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
+                },
+                getAssets: function(dataService) {
+                    return {
+                        data: (($state.includes('assetProfile') || $state.includes('dashboard.assets')) ? dataService.getAssets() : {}),
+                        type: assetType
+                    };
                 }
             }
         });
 
         modalInstance.result.then(function (newField) {
-            $scope.newFields.push(newField);
+            $scope.fields.push(newField);
             $scope.formData[newField] = { value: null, log: false };
             $state.forceReload();
         }, function() {

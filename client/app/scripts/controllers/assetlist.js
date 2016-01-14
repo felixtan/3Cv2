@@ -14,7 +14,7 @@ angular.module('clientApp')
     $scope.order = [];
     $scope.newIndex = { val: null };    // stores index changes
     for(var i = 0; i < $scope.types.length; i++) $scope.order[i] = i;    // populate order select
-    $scope.assets = getAssets.data;
+    $scope.assets = assetHelpers.mapObject(getAssets.data);
 
     $scope.thereAreAssetsOfType = function(type) {
         var assets = _.filter($scope.assets, function(asset) {

@@ -55,9 +55,8 @@
                 <tr ng-repeat='asset in assets' ng-if='belongsToType(asset, type)'>
                     <td>
                         <h4>
-                            <a ui-sref='assetProfile.data({ type: asset.type, id: asset.id })'>
-                                <!-- {{ ::asset.identifierValue }} -->
-                                {{ ::asset.data.fullName.value }}
+                            <a ui-sref='assetProfile.data({ type: asset.assetType, id: asset.id })'>
+                                {{ ::asset.identifierValue }}
                             </a>
                         </h4>
                     </td>

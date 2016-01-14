@@ -47,10 +47,10 @@ angular
     $urlRouterProvider.otherwise('/dashboard/cars');
 
     $stateProvider
-    // .state('wtf', {
-    //     url: '/',
-    //     templateUrl: '<div></div>'
-    // })
+    .state('wtf', {
+        url: '/',
+        templateUrl: '<div></div>'
+    })
     .state('login', {
         url: '/login',
         templateUrl: 'login.html'
