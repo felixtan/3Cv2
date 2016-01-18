@@ -51,19 +51,92 @@ angular.module('clientApp')
       return Object.keys(asset.data); 
     };
 
+    var getLogDates = function(assetType) {
+      var deferred = $q.defer();
+      var logDates = [];
+      thereAreAssetsOfType(assetType).then(function(result) {
+        console.log(result);
+        if(result) {
+          getAssets().then(function(result) {
+            filterAssets(result.data, assetType).then(function(assetsOfType) {
+              _.each(assetsOfType[0].logs, function(log) {
+                logDates.push(log.weekOf);
+              });
+              console.log(logDates);
+              deferred.resolve(_.uniq(logDates.sort(), true).reverse());
+              deferred.reject(new Error('Error getting asset log dates'));
+            });
+          }); 
+        } else {
+          deferred.resolve([]);
+          deferred.reject(new Error('Error getting asset log dates'));
+        }
+      });
+
+      return deferred.promise;
+    };
+
+    var createLogs = function(logDates, blankLogData) {
+      var deferred = $q.defer();
+      var logs = [];
+  
+      _.each(logDates, function(logDate) {
+        logs.push({
+          data: blankLogData,
+          weekOf: logDate,
+          createdAt: new Date()
+        });
+      });
+
+      deferred.resolve(logs);
+      deferred.reject(new Error('Error creating logs for asset'));
+      return deferred.promise;
+    };
+
+    var createLogData = function(assetType) {
+      var deferred = $q.defer();
+      var logData = {};
+
+      getFieldsToBeLogged(assetType).then(function(fields) {
+        console.log(fields);
+        _.each(fields, function(field) {
+          logData[field] = null;
+        });
+        console.log(logData);
+        deferred.resolve(logData);
+        deferred.reject(new Error('Error creating log data for assets ' + assetType));
+      });
+
+      // deferred.reject(new Error('Error creating log data for assets ' + assetType));
+      return deferred.promise;
+    };
+
     var createAsset = function(assetData, identifier, assetType) {
       var deferred = $q.defer();
+      console.log(assetData);
+      console.log(identifier);
+      console.log(assetType);
+      createLogData(assetType).then(function(logData) {
+        console.log(logData);
+        getLogDates(assetType).then(function(logDates) {
+          console.log(logDates);
+          createLogs(logDates, logData).then(function(logs) {
+            console.log(logs);
+            deferred.resolve({
+              identifier: identifier,
+              assetType: assetType,
+              data: assetData,
+              logs: logs,
+              driversAssigned: [],
+              organizationId: getOrganizationId()
+            });
 
-      deferred.resolve({
-        identifier: identifier,
-        assetType: assetType,
-        data: assetData,
-        logs: [],
-        driversAssigned: [],
-        organizationId: getOrganizationId()
+            deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
+          });
+        });
       });
       
-      deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
+      // deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
 
       return deferred.promise;
     };
@@ -88,39 +161,50 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
+    var filterAssets = function(allAssets, assetType) {
+      var deferred = $q.defer();
+      // console.log(allAssets);
+      // console.log(assetType);
+      var assetsOfType = _.filter(allAssets, function(asset) {
+          return asset.assetType === assetType;
+      });
+      console.log(assetsOfType);
+      deferred.resolve(assetsOfType);
+      deferred.reject(new Error('Error filtering assets of type ' + assetType));
+      return deferred.promise;
+    };
+
     // Needs overhaul
     var getFormData = function(assetType) {
       var deferred = $q.defer();
       var formData = {};
-      
+      // console.log(assetType);
       getAssets().then(function(result) {
-        if(result.data.length) {
-          // console.log('there are assets of type ' + assetType);
-          var assets = _.filter(result.data[0], function(asset) {
-            return (asset.assetType === assetType);
-          });
-
-          _.each(Object.keys(assets), function(field) {
-            formData[field] = {
-              value: ((field === 'assetType') ? assetType : null),
-              log: asset.data[field].log
-            }
-          });
-
-          deferred.resolve(formData);
-          deferred.reject(new Error('Error initializing asset form data'));
-        } else {
-          // console.log(result);
-          // console.log('there are no assets of type ' + assetType);
-          deferred.resolve({ assetType: { value: assetType, log: false } });
-          deferred.reject(new Error('Error initializing asset form data'));
-        }
+        filterAssets(result.data, assetType).then(function(assets) {
+          if(assets.length) {
+            // console.log('there are assets of type ' + assetType);
+            _.each(Object.keys(assets[0].data), function(field) {
+              formData[field] = {
+                value: ((field === 'assetType') ? assetType : null),
+                log: assets[0].data[field].log
+              }
+            });
+            // console.log(formData);
+            deferred.resolve(formData);
+            deferred.reject(new Error('Error initializing asset form data'));
+          } else {
+            // console.log(result);
+            // console.log('there are no assets of type ' + assetType);
+            deferred.resolve({ assetType: { value: assetType, log: false } });
+            deferred.reject(new Error('Error initializing asset form data'));
+          }
+        });
       });
       
       return deferred.promise;
     };
 
-    var mapObject = function(objects, identifier) {
+    var mapObject = function(objects) {
       return _.map(objects, function(object) {
           return {
               id: object.id,
@@ -135,7 +219,48 @@ angular.module('clientApp')
     };
 
     var invalidAssetType = function(formData) {
-      return ((formData.assetType.value !== null) || (typeof formData.assetType.value === 'undefined'));
+      return ((formData.assetType !== null) || (typeof formData.assetType === 'undefined'));
+    };
+
+    var getFieldsToBeLogged = function(assetType) {
+      console.log(assetType);
+      var deferred = $q.defer();
+      var fields = [];
+      getAssets().then(function(result) {
+        filterAssets(result.data, assetType).then(function(assetsOfType) {
+          console.log(assetType);
+          console.log(assetsOfType);
+          // console.log(assetsOfType.length);
+          // console.log(Object.keys(assetsOfType[0].data));
+          if(assetsOfType.length > 0) {
+            fields = _.filter(Object.keys(assetsOfType[0].data), function(field) {
+              console.log(assetsOfType[0].data[field]);
+              return assetsOfType[0].data[field].log;
+            });
+            console.log(fields);
+            deferred.resolve(fields);
+            deferred.reject(new Error('Error getting fields to be logged'));
+          } else {
+            // console.log(fields);
+            deferred.resolve(fields);
+            deferred.reject(new Error('Error getting fields to be logged'));
+          }
+        });
+      });
+
+      return deferred.promise;
+    };
+
+    var updateIdentifier = function(assets, currentVal, newVal) {
+      if(currentVal !== newVal) {
+        _.each(assets, function(asset) {    
+            asset.identifier = newVal;
+            // console.log('updating identifier:',car);
+            dataService.updateAsset(asset);
+        });
+      }
+
+      $state.forceReload();
     };
 
     return {
@@ -155,7 +280,10 @@ angular.module('clientApp')
       getFormData: getFormData,
       belongsToType: belongsToType,
       invalidAssetType: invalidAssetType,
-      getIdentifier: getIdentifier
+      getIdentifier: getIdentifier,
+      getFieldsToBeLogged: getFieldsToBeLogged,
+      updateIdentifier: updateIdentifier,
+      filterAssets: filterAssets
 
     };
   });

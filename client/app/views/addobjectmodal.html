@@ -31,13 +31,13 @@
         <div class='form-group' ng-if='objectType === "asset"'>
             <label>Type</label>
 
-            <select ng-model='assetType.value' ng-change='renderForm(assetType.value)' class='form-control'>
+            <select ng-model='formData.assetType.value' ng-change='renderForm(formData.assetType.value)' class='form-control'>
                 <option ng-repeat='type in assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
             </select>
         </div>
 
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
-            <label>Organize {{  assetType.value || objectType }}<span ng-if='!assetType.value'>s</span> with this identifier</label>
+            <label>Organize {{  formData.assetType.value || objectType }}<span ng-if='!formData.assetType'>s</span> with this identifier</label>
 
             <select ng-model='identifier.value' class='form-control'>
                 <option ng-repeat='field in fields' value='{{ ::field }}' ng-if='field !== "assetType"'>{{ ::field }}</option>
@@ -63,7 +63,7 @@
         </div>
     </form>
 
-   <!--  <div>
+    <!-- <div>
         {{ formData }}
     </div>  -->
 </div>

@@ -53,7 +53,7 @@ angular.module('clientApp')
     };
 
     $scope.disableAddField = function() {
-        return (($scope.objectType === "asset") && (($scope.assetType.value === null) || (typeof $scope.assetType.value === 'undefined')));
+        return (($scope.objectType === "asset") && (($scope.formData.assetType === null) || (typeof $scope.formData.assetType === 'undefined')));
     };
 
     // only for assets
@@ -126,6 +126,7 @@ angular.module('clientApp')
             $scope.assetTypes = result.data.types;
             $scope.renderForm = function(assetType) {
                 assetHelpers.getFormData(assetType).then(function(formData) {
+                    // console.log(formData);
                     assetHelpers.getIdentifier(assetType).then(function(identifier) {
                         $scope.fields = Object.keys(formData);
                         $scope.formData = formData;
@@ -141,14 +142,8 @@ angular.module('clientApp')
     }
 
     $scope.submit = function() {
-        $scope.create($scope.formData, $scope.identifier.value, $scope.assetType.value).then(function(object) {
-            // console.log('saving:', object);
-
-            // TODO: better pre-save processing
-
-            // if($scope.objectType === 'asset') {
-            //     $scope
-            // }
+        $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(object) {
+            console.log('saving:', object);
 
             if($scope.objectType === 'car') {
                 if($scope.differentIdentifier()) {    // setIdentifier
@@ -178,27 +173,6 @@ angular.module('clientApp')
                     $scope.close(object);
                 });
             }
-
-            // $scope.save(object).then(function(result) {
-                // var newObject = result.data;
-                // if log = true for fields created in this session, update all objects and object logs
-                // var fieldsToLog = $scope.getNewFieldsToLog($scope.formData);
-                // console.log(fieldsToLog);
-                // _.each(fieldsToLog, function(field) {
-                //     console.log(field);
-                //     _.each($scope.objects, function(otherObject) {
-                //         if(otherObject.id !== newObject.id) {
-                //             otherObject.data[field].log = true;
-                //             _.each(otherObject.logs, function(log) {
-                //                 log.data[field] = null;
-                //             });
-                //             $scope.update(otherObject);
-                //         }
-                //     });
-                // });
-
-                // $scope.close(object);
-            // });     
         });
     };
 

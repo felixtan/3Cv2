@@ -18,7 +18,7 @@ angular.module('clientApp')
 
     $scope.thereAreAssetsOfType = function(type) {
         var assets = _.filter($scope.assets, function(asset) {
-            return asset.type.value === type;
+            return asset.assetTtype === type;
         });
     };
 

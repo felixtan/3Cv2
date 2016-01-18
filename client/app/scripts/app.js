@@ -176,13 +176,16 @@ angular
         },
         sp: getsp()
     })
-    .state('logs.asset', {  // logs for assets of a certain type
-        url: '/assets/:type/:id',
+    .state('logs.assets', {  // logs for assets of a certain type
+        url: '/assets',
         templateUrl: '/views/assetTypeLogs.html',
         controller: 'AssetTypeLogsCtrl',
         resolve: {
             getAssets: function(dataService) {
                 return dataService.getAssets();
+            },
+            getAssetTypes: function(dataService) {
+                return dataService.getAssetTypes();
             }
         },
         sp: getsp()

@@ -158,6 +158,42 @@ angular.module('clientApp')
         assetHelpers.updateIdentifier($scope.assets, $scope.currentIdentifier.name, $scope.identifier.name);
     };
 
+    // Add field
+    $scope.addField = function() {
+        console.log($scope.asset.assetType);
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/addfieldmodal.html',
+            controller: 'AddFieldModalInstanceCtrl',
+            size: 'md',
+            resolve: {
+                getCars: function(dataService) {
+                    return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
+                },
+                getDrivers: function(dataService) {
+                    return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
+                },
+                getProspects: function(dataService) {
+                    return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
+                },
+                getAssets: function(dataService) {
+                    return (($state.includes('assetProfile') || $state.includes('dashboard.assets')) ? dataService.getAssets() : {});
+                },
+                assetType: function() {
+                    return $scope.asset.assetType;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (newField) {
+            $scope.newField = newField;
+            $state.forceReload();
+        }, function() {
+            $state.forceReload();
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
     /////////////////////////////
     // Driver Assignment UI /////
     /////////////////////////////

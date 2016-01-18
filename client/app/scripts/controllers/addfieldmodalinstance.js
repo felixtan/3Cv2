@@ -8,8 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', function ($state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
-    
+  .controller('AddFieldModalInstanceCtrl', function (assetType, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
     $scope.formData = {};
     $scope.objects = [];
     $scope.objectType = null;
@@ -33,8 +32,8 @@ angular.module('clientApp')
       $scope.update = dataService.updateProspect;
     } else if($state.includes('assetProfile') || $state.includes('dashboard.assets')) {
       console.log("add field modal called from assetProfile");
-      $scope.assetType = getAssets.type;
-      $scope.objects = _.filter(getAssets.data.data, function(asset) { return (asset.identifier.value === $scope.assetType); });
+      $scope.assetType = assetType;
+      $scope.objects = _.filter(getAssets.data, function(asset) { return asset.assetType === $scope.assetType; });
       $scope.objectType = 'asset';
       $scope.update = dataService.updateAsset;
     } else {
