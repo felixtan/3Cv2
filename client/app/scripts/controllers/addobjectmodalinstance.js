@@ -74,6 +74,8 @@ angular.module('clientApp')
             $scope.currentIdentifier.value = "fullName";
             angular.copy($scope.currentIdentifier, $scope.identifier);
             $scope.formData = formData;
+            $scope.fieldsToHide.push('assetType');
+            $scope.formData.assetType = { value: null };
             $scope.disableConditions = driverHelpers.namesNotNull;
         });
     } else if($state.includes('dashboard.cars')) {
@@ -86,6 +88,8 @@ angular.module('clientApp')
             carHelpers.getIdentifier().then(function(identifier) {
                 // console.log('car form data:', formData);
                 $scope.formData = formData;
+                $scope.fieldsToHide.push('assetType');
+                $scope.formData.assetType = { value: null };
                 $scope.fields = Object.keys(formData);
                 $scope.currentIdentifier.value = identifier;
                 angular.copy($scope.currentIdentifier, $scope.identifier);
@@ -109,6 +113,8 @@ angular.module('clientApp')
                 $scope.currentIdentifier.value = "fullName";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.formData = formData;
+                $scope.fieldsToHide.push('assetType');
+                $scope.formData.assetType = { value: null };
                 $scope.statuses = result.data.statuses;
                 $scope.disableConditions = prospectHelpers.namesNotNull;
             });
@@ -142,6 +148,8 @@ angular.module('clientApp')
     }
 
     $scope.submit = function() {
+        console.log($scope.identifier);
+        console.log($scope.formData.assetType);
         $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(object) {
             console.log('saving:', object);
 
@@ -213,7 +221,7 @@ angular.module('clientApp')
                 getAssets: function(dataService) {
                     return {
                         data: (($state.includes('assetProfile') || $state.includes('dashboard.assets')) ? dataService.getAssets() : {}),
-                        type: assetType
+                        type: assetType || null
                     };
                 }
             }

@@ -65,19 +65,30 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var createDriver = function(driverData) {
+    var createDriver = function(driverData, identifier, assetType) {
       var deferred = $q.defer();
+      if(driverData.assetType) delete driverData.assetType;
       updateFullName(driverData).then(function(driverDataWithFullName) {
-        deferred.resolve({
-          identifier: "fullName",
-          data: driverDataWithFullName,
-          logs: [],
-          carsAssigned: [],
-          assetsAssigned: [],
-          organizationId: getOrganizationId()
+        console.log(driverDataWithFullName);
+        createLogData().then(function(logData) {
+          console.log(logData);
+          getLogDates().then(function(logDates) {
+            console.log(logDates);
+            createLogs(logDates, logData).then(function(logs) {
+              console.log(logs);
+              deferred.resolve({
+                identifier: "fullName",
+                data: driverDataWithFullName,
+                logs: logs,
+                carsAssigned: [],
+                assetsAssigned: [],
+                organizationId: getOrganizationId()
+              });
+
+              deferred.reject(new Error('Error creating driver'));
+            });
+          });
         });
-        
-        deferred.reject(new Error('Error creating driver'));
       });
 
       return deferred.promise;
@@ -143,19 +154,21 @@ angular.module('clientApp')
     /// Logs CRUD ///
     /////////////////
 
-    var getLogDates = function(existingDrivers) {
-      return $q(function(resolve, reject) {
-        var logDates = [];
-        var drivers = null;
-        if(existingDrivers.constructor === Object) {
-          drivers = existingDrivers.data;   // should be from dataService
-        } else if(existingDrivers.constructor === Array) {
-          drivers = existingDrivers; 
-        } else {
-          // idk wtf it is
-          reject(new Error('Invalid existingDrivers data type:', existingDrivers));
-        }
+    var getLogDates = function() {
+      var deferred = $q.defer();
+      var logDates = [];
 
+      // if(existingDrivers.constructor === Object) {
+      //   drivers = existingDrivers.data;   // should be from dataService
+      // } else if(existingDrivers.constructor === Array) {
+      //   drivers = existingDrivers; 
+      // } else {
+      //   // idk wtf it is
+      //   reject(new Error('Invalid existingDrivers data type:', existingDrivers));
+      // }
+
+      getDrivers().then(function(result) {
+        var drivers = result.data;
         if(drivers.length > 0) {
           _.each(drivers, function(driver) {
             _.each(driver.logs, function(log) {
@@ -165,9 +178,11 @@ angular.module('clientApp')
           });
         }
 
-        resolve(logDates);
-        reject(new Error('Error getting log dates'));
+        deferred.resolve(logDates);
+        deferred.reject(new Error('Error getting log dates'));
       });
+
+      return deferred.promise;
     };
 
     var createLog = function(data, weekOf) {
@@ -182,49 +197,57 @@ angular.module('clientApp')
       });
     };
 
-    var createLogs = function(logData, logDates) {
-      return $q(function(resolve, reject) {
-        var logs = [];
+    var createLogs = function(logDates, blankLogData) {
+      var deferred = $q.defer();
+      var logs = [];
 
-        _.each(logDates, function(logDate) {
-          createLog(logData, logDate).then(function(log) {
-            logs.push(log);
+      _.each(logDates, function(logDate) {
+        logs.push({
+          data: blankLogData,
+          weekOf: logDate,
+          createdAt: new Date()
+        });
+      });
+
+      deferred.resolve(logs);
+      deferred.reject(new Error("Error creating blank logs array"));
+      return deferred.promise;
+    };
+
+    var getFieldsToBeLogged = function() {
+      var deferred = $q.defer();
+      var fields = [];
+
+      getDrivers().then(function(result) {
+        var drivers = result.data
+        if(drivers.length > 0) {
+          fields = _.filter(Object.keys(drivers[0].data), function(field) {
+            return drivers[0].data[field].log;
           });
+        }
+
+        deferred.resolve(fields);
+        deferred.reject(new Error('Error getting fields to be logged'));
+      });
+
+      return deferred.promise;
+    };
+
+    var createLogData = function() {
+      var deferred = $q.defer();
+      var logData = {};
+
+      getFieldsToBeLogged().then(function(fields) {
+        console.log(fields);
+        _.each(fields, function(field) {
+          logData[field] = null;
         });
 
-        resolve(logs);
-        reject(new Error("Error creating blank logs array"));
+        deferred.resolve(logData);
+        deferred.reject(new Error('Error creating log data'));
       });
-    };
 
-    var getFieldsToBeLogged = function(driver) {
-      return $q(function(resolve, reject) {
-        var fields = [];
-
-        for (var field in driver.data) {
-          if (driver.data[field].log) {
-            fields.push(field);
-          }
-        }
-
-        resolve(fields);
-        reject(new Error('Error getting fields to be logged'));
-      });
-    };
-
-    var createLogData = function(fields) {
-      return $q(function(resolve, reject) {
-        var logData = {};
-
-        if (fields.length > 0) {
-          fields.forEach(function(field) {
-              logData[field] = null;
-          });
-        }
-
-        resolve(logData);
-        reject(new Error('Error creating log.data'));
-      });
+      return deferred.promise;
     };
 
     var populateLogs = function(driver) {
@@ -239,7 +262,7 @@ angular.module('clientApp')
       var promise2 = getDrivers().then(getLogDates, errcb);
 
       $q.all([promise1, promise2]).then(function(values) {
-        createLogs(values[0], values[1]).then(function(logs) {
+        createLogs(values[1], values[0]).then(function(logs) {
           driver.logs = logs;
           deferred.resolve(driver);
           deferred.reject(new Error('Failed to populate logs for driver ' + driver.id));

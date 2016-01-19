@@ -16,7 +16,7 @@ angular.module('clientApp')
         { title: 'Logs', active: true, state: 'carProfile.logs({ id: car.id })' }
     ];
 
-    // stores dates of log fors week starting/ending in milliseconds
+    // stores dpopulateLogsates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {
         var arr = [];

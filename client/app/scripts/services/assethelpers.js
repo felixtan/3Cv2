@@ -122,6 +122,7 @@ angular.module('clientApp')
           console.log(logDates);
           createLogs(logDates, logData).then(function(logs) {
             console.log(logs);
+            
             deferred.resolve({
               identifier: identifier,
               assetType: assetType,

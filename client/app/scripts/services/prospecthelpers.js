@@ -74,6 +74,7 @@ angular.module('clientApp')
 
     var createProspect = function(prospectData) {
       var deferred = $q.defer();
+      if(prospectData.assetType) delete prospectData.assetType;
       updateFullName(prospectData).then(function(prospectDataWithFullName) {
         deferred.resolve({
           identifier: "fullName",

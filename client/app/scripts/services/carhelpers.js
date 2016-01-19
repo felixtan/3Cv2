@@ -59,19 +59,29 @@ angular.module('clientApp')
     return deferred.promise;
   };
 
-  var createCar = function(carData) {
+  var createCar = function(carData, _identifier, assetType) {
     var deferred = $q.defer();
-    
+    if(carData.assetType) delete carData.assetType;
     getIdentifier().then(function(identifier) {
-      deferred.resolve({
-        identifier: identifier,
-        data: carData,
-        logs: [],
-        carsAssigned: [],
-        organizationId: getOrganizationId()
+      createLogData().then(function(logData) {
+        console.log(logData);
+        getLogDates().then(function(logDates) {
+          console.log(logDates);
+          createLogs(logDates, logData).then(function(logs) {
+            console.log(logs);
+
+            deferred.resolve({
+              identifier: identifier,
+              data: carData,
+              logs: logs,
+              driversAssigned: [],
+              organizationId: getOrganizationId()
+            });
+            
+            deferred.reject(new Error('Error creating car'));
+          });
+        });
       });
-      
-      deferred.reject(new Error('Error creating car'));
     });
 
     return deferred.promise;
@@ -159,20 +169,18 @@ angular.module('clientApp')
   /// Logs CRUD ///
   /////////////////
 
-  var getLogDates = function(existingCars) {
-    return $q(function(resolve, reject) {
-      var logDates = [];
-      var cars = null;
-      if(existingCars.constructor === Object) {
-        cars = existingCars.data;   // should be from dataService
-      } else if(existingCars.constructor === Array) {
-        cars = existingCars; 
-      } else {
-        // idk wtf it is
-        reject(new Error('Invalid existingCars data type:', existingCars));
-      }
 
+
+  var getLogDates = function() {
+    var deferred = $q.defer();
+    var logDates = [];
+
+    getCars().then(function(result) {
+      var cars = result.data;
+      
       if(cars.length > 0) {
+        // TODO: Do we have to do a double each here? If we can ensure that all 
+        // car logs have the same dates, then we can just take the first car cars[0]
         _.each(cars, function(car) {
           _.each(car.logs, function(log) {
             logDates.push(log.weekOf);
@@ -181,9 +189,30 @@ angular.module('clientApp')
         });
       }
 
-      resolve(logDates);
-      reject(new Error('Error getting log dates'));
+      deferred.resolve(logDates);
+      deferred.reject(new Error('Error getting log dates'));
     });
+
+    return deferred.promise;
+      
+    // if(existingCars.constructor === Object) {
+    //   cars = existingCars.data;   // should be from dataService
+    //   getEm(cars).then(function(logDates) {
+    //     deferred1.resolve(logDates);
+    //     deferred1.reject(new Error('Error getting log dates'));
+    //   });
+    // } else if(existingCars.constructor === Array) {
+    //   cars = existingCars;
+    //   getEm(cars).then(function(logDates) {
+    //     deferred1.resolve(logDates);
+    //     deferred1.reject(new Error('Error getting log dates'));
+    //   });
+    // } else {
+    //   // idk wtf it is
+    //   deferred1.reject(new Error('Invalid existingCars data type:', existingCars));
+    // }
+    
+    // return deferred1.promise;
   };
 
   var createLog = function(data, weekOf) {
@@ -198,49 +227,56 @@ angular.module('clientApp')
     });
   };
 
-  var createLogs = function(logData, logDates) {
-    return $q(function(resolve, reject) {
-      var logs = [];
+  var createLogs = function(logDates, blankLogData) {
+    var deferred = $q.defer();
+    var logs = [];
 
-      _.each(logDates, function(logDate) {
-        createLog(logData, logDate).then(function(log) {
-          logs.push(log);
+    _.each(logDates, function(logDate) {
+      logs.push({
+        data: blankLogData,
+        weekOf: logDate,
+        createdAt: new Date()
+      });
+    });
+
+    deferred.resolve(logs);
+    deferred.reject(new Error("Error creating logs"));
+    return deferred.promise;
+  };
+
+  var getFieldsToBeLogged = function() {
+    var deferred = $q.defer();
+    var fields = [];
+
+    getCars().then(function(result) {
+      var cars = result.data;
+      if(cars.length > 0) {
+        fields = _.filter(Object.keys(cars[0].data), function(field) {
+          return cars[0].data[field].log;
         });
+      }
+        
+      deferred.resolve(fields);
+      deferred.reject(new Error('Error getting fields to be logged'));
+    });
+
+    return deferred.promise;
+  };
+
+  var createLogData = function() {
+    var deferred = $q.defer();
+    var logData = {};
+
+    getFieldsToBeLogged().then(function(fields) {
+      _.each(fields, function(field) {
+        logData[field] = null;
       });
 
-      resolve(logs);
-      reject(new Error("Error creating blank logs array"));
+      deferred.resolve(logData);
+      deferred.reject(new Error('Error creating log data'));
     });
-  };
 
-  var getFieldsToBeLogged = function(car) {
-    return $q(function(resolve, reject) {
-      var fields = [];
-
-      for (var field in car.data) {
-        if (car.data[field].log === true) {
-          fields.push(field);
-        }
-      }
-
-      resolve(fields);
-      reject(new Error('Error getting fields to be logged'));
-    });
-  };
-
-  var createLogData = function(fields) {
-    return $q(function(resolve, reject) {
-      var logData = {};
-
-      if (fields.length > 0) {
-        fields.forEach(function(field) {
-          logData[field] = null;
-        });
-      }
-
-      resolve(logData);
-      reject(new Error('Error creating log.data'));
-    });
+    return deferred.promise;
   };
 
   var populateLogs = function(car) {
@@ -255,7 +291,7 @@ angular.module('clientApp')
     var promise2 = getCars().then(getLogDates, errcb);
 
     $q.all([promise1, promise2]).then(function(values) {
-      createLogs(values[0], values[1]).then(function(logs) {
+      createLogs(values[1], values[0]).then(function(logs) {
         car.logs = logs;
         deferred.resolve(car);
         deferred.reject(new Error('Failed to populate logs for car ' + car.id));
