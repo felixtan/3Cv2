@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: DriverLogsCtrl', function () {
+describe('Controller: DriverLogCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
@@ -40,66 +40,42 @@ describe('Controller: DriverLogsCtrl', function () {
         driverId: 1
       }
     ]
-  },
-  driver2 = {
-    id: 2,
-    organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y',
-    data: {
-      "First Name": {
-        value: "Jane",
-        log: false
-      },
-      "Last Name": {
-        value: "Wayne",
-        log: false
-      },
-      revenue: {
-        value: 1600,
-        log: true
-      }
-    },
-    logs: [
-      {
-        weekOf: 1448168400000,
-        data: {
-          revenue: 1557
-        },
-        driverId: 2
-      },
-      {
-        weekOf: 1448773200000,
-        data: {
-          revenue: 1600
-        },
-        driverId: 2
-      }
-    ]
   };
 
-  var getDrivers = { data: [driver1, driver2] };
-
+  var getDriver = { data: driver1 };
+  
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, _dataService_, $state) {
     scope = $rootScope.$new();
-    dataService = _dataService_;
     state = $state;
+    dataService = _dataService_;
 
-    spyOn(dataService, 'getDrivers');
+    spyOn(dataService, 'getDriver');
     spyOn(dataService, 'updateDriver');
 
-    controller = $controller('DriverLogsCtrl', {
+    controller = $controller('DriverLogCtrl', {
       $scope: scope,
-      getDrivers: getDrivers
+      getDriver: getDriver
     });
   }));
 
   it("it should direct to the correct url", function() {
-    expect(state.href('logs.drivers')).toEqual('#/logs/drivers');
+    expect(state.href('driverProfile.logs', { id: 2 })).toEqual('#/driver/2/logs');
   });
 
-  it('should load all drivers to scope', function() {
-    scope.getDrivers();
-    expect(scope.drivers).toEqual(getDrivers.data);
+  it('should load the correct driver (specified by id) to scope', function() {
+    state.go('driverProfile.logs', { id: 3 });
+    expect(dataService.getDriver).toHaveBeenCalledWith('3');
+    expect(scope.driver).toBeDefined();
+  });
+
+  it('should activate the correct tab', function() {
+    expect(scope.tabs[1].active).toEqual(true);   // Logs tab
+  });
+
+  it('should get fields to be logged from the driver object', function() {
+    scope.getFieldsToBeLogged();
+    expect(scope.fieldsToBeLogged).toEqual(['revenue']);
   });
 
   it('should store log dates in most recent to past order', function() {
@@ -112,64 +88,17 @@ describe('Controller: DriverLogsCtrl', function () {
     expect(scope.mostRecentLogDate).toEqual(1448773200000);
   });
 
-  describe('Datepicker', function() {
-    it('display options should have valid values', function() {
-        expect(scope.dateOptions.formatYear)
+  describe('UPDATE', function() {
+    it('should save a log', function() {
+      scope.save(1448168400000);
+      expect(dataService.updateDriver).toHaveBeenCalled();
     });
 
-    it('has function for getting the starting day option', function() {
-        expect(scope.getStartingDayNum()).toEqual(scope.dateOptions.startingDay);
-    });
-
-    it('converts dateOptions.startingDay to day in words', function() {
-        if(scope.dateOptions.startingDay === 0) {
-          expect(scope.getStartingDayWord()).toEqual('Sunday');  
-        } else if(scope.dateOptions.startingDay === 1) {
-          expect(scope.getStartingDayWord()).toEqual('Monday');
-        }
-    });
-  });
-
-  it('gets the fields to be logged', function() {
-    scope.getFieldsToBeLogged(driver1).then(function(fields) {
-        expect(fields).toEqual(['revenue']);
-    });
-  });
-
-  it('should create new log data objects', function() {
-    scope.newDataObj().then(function(data) {
-        for(field in data) {
-            expect(data[field]).toBeNull();
-        }
-    });
-  });
-
-  describe('CREATE:', function() {
-    it('should create for all drivers', function() {
-        scope.newLog();
-        setTimeout(function() {
-            expect(dataService.updateDriver.calls.count()).toEqual(scope.cars.length);
-            // async issue: this fails without timeout
-        }, 1000);
-    });
-
-    it('should add the new log date to scope.dates', function() {
-        scope.newLog();
-        scope.drivers.forEach(function(driver) {
-          expect(driver.logs.length).toEqual(scope.dates.length);
-        });
-    });
-
-    it("should update most recent log date", function() {
-      scope.newLog();
-      expect(scope.dates[0]).toEqual(Math.max.apply(null, scope.dates));
-    });
-  });
-
-  describe('UPDATE:', function() {
-    it('should update all drivers', function() {
-        scope.save(1448773200000);
-        expect(dataService.updateDriver.calls.count()).toEqual(scope.drivers.length);
+    it("should update driver's data if the most recent log was updated", function() {
+      scope.driver.logs[1].data.revenue = 1800;
+      scope.save(1448773200000);
+      expect(dataService.updateDriver).toHaveBeenCalled();
+      expect(scope.driver.data.revenue.value).toEqual(1800);
     });
   });
 });

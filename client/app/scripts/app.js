@@ -67,31 +67,6 @@ angular
         url:'/reset?sptoken',
         templateUrl: 'resetpw.html'
     })
-    .state('settings', {
-        url: '/settings',
-        templateUrl: 'views/settings/settings.html',
-        controller: 'SettingsCtrl',
-        controllerAs: 'settings',
-        sp: getsp()
-    })
-    .state('settings.models', {
-        abstract: true,
-        url: '/models',
-        template: '<ui-view/>',
-        sp: getsp()
-    })
-    .state('settings.models.car', {
-        url: '/car',
-        templateUrl: 'views/settings/models/Car.html',
-        controller: 'CarModelCtrl',
-        controllerAs: 'carSettings',
-        resolve: {
-            getCarProperties: function(dataService) {
-                return dataService.getCarProperties();
-            }
-        },
-        sp: getsp()
-    })
     .state('dashboard', {
         abstract: true,
         url: '/dashboard',
@@ -100,7 +75,7 @@ angular
     })
     .state('dashboard.cars', {
         url: '/cars',
-        templateUrl: 'views/main.html',
+        templateUrl: 'views/carList.html',
         controller: 'MainCtrl',
         controllerAs: 'main',
         resolve: {
@@ -112,7 +87,7 @@ angular
     })
     .state('dashboard.drivers', {
         url: '/drivers',
-        templateUrl: '/views/driversui.html',
+        templateUrl: '/views/driverList.html',
         controller: 'DriversUICtrl',
         controllerAs: 'driversui',
         resolve: {
@@ -155,7 +130,7 @@ angular
     })
     .state('logs.cars', {
         url: '/cars',
-        templateUrl: 'views/carLogs.html',
+        templateUrl: 'views/carsLogs.html',
         controller: 'CarLogsCtrl',
         resolve: {
             getCars: function(dataService) {
@@ -166,7 +141,7 @@ angular
     })
     .state('logs.drivers', {
         url: '/drivers',
-        templateUrl: 'views/driverLogs.html',
+        templateUrl: 'views/driversLogs.html',
         controller: 'DriverLogsCtrl',
         controllerAs: 'driverlogs',
         resolve: {
@@ -193,7 +168,7 @@ angular
     .state('carProfile', {
         abstract: true,
         url: '/car/:id',
-        templateUrl: '/views/carprofile.html',
+        templateUrl: '/views/carProfile.html',
         controller: 'CarProfileCtrl',
         resolve: {
             getCar: function(dataService, $stateParams) {
@@ -207,20 +182,20 @@ angular
     })
     .state('carProfile.data', {
         url: '/data',
-        templateUrl: '/views/cardataui.html',
+        templateUrl: '/views/carData.html',
         controller: 'CarDataCtrl',
         sp: getsp()
     })
     .state('carProfile.logs', {
         url: '/logs',
-        templateUrl: '/views/carlogsui.html',
+        templateUrl: '/views/carLogs.html',
         controller: 'CarLogCtrl',
         sp: getsp()
     })
     .state('driverProfile', {
         abstract: true,
         url: '/driver/:id',
-        templateUrl: '/views/driverprofile.html',
+        templateUrl: '/views/driverProfile.html',
         controller: 'DriverProfileCtrl',
         resolve: {
             getDriver: function(dataService, $stateParams) {
@@ -234,20 +209,20 @@ angular
     })
     .state('driverProfile.data', {
         url: '/data',
-        templateUrl: '/views/driverdataui.html',
+        templateUrl: '/views/driverData.html',
         controller: 'DriverDataCtrl',
         sp: getsp()
     })
     .state('driverProfile.logs', {
         url: '/logs',
-        templateUrl: '/views/driverlogsui.html',
+        templateUrl: '/views/driverLogs.html',
         controller: 'DriverLogCtrl',
         sp: getsp()
     })
     .state('prospectProfile', {
         abstract: true,
         url: '/prospect/:id',
-        templateUrl: '/views/prospectprofile.html',
+        templateUrl: '/views/prospectProfile.html',
         controller: 'ProspectProfileCtrl',
         resolve: {
             getProspect: function(dataService, $stateParams) {
@@ -264,7 +239,7 @@ angular
     })
     .state('prospectProfile.data', {
         url: '/data',
-        templateUrl: '/views/prospectdata.html',
+        templateUrl: '/views/prospectData.html',
         controller: 'ProspectDataCtrl',
         sp: getsp()
     })
