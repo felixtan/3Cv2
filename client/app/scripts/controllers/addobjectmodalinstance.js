@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AddobjectmodalinstanceCtrl
+ * @name clientApp.controller:AddObjectModalInstanceCtrl
  * @description
- * # AddobjectmodalinstanceCtrl
+ * # AddObjectModalInstanceCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

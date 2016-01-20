@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/services/prospecthelpers.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/services/</a> prospecthelpers.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">26.25% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/80</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.85% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">26.92% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>21/78</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc service
+ * @name clientApp.prospectHelpers
+ * @description
+ * # prospectHelpers
+ * Factory in the clientApp.
+ */
+angular.module('clientApp')
+  .factory('prospectHelpers', function (ENV, $q, dataService, $state) {
+&nbsp;
+    //////////////////////////
+    //  Data CRUD and Forms //
+    //////////////////////////
+&nbsp;
+    var getProspects = dataService.getProspects;
+    var saveProspect = dataService.createProspect;
+    var updateProspect = dataService.updateProspect;
+    var deleteProspect = dataService.deleteProspect;
+    var getProspectStatuses = dataService.getProspectStatuses;
+&nbsp;
+    var getOrganizationId = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';</span>
+    };
+&nbsp;
+    var getFullName = <span class="fstat-no" title="function not covered" >function(prospectData) {</span>
+<span class="cstat-no" title="statement not covered" >      return prospectData["First Name"].value + " " + prospectData["Last Name"].value;</span>
+    };
+&nbsp;
+    var thereAreProspects = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      getProspects().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve((typeof result.data[0] !== 'undefined'));</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error determining if there are prospects.'));</span>
+      });
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var _getFields = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      getProspects().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(Object.keys(result.data[0].data));</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Failed to get fields'));</span>
+      });
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var getFields = <span class="fstat-no" title="function not covered" >function(prospect) {</span>
+<span class="cstat-no" title="statement not covered" >      return Object.keys(prospect.data); </span>
+    };
+&nbsp;
+    var notName = <span class="fstat-no" title="function not covered" >function(field) {</span>
+<span class="cstat-no" title="statement not covered" >      return ((field !== "First Name") &amp;&amp; (field !== "Last Name") &amp;&amp; (field !== "fullName"));</span>
+    };
+&nbsp;
+    var namesNotNull = <span class="fstat-no" title="function not covered" >function(prospectData) {</span>
+      // console.log(prospectData);
+<span class="cstat-no" title="statement not covered" >      return ((prospectData["First Name"].value !== null) &amp;&amp; (prospectData["Last Name"].value !== null));</span>
+    };
+&nbsp;
+    var updateFullName = <span class="fstat-no" title="function not covered" >function(prospectData) {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      prospectData.fullName = {</span>
+        value: getFullName(prospectData),
+        log: false
+      };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      deferred.resolve(prospectData);</span>
+<span class="cstat-no" title="statement not covered" >      deferred.reject(new Error('Failed to inject full name'));</span>
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var createProspect = <span class="fstat-no" title="function not covered" >function(prospectData) {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      if(prospectData.assetType) <span class="cstat-no" title="statement not covered" >delete prospectData.assetType;</span></span>
+<span class="cstat-no" title="statement not covered" >      updateFullName(prospectData).then(<span class="fstat-no" title="function not covered" >function(prospectDataWithFullName) {</span></span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve({</span>
+          identifier: "fullName",
+          data: prospectDataWithFullName,
+          organizationId: getOrganizationId()
+        });
+        
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error creating prospect'));</span>
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var getDefaultStatus = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      getProspectStatuses().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var statuses = result.data.statuses;</span>
+        // console.log(statuses);
+<span class="cstat-no" title="statement not covered" >        var defaultStatus = _.find(statuses, <span class="fstat-no" title="function not covered" >function(status) {</span> <span class="cstat-no" title="statement not covered" >return status.special; </span>});</span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(defaultStatus);</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error getting default prospect status'));</span>
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var getDefaultProspect = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      getDefaultStatus().then(<span class="fstat-no" title="function not covered" >function(defaultStatus) {</span></span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve({</span>
+          identifier: "fullName",
+          status: defaultStatus,
+          data: {
+            "First Name": {
+              value: null,
+              log: false
+            },
+            "Last Name": {
+              value: null,
+              log: false
+            },
+            fullName: {
+              value: null,
+              log: false
+            },
+            status: {
+              value: defaultStatus.value,
+              log: false
+            }
+          },
+          organizationId: getOrganizationId()
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error getting default prospect.'));</span>
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var getFormData = <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >      var formData = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      thereAreProspects().then(<span class="fstat-no" title="function not covered" >function(ans) {</span></span>
+<span class="cstat-no" title="statement not covered" >        if(ans) {</span>
+<span class="cstat-no" title="statement not covered" >          console.log('there are prospects');</span>
+<span class="cstat-no" title="statement not covered" >          getProspects().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+            // console.log(result);
+<span class="cstat-no" title="statement not covered" >            var prospectData = result.data[0].data;</span>
+            // console.log(prospect);
+<span class="cstat-no" title="statement not covered" >            _.each(Object.keys(prospectData), <span class="fstat-no" title="function not covered" >function(field) {</span></span>
+<span class="cstat-no" title="statement not covered" >              formData[field] = {</span>
+                value: null,
+                log: prospectData[field].log
+              }
+            });
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(formData);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error initializing prospect form data'));</span>
+          });
+        } else {
+<span class="cstat-no" title="statement not covered" >          getDefaultProspect().then(<span class="fstat-no" title="function not covered" >function(defaultProspect) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log('there are no prospects');</span>
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(defaultProspect.data);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error initializing prospect form data'));</span>
+          });
+        }  
+      });
+      
+<span class="cstat-no" title="statement not covered" >      return deferred.promise;</span>
+    };
+&nbsp;
+    var mapObject = <span class="fstat-no" title="function not covered" >function(objects, identifier) {</span>
+<span class="cstat-no" title="statement not covered" >      return _.map(objects, <span class="fstat-no" title="function not covered" >function(object) {</span></span>
+<span class="cstat-no" title="statement not covered" >          return {</span>
+              id: object.id,
+              identifierValue: object.data[identifier].value
+          };
+      });
+    };
+&nbsp;
+    var belongsToStatus = <span class="fstat-no" title="function not covered" >function(prospect, status) {</span>
+<span class="cstat-no" title="statement not covered" >        return prospect.status.value === status.value;</span>
+    };
+&nbsp;
+    return {
+&nbsp;
+      // Data
+      mapObject: mapObject,
+      getOrganizationId: getOrganizationId,
+      getProspects: getProspects,
+      getProspectStatuses: getProspectStatuses,
+      saveProspect: saveProspect,
+      updateProspect: updateProspect,
+      createProspect: createProspect,
+      deleteProspect: deleteProspect,
+      thereAreProspects: thereAreProspects,
+      _getFields: _getFields,
+      getFields: getFields,
+      notName: notName,
+      namesNotNull: namesNotNull,
+      getFullName: getFullName,
+      updateFullName: updateFullName,
+      getDefaultProspect: getDefaultProspect,
+      getFormData: getFormData,
+      getDefaultStatus: getDefaultStatus,
+      belongsToStatus: belongsToStatus
+&nbsp;
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jan 20 2016 18:43:39 GMT+0800 (MYT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

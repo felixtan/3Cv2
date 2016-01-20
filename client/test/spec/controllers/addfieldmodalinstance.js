@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: AddfieldmodalinstanceCtrl', function () {
+describe('Controller: AddFieldModalInstanceCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));

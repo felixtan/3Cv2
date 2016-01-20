@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:ProspectprofileCtrl
+ * @name clientApp.controller:ProspectProfileCtrl
  * @description
- * # ProspectprofileCtrl
+ * # ProspectProfileCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

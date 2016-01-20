@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AssettypemodalCtrl
+ * @name clientApp.controller:AssetTypeModalCtrl
  * @description
- * # AssettypemodalCtrl
+ * # AssetTypeModalCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

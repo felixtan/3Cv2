@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @value clientApp.controller:ProspectstatusmodalCtrl
+ * @value clientApp.controller:ProspectStatusModalCtrl
  * @description
- * # ProspectstatusmodalCtrl
+ * # ProspectStatusModalCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

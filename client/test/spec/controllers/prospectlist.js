@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: ProspectlistCtrl', function () {
+describe('Controller: ProspectListCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var ProspectlistCtrl,
+  var ProspectListCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ProspectlistCtrl = $controller('ProspectlistCtrl', {
+    ProspectListCtrl = $controller('ProspectListCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(ProspectlistCtrl.awesomeThings.length).toBe(3);
+  xit('should attach a list of awesomeThings to the scope', function () {
+    expect(ProspectListCtrl.awesomeThings.length).toBe(3);
   });
 });

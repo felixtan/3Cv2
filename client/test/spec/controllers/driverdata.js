@@ -5,7 +5,7 @@ describe('Controller: DriverDataCtrl', function () {
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var controller, scope, state, dataService;
+  var controller, scope, state, dataService, driverHelpers;
 
   var driver1 = {
     id: 1,
@@ -80,11 +80,12 @@ describe('Controller: DriverDataCtrl', function () {
   var getDrivers = { data: [driver1, driver2] };
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _dataService_, $state) {
+  beforeEach(inject(function ($controller, $rootScope, _dataService_, $state, _driverHelpers_) {
     scope = $rootScope.$new();
     dataService = _dataService_;
     state = $state;
-
+    driverHelpers = _driverHelpers_;
+    
     spyOn(dataService, 'updateDriver');
     spyOn(dataService, 'getDriver');
 
@@ -118,8 +119,8 @@ describe('Controller: DriverDataCtrl', function () {
 
   describe('UPDATE', function() {
     it('should load all the cars', function() {
-      var data = { name: 'profit', value: 1600, log: true };
-      scope.save(data);
+      // var data = { name: 'profit', value: 1600, log: true };
+      // scope.save(data);
       expect(scope.drivers).toEqual(getDrivers.data);
     });
 

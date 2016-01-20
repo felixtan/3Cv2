@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AssetprofileCtrl
+ * @name clientApp.controller:AssetProfileCtrl
  * @description
- * # AssetprofileCtrl
+ * # AssetProfileCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

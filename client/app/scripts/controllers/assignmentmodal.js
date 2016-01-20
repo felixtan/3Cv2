@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AssigncarmodalCtrl
+ * @name clientApp.controller:AssignCarModalCtrl
  * @description
- * # AssigncarmodalCtrl
+ * # AssignCarModalCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')

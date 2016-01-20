@@ -122,19 +122,15 @@ describe('CarDataCtrl', function () {
   });
 
   it("should activate the correct tab", function() {
-    expect(scope.tabs[1].active).toEqual(true);
-    expect(scope.tabs[0].active).toEqual(false);
+    expect(scope.tabs[0].active).toEqual(true);
+    expect(scope.tabs[1].active).toEqual(false);
   });
 
   describe('UPDATE:', function() {
-    it('should store the field/key name to scope before updates/changes are made', function() {
-      expect(scope.oldField).toBeDefined();
-    });
-
     it("if a value is changed, only the current car's data should be updated", function() {
       var data = { name: 'mileage', value: 20000, log: true };
       scope.save(data); // causes TypeError: 'undefined' is not an object (evaluating 'car.data[$scope.oldField].value')
-      scope.oldField = 'mileage';
+      // scope.oldField = 'mileage';
 
       expect(scope.car.data['mileage'].value).toBe(20001);
       expect(scope.car.data['mileage'].log).toEqual(true);
@@ -145,8 +141,8 @@ describe('CarDataCtrl', function () {
     it('if a field is renamed, all cars should be updated', function() {
       var data = { name: 'notes', value: 'lorem ipsum', log: false };
       scope.save(data); // TypeError: 'undefined' is not an object (evaluating 'car.data[$scope.oldField].value')
-      scope.oldField = 'description';
-      expect(scope.oldField).toBeDefined();
+      // scope.oldField = 'description';
+      // expect(scope.oldField).toBeDefined();
 
       var fields = Object.keys(scope.car.data);
       expect(fields).toContain('notes');
@@ -165,8 +161,8 @@ describe('CarDataCtrl', function () {
     it('if log value for an existing field has changed, all cars should be updated', function() {
       var data = { name: 'description', value: 'lorem ipsum', log: true };
       scope.save(data); // TypeError: 'undefined' is not an object (evaluating 'car.data[$scope.oldField].value')
-      scope.oldField = 'description';
-      expect(scope.oldField).toBeDefined();
+      // scope.oldField = 'description';
+      // expect(scope.oldField).toBeDefined();
 
       expect(scope.cars).toBeDefined();
       scope.cars.forEach(function(car) {

@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: AssettypelogsCtrl', function () {
+describe('Controller: AssetTypeLogsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var AssettypelogsCtrl,
+  var AssetTypeLogsCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    AssettypelogsCtrl = $controller('AssettypelogsCtrl', {
+    AssetTypeLogsCtrl = $controller('AssetTypeLogsCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(AssettypelogsCtrl.awesomeThings.length).toBe(3);
+  xit('should attach a list of awesomeThings to the scope', function () {
+    expect(AssetTypeLogsCtrl.awesomeThings.length).toBe(3);
   });
 });
