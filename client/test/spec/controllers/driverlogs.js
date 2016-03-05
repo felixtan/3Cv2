@@ -6,43 +6,6 @@ describe('Controller: DriverLogCtrl', function () {
   beforeEach(module('clientApp'));
 
   var controller, scope, dataService, state;
-
-  var driver1 = {
-    id: 1,
-    organizationId: '3Qnv2pMAxLZqVdp7n8RZ0y',
-    data: {
-      "First Name": {
-        value: "John",
-        log: false
-      },
-      "Last Name": {
-        value: "Doe",
-        log: false
-      },
-      revenue: {
-        value: 1600,
-        log: true
-      }
-    },
-    logs: [
-      {
-        weekOf: 1448168400000,
-        data: {
-          revenue: 1540
-        },
-        driverId: 1
-      },
-      {
-        weekOf: 1448773200000,
-        data: {
-          revenue: 1600
-        },
-        driverId: 1
-      }
-    ]
-  };
-
-  var getDriver = { data: driver1 };
   
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, _dataService_, $state) {

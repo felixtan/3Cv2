@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">27.27% </span>
+        <span class="strong">80% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>3/11</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>8/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">25% </span>
-        <span class="quiet">Functions</span>
+        <span class="quiet">Branches</span>
         <span class='fraction'>1/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">27.27% </span>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">77.78% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/11</span>
+        <span class='fraction'>7/9</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -74,11 +74,7 @@
 29
 30
 31
-32
-33
-34
-35
-36</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+32</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -90,25 +86,21 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,20 +122,16 @@ angular.module('clientApp')
         { title: 'Drivers', route: 'dashboard.drivers', active: false }
     ];
 &nbsp;
-    carHelpers.getIdentifier().then(<span class="fstat-no" title="function not covered" >function(identifier) {</span>
-<span class="cstat-no" title="statement not covered" >        $scope.cars = getCars.data;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.identifier = identifier;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);</span>
-<span class="cstat-no" title="statement not covered" >        $scope.thereAreCars = <span class="fstat-no" title="function not covered" >function() {</span></span>
-<span class="cstat-no" title="statement not covered" >            return (typeof $scope.cars[0] !== 'undefined');</span>
-        };
-    });
+    $scope.cars = getCars.data;
+    $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
+    $scope.thereAreCars = function() { return (typeof $scope.cars[0] !== 'undefined'); };
+    $scope.identifier = $scope.thereAreCars() ? $scope.cars[0].identifier : <span class="branch-1 cbranch-no" title="branch not covered" >null;</span>
 &nbsp;
     // submit xeditable row form by pressing enter
     // will then call updateDriver
     // to use this add following attribute to button element
     // e-ng-keypress="keypress($event, driverRowForm)"
-<span class="cstat-no" title="statement not covered" >    $scope.keypress = <span class="fstat-no" title="function not covered" >function(e, form) {</span></span>
+    $scope.keypress = <span class="fstat-no" title="function not covered" >function(e, form) {</span>
 <span class="cstat-no" title="statement not covered" >        if (e.which === 13) {</span>
 <span class="cstat-no" title="statement not covered" >            form.$submit();</span>
         }
@@ -154,7 +142,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Jan 20 2016 18:43:39 GMT+0800 (MYT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jan 25 2016 13:21:41 GMT+0800 (MYT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

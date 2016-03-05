@@ -123,12 +123,14 @@
     <table class='table'>
         <thead>
             <tr>
-                <th>{{ ::asset.identifier }}</th>
+                <th>Type</th>
+                <th>Identifier</th>
                 <th>Date Assigned</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat='asset in driver.assetsAssigned | orderBy:"dateAssigned"' ui-sref='assetProfile.data({ type: asset.assetType, id: asset.id })' class='table-row-link'>
+                <td>{{ ::asset.assetType }}</td>
                 <td>{{ ::asset.identifier.value }}</td>
                 <td>{{ ::asset.dateAssigned | date: 'fullDate' }}<span ng-if='asset.dateUnassigned !== null'> - {{ ::asset.dateEnded | date: 'fullDate' }}</span></td>
             </tr>

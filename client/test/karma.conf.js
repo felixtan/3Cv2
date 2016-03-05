@@ -44,6 +44,7 @@ module.exports = function(config) {
       // endbower
       "app/scripts/**/*.js",
       // "test/mock/**/*.js",
+      "test/helpers/*.js",
       "test/spec/**/*.js"
     ],
 

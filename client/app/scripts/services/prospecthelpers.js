@@ -64,7 +64,9 @@ angular.module('clientApp')
 
       prospectData.fullName = {
         value: getFullName(prospectData),
-        log: false
+        log: false,
+        dataType: 'text',
+        type: 'variable'
       };
 
       deferred.resolve(prospectData);
@@ -78,6 +80,7 @@ angular.module('clientApp')
       updateFullName(prospectData).then(function(prospectDataWithFullName) {
         deferred.resolve({
           identifier: "fullName",
+          status: prospectDataWithFullName.status.value,
           data: prospectDataWithFullName,
           organizationId: getOrganizationId()
         });
@@ -111,19 +114,27 @@ angular.module('clientApp')
           data: {
             "First Name": {
               value: null,
-              log: false
+              log: false,
+              dataType: 'text',
+              type: 'variable'
             },
             "Last Name": {
               value: null,
-              log: false
+              log: false,
+              dataType: 'text',
+              type: 'variable'
             },
             fullName: {
               value: null,
-              log: false
+              log: false,
+              dataType: 'text',
+              type: 'variable'
             },
             status: {
               value: defaultStatus.value,
-              log: false
+              log: false,
+              dataType: 'text',
+              type: 'variable'
             }
           },
           organizationId: getOrganizationId()
@@ -149,7 +160,9 @@ angular.module('clientApp')
             _.each(Object.keys(prospectData), function(field) {
               formData[field] = {
                 value: null,
-                log: prospectData[field].log
+                log: prospectData[field].log,
+                dataType: prospectData[field].dataType,
+                type: prospectData[field].type
               }
             });
             deferred.resolve(formData);

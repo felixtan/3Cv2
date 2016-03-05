@@ -15,14 +15,10 @@ angular.module('clientApp')
         { title: 'Drivers', route: 'dashboard.drivers', active: false }
     ];
 
-    carHelpers.getIdentifier().then(function(identifier) {
-        $scope.cars = getCars.data;
-        $scope.identifier = identifier;
-        $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
-        $scope.thereAreCars = function() {
-            return (typeof $scope.cars[0] !== 'undefined');
-        };
-    });
+    $scope.cars = getCars.data;
+    $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.cars[0].identifier);
+    $scope.thereAreCars = function() { return (typeof $scope.cars[0] !== 'undefined'); };
+    $scope.identifier = $scope.thereAreCars() ? $scope.cars[0].identifier : null;
 
     // submit xeditable row form by pressing enter
     // will then call updateDriver

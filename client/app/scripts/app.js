@@ -131,7 +131,7 @@ angular
     .state('logs.cars', {
         url: '/cars',
         templateUrl: 'views/carsLogs.html',
-        controller: 'CarLogsCtrl',
+        controller: 'CarsLogsCtrl',
         resolve: {
             getCars: function(dataService) {
                 return dataService.getCars();
@@ -189,7 +189,7 @@ angular
     .state('carProfile.logs', {
         url: '/logs',
         templateUrl: '/views/carLogs.html',
-        controller: 'CarLogCtrl',
+        controller: 'CarLogsCtrl',
         sp: getsp()
     })
     .state('driverProfile', {

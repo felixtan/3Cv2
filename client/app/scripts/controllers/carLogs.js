@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarLogCtrl', function ($state, dataService, $q, $scope, getCar) {
+  .controller('CarLogsCtrl', function ($state, dataService, $q, $scope, getCar) {
     $scope.car = getCar.data;
 
     $scope.tabs = [

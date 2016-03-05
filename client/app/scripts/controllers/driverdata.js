@@ -11,14 +11,12 @@ angular.module('clientApp')
   .controller('DriverDataCtrl', function ($q, $modal, $state, dataService, $scope, getDriver, getDrivers, carHelpers) {
     
     $scope.driver = getDriver.data;
+    $scope.drivers = getDrivers.data;
+    $scope.carIdentifier = $scope.driver.identifier;
     $scope.tabs = [
         { title: 'Data', active: true, state: 'driverProfile.data({ id: driver.id })' },
         { title: 'Logs', active: false, state: 'driverProfile.logs({ id: driver.id })' }
     ];
-    // console.log($scope.driver);
-    carHelpers.getIdentifier().then(function(identifier) {
-        $scope.carIdentifier = identifier;
-    });
 
     ///////////////////
     ///// Data UI /////
@@ -139,8 +137,6 @@ angular.module('clientApp')
             // data.value -> updated field value
             // data.log -> updated field log
 
-        var drivers = getDrivers.data;
-
         // the scope driver's field value and log value are already changed,
         // so only need to check if field name changed
         // "First Name" and "Last Name" can't be changed so don't need to update fullName here
@@ -148,7 +144,7 @@ angular.module('clientApp')
         // console.log('did it change?', $scope.driver);
        
         if($scope.fieldNameChanged() && !$scope.logValChanged()) {
-            _.each(drivers, function(driver) {
+            _.each($scope.drivers, function(driver) {
                 $scope.updateFieldName(driver).then(function(driverWithUpdatedFieldName) {
                     // console.log('saving:', driverWithUpdatedFieldName);
                     dataService.updateDriver(driverWithUpdatedFieldName);
@@ -156,7 +152,7 @@ angular.module('clientApp')
                 });
             });
         } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
-            _.each(drivers, function(driver) {
+            _.each($scope.drivers, function(driver) {
                 $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
                     $scope.addFieldToLogs(driverWithUpdatedLogVal, data.name).then(function(driverWithUpdatedLogs) {
                         // console.log('saving:', driverWithUpdatedLogs);
@@ -166,7 +162,7 @@ angular.module('clientApp')
                 });
             });
         } else if($scope.logValChanged() && $scope.fieldNameChanged()) {
-            _.each(drivers, function(driver) {
+            _.each($scope.drivers, function(driver) {
                $scope.updateLogVal(driver).then(function(driverWithUpdatedLogVal) {
                     $scope.addFieldToLogs(driverWithUpdatedLogVal, data.name).then(function(driverWithUpdatedLogs) {
                         $scope.updateFieldName(driverWithUpdatedLogs).then(function(driverWithUpdatedFieldName) {
@@ -190,7 +186,7 @@ angular.module('clientApp')
     $scope.addField = function() {
         var modalInstance = $modal.open({
             animation: true,
-            templateUrl: 'views/addfieldmodal.html',
+            templateUrl: 'views/addFieldModal.html',
             controller: 'AddFieldModalInstanceCtrl',
             size: 'md',
             resolve: {

@@ -187,7 +187,9 @@ angular.module('clientApp')
             _.each(Object.keys(assets[0].data), function(field) {
               formData[field] = {
                 value: ((field === 'assetType') ? assetType : null),
-                log: assets[0].data[field].log
+                log: assets[0].data[field].log,
+                dataType: assets[0].data[field].dataType || null,
+                type: assets[0].data[field].type || null,
               }
             });
             // console.log(formData);

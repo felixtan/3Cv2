@@ -1,0 +1,28 @@
+ul.fieldTypes {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li label {
+    margin-left: 1.5vw;
+}
+
+i.fa-question-circle {
+    margin-left: 1vw;
+}
+
+button.operator {
+    margin-right: 1.5vw;
+}
+
+h5.function {
+    text-align: center;
+}
+
+div.undoAndClear {
+    float: right;
+}
+
+div.undoAndClear button.clear {
+    margin-left: 1.5vw;
+}

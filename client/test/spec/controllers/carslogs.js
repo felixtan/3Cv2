@@ -6,45 +6,6 @@ describe('CarLogCtrl', function () {
   beforeEach(module('clientApp'));
 
   var controller, scope, dataService, state, rootScope, httpBackend;
-  var car1 = {
-      id: 1,
-      organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
-      data: {
-          licensePlate: {
-              value: 'T627067C',
-              log: false
-          },
-          licenseNumber: {
-              value: 'GPJ 6478',
-              log: false
-          },
-          mileage: {
-              value: '14081',
-              log: true
-          },
-          description: {
-              value: 'lorem ipsum',
-              log: false
-          }
-      },
-      logs: [
-        {
-            weekOf: 1448168400000,
-            createdAt: '2015-11-23T20:55:20.432Z',
-            data: {
-                mileage: '9412'
-            }
-        },
-        {
-            weekOf: 1448773200000,
-            createdAt: '2015-11-23T21:05:36.954Z',
-            data: {
-                mileage: '14081'
-            }
-        }
-    ]
-  };
-  var getCar = { data: car1 };
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, _dataService_, $state, $window) {

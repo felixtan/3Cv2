@@ -124,6 +124,7 @@
     <script src='bower_components/underscore/underscore.js'></script>
     <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js'></script>
     <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js'></script>
+    <script src="bower_components/math-expression-evaluator/dist/browser/math-expression-evaluator.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -133,10 +134,10 @@
         <script src="scripts/controllers/carList.js"></script>
         <script src="scripts/services/dataservice.js"></script>
         <script src="scripts/directives/repeatfinished.js"></script>
-        <script src="scripts/controllers/carLogs.js"></script>
+        <script src="scripts/controllers/carsLogs.js"></script>
         <script src="scripts/controllers/carprofile.js"></script>
         <script src="scripts/controllers/cardata.js"></script>
-        <script src="scripts/controllers/carlogs.js"></script>
+        <script src="scripts/controllers/carLogs.js"></script>
         <script src="scripts/controllers/addfieldmodalinstance.js"></script>
         <script src="scripts/services/carhelpers.js"></script>
         <script src="scripts/services/underscore.js"></script>
@@ -165,11 +166,15 @@
         <script src="scripts/controllers/assettypelogs.js"></script>
         <script src="scripts/services/assethelpers.js"></script>
         <script src="scripts/controllers/assettypemodal.js"></script>
+        <script src="scripts/directives/validfunction.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->
         <script src='/scripts/config.js'></script>
         <script src='/scripts/login.js'></script>
+
+    <!-- math expression parser -->
+    <!-- <script src="bower_components/math-expression-evaluator/dist/math-expression-evaluator.min.js"></script> -->
 
     <!-- Applies css to side nav active page element -->
     <script type="text/javascript">

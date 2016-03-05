@@ -11,6 +11,7 @@ angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
     $scope.car = getCar.data;
+    $scope.cars = getCars.data;
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
     $scope.identifier = { name: $scope.car.identifier || null };
     $scope.tabs = [
@@ -118,10 +119,8 @@ angular.module('clientApp')
             // data.value -> updated field value
             // data.log -> updated field log
 
-        var cars = getCars.data;
-
         if($scope.fieldNameChanged() && !$scope.logValChanged()) {
-            _.each(cars, function(car) {
+            _.each($scope.cars, function(car) {
                 $scope.updateFieldName(car).then(function(carWithUpdatedFieldName) {
                     // console.log('saving:', carWithUpdatedFieldName);
                     dataService.updateCar(carWithUpdatedFieldName);
@@ -129,7 +128,7 @@ angular.module('clientApp')
                 });
             });
         } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
-            _.each(cars, function(car) {
+            _.each($scope.cars, function(car) {
                 $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
                     $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
                         // console.log('saving:', carWithUpdatedLogs);
@@ -139,7 +138,7 @@ angular.module('clientApp')
                 });
             });
         } else if($scope.logValChanged() && $scope.fieldNameChanged()) {
-            _.each(cars, function(car) {
+            _.each($scope.cars, function(car) {
                $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
                     $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
                         $scope.updateFieldName(carWithUpdatedLogs).then(function(carWithUpdatedFieldName) {
@@ -155,7 +154,7 @@ angular.module('clientApp')
             $state.forceReload();
         }
 
-        carHelpers.updateIdentifier(cars, $scope.currentIdentifier.name, $scope.identifier.name);
+        carHelpers.updateIdentifier($scope.cars, $scope.currentIdentifier.name, $scope.identifier.name);
     };
 
     // Add field

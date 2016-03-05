@@ -110,7 +110,9 @@ angular.module('clientApp')
           _.each(Object.keys(carData), function(field) {
             formData[field] = {
               value: null,
-              log: carData[field].log
+              log: carData[field].log,
+              dataType: carData[field].dataType || null,
+              type: carData[field].type || null
             }
           });
           deferred.resolve(formData);
@@ -128,6 +130,8 @@ angular.module('clientApp')
 
   var mapObject = function(objects, identifier) {
     return _.map(objects, function(object) {
+        // console.log(object.data);
+        // console.log(identifier);
         return {
             id: object.id,
             identifierValue: object.data[identifier].value
@@ -168,8 +172,6 @@ angular.module('clientApp')
   /////////////////
   /// Logs CRUD ///
   /////////////////
-
-
 
   var getLogDates = function() {
     var deferred = $q.defer();

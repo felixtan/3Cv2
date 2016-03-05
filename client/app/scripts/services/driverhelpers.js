@@ -57,7 +57,9 @@ angular.module('clientApp')
 
       driverData.fullName = {
         value: getFullName(driverData),
-        log: false
+        log: false,
+        dataType: 'text',
+        type: 'variable'
       };
 
       deferred.resolve(driverData);
@@ -100,15 +102,21 @@ angular.module('clientApp')
         data: {
           "First Name": {
             value: null,
-            log: false
+            log: false,
+            dataType: 'text',
+            type: 'variable'
           },
           "Last Name": {
             value: null,
-            log: false
+            log: false,
+            dataType: 'text',
+            type: 'variable'
           },
           fullName: {
             value: null,
-            log: false
+            log: false,
+            dataType: 'text',
+            type: 'variable'
           }
         },
         logs: [],
@@ -131,7 +139,9 @@ angular.module('clientApp')
             _.each(Object.keys(driverData), function(field) {
               formData[field] = {
                 value: null,
-                log: driverData[field].log
+                log: driverData[field].log,
+                dataType: driverData[field].dataType,
+                type: driverData[field].type
               }
             });
 
