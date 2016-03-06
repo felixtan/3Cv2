@@ -62,6 +62,15 @@
             <input type='text' class='form-control' ng-model="formData[field].value">
         </div>
     </form>
+    <!-- {{ formData }} -->
+    <!-- Show expressions -->
+    <div>
+        <h4>Functions</h4>
+        <div ng-repeat='(field, data) in formData' ng-if='data.type === "function"'>
+            <p>{{ field }}</p>
+            <p>{{ data }}</p>
+        </div>
+    </div>
 
     <!-- <div>
         {{ formData }}

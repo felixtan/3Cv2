@@ -34,6 +34,12 @@
                     </li>
                     <li>
                         <label class='radio'>
+                            <input ng-model='field.type' value='boolean' type='radio' ng-change='setDataType(field)'>Boolean
+                            <i class="fa fa-question-circle" tooltip="ex. yes/no, true/false"></i>
+                        </label>
+                    </li>
+                    <li>
+                        <label class='radio'>
                             <input ng-model='field.type' value='function' type='radio' ng-change='setDataType(field)'> Function
                             <i class="fa fa-question-circle" tooltip="Outputs a value in terms of other functions and numbers"></i>
                         </label>
@@ -83,12 +89,6 @@
         <div class='form-group'>
             <label for='field'>Name</label>
 
-            <!-- <span class='checkbox' ng-if='objectType != "prospect"' style='float:right;'>
-                <label for='log'>
-                    <input type='checkbox' ng-model='formData.log'> Log it?
-                </label>
-            </span> -->
-
             <input name='field' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
         </div>
 
@@ -102,30 +102,25 @@
             1. Function cannot begin nor end with an operator 
             2. Corollary: It must begin and end with a function/variable/constant
         -->
-        <p>field: {{ field }}</p><br>
-        <p>indicesBeforeAppendingLastItem: {{ indicesBeforeAppendingLastItem }}</p><br>
-        <p>functionConstantInput: {{ functionConstantInput }}</p><br>
-        <p>functionItems: {{ functionItems }}</p><br>
-        <p>validFunction: {{ validFunction() }}</p><br>
-        <p>unmatchedOpeningParens: {{ unmatchedOpeningParens }}</p><br>
-        <p>indicesOfOpeningParens: {{ indicesOfOpeningParens }}</p><br>
         <div class='form-group' ng-show='field.type === "function"'>
             <div class='well'>
                 <h4>Function creator</h4><br>
 
-                <h5 class='function'>{{ field.function }}</h5><br>
+                <h5 class='function'>{{ field.expression }}</h5><br>
 
                 <div class='btn-toolbar' role='toolbar'>
 
-                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("+")'>+</button>
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("+", "operator")'>+</button>
 
-                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("-")'>-</button>
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("-", "operator")'>-</button>
                     
-                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("*")'>*</button>
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("*", "operator")'>*</button>
 
-                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("/")'>/</button>
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("/", "operator")'>/</button>
 
-                    <button class='btn btn-warning operator' type='button' ng-click='parens()'>( )</button>
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("(", "operator")'>(</button>
+
+                    <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction(")", "operator")'>)</button>
 
                     <div class='undoAndClear'>
                         <button class='btn btn-primary undo' type='button' ng-click='undoFunction()'>Undo</button>
@@ -139,17 +134,20 @@
                 </label>
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <button class="btn" type="button" ng-click='appendItemToFunction(functionConstantInput.value)' ng-disabled='form.functionConst.$dirty && form.functionConst.$invalid'>+</button>
+                        <button class="btn" type="button" ng-click='appendItemToFunction(functionConstantInput.value, "constant")' ng-disabled='form.functionConst.$dirty && form.functionConst.$invalid'>+</button>
                     </span>
-                    <input name='functionConst' type="text" class="form-control" ng-model='functionConstantInput.value' ng-pattern="/^[0-9]*$/">
+                    <input name='functionConst' type="text" class="form-control" ng-model='functionConstantInput.value' ng-pattern="/^[0-9]\d*(\.\d+)?$/">
+                    <!-- regex patterns for constant -->
+                    <!-- ^[1-9]\d*(\.\d+)?$ -->
+                    <!-- /^[0-9]*$/ -->
                 </div><br><!-- /input-group -->
 
                 <label>
                     Fields
                     <i class="fa fa-question-circle" tooltip='Add an existing field to the function'></i>
                 </label>
-                <select class='form-control' ng-model='functionFieldSelect.value' ng-change='appendItemToFunction(functionFieldSelect.value)'>
-                    <option ng-repeat='(field, data) in objects[0].data' value='{{ ::field }}' ng-if='validDataType(data.dataType)'>{{ ::field }}</option>
+                <select class='form-control' ng-model='functionFieldSelect.value' ng-change='appendItemToFunction(functionFieldSelect.value, "field")'>
+                    <option ng-repeat='(field, data) in objects[0].data' value='{{ ::field }}' ng-if='data.dataType === "number"'>{{ ::field }}</option>
                 </select>
             </div>
         </div>
@@ -170,13 +168,21 @@
                 Constant must
                 <ul>
                     <li>be a number</li>
+                    <li>include at least one digit following a decimal point</li>
                 </ul>
             </div>
         </div>
 
-        <div ng-if='!validFunction()' class="alert alert-danger" role="alert">
-            <div>
-                Function must
+        <div ng-if='!validFunction' class="alert alert-danger" role="alert">
+            <div id='expression-error-message' ng-if='expressionErrorMessage'>
+                <h4>Function error(s):</h4>
+                <ul>
+                    <li>{{ expressionErrorMessage }}</li>
+                </ul>
+            </div>
+            <br>
+            <div id='general-expression-rules'>
+                <h4>Function must</h4>
                 <ul>
                     <li>not end or begin with a mathematical operator</li>
                     <li>contain a mathematical operator between any two values</li>
@@ -189,7 +195,11 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validFunction()'>Submit</button>
+    <!-- {{ form.field.$invalid }}
+    {{ invalidFieldType() }}
+    {{ !validFunction }} -->
+    {{ field }}
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validFunction'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

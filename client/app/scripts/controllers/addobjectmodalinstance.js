@@ -21,7 +21,7 @@ angular.module('clientApp')
     $scope.status = {};
     $scope.assetTypes = [];
     $scope.assetType = { value: null };
-
+    
     $scope.getNewFieldsToLog = function(formData) {
         return _.filter(Object.keys(formData), function(field) {
             return formData[field].log;
@@ -59,6 +59,16 @@ angular.module('clientApp')
     // only for assets
     $scope.renderForm = function() {};
 
+    function hideExpressionFields(formData) {
+        var fields = Object.keys(formData);
+
+        _.each(fields, function(field) {
+            if((formData[field].type === 'function') || (formData[field].type === 'inequality')) {
+                $scope.fieldsToHide.push(field);
+            }
+        });
+    };
+
     // determine the state or ui calling this modal
     if($state.includes('dashboard.drivers')) {
         console.log('called from drivers ui');
@@ -74,6 +84,7 @@ angular.module('clientApp')
             $scope.currentIdentifier.value = "fullName";
             angular.copy($scope.currentIdentifier, $scope.identifier);
             $scope.formData = formData;
+            hideExpressionFields(formData);
             $scope.fieldsToHide.push('assetType');
             $scope.formData.assetType = { value: null };
             $scope.disableConditions = driverHelpers.namesNotNull;
@@ -91,6 +102,7 @@ angular.module('clientApp')
                 $scope.fieldsToHide.push('assetType');
                 $scope.formData.assetType = { value: null };
                 $scope.fields = Object.keys(formData);
+                hideExpressionFields(formData);
                 $scope.currentIdentifier.value = identifier;
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.disableConditions = function(formData) { return true; };
@@ -113,6 +125,7 @@ angular.module('clientApp')
                 $scope.currentIdentifier.value = "fullName";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.formData = formData;
+                hideExpressionFields(formData);
                 $scope.fieldsToHide.push('assetType');
                 $scope.formData.assetType = { value: null };
                 $scope.statuses = result.data.statuses;
@@ -136,6 +149,7 @@ angular.module('clientApp')
                     assetHelpers.getIdentifier(assetType).then(function(identifier) {
                         $scope.fields = Object.keys(formData);
                         $scope.formData = formData;
+                        hideExpressionFields(formData);
                         $scope.disableConditions = assetHelpers.invalidAssetType;
                         $scope.currentIdentifier.value = identifier;
                         angular.copy($scope.currentIdentifier, $scope.identifier);

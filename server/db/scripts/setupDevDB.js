@@ -31,19 +31,27 @@ module.exports = {
             data: {
                 licensePlate: {
                     value: 'T646853C',
-                    log: false
+                    log: false,
+                    type: 'text',
+                    dataType: 'text'
                 },
                 licenseNumber: {
                     value: 'FUJ 5993',
-                    log: false
+                    log: false,
+                    type: 'text',
+                    dataType: 'text'
                 },
                 mileage: {
                     value: '12923',
-                    log: true
+                    log: true,
+                    type: 'number',
+                    dataType: 'number'
                 },
                 description: {
                     value: 'lorem ipsum',
-                    log: false
+                    log: false,
+                    type: 'text',
+                    dataType: 'text'
                 }
             },
             logs: [
@@ -72,19 +80,27 @@ module.exports = {
                 data: {
                     licensePlate: {
                         value: 'T627067C',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     },
                     licenseNumber: {
                         value: 'GPJ 6478',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     },
                     mileage: {
                         value: '14081',
-                        log: true
+                        log: true,
+                        type: 'number',
+                        dataType: 'number'
                     },
                     description: {
                         value: 'lorem ipsum',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     }
                 },
                 logs: [
@@ -113,19 +129,27 @@ module.exports = {
                 data: {
                     licensePlate: {
                         value: 'T657227C',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     },
                     licenseNumber: {
                         value: 'FLJ 6290',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     },
                     mileage: {
                         value: '120461',
-                        log: true
+                        log: true,
+                        type: 'number',
+                        dataType: 'number'
                     },
                     description: {
                         value: 'lorem ipsum',
-                        log: false
+                        log: false,
+                        type: 'text',
+                        dataType: 'text'
                     }
                 },
                 logs: [
