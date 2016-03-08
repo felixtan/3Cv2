@@ -37,8 +37,7 @@
         <tbody>
             <!-- non expressions -->
             <!-- TODO: only allow these to be identifiers? -->
-            <!-- might need this: ng-if='data.type !== "function" && data.type !== "inequality"' -->
-            <tr ng-repeat='(field, data) in car.data'>
+            <tr ng-repeat='(field, data) in car.data' ng-if='data.type !== "function" && data.type !== "inequality"'>
                 <td>
                     <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)'>
                         {{ field }}
@@ -47,6 +46,46 @@
                 <td>
                     <span editable-text='data.value' e-name='value' e-form='rowform' onbeforesave='checkFieldValue($data, data.value)'>
                         {{ data.value }}
+                    </span>
+                </td>
+                <td>
+                    <i class='fa fa-check' ng-if='data.log && !rowform.$visible'></i>
+                    <input type='checkbox' editable-checkbox='data.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, data.log)'></input>                 
+                </td>
+                <td>
+                    <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input>
+                </td>
+                <td style='white-space: nowrap'>
+                    <div class='btn-toolbar btn-edit' role='toolbar'>
+                        <form editable-form name='rowform' onaftersave='save($data, field)' ng-show='rowform.$visible' class='form-buttons form-inline'>
+                            <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-success btn-xs'>
+                                Save
+                            </button>
+                            <button type='button' ng-disabled='rowform.$waiting' ng-click='rowform.$cancel()' class='btn btn-default btn-xs'>
+                                Cancel
+                            </button>
+                            <button class='btn btn-danger btn-xs' style='margin-left:1vw' data-toggle='modal' ng-click='open(lg, { "field": field })' ng-controller='DeleteFieldModalCtrl'>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                    <div class='buttons' ng-show='!rowform.$visible'>
+                        <button class='btn btn-warning btn-xs' ng-click='rowform.$show()'>Edit</button>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- functions -->
+            <tr ng-repeat='(field, data) in car.data' ng-if='data.type === "function"'>
+                <td>
+                    <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)'>
+                        {{ field }}
+                    </span>
+                </td>
+                <td>
+                    <span editable-text='data.value' e-name='value' e-form='rowform' onbeforesave='checkFieldValue($data, data.value)'>
+                        {{ data.value | number : 2 }}
                     </span>
                 </td>
                 <td>
