@@ -35,20 +35,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat='(field, value) in car.data'>
+            <!-- non expressions -->
+            <!-- TODO: only allow these to be identifiers? -->
+            <!-- might need this: ng-if='data.type !== "function" && data.type !== "inequality"' -->
+            <tr ng-repeat='(field, data) in car.data'>
                 <td>
                     <span id='{{ field }}' class='field-name' editable-text='field' e-name='name' e-form='rowform' onbeforesave='checkFieldName($data, field)'>
                         {{ field }}
                     </span>
                 </td>
                 <td>
-                    <span editable-text='value.value' e-name='value' e-form='rowform' onbeforesave='checkFieldValue($data, value.value)'>
-                        {{ value.value }}
+                    <span editable-text='data.value' e-name='value' e-form='rowform' onbeforesave='checkFieldValue($data, data.value)'>
+                        {{ data.value }}
                     </span>
                 </td>
                 <td>
-                    <i class='fa fa-check' ng-if='value.log && !rowform.$visible'></i>
-                    <input type='checkbox' editable-checkbox='value.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, value.log)'></input>                 
+                    <i class='fa fa-check' ng-if='data.log && !rowform.$visible'></i>
+                    <input type='checkbox' editable-checkbox='data.log' e-name='log' e-form='rowform' ng-show='rowform.$visible' onbeforesave='checkLogValue($data, data.log)'></input>                 
                 </td>
                 <td>
                     <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>

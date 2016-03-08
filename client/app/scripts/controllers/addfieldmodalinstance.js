@@ -20,10 +20,8 @@ angular.module('clientApp')
     $scope.functionFieldSelect = { value: null };
     $scope.functionConstantInput = { value: null };
 
-    $scope.functionItems = [];
     var testExpressionItems = [];
     $scope.validFunction = true;      // this will depend on results from mexp
-    
     var testExpression = "";       // passed into mexp for validation, fields will be replaced with 1
     $scope.expressionErrorMessage;
     
@@ -41,13 +39,15 @@ angular.module('clientApp')
       // set $scope.validFunction
     };
 
-    function buildExpression() {
-      $scope.field.expression = $scope.functionItems.join('');
-      testExpression = testExpressionItems.join('');
-
-      $scope.validFunction = true;
-      validateExpression();
-    }
+    // function buildExpression() {
+    //   testExpression = testExpressionItems.join('');
+    //   $scope.field.expression = "";
+    //   _.each($scope.field.expressionItems, function(item) {
+    //     $scope.field.expression = $scope.field.expression + item.value;
+    //   });
+    //   $scope.validFunction = true;
+    //   validateExpression();
+    // };
 
     /*
       Type of field     Data type 
@@ -63,7 +63,8 @@ angular.module('clientApp')
       name: null,
       type: null,
       dataType: null,
-      expression: ""
+      expressionItems: [],
+      expression: ''
     };
 
     $scope.setDataType = function(field) {
@@ -101,7 +102,10 @@ angular.module('clientApp')
       field             replace with 1 for testExpression
     */
     $scope.appendItemToFunction = function(item, typeOfItem) {
-      $scope.functionItems.push(item);
+      $scope.field.expressionItems.push({ 
+        type: typeOfItem, 
+        value: item 
+      });
 
       // append to testExpression
       if(typeOfItem === "field") {
@@ -110,48 +114,84 @@ angular.module('clientApp')
         testExpressionItems.push(item);
       }
 
-      // build testExpression
-      buildExpression();
+      // set expression
+      setAndValidateExpression();
 
+      // console.log(testExpression);
+      // console.log(testExpressionItems);
+      
       // resetting
       $scope.functionFieldSelect.value = null;
       $scope.functionConstantInput.value = null;
     };
 
+    function setAndValidateExpression() {
+      displayExpression().then(function(stuff) {
+        testTheExpression().then(function(moreStuff) {
+          $scope.validFunction = true;  
+          validateExpression();
+        });
+      });
+    };
+
+    function testTheExpression() {
+      var deferred = $q.defer();
+      testExpression = "";
+      deferred.resolve(_.each(testExpressionItems, function(item) {
+        // console.log(item.value);
+        testExpression = testExpression + item;
+      }));
+      deferred.reject(new Error('Error getting test expression'));
+      return deferred.promise;
+    };
+
+    function displayExpression() {
+      var deferred = $q.defer();
+      $scope.field.expression = "";
+      deferred.resolve(_.each($scope.field.expressionItems, function(item) {
+        // console.log(item.value);
+        $scope.field.expression = $scope.field.expression + item.value;
+      }));
+      deferred.reject(new Error('Error getting display expression'));
+      return deferred.promise;
+    };
+
     $scope.undoFunction = function() {
-      if($scope.functionItems.length) {
-        var item = $scope.functionItems[$scope.functionItems.length-1];
+      if($scope.field.expressionItems.length) {
+        var item = $scope.field.expressionItems[$scope.field.expressionItems.length-1];
         console.log('removed:', item);
-        $scope.functionItems.pop();
+        $scope.field.expressionItems.pop();
         testExpressionItems.pop();
-        buildExpression();
+        
+        // build expression
+        setAndValidateExpression();
       }
     };
 
     $scope.clearFunction = function() {
-      $scope.field.expression = "";
       testExpression = "";
-      $scope.functionItems = [];
+      $scope.field.expression = "";
+      $scope.field.expressionItems = [];
       testExpressionItems = [];
     };
 
     if($state.includes('carProfile') || $state.includes('dashboard.cars')) {
-      console.log("add field modal called from carProfile");
+      // console.log("add field modal called from carProfile");
       $scope.objects = getCars.data;
       $scope.objectType = 'car';
       $scope.update = dataService.updateCar;
     } else if($state.includes('driverProfile') || $state.includes('dashboard.drivers')) {
-      console.log("add field modal called from driverProfile");
+      // console.log("add field modal called from driverProfile");
       $scope.objects = getDrivers.data;
       $scope.objectType = 'driver';
       $scope.update = dataService.updateDriver;
     } else if($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) {
-      console.log("add field modal called from prospectProfile");
+      // console.log("add field modal called from prospectProfile");
       $scope.objects = getProspects.data;
       $scope.objectType = 'prospect';
       $scope.update = dataService.updateProspect;
     } else if($state.includes('assetProfile') || $state.includes('dashboard.assets')) {
-      console.log("add field modal called from assetProfile");
+      // console.log("add field modal called from assetProfile");
       $scope.assetType = getAssets.type;
       $scope.objects = _.filter(getAssets.data, function(asset) { return asset.assetType === $scope.assetType; });
       $scope.objectType = 'asset';
@@ -162,64 +202,74 @@ angular.module('clientApp')
 
     // General post-processing regardless of object
     $scope.fields = $scope.objects[0] ? (Object.keys($scope.objects[0].data)) : [];
-    // $scope.numberFields = $scope.objects[0] ? (_.filter(Object.keys($scope.objects[0].data), function(field) { return $scope.objects[0].data[field].dataType === 'number'; });) : [];
 
     function createNewFieldData(field) {
       var deferred = $q.defer();
-      console.log(field.expression);
-      if((field.type === 'function' || field.type === 'inequality')) {
-        console.log('it has an expression');
-        console.log(((field.type === 'function' || field.type === 'inequality') ? field.expression : undefined));
-        console.log(typeof field.expression);
-      } else {
-        console.log('it has NOOO expression');
-        console.log(((field.type === 'function' || field.type === 'inequality') ? field.expression : undefined));
-      }
-
       deferred.resolve({
         value: null,
         log: $scope.formData.log || false,
         dataType: field.dataType,
         type: field.type,
-        expression: ((field.type === 'function' || field.type === 'inequality') ? field.expression : undefined)
+        expressionItems: ((field.type === 'function' || field.type === 'inequality') ? field.expressionItems : undefined)
       });
       deferred.reject(new Error('Error creating new field data'));
       return deferred.promise;
     };
 
-    function appendNewFieldDataToEachObject(fieldName, fieldDataObj) {
+    function appendNewFieldToObject(fieldName, fieldDataObj, object) {
       var deferred = $q.defer();
-      console.log(fieldName);
-      console.log(fieldDataObj);
-      deferred.resolve(_.each($scope.objects, function(object) {
-          // add field to each object
-          object.data[fieldName] = fieldDataObj;
-      }));
-      deferred.reject(new Error('Error updating all objects'));
+      // console.log(fieldName);
+      // console.log(fieldDataObj);
+      object.data[fieldName] = fieldDataObj;
+      deferred.resolve(object);
+      deferred.reject(new Error('Error updating object'));
       return deferred.promise;
     };
 
-    function updateObjects(objectsToUpdate) {
+    function updateObjects() {
       var deferred = $q.defer();
-      console.log(objectsToUpdate);
-      deferred.resolve(_.each(objectsToUpdate, function(object) {
-        $scope.update(object);
+    
+      deferred.resolve(_.each($scope.objects, function(object) {
+        evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
+          // console.log(expressionVal);
+          createNewFieldData($scope.field).then(function(fieldDataObj) {
+            fieldDataObj.value = expressionValue;
+            appendNewFieldToObject($scope.field.name, fieldDataObj, object).then(function(objectToUpdate) {
+              // console.log('object to update:', objectToUpdate);
+              $scope.update(objectToUpdate).then(function(whatever) {
+                $state.forceReload();
+              });
+            });
+          });
+        });
       }));
       deferred.reject(new Error('Error updating objects'));
       return deferred.promise;
     };
 
-    $scope.submit = function(field) {
-      var field = {};
-      angular.copy($scope.field, field);
+    $scope.submit = function() {
 
-      createNewFieldData(field).then(function(fieldDataObj) {
-        appendNewFieldDataToEachObject(field.name, fieldDataObj).then(function(objectsToUpdate) {
-          updateObjects(objectsToUpdate).then(function(updatedObjects) {
-            $scope.ok($scope.field.name);
-          });
-        });
+      /*
+        For each
+        1. create field data
+            - evaluate expression and provide value IF ALL field values are valid
+        2. append to object
+        3. update object
+      */
+
+      updateObjects().then(function(updatedObjects) {
+        // console.log(updatedObjects);
+        $scope.ok($scope.field);
       });
+
+      // works
+      // createNewFieldData($scope.field).then(function(fieldDataObj) {
+      //   appendNewFieldDataToEachObject($scope.field.name, fieldDataObj).then(function(objectsToUpdate) {
+      //     updateObjects(objectsToUpdate).then(function(updatedObjects) {
+      //       $scope.ok($scope.field.name);
+      //     });
+      //   });
+      // });
     };
 
     $scope.reset = function () {
@@ -229,13 +279,49 @@ angular.module('clientApp')
       $state.forceReload();
     };
 
-    $scope.ok = function(newField) {
-      $modalInstance.close(newField)
+    $scope.ok = function(newFieldObj) {
       $state.forceReload();
+      $modalInstance.close(newFieldObj);
     };
 
     $scope.close = function () {
         $state.forceReload();
         $modalInstance.dismiss('cancel');
+    };
+
+    // build expression
+    function buildExpression(object, expressionItems) {
+        var deferred = $q.defer();
+        var expression = "";
+
+        _.each(expressionItems, function(item) {
+            if(item.type === 'field') {
+                expression += object.data[item.value].value;
+            } else {
+                expression += item.value;
+            }
+        });
+
+        deferred.resolve(expression);
+        deferred.reject(new Error('Error building expression'));
+        return deferred.promise;
+    };
+
+    // evaluate expression
+    function evaluateExpression(object, expressionItems) {
+      var deferred = $q.defer();
+      var result;
+      buildExpression(object, expressionItems).then(function(expression) {
+          // console.log(expression);
+          // console.log(mexp.eval(expression));
+          // return ((typeof parseFloat(mexp.eval(expression)) === 'number') ? mexp.eval(expression) : null);
+          // result = ((typeof parseFloat(mexp.eval(expression)) === 'number') ? mexp.eval(expression) : null);
+          deferred.resolve(((typeof parseFloat(mexp.eval(expression)) === 'number') ? mexp.eval(expression) : null));
+          deferred.reject(new Error('Error evaluating expression'));
+      });
+
+      // deferred.resolve(result);
+      // deferred.reject(new Error('Error evaluating expression'));
+      return deferred.promise;
     };
   });

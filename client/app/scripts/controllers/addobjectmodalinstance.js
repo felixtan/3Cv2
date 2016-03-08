@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddObjectModalInstanceCtrl', function ($modal, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
+  .controller('AddObjectModalInstanceCtrl', function ($q, $modal, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
     $scope.formData = {};
     $scope.objects = [];
     $scope.objectType = null;
@@ -21,7 +21,7 @@ angular.module('clientApp')
     $scope.status = {};
     $scope.assetTypes = [];
     $scope.assetType = { value: null };
-    
+
     $scope.getNewFieldsToLog = function(formData) {
         return _.filter(Object.keys(formData), function(field) {
             return formData[field].log;
@@ -60,80 +60,86 @@ angular.module('clientApp')
     $scope.renderForm = function() {};
 
     function hideExpressionFields(formData) {
+        var deferred = $q.defer();
         var fields = Object.keys(formData);
 
-        _.each(fields, function(field) {
+        deferred.resolve(_.each(fields, function(field) {
             if((formData[field].type === 'function') || (formData[field].type === 'inequality')) {
                 $scope.fieldsToHide.push(field);
             }
-        });
+        }));
+        deferred.reject(new Error('Error hiding expression fields'));
+        return deferred.promise;
     };
 
     // determine the state or ui calling this modal
     if($state.includes('dashboard.drivers')) {
-        console.log('called from drivers ui');
+        // console.log('called from drivers ui');
         $scope.objectType = 'driver';
         $scope.update = driverHelpers.updateDriver;
         $scope.create = driverHelpers.createDriver;
         $scope.save = driverHelpers.saveDriver;
         driverHelpers.getFormData().then(function(formData) {
-            // console.log('driver form data:', formData);
-            $scope.fieldsToHide.push("fullName");
-            $scope.fieldsToNotLog.push("First Name");
-            $scope.fieldsToNotLog.push("Last Name");
-            $scope.currentIdentifier.value = "fullName";
-            angular.copy($scope.currentIdentifier, $scope.identifier);
-            $scope.formData = formData;
-            hideExpressionFields(formData);
-            $scope.fieldsToHide.push('assetType');
-            $scope.formData.assetType = { value: null };
-            $scope.disableConditions = driverHelpers.namesNotNull;
+            hideExpressionFields(formData).then(function(something) {
+                // console.log('formData:', formData);
+                $scope.fieldsToHide.push("fullName");
+                $scope.fieldsToNotLog.push("First Name");
+                $scope.fieldsToNotLog.push("Last Name");
+                $scope.currentIdentifier.value = "fullName";
+                angular.copy($scope.currentIdentifier, $scope.identifier);
+                $scope.formData = formData;
+                $scope.fieldsToHide.push('assetType');
+                $scope.formData.assetType = { value: null };
+                $scope.disableConditions = driverHelpers.namesNotNull;
+            });
         });
     } else if($state.includes('dashboard.cars')) {
-        console.log('called from cars ui');
+        // console.log('called from cars ui');
         $scope.objectType = 'car';
         $scope.update = carHelpers.updateCar;
         $scope.create = carHelpers.createCar;
         $scope.save = carHelpers.saveCar;
         carHelpers.getFormData().then(function(formData) {
             carHelpers.getIdentifier().then(function(identifier) {
-                // console.log('car form data:', formData);
-                $scope.formData = formData;
-                $scope.fieldsToHide.push('assetType');
-                $scope.formData.assetType = { value: null };
-                $scope.fields = Object.keys(formData);
-                hideExpressionFields(formData);
-                $scope.currentIdentifier.value = identifier;
-                angular.copy($scope.currentIdentifier, $scope.identifier);
-                $scope.disableConditions = function(formData) { return true; };
+                hideExpressionFields(formData).then(function(something) {
+                    // console.log('car form data:', formData);
+                    $scope.formData = formData;
+                    $scope.fieldsToHide.push('assetType');
+                    $scope.formData.assetType = { value: null };
+                    $scope.fields = Object.keys(formData);
+                    $scope.currentIdentifier.value = identifier;
+                    angular.copy($scope.currentIdentifier, $scope.identifier);
+                    $scope.disableConditions = function(formData) { return true; };
+                });
             });
         });
     } else if($state.includes('dashboard.prospects')) {
-        console.log('called from prospects ui');
+        // console.log('called from prospects ui');
         $scope.objectType = 'prospect';
         $scope.update = prospectHelpers.updateProspect;
         $scope.create = prospectHelpers.createProspect;
         $scope.save = prospectHelpers.saveProspect;
         prospectHelpers.getFormData().then(function(formData) {
             prospectHelpers.getProspectStatuses().then(function(result) {
-                // console.log('prospect form data:', formData);
-                // console.log(statuses);
-                $scope.fieldsToHide.push("fullName");
-                $scope.fieldsToHide.push("status");
-                $scope.fieldsToNotLog.push("First Name");
-                $scope.fieldsToNotLog.push("Last Name");
-                $scope.currentIdentifier.value = "fullName";
-                angular.copy($scope.currentIdentifier, $scope.identifier);
-                $scope.formData = formData;
-                hideExpressionFields(formData);
-                $scope.fieldsToHide.push('assetType');
-                $scope.formData.assetType = { value: null };
-                $scope.statuses = result.data.statuses;
-                $scope.disableConditions = prospectHelpers.namesNotNull;
+                hideExpressionFields(formData).then(function(something) {
+                    // console.log('prospect form data:', formData);
+                    // console.log(statuses);
+                    $scope.fieldsToHide.push("fullName");
+                    $scope.fieldsToHide.push("status");
+                    $scope.fieldsToNotLog.push("First Name");
+                    $scope.fieldsToNotLog.push("Last Name");
+                    $scope.currentIdentifier.value = "fullName";
+                    angular.copy($scope.currentIdentifier, $scope.identifier);
+                    $scope.formData = formData;
+                    $scope.fieldsToHide.push('assetType');
+                    $scope.formData.assetType = { value: null };
+                    $scope.statuses = result.data.statuses;
+                    $scope.disableConditions = prospectHelpers.namesNotNull;
+                });
             });
         });
     } else if($state.includes('dashboard.assets')) {
-        console.log('called from assets ui');
+        // console.log('called from assets ui');
         $scope.objectType = 'asset';
         $scope.update = assetHelpers.updateAsset;
         $scope.create = assetHelpers.createAsset;
@@ -147,12 +153,13 @@ angular.module('clientApp')
                 assetHelpers.getFormData(assetType).then(function(formData) {
                     // console.log(formData);
                     assetHelpers.getIdentifier(assetType).then(function(identifier) {
-                        $scope.fields = Object.keys(formData);
-                        $scope.formData = formData;
-                        hideExpressionFields(formData);
-                        $scope.disableConditions = assetHelpers.invalidAssetType;
-                        $scope.currentIdentifier.value = identifier;
-                        angular.copy($scope.currentIdentifier, $scope.identifier);
+                        hideExpressionFields(formData).then(function(something) {
+                            $scope.fields = Object.keys(formData);
+                            $scope.formData = formData;
+                            $scope.disableConditions = assetHelpers.invalidAssetType;
+                            $scope.currentIdentifier.value = identifier;
+                            angular.copy($scope.currentIdentifier, $scope.identifier);
+                        });
                     });
                 });
             };
@@ -241,9 +248,12 @@ angular.module('clientApp')
             }
         });
 
-        modalInstance.result.then(function (newField) {
-            $scope.fields.push(newField);
-            $scope.formData[newField] = { value: null, log: false };
+        modalInstance.result.then(function (newFieldObj) {
+            $scope.fields.push(newFieldObj.name);
+            console.log($scope.fields);
+            if((newFieldObj.type !== 'function') && (newFieldObj.type !== 'inequality')) {
+                $scope.formData[newField] = { value: null, log: false };    
+            }
             $state.forceReload();
         }, function() {
             $state.forceReload();

@@ -11,6 +11,7 @@ angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
     $scope.car = getCar.data;
+    console.log($scope.car);
     $scope.cars = getCars.data;
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
     $scope.identifier = { name: $scope.car.identifier || null };
@@ -233,3 +234,4 @@ angular.module('clientApp')
         });
     };
   });
+

@@ -107,7 +107,7 @@
                 <h4>Function creator</h4><br>
 
                 <h5 class='function'>{{ field.expression }}</h5><br>
-
+                
                 <div class='btn-toolbar' role='toolbar'>
 
                     <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("+", "operator")'>+</button>
@@ -198,7 +198,7 @@
     <!-- {{ form.field.$invalid }}
     {{ invalidFieldType() }}
     {{ !validFunction }} -->
-    {{ field }}
+    <!-- {{ field }} -->
     <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validFunction'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
