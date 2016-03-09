@@ -176,7 +176,7 @@ angular.module('clientApp')
     };
 
     // Needs overhaul
-    var getFormData = function(assetType) {
+    var getFormDataAndRepresentative = function(assetType) {
       var deferred = $q.defer();
       var formData = {};
       // console.log(assetType);
@@ -193,12 +193,18 @@ angular.module('clientApp')
               }
             });
             // console.log(formData);
-            deferred.resolve(formData);
+            deferred.resolve({
+              formData: formData,
+              representativeData: assets[0].data
+            });
             deferred.reject(new Error('Error initializing asset form data'));
           } else {
             // console.log(result);
             // console.log('there are no assets of type ' + assetType);
-            deferred.resolve({ assetType: { value: assetType, log: false } });
+            deferred.resolve({
+              formData: { assetType: { value: assetType, log: false } },
+              representativeData: {}
+            });
             deferred.reject(new Error('Error initializing asset form data'));
           }
         });
@@ -280,7 +286,7 @@ angular.module('clientApp')
       thereAreAssetsOfType: thereAreAssetsOfType,
       _getFields: _getFields,
       getFields: getFields,
-      getFormData: getFormData,
+      getFormDataAndRepresentative: getFormDataAndRepresentative,
       belongsToType: belongsToType,
       invalidAssetType: invalidAssetType,
       getIdentifier: getIdentifier,

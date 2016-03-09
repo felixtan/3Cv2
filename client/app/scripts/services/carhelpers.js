@@ -97,7 +97,7 @@ angular.module('clientApp')
     };
   };
 
-  var getFormData = function() {
+  var getFormDataAndRepresentative = function() {
     var deferred = $q.defer();
     var formData = {};
 
@@ -115,12 +115,18 @@ angular.module('clientApp')
               type: carData[field].type || null
             }
           });
-          deferred.resolve(formData);
+          deferred.resolve({
+            formData: formData,
+            representativeData: carData 
+          });
           deferred.reject(new Error('Error initializing car form data'));
         });
       } else {
         console.log('there are no cars');
-        deferred.resolve(getDefaultCar().data);
+        deferred.resolve({
+          formData: getDefaultCar().data,
+          representativeData: {}
+        });
         deferred.reject(new Error('Error initializing car form data'));
       }
     });
@@ -320,7 +326,7 @@ angular.module('clientApp')
     _updateIdentifier: _updateIdentifier,
     getIdentifier: getIdentifier,
     getOrganizationId: getOrganizationId,
-    getFormData: getFormData,
+    getFormDataAndRepresentative: getFormDataAndRepresentative,
     
     // Logs
     getLogDates: getLogDates,

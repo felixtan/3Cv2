@@ -2,107 +2,26 @@
 <link rel='stylesheet' href='styles/addFieldModal.css'>
 
 <div class="modal-header">
-    <h3 class="modal-title">Add field</h3>
+    <h3 class="modal-title">Edit expression</h3>
     <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
         &times;
     </button>
 </div>
-<!-- {{ assetType }} -->
-<!-- {{ field }} -->
-<!-- {{ objects }}? -->
-<!-- {{ field}} -->
-<!-- {{ functionFieldSelect }} -->
+<!-- {{ formData }} -->
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='submit()'>
-
-        <!-- Choose field type -->
-        <div class='form-group'>
-            <div class='alert alert-info'>
-                <h4 class='control-label'>Type of field</h4>
-                <ul class='fieldTypes'>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.type' value='text' type='radio' ng-change='setDataType(field)'>Text
-                            <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.type' value='number' type='radio' ng-change='setDataType(field)'>Number
-                            <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.type' value='boolean' type='radio' ng-change='setDataType(field)'>Boolean
-                            <i class="fa fa-question-circle" tooltip="ex. yes/no, true/false"></i>
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.type' value='function' type='radio' ng-change='setDataType(field)'> Function
-                            <i class="fa fa-question-circle" tooltip="Outputs a value in terms of other functions and numbers"></i>
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.type' value='inequality' type='radio' ng-change='setDataType(field)'> Inequality
-                            <i class="fa fa-question-circle" tooltip="Compares two values and returns a true or false value"></i>
-                        </label>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Choose field data type -->
-        <!-- SHOW ONLY WHEN FIELD TYPE IS CHOSEN -- >
-        <!-- Function implies Number -->
-        <!-- Boolean implies Boolean -->
-        <!-- Therefore, this radio list is obly shown for Variable/Constant field type -->
-        <!-- TODO: SET correct dataType when field type is function or boolean -->
-        <div class='form-group' ng-show='field.type === "variable"'>
-            <div class='alert alert-info'>
-                <ul class='fieldTypes'>
-                    <label class='control-label'>Field data type</label>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.dataType' value='number' type='radio'>Number
-                            <i class="fa fa-question-circle" tooltip='ex. 1234567890'></i>
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.dataType' value='text' type='radio'> Text
-                            <i class="fa fa-question-circle" tooltip='ex. The quick brown fox jumps over the lazy dog.'></i>
-                        </label>
-                    </li>
-                    <li>
-                        <label class='radio'>
-                            <input ng-model='field.dataType' value='boolean' type='radio'> Boolean
-                            <i class="fa fa-question-circle" tooltip='ex. true/false, yes/no'></i>
-                        </label>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
         <div class='form-group'>
             <label for='field'>Name</label>
 
             <input name='field' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
         </div>
 
-        <div class='form-group' ng-show='field.type === "variable"'>
+        <!-- <div class='form-group' ng-show='field.type === "variable"'>
             <label for='value'>Value</label>
             <input name='value' class='form-control' ng-model='formData.value'>
-        </div>
+        </div> -->
 
-        <!-- Function input -->
-        <!-- Validation: 
-            1. Function cannot begin nor end with an operator 
-            2. Corollary: It must begin and end with a function/variable/constant
-        -->
-        <div class='form-group' ng-show='field.type === "function"'>
+        <div class='form-group'>
             <div class='well'>
                 <h4>Function creator</h4><br>
 
@@ -195,11 +114,10 @@
 </div>
 
 <div class="modal-footer">
-    <!-- {{ form.field.$invalid }}
-    {{ invalidFieldType() }}
-    {{ !validFunction }} -->
-    <!-- {{ field }} -->
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validFunction'>Submit</button>
-    <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+    <button class='btn btn-danger' type='button' ng-click='delete(lg, { "field": field.name })' style='float: left;'>DELETE</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || !validFunction'>Submit</button>
+  <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+  <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
+
+

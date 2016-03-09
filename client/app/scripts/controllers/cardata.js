@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
     $scope.car = getCar.data;
-    console.log($scope.car);
+    // console.log($scope.car);
     $scope.cars = getCars.data;
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
     $scope.identifier = { name: $scope.car.identifier || null };
@@ -233,5 +233,57 @@ angular.module('clientApp')
             console.log('Modal dismissed at: ' + new Date());
         });
     };
-  });
 
+    // Expression
+    $scope.validateExpression = function(data, field) {
+        console.log(data);
+        console.log(field);
+    };
+
+    $scope.buildExpression = function(expressionItems) {
+        var expression = '';
+        _.each(expressionItems, function(item) {
+            expression = expression + item.value;
+        });
+
+        return expression;
+    };
+
+    $scope.editExpression = function(object, field) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/editExpressionModal.html',
+            controller: 'EditExpressionModalCtrl',
+            size: 'md',
+            resolve: {
+                field: function() {
+                    return field;
+                },
+                object: function() {
+                    return object;
+                },
+                objectType: function() {
+                    return 'car';
+                },
+                getCars: function(dataService) {
+                    return dataService.getCars();
+                },
+                getProspects: function() {
+                    return;
+                },
+                getDrivers: function() {
+                    return;
+                },
+                getAssets: function() {
+                    return;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (input) {
+            console.log('passed back from EditExpressionModalCtrl:', input);
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+  });

@@ -202,6 +202,7 @@ angular.module('clientApp')
 
     // General post-processing regardless of object
     $scope.fields = $scope.objects[0] ? (Object.keys($scope.objects[0].data)) : [];
+    if($scope.objects[0]) setValidFieldsForExpressions($scope.objects[0].data);
 
     function createNewFieldData(field) {
       var deferred = $q.defer();
@@ -323,5 +324,15 @@ angular.module('clientApp')
       // deferred.resolve(result);
       // deferred.reject(new Error('Error evaluating expression'));
       return deferred.promise;
+    };
+
+    function setValidFieldsForExpressions(objectData) {
+        // only numbers
+        // neglect the field in questions or else shit gets recursive
+        // console.log(objectData);
+        var keys = Object.keys(objectData);
+        $scope.validFieldsForExpressions = _.filter(keys, function(key) {
+            return ((objectData[key].dataType === 'number'));
+        });
     };
   });

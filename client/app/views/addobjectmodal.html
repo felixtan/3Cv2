@@ -65,10 +65,9 @@
     <!-- {{ formData }} -->
     <!-- Show expressions -->
     <div>
-        <h4>Functions</h4>
-        <div ng-repeat='(field, data) in formData' ng-if='data.type === "function"'>
-            <!-- <p>{{ field }}</p>
-            <p>{{ data }}</p> -->
+        <h4>Expressions</h4>
+        <div ng-repeat='expression in expressions'>
+            <h5>{{ expression.field }}: {{ expression.expression }}</h5>
         </div>
     </div>
 

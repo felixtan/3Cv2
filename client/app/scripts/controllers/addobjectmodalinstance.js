@@ -11,6 +11,7 @@ angular.module('clientApp')
   .controller('AddObjectModalInstanceCtrl', function ($q, $modal, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
     $scope.formData = {};
     $scope.objects = [];
+    $scope.representativeObjectData = {};
     $scope.objectType = null;
     $scope.identifier = { value: null };
     $scope.currentIdentifier = { value: null };
@@ -21,6 +22,7 @@ angular.module('clientApp')
     $scope.status = {};
     $scope.assetTypes = [];
     $scope.assetType = { value: null };
+    $scope.expressions = [];
 
     $scope.getNewFieldsToLog = function(formData) {
         return _.filter(Object.keys(formData), function(field) {
@@ -59,16 +61,37 @@ angular.module('clientApp')
     // only for assets
     $scope.renderForm = function() {};
 
-    function hideExpressionFields(formData) {
+    function buildExpression(expressionItems) {
         var deferred = $q.defer();
-        var fields = Object.keys(formData);
+        var expression = '';
+        
+        _.each(expressionItems, function(item) {
+            expression = expression + item.value;
+            // console.log(expression);
+        });
 
-        deferred.resolve(_.each(fields, function(field) {
-            if((formData[field].type === 'function') || (formData[field].type === 'inequality')) {
+        deferred.resolve(expression);
+        deferred.reject(new Error('Error building expression'));
+        return deferred.promise;
+    };
+
+    function buildStoreAndHideExpressions(representativeObjectData) {
+        var deferred = $q.defer();
+        // console.log($scope.objects);
+        deferred.resolve(_.each(representativeObjectData, function(data, field) {
+            // console.log(data);
+            if((data.type === 'function') || (data.type === 'inequality')) {
                 $scope.fieldsToHide.push(field);
+                buildExpression(data.expressionItems).then(function(expression) {
+                    // console.log('built expression', expression);
+                    $scope.expressions.push({
+                        field: field,
+                        expression: expression
+                    });
+                });
             }
         }));
-        deferred.reject(new Error('Error hiding expression fields'));
+        deferred.reject(new Error('Error building or storing expression'));
         return deferred.promise;
     };
 
@@ -79,15 +102,15 @@ angular.module('clientApp')
         $scope.update = driverHelpers.updateDriver;
         $scope.create = driverHelpers.createDriver;
         $scope.save = driverHelpers.saveDriver;
-        driverHelpers.getFormData().then(function(formData) {
-            hideExpressionFields(formData).then(function(something) {
-                // console.log('formData:', formData);
+        driverHelpers.getFormDataAndRepresentative().then(function(result) {
+            buildStoreAndHideExpressions(result.representativeData).then(function(something) {
+                // console.log('formData:', result.formData);
                 $scope.fieldsToHide.push("fullName");
                 $scope.fieldsToNotLog.push("First Name");
                 $scope.fieldsToNotLog.push("Last Name");
                 $scope.currentIdentifier.value = "fullName";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
-                $scope.formData = formData;
+                $scope.formData = result.formData;
                 $scope.fieldsToHide.push('assetType');
                 $scope.formData.assetType = { value: null };
                 $scope.disableConditions = driverHelpers.namesNotNull;
@@ -99,14 +122,14 @@ angular.module('clientApp')
         $scope.update = carHelpers.updateCar;
         $scope.create = carHelpers.createCar;
         $scope.save = carHelpers.saveCar;
-        carHelpers.getFormData().then(function(formData) {
+        carHelpers.getFormDataAndRepresentative().then(function(result) {
             carHelpers.getIdentifier().then(function(identifier) {
-                hideExpressionFields(formData).then(function(something) {
-                    // console.log('car form data:', formData);
-                    $scope.formData = formData;
+                buildStoreAndHideExpressions(result.representativeData).then(function(something) {
+                    // console.log('car form data:', result.formData);
+                    $scope.formData = result.formData;
                     $scope.fieldsToHide.push('assetType');
                     $scope.formData.assetType = { value: null };
-                    $scope.fields = Object.keys(formData);
+                    $scope.fields = Object.keys(result.formData);
                     $scope.currentIdentifier.value = identifier;
                     angular.copy($scope.currentIdentifier, $scope.identifier);
                     $scope.disableConditions = function(formData) { return true; };
@@ -119,10 +142,10 @@ angular.module('clientApp')
         $scope.update = prospectHelpers.updateProspect;
         $scope.create = prospectHelpers.createProspect;
         $scope.save = prospectHelpers.saveProspect;
-        prospectHelpers.getFormData().then(function(formData) {
+        prospectHelpers.getFormDataAndRepresentative().then(function(result) {
             prospectHelpers.getProspectStatuses().then(function(result) {
-                hideExpressionFields(formData).then(function(something) {
-                    // console.log('prospect form data:', formData);
+                buildStoreAndHideExpressions(result.representativeData).then(function(something) {
+                    // console.log('prospect form data:', result.formData);
                     // console.log(statuses);
                     $scope.fieldsToHide.push("fullName");
                     $scope.fieldsToHide.push("status");
@@ -130,7 +153,7 @@ angular.module('clientApp')
                     $scope.fieldsToNotLog.push("Last Name");
                     $scope.currentIdentifier.value = "fullName";
                     angular.copy($scope.currentIdentifier, $scope.identifier);
-                    $scope.formData = formData;
+                    $scope.formData = result.formData;
                     $scope.fieldsToHide.push('assetType');
                     $scope.formData.assetType = { value: null };
                     $scope.statuses = result.data.statuses;
@@ -150,12 +173,12 @@ angular.module('clientApp')
         assetHelpers.getAssetTypes().then(function(result){
             $scope.assetTypes = result.data.types;
             $scope.renderForm = function(assetType) {
-                assetHelpers.getFormData(assetType).then(function(formData) {
-                    // console.log(formData);
+                assetHelpers.getFormDataAndRepresentative(assetType).then(function(result) {
+                    // console.log(result.formData);
                     assetHelpers.getIdentifier(assetType).then(function(identifier) {
-                        hideExpressionFields(formData).then(function(something) {
-                            $scope.fields = Object.keys(formData);
-                            $scope.formData = formData;
+                        buildStoreAndHideExpressions(result.representativeData).then(function(something) {
+                            $scope.fields = Object.keys(result.formData);
+                            $scope.formData = result.formData;
                             $scope.disableConditions = assetHelpers.invalidAssetType;
                             $scope.currentIdentifier.value = identifier;
                             angular.copy($scope.currentIdentifier, $scope.identifier);

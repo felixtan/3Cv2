@@ -126,7 +126,7 @@ angular.module('clientApp')
       };
     };
 
-    var getFormData = function() {
+    var getFormDataAndRepresentative = function() {
       var deferred = $q.defer();
       var formData = {};
 
@@ -146,12 +146,18 @@ angular.module('clientApp')
             });
 
             // console.log('there are cars, driver data:', formData);
-            deferred.resolve(formData);
+            deferred.resolve({
+              formData: formData,
+              representativeData: driverData
+            });
             deferred.reject(new Error('Error initializing driver form data'));
           });
         } else {
           var defaultDriverData = getDefaultDriver().data;
-          deferred.resolve(defaultDriverData);
+          deferred.resolve({
+            formData: formData,
+            representativeData: {}
+          });
           // console.log('there are no drivers, default driver data:', defaultDriverData);
           deferred.reject(new Error('Error initializing driver form data'));
         }
@@ -297,7 +303,7 @@ angular.module('clientApp')
       getFullName: getFullName,
       updateFullName: updateFullName,
       getDefaultDriver: getDefaultDriver,
-      getFormData: getFormData,
+      getFormDataAndRepresentative: getFormDataAndRepresentative,
 
       // Logs
       getLogDates: getLogDates,                   // returns array of log dates in ms in present to past order; logDates[0] stores most recent log date

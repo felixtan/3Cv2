@@ -8,7 +8,7 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('dataService', function ($http, $q, ENV) {
+  .factory('dataService', function ($state, $http, $q, ENV) {
 
     // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
     var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
@@ -46,8 +46,10 @@ angular.module('clientApp')
           params: params,
           data: types
         }).then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -76,8 +78,10 @@ angular.module('clientApp')
       createAsset: function(asset) {
         return $http.post('/api/assets', asset)
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -89,8 +93,10 @@ angular.module('clientApp')
           params: params,
           data: asset
         }).then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -98,8 +104,10 @@ angular.module('clientApp')
       deleteAsset: function(id) {
         return $http.delete('/api/assets/' + id)
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -127,8 +135,10 @@ angular.module('clientApp')
           params: params,
           data: statuses
         }).then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -157,8 +167,10 @@ angular.module('clientApp')
       createProspect: function(prospect) {
         return $http.post('/api/prospects', prospect)
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -170,8 +182,10 @@ angular.module('clientApp')
           params: params,
           data: prospect
         }).then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -183,8 +197,10 @@ angular.module('clientApp')
           params: params
         })
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -218,8 +234,10 @@ angular.module('clientApp')
       createDriver: function(driver) {
         return $http.post('/api/drivers', driver)
           .then(function(data) {
+            $state.forceReload();
             return data;
           }, function(err) {
+            $state.forceReload();
             console.error(err);
           });
       },
@@ -231,8 +249,10 @@ angular.module('clientApp')
           params: params,
           data: driver
         }).then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -244,8 +264,10 @@ angular.module('clientApp')
           params: params
         })
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },
@@ -278,6 +300,7 @@ angular.module('clientApp')
       },
 
       updateCar: function(car) {
+        // console.log(car);
         return $http({
           method: 'PUT',
           url: '/api/cars/' + car.id,
@@ -285,17 +308,21 @@ angular.module('clientApp')
           data: car
         })
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
           console.error(err);
+          $state.forceReload();
         });
       },
 
       createCar: function(car) {
         return $http.post('/api/cars', car)
           .then(function(data) {
+            $state.forceReload();
             return data;
           }, function(err) {
+            $state.forceReload();
             console.error(err);
           });
       },
@@ -307,8 +334,10 @@ angular.module('clientApp')
           params: params
         })
         .then(function(data) {
+          $state.forceReload();
           return data;
         }, function(err) {
+          $state.forceReload();
           console.error(err);
         });
       },

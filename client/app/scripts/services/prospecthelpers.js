@@ -146,7 +146,7 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var getFormData = function() {
+    var getFormDataAndRepresentative = function() {
       var deferred = $q.defer();
       var formData = {};
 
@@ -165,13 +165,19 @@ angular.module('clientApp')
                 type: prospectData[field].type
               }
             });
-            deferred.resolve(formData);
+            deferred.resolve({
+              formData: formData,
+              representativeData: prospectData
+            });
             deferred.reject(new Error('Error initializing prospect form data'));
           });
         } else {
           getDefaultProspect().then(function(defaultProspect) {
             console.log('there are no prospects');
-            deferred.resolve(defaultProspect.data);
+            deferred.resolve({
+              formData: defaultProspect.data,
+              representativeData: {}
+            });
             deferred.reject(new Error('Error initializing prospect form data'));
           });
         }  
@@ -212,7 +218,7 @@ angular.module('clientApp')
       getFullName: getFullName,
       updateFullName: updateFullName,
       getDefaultProspect: getDefaultProspect,
-      getFormData: getFormData,
+      getFormDataAndRepresentative: getFormDataAndRepresentative,
       getDefaultStatus: getDefaultStatus,
       belongsToStatus: belongsToStatus
 
