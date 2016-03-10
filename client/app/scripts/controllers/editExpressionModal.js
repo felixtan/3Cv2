@@ -8,14 +8,14 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('EditExpressionModalCtrl', function ($modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+  .controller('EditExpressionModalCtrl', function ($modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, representativeObject, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
     
     // INITIALIZE
     $scope.field = {};
-    $scope.object = object;
+    $scope.object = representativeObject;
     $scope.objects = [];
-    angular.copy(object.data[field], $scope.field);
-    $scope.field.expression = buildExpression2(object.data[field].expressionItems);
+    angular.copy(representativeObject.data[field], $scope.field);
+    $scope.field.expression = buildExpression2(representativeObject.data[field].expressionItems);
     $scope.field.name = field;
     $scope.functionFieldSelect = { value: null };
     $scope.functionConstantInput = { value: null };
@@ -23,23 +23,26 @@ angular.module('clientApp')
     $scope.expressionErrorMessage;
     var testExpression = '';
     angular.copy($scope.field.expression, testExpression);
-    var testExpressionItems = buildTestExpressionItems(object.data[field].expressionItems);
+    var testExpressionItems = buildTestExpressionItems(representativeObject.data[field].expressionItems);
 
     // console.log(testExpression);
     // console.log(testExpressionItems);
 
-    setValidFieldsForExpressions(object.data);
+    setValidFieldsForExpressions(representativeObject.data);
 
     if(objectType === 'car') {
         // console.log('object type is car');
         $scope.update = carHelpers.updateCar;
         $scope.objects = getCars.data;
     } else if(objectType === 'driver') {
-
+        $scope.update = driverHelpers.updateDriver;
+        $scope.objects = getDrivers.data;
     } else if(objectType === 'prospect') {
-
+        $scope.update = prospectHelpers.updateProspect;
+        $scope.objects = getProspects.data;
     } else if (objectType === 'asset') {
-
+        $scope.update = assetHelpers.updateAsset;
+        $scope.objects = assetHelpers.getAssetsOfType(representativeObject.assetType).data;
     } else {
         alert('Unrecognized object type!');
     }
@@ -158,26 +161,21 @@ angular.module('clientApp')
     };
 
     $scope.submit = function() {
-        // console.log($scope.field);
-        // console.log(object);
+
         if(field !== $scope.field.name) {
             // name changed
             _.each($scope.objects, function(object) {
                 object.data[$scope.field.name] = $scope.field;
                 delete object.data[field];
-                evaluateExpression(object, object.data[$scope.field.name].expressionItems).then(function(expressionValue) {
-                    object.data[$scope.field.name].value = expressionValue;
-                    // console.log(object);
-                    $scope.update(object);
+                evaluateExpression(object, $scope.field.name).then(function(objectToUpdate) {
+                    $scope.update(objectToUpdate);
                 });
             });
         } else {
             _.each($scope.objects, function(object) {
                 object.data[field] = $scope.field;
-                evaluateExpression(object, object.data[field].expressionItems).then(function(expressionValue) {
-                    object.data[field].value = expressionValue;
-                    // console.log(object);
-                    $scope.update(object);
+                evaluateExpression(object, $scope.field.name).then(function(objectToUpdate) {
+                    $scope.update(objectToUpdate);
                 });
             });
         }
@@ -187,8 +185,8 @@ angular.module('clientApp')
 
     $scope.reset = function () {
         $scope.field = {};
-        angular.copy(object.data[field], $scope.field);
-        $scope.field.expression = buildExpression(object.data[field].expressionItems);
+        angular.copy(representativeObject.data[field], $scope.field);
+        $scope.field.expression = buildExpression(representativeObject.data[field].expressionItems);
         $scope.field.name = field;
         $scope.functionFieldSelect = { value: null };
         $scope.functionConstantInput = { value: null };
@@ -224,22 +222,29 @@ angular.module('clientApp')
         });
     };
 
-    function evaluateExpression(object, expressionItems) {
+    function evaluateExpression(object, fieldName) {
       var deferred = $q.defer();
-      var result;
-      buildExpression(object, expressionItems).then(function(expression) {
-          deferred.resolve(((typeof parseFloat(mexp.eval(expression)) === 'number') ? mexp.eval(expression) : null));
-          deferred.reject(new Error('Error evaluating expression'));
+      buildExpression(object, fieldName).then(function(expression) {
+        var newObj = {};                    // this was the key to solving the problem where expression value
+        angular.copy(object, newObj);       // for car 2 was being saved to both cars 2 and 3
+        if(typeof parseFloat(mexp.eval(expression)) === 'number') {
+            newObj.data[fieldName].value = mexp.eval(expression);
+        } else {
+            object.data[fieldName].value = undefined;
+        }
+
+        deferred.resolve(newObj);
+        deferred.reject(new Error('Error evaluating expression'));
       });
       return deferred.promise;
     };
 
     // build expression
-    function buildExpression(object, expressionItems) {
+    function buildExpression(object, fieldName) {
         var deferred = $q.defer();
         var expression = "";
 
-        _.each(expressionItems, function(item) {
+        _.each(object.data[fieldName].expressionItems, function(item) {
             if(item.type === 'field') {
                 expression += object.data[item.value].value;
             } else {
@@ -270,6 +275,9 @@ angular.module('clientApp')
                 },
                 getProspects: function(dataService) {
                     return ((objectType === 'prospect') ? dataService.getProspects() : {});
+                },
+                getAssets: function(dataService) {
+                    return ((objectType === 'prospect') ? dataService.getProspects() : {});  
                 }
             }
         });

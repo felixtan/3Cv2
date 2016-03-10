@@ -19,6 +19,7 @@ angular.module('clientApp')
     var updateAsset = dataService.updateAsset;
     var deleteAsset = dataService.deleteAsset;
     var getAssetTypes = dataService.getAssetTypes;
+    var getAssetsOfType = dataService.getAssetsOfType;
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -278,6 +279,7 @@ angular.module('clientApp')
       mapObject: mapObject,
       getOrganizationId: getOrganizationId,
       getAssets: getAssets,
+      getAssetsOfType: getAssetsOfType,
       getAssetTypes: getAssetTypes,
       saveAsset: saveAsset,
       updateAsset: updateAsset,

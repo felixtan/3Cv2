@@ -66,6 +66,18 @@ angular.module('clientApp')
         });
       },
 
+      getAssetsOfType: function(assetType) {
+        return $http({
+          method: 'GET',
+          url: '/api/assets/' + assetType,
+          params: params
+        }).then(function(data) {
+          return data;
+        }, function(err) {
+          console.error(err);
+        });
+      },
+
       getAsset: function(id) {
         return $http.get('/api/assets/' + id)
           .then(function(data) {
