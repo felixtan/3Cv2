@@ -23,7 +23,11 @@ angular
     'ngMessages',
     // 'stormpath',
     'stormpath.templates',
-    'config'
+    'config',
+    'frapontillo.bootstrap-switch'
+    // 'toggleSwitch'
+    // 'angular-toggle-switch'
+    // 'angular-bootstrap-toggle-switch'
   ])
   .config(function (ENV, $stateProvider, $urlRouterProvider, $provide) {
     $provide.decorator('$state', function($delegate, $stateParams) {

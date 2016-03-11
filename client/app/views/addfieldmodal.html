@@ -102,11 +102,28 @@
             1. Function cannot begin nor end with an operator 
             2. Corollary: It must begin and end with a function/variable/constant
         -->
-        <div class='form-group' ng-show='field.type === "function"'>
+        <div class='form-group' ng-show='field.type === "function" || field.type === "inequality"'>
             <div class='well'>
-                <h4>Function creator</h4><br>
+                <h4 ng-if='field.type === "function"'>Function</h4>
+                <h4 ng-if='field.type === "inequality"'>Inequality</h4><br>
 
-                <h5 class='function'>{{ field.expression }}</h5><br>
+                <h5 class='expression' ng-if='field.type === "function"'>{{ field.expression }}</h5>
+                <h5 class='expression' ng-if='field.type === "inequality"'>{{ field.leftExpression }} {{ field.inequalitySign }} {{ field.rightExpression }}</h5>
+                <!-- <span>validExpression: {{ validExpression }}</span> -->
+                <br>
+
+                <div class='input-group'>
+                    <input bs-switch 
+                        ng-model="rightSide" 
+                        type="checkbox" 
+                        switch-on-text="Right"
+                        switch-off-text="Left" 
+                        switch-label="Side" 
+                        switch-inverse='true' 
+                        switch-off-color='primary' 
+                        switch-active='{{ validExpression }}' ><!-- <span>rightSide: {{ rightSide }}</span> -->
+                        <!-- switch-active='validExpression' -->
+                </div><br>
 
                 <div class='btn-toolbar' role='toolbar'>
 
@@ -123,10 +140,20 @@
                     <button class='btn btn-warning operator' type='button' ng-click='appendItemToFunction(")", "operator")'>)</button>
 
                     <div class='undoAndClear'>
-                        <button class='btn btn-primary undo' type='button' ng-click='undoFunction()'>Undo</button>
-                        <button class='btn btn-danger clear' type='button' ng-click='clearFunction()'>Clear</button>
+                        <button class='btn btn-primary undo' type='button' ng-click='undoExpression()'>Undo</button>
+                        <button class='btn btn-danger clear' type='button' ng-click='clearExpression()'>Clear</button>
                     </div>
                 </div><br>
+
+                <label>
+                    Sign
+                </label>
+                <select class='form-control' ng-model='field.inequalitySignId' ng-change='setInequalitySign(field.inequalitySignId)'>
+                    <option value='0'>&gt; Greater Than</option>
+                    <option value='1'>&ge; Greater Than or Equal To</option>
+                    <option value='2'>&lt; Less Than</option>
+                    <option value='3'>&le; Less Than or Equal To</option>
+                </select><br>
 
                 <label>
                     Constant
@@ -173,7 +200,7 @@
             </div>
         </div>
 
-        <div ng-if='!validFunction' class="alert alert-danger" role="alert">
+        <div ng-if='!validExpression' class="alert alert-danger" role="alert">
             <div id='expression-error-message' ng-if='expressionErrorMessage'>
                 <h4>Function error(s):</h4>
                 <ul>
@@ -197,9 +224,9 @@
 <div class="modal-footer">
     <!-- {{ form.field.$invalid }}
     {{ invalidFieldType() }}
-    {{ !validFunction }} -->
+    {{ !validExpression }} -->
     <!-- {{ field }} -->
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validFunction'>Submit</button>
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validExpression'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
