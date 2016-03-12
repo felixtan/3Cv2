@@ -226,7 +226,7 @@
     {{ invalidFieldType() }}
     {{ !validExpression }} -->
     <!-- {{ field }} -->
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validExpression'>Submit</button>
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validExpression || !inequalityIsComplete()'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
