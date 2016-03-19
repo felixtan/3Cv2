@@ -11,11 +11,17 @@ angular.module('clientApp')
   .controller('EditExpressionModalCtrl', function ($modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, representativeObject, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
     
     // INITIALIZE
-    $scope.field = {};
+    $scope.field = {
+        expression: "",
+        leftExpression: "",
+        rightExpression: "",
+        inequalitySign: ""
+    };
+    $scope.rightSide = false;
     $scope.object = representativeObject;
     $scope.objects = [];
     angular.copy(representativeObject.data[field], $scope.field);
-    $scope.field.expression = buildExpression2(representativeObject.data[field].expressionItems);
+    buildExpression2(representativeObject.data[field]);
     $scope.field.name = field;
     $scope.functionFieldSelect = { value: null };
     $scope.functionConstantInput = { value: null };
@@ -47,12 +53,62 @@ angular.module('clientApp')
         alert('Unrecognized object type!');
     }
 
-    function buildExpression2(expressionItems) {
-        var expression = "";
-        _.each(expressionItems, function(item) {
-            expression = expression + item.value;
-        });
-        return expression;
+    function getInequalitySign(signId) {
+        
+        var int_signId = parseInt(signId);
+        
+        switch(int_signId) {
+            case 0:
+              // $scope.field.inequalitySign = '>';      // might want to use html codes instead
+              $scope.field.inequalitySign = ">";
+              break;
+            case 1:
+              $scope.field.inequalitySign = '≥';
+              break;
+            case 2:
+              $scope.field.inequalitySign = '<';
+              break;
+            case 3:
+              $scope.field.inequalitySign = '≤';
+              break;
+            default:
+              $scope.field.inequalitySign = '?';
+              break;
+      }
+
+    };
+
+    function buildExpression2(fieldData) {
+
+        if(fieldData.type === 'function') {
+
+            _.each(fieldData.expressionItems, function(item) {
+                console.log(item);
+                $scope.field.expression += item.value;
+            });
+        
+        } else if(fieldData.type === 'inequality') {
+            
+            console.log(fieldData.leftExpressionItems);
+            _.each(fieldData.leftExpressionItems, function(item) {
+                console.log(item);
+                $scope.field.leftExpression += item.value;
+            });
+
+            console.log(fieldData.rightExpressionItems);
+            _.each(fieldData.rightExpressionItems, function(item) {
+                console.log(item);
+                $scope.field.rightExpression += item.value;
+            });
+
+            $scope.inequalitySign = getInequalitySign(fieldData.inequalitySignId);
+
+        } else {
+            
+            $scope.field.expression = "Non-descript error";
+
+        }
+
     };
 
     /*

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('CarLogCtrl', function () {
+describe('CarLogsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
@@ -14,7 +14,7 @@ describe('CarLogCtrl', function () {
     dataService = _dataService_;
     spyOn(dataService, 'updateCar');
     spyOn(dataService, 'getCar');
-    controller = $controller('CarLogCtrl', {
+    controller = $controller('CarLogsCtrl', {
       $scope: scope,
       getCar: getCar
     });

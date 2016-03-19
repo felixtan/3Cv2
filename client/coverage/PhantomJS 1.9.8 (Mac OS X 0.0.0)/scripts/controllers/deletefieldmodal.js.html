@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">9.09% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>8/11</span>
+        <span class='fraction'>1/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>9/12</span>
+        <span class='fraction'>0/12</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">75% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/8</span>
+        <span class='fraction'>0/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">9.09% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>8/11</span>
+        <span class='fraction'>1/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -97,29 +97,29 @@
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,31 +137,31 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalCtrl', function (dataService, $scope, $modal, $state) {
+  .controller('DeleteFieldModalCtrl', <span class="fstat-no" title="function not covered" >function (dataService, $scope, $modal, $state) {</span>
 &nbsp;
-    $scope.open = function (size, thing) {
-        var modalInstance = $modal.open({
+<span class="cstat-no" title="statement not covered" >    $scope.open = <span class="fstat-no" title="function not covered" >function (size, thing) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
             animation: true,
             templateUrl: 'views/deletefieldmodal.html',
             controller: 'DeleteFieldModalInstanceCtrl',
             size: size,
             resolve: {
-                thing: function() {
-                    return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                thing: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return thing; </span>  // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                 },
-                getCars: function(dataService) {
-                    return (($state.includes('carProfile') || ($state.includes('dashboard.cars'))) ? <span class="branch-0 cbranch-no" title="branch not covered" >dataService.getCars() </span>: {});
+                getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (($state.includes('carProfile') || ($state.includes('dashboard.cars'))) ? dataService.getCars() : {});</span>
                 },
-                getDrivers: function(dataService) {
-                    return (($state.includes('driverrProfile') || ($state.includes('dashboard.drivers'))) ? <span class="branch-0 cbranch-no" title="branch not covered" >dataService.getDrivers() </span>: {});
+                getDrivers: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (($state.includes('driverrProfile') || ($state.includes('dashboard.drivers'))) ? dataService.getDrivers() : {});</span>
                 },
-                getProspects: function(dataService) {
-                    return (($state.includes('prospectProfile') || ($state.includes('dashboard.prospects'))) ? <span class="branch-0 cbranch-no" title="branch not covered" >dataService.getProspects() </span>: {});
+                getProspects: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (($state.includes('prospectProfile') || ($state.includes('dashboard.prospects'))) ? dataService.getProspects() : {});</span>
                 }
             }
         });
 &nbsp;
-        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (input) {</span>
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (input) {</span></span>
 <span class="cstat-no" title="statement not covered" >            $scope.input = input;</span>
 <span class="cstat-no" title="statement not covered" >            console.log('passed back from DeleteFieldModalInstanceCtrl:', input);</span>
         }, <span class="fstat-no" title="function not covered" >function () {</span>
@@ -175,7 +175,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jan 25 2016 13:21:41 GMT+0800 (MYT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Mar 17 2016 16:24:52 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

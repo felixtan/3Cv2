@@ -40,6 +40,9 @@ module.exports = function(config) {
       'bower_components/underscore/underscore.js',
       'bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js',
       'bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
+      'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
@@ -64,8 +67,13 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      "PhantomJS"
+      "PhantomJS2"
     ],
+
+    phantomjsLauncher: {
+      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
+      exitOnResourceError: true
+    },
 
     reporters: ['progress', 'coverage'],
 
@@ -80,7 +88,7 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
-      "karma-phantomjs-launcher",
+      "karma-phantomjs2-launcher",
       "karma-jasmine",
       'karma-coverage'
     ],
@@ -93,7 +101,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_DISABLE
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {

@@ -11,7 +11,7 @@ describe('Service: driverHelpers', function () {
     driverHelpers = _driverHelpers_;
   }));
 
-  it('should do something', function () {
+  xit('should do something', function () {
     expect(!!driverHelpers).toBe(true);
   });
 

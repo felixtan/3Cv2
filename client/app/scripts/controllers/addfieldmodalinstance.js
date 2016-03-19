@@ -398,7 +398,7 @@ angular.module('clientApp')
           type: field.type,
           leftExpressionItems: field.leftExpressionItems,
           rightExpressionItems: field.rightExpressionItems,
-          inequalitySign: field.inequalitySignId
+          inequalitySignId: field.inequalitySignId
         });
       }
       
@@ -439,13 +439,21 @@ angular.module('clientApp')
           evaluateExpression(object, $scope.field.leftExpressionItems).then(function(leftExpressionValue) {
             evaluateExpression(object, $scope.field.rightExpressionItems).then(function(rightExpressionValue) {
               createNewFieldData($scope.field).then(function(fieldDataObj) {
+
+                leftExpressionValue = parseFloat(leftExpressionValue);
+                rightExpressionValue = parseFloat(rightExpressionValue);
+
                 if($scope.field.inequalitySignId === 0) {
+                  console.log(leftExpressionValue + ' > ' + rightExpressionValue);
                   fieldDataObj.value = (leftExpressionValue > rightExpressionValue) ? true : false;
                 } else if ($scope.field.inequalitySignId === 1) {
+                  console.log(leftExpressionValue + ' >= ' + rightExpressionValue);
                   fieldDataObj.value = (leftExpressionValue >= rightExpressionValue) ? true : false;
                 } else if ($scope.field.inequalitySignId === 2) {
+                  console.log(leftExpressionValue + ' < ' + rightExpressionValue);
                   fieldDataObj.value = (leftExpressionValue < rightExpressionValue) ? true : false;
                 } else if ($scope.field.inequalitySignId === 3) {
+                  console.log(leftExpressionValue + ' <= ' + rightExpressionValue);
                   fieldDataObj.value = (leftExpressionValue <= rightExpressionValue) ? true : false;
                 } else {
                   fieldDataObj.value = undefined;

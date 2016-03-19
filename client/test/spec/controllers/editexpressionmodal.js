@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: EditexpressionmodalctrlCtrl', function () {
+describe('Controller: EditExpressionModalCtrl', function () {
 
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var EditexpressionmodalctrlCtrl,
+  var ctrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    EditexpressionmodalctrlCtrl = $controller('EditexpressionmodalctrlCtrl', {
+    ctrl = $controller('EditExpressionModalCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(EditexpressionmodalctrlCtrl.awesomeThings.length).toBe(3);
+  xit('should attach a list of awesomeThings to the scope', function () {
+    expect(ctrl.awesomeThings.length).toBe(3);
   });
 });

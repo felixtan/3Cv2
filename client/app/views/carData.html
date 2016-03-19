@@ -54,11 +54,11 @@
                 </td>
                 <td>
                     <i class='fa fa-check' ng-if='field === currentIdentifier.name && !rowform.$visible'></i>
-                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='identifier.name' ng-show='rowform.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='rowform' ng-model='newIdentifier.name' ng-show='rowform.$visible' onbeforesave='checkIdentifier($data, currentIdentifier.name)'></input>
                 </td>
                 <td style='white-space: nowrap'>
                     <div class='btn-toolbar btn-edit' role='toolbar'>
-                        <form editable-form name='rowform' onaftersave='save($data, field)' ng-show='rowform.$visible' class='form-buttons form-inline'>
+                        <form editable-form name='rowform' onaftersave='save($data)' ng-show='rowform.$visible' class='form-buttons form-inline'>
                             <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-success btn-xs'>
                                 Save
                             </button>
@@ -83,6 +83,29 @@
                 </td>
                 <td>
                     {{ ::data.value | number : 2 }}
+                </td>
+                <td>
+                    <!-- TODO: logging of functions disallowed until thinking about how to impelment -->
+                    <!-- <i class='fa fa-check' ng-if='data.log && !expressionForm.$visible'></i>
+                    <input type='checkbox' editable-checkbox='data.log' e-name='log' e-form='expressionForm' ng-show='expressionForm.$visible' onbeforesave='checkLogValue($data, data.log)'></input>        -->          
+                </td>
+                <td>
+                    <!-- disallow functions from being identifiers -->
+                    <!-- <i class='fa fa-check' ng-if='field === currentIdentifier.name && !expressionForm.$visible'></i>
+                    <input type='radio' e-name='identifier' value='{{ field }}' e-form='expressionForm' ng-model='identifier.name' ng-show='expressionForm.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input> -->
+                </td>
+                <td>
+                    <button class='btn btn-warning btn-xs' ng-click='editExpression(car, field)'>Edit</button>
+                </td>
+            </tr>
+
+            <!-- inequality -->
+            <tr ng-repeat='(field, data) in car.data' ng-if='data.type === "inequality"'>
+                <td>
+                    {{ ::field }}
+                </td>
+                <td>
+                    {{ ::data.value }}
                 </td>
                 <td>
                     <!-- TODO: logging of functions disallowed until thinking about how to impelment -->

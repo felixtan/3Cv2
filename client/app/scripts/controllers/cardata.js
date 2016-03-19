@@ -10,11 +10,15 @@
 angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
+    var self = this;        // for testing;
     $scope.car = getCar.data;
-    console.log($scope.car);
+    // console.log($scope.car);
     $scope.cars = getCars.data;
+
+    // TODO: see instead of having two variables, can use one and ng-change
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
-    $scope.identifier = { name: $scope.car.identifier || null };
+    $scope.newIdentifier = { name: $scope.car.identifier || null };
+
     $scope.tabs = [
         { title: 'Data', active: true, state: 'carProfile.data({ id: car.id })' },
         { title: 'Logs', active: false, state: 'carProfile.logs({ id: car.id })' }
@@ -24,15 +28,53 @@ angular.module('clientApp')
     ///// Data UI /////
     ///////////////////
 
-    var getFields = function(car) {
-        $scope.fields = Object.keys($scope.car.data);
-        return $scope.fields;
-    }
-    getFields();
+    // self.getFields = function(car) {
+    //     $scope.fields = Object.keys($scope.car.data);
+    //     return $scope.fields;
+    // };
+    // self.getFields();
+
+
+    /* 
+    TODO: move all variables not used in the view from under $scope to under this
+        so that they're not exposed to the client but still testable
+        
+        http://stackoverflow.com/questions/22921484/how-can-we-test-non-scope-angular-controller-methods
+    
+        Such variables
+        --------------
+        $scope.newFieldName
+        $scope.currentFieldName
+        $scope.newFieldVal
+        $scope.currentFieldVal
+        $scope.currentLogVal
+        $scope.newLogVal
+        $scope.updateFieldName 
+        $scope.updateLogVal
+        $scope.addFieldToLogs
+    */
+
+    $scope.checkIdentifier = function(newIdentifier, currentIdentifier) {
+        $scope.newIdentifier.name = newIdentifier;
+        $scope.currentIdentifier.name = currentIdentifier;
+    };
+
+    $scope.identifierChanged = function() {
+        if(($scope.newIdentifier.name !== null) 
+            && (typeof $scope.newIdentifier.name !== 'undefined') 
+            && ($scope.currentIdentifier.name !== null) 
+            && (typeof $scope.currentIdentifier.name !== 'undefined') 
+            && ($scope.currentIdentifier.name !== $scope.newIdentifier.name)) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     $scope.newFieldName = null;
     $scope.currentFieldName = null;
     $scope.checkFieldName = function(newName, currentName) {
+        // console.log(newName);
         $scope.newFieldName = newName;
         $scope.currentFieldName = currentName;
     };
@@ -89,6 +131,7 @@ angular.module('clientApp')
 
     $scope.updateFieldName = function(car) {
         var deferred = $q.defer();
+        if(car.identifier === $scope.currentFieldName) car.identifier = $scope.newFieldName;
         car.data[$scope.newFieldName] = car.data[$scope.currentFieldName];
         delete car.data[$scope.currentFieldName];
         deferred.resolve(car);
@@ -99,8 +142,11 @@ angular.module('clientApp')
     $scope.updateLogVal = function(car) {
         var deferred = $q.defer();
         car.data[$scope.currentFieldName].log = $scope.newLogVal;
-        deferred.resolve(car);
-        deferred.reject(new Error('Error updating field log value'));
+        $scope.addFieldToLogs(car, $scope.currentFieldName).then(function(carWithUpdatedLogs) {
+            // console.log('car with updated log values:', carWithUpdatedLogs);
+            deferred.resolve(carWithUpdatedLogs);
+            deferred.reject(new Error('Error updating field log value'));
+        });
         return deferred.promise;
     };
 
@@ -114,51 +160,201 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
-    $scope.save = function (data, field) {
+    $scope.updateIdentifier = function(car) {
+        var deferred = $q.defer();
+        car.identifier = $scope.fieldNameChanged() ? $scope.newFieldName : $scope.newIdentifier.name;
+        deferred.resolve(car);
+        deferred.reject(new Error('Error updating identifier'));
+        return deferred.promise;
+    };
+
+    $scope.save = function(data) {
+        // console.log($scope.currentFieldVal);
+        // console.log($scope.newFieldVal);
+        // console.log($scope.currentFieldName);
+        // console.log($scope.newFieldName);
+        // console.log($scope.currentLogVal);
+        // console.log($scope.newLogVal);
+        // console.log($scope.currentIdentifier.name);
+        // console.log($scope.newIdentifier.name);
+
         // console.log('data:', data);
             // data.name -> updated field name
             // data.value -> updated field value
             // data.log -> updated field log
 
-        if($scope.fieldNameChanged() && !$scope.logValChanged()) {
-            _.each($scope.cars, function(car) {
-                $scope.updateFieldName(car).then(function(carWithUpdatedFieldName) {
-                    // console.log('saving:', carWithUpdatedFieldName);
-                    dataService.updateCar(carWithUpdatedFieldName);
-                    if(carWithUpdatedFieldName.id == $scope.car.id) $state.forceReload();
-                });
-            });
-        } else if($scope.logValChanged() && !$scope.fieldNameChanged()) {
-            _.each($scope.cars, function(car) {
-                $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
-                    $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
-                        // console.log('saving:', carWithUpdatedLogs);
-                        dataService.updateCar(carWithUpdatedLogs);
-                        if(carWithUpdatedLogs.id == $scope.car.id) $state.forceReload();
-                    });
-                });
-            });
-        } else if($scope.logValChanged() && $scope.fieldNameChanged()) {
-            _.each($scope.cars, function(car) {
-               $scope.updateLogVal(car).then(function(carWithUpdatedLogVal) {
-                    $scope.addFieldToLogs(carWithUpdatedLogVal, data.name).then(function(carWithUpdatedLogs) {
-                        $scope.updateFieldName(carWithUpdatedLogs).then(function(carWithUpdatedFieldName) {
-                            // console.log('saving:', carWithUpdatedFieldName);
-                            dataService.updateCar(carWithUpdatedFieldName);
-                            if(carWithUpdatedFieldName.id == $scope.car.id) $state.forceReload();
-                        });
-                    });
-                });
-            });
-        } else {
-            dataService.updateCar($scope.car);
-            $state.forceReload();
-        }
+        // bug detected: if everything changes, value for present car won't be updated
+        // fix: process current car first then other cars, skipping the current car during the _.each
 
-        carHelpers.updateIdentifier($scope.cars, $scope.currentIdentifier.name, $scope.identifier.name);
+        // bug detected: if both field name and identifier is changed to that field then identifier might become undefined
+        // fix: make sure identifier is being set to the new field name
+
+        if($scope.fieldValChanged()) {
+            if($scope.logValChanged()) {
+                if($scope.fieldNameChanged()) {
+                    if($scope.identifierChanged()) {
+                        // console.log('all changed');
+                        // 1111
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                // console.log(carUpdated1);
+                                $scope.updateLogVal(carUpdated1).then(function(carUpdated2) {
+                                    // console.log(carUpdated2);
+                                    $scope.updateFieldName(carUpdated2).then(function(carUpdated3) {
+                                        if(carUpdated3.id === $scope.car.id) carUpdated3.data[$scope.newFieldName].value = $scope.newFieldVal;
+                                        // console.log('hail mary', carUpdated3);
+                                        dataService.updateCar(carUpdated3);
+                                    });
+                                });
+                            });
+                        });
+                    } else {
+                        // 1110
+                        _.each($scope.cars, function(car) {
+                            $scope.updateLogVal(car).then(function(carUpdated1) {
+                                $scope.updateFieldName(carUpdated1).then(function(carUpdated2) {
+                                    if(carUpdated2.id === $scope.car.id) carUpdated2.data[$scope.newFieldName].value = $scope.newFieldVal;
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    }
+                } else {
+                    if($scope.identifierChanged()) {
+                        // 1101
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                $scope.updateLogVal(carUpdated1).then(function(carUpdated2) {
+                                    if(carUpdated2.id === $scope.car.id) carUpdated2.data[$scope.currentFieldName].value = $scope.newFieldVal;
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    } else {
+                        // 1100
+                        _.each($scope.cars, function(car) {
+                            $scope.updateLogVal(car).then(function(carUpdated1) {
+                                if(carUpdated1.id === $scope.car.id) carUpdated1.data[$scope.currentFieldName].value = $scope.newFieldVal;
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    }
+                }
+            } else {
+                if($scope.fieldNameChanged()) {
+                    if($scope.identifierChanged()) {
+                        // 1011
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                $scope.updateFieldName(carUpdated1).then(function(carUpdated2) {
+                                    if(carUpdated2.id === $scope.car.id) carUpdated2.data[$scope.newFieldName].value = $scope.newFieldVal;
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    } else {
+                        // 1010
+                        _.each($scope.cars, function(car) {
+                            $scope.updateFieldName(car).then(function(carUpdated1) {
+                                if(carUpdated1.id === $scope.car.id) carUpdated1.data[$scope.newFieldName].value = $scope.newFieldVal;
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    }
+                } else {
+                    if($scope.identifierChanged()) {
+                        // 1001
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                if(carUpdated1.id === $scope.car.id) carUpdated1.data[$scope.currentFieldName].value = $scope.newFieldVal;
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    } else {
+                        // 1000
+                        dataService.updateCar($scope.car);
+                    }
+                }
+            }
+        } else {
+            if($scope.logValChanged()) {
+                if($scope.fieldNameChanged()) {
+                    if($scope.identifierChanged()) {
+                        // 0111
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                $scope.updateLogVal(carUpdated1).then(function(carUpdated2) {
+                                    $scope.updateFieldName(carUpdated2).then(function(carUpdated3) {
+                                        dataService.updateCar(carUpdated3);
+                                    });
+                                });
+                            });
+                        });
+                    } else {
+                        // 0110
+                        _.each($scope.cars, function(car) {
+                            $scope.updateLogVal(car).then(function(carUpdated1) {
+                                $scope.updateFieldName(carUpdated1).then(function(carUpdated2) {
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    }
+                } else {
+                    if($scope.identifierChanged()) {
+                        // 0101
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                $scope.updateLogVal(carUpdated1).then(function(carUpdated2) {
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    } else {
+                        // 0100
+                        _.each($scope.cars, function(car) {
+                            $scope.updateLogVal(car).then(function(carUpdated1) {
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    }
+                }
+            } else {
+                if($scope.fieldNameChanged()) {
+                    if($scope.identifierChanged()) {
+                        // 0011
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                $scope.updateFieldName(carUpdated1).then(function(carUpdated2) {
+                                    dataService.updateCar(carUpdated2);
+                                });
+                            });
+                        });
+                    } else {
+                        // 0010
+                        _.each($scope.cars, function(car) {
+                            $scope.updateFieldName(car).then(function(carUpdated1) {
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    }
+                } else {
+                    if($scope.identifierChanged()) {
+                        // 0001
+                        // console.log("update identifier only");
+                        _.each($scope.cars, function(car) {
+                            $scope.updateIdentifier(car).then(function(carUpdated1) {
+                                dataService.updateCar(carUpdated1);
+                            });
+                        });
+                    } else {
+                        // 0000
+                    }
+                }
+            }
+        }
     };
 
-    // Add field
     // Add field
     $scope.addField = function() {
         var modalInstance = $modal.open({
@@ -186,7 +382,6 @@ angular.module('clientApp')
         });
 
         modalInstance.result.then(function (newField) {
-            $scope.newField = newField;
             $state.forceReload();
         }, function() {
             $state.forceReload();
@@ -236,8 +431,8 @@ angular.module('clientApp')
 
     // Expression
     $scope.validateExpression = function(data, field) {
-        console.log(data);
-        console.log(field);
+        // console.log(data);
+        // console.log(field);
     };
 
     $scope.buildExpression = function(expressionItems) {

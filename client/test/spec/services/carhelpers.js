@@ -11,7 +11,7 @@ describe('Service: carHelpers', function () {
     carHelpers = _carHelpers_;
   }));
 
-  it('should do something', function () {
+  xit('should do something', function () {
     expect(!!carHelpers).toBe(true);
   });
 

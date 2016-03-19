@@ -113,19 +113,38 @@ beforeEach(function() {
     data: {
         licensePlate: {
               value: 'T627067C',
-              log: false
+              log: false,
+              type: 'text',
+              dataType: 'text'
           },
           licenseNumber: {
               value: 'GPJ 6478',
-              log: false
+              log: false,
+              type: 'text',
+              dataType: 'text'
           },
           mileage: {
               value: '14081',
-              log: true
+              log: true,
+              type: 'number',
+              dataType: 'number'
           },
           description: {
               value: 'lorem ipsum',
-              log: false
+              log: false,
+              type: 'text',
+              dataType: 'text'
+          },
+          testExpression: {
+              value: null,
+              log: false,
+              type: 'function',
+              dataType: 'number',
+              expressionItems: [
+                {
+                  
+                }
+              ]
           }
     },
     logs: [
@@ -156,19 +175,27 @@ beforeEach(function() {
     data: {
       licensePlate: {
           value: 'T657227C',
-          log: false
+          log: false,
+          type: 'text',
+          dataType: 'text'
       },
       licenseNumber: {
           value: 'FLJ 6290',
-          log: false
+          log: false,
+          type: 'text',
+          dataType: 'text'
       },
       mileage: {
           value: '120461',
-          log: true
+          log: true,
+          type: 'number',
+          dataType: 'number'
       },
       description: {
           value: 'lorem ipsum',
-          log: false
+          log: false,
+          type: 'text',
+          dataType: 'text'
       }
     },
     logs: [

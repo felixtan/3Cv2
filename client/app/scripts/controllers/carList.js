@@ -8,12 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('MainCtrl', function (carHelpers, $state, $modal, $filter, $q, $scope, getCars) {
+  .controller('CarListCtrl', function (carHelpers, $state, $modal, $filter, $q, $scope, getCars) {
     
-    $scope.tabs = [
-        { title: 'Cars', route: 'dashboard.cars', active: true },
-        { title: 'Drivers', route: 'dashboard.drivers', active: false }
-    ];
+    // $scope.tabs = [
+    //     { title: 'Cars', route: 'dashboard.cars', active: true },
+    //     { title: 'Drivers', route: 'dashboard.drivers', active: false }
+    // ];
 
     $scope.cars = getCars.data;
     $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.cars[0].identifier);

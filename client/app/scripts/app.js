@@ -80,8 +80,8 @@ angular
     .state('dashboard.cars', {
         url: '/cars',
         templateUrl: 'views/carList.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main',
+        controller: 'CarListCtrl',
+        controllerAs: 'carList',
         resolve: {
           getCars: function(dataService) {
             return dataService.getCars();

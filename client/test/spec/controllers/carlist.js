@@ -1,6 +1,6 @@
 'use strict';
 
-describe('MainCtrl', function () {
+describe('CarListCtrl', function () {
   var controller, rootScope, carHelpers, state, dataService, scope;
 
   // load the controller's module
@@ -17,7 +17,7 @@ describe('MainCtrl', function () {
     spyOn(dataService, 'getCars');
     spyOn(carHelpers, 'mapObject');
 
-    controller = $controller('MainCtrl', { 
+    controller = $controller('CarListCtrl', { 
       $scope: scope,
       getCars: getCars
     });
@@ -33,7 +33,41 @@ describe('MainCtrl', function () {
     expect(scope.cars).toBeDefined();
   });
 
-  it('should load the car identifier to scope', function() {
-    expect(scope.identifier).toBeDefined();
+  describe('simplified cars', function() {
+    it('should store a simplified version of the cars', function() {
+      state.go('dashboard.cars');
+      setTimeout(function() {
+        expect(carHelpers.mapObject).toHaveBeenCalled();
+        expect(scope.simpleCars).toBeDefined();
+      }, 500);
+    });
+
+    it('should have the same amount of simplified cars as full cars', function() {
+      state.go('dashboard.cars');
+      setTimeout(function() {
+        expect(scope.cars.length).toEqual(scope.simpleCars.length);
+      }, 500);      
+    });
   });
+
+  describe('car identifier', function() {
+    it('should load the car identifier to scope', function() {
+      expect(scope.identifier).toBeDefined();
+    });
+
+    it('should organize the cars in the view by identifier', function() {
+      if(scope.cars.length) expect(scope.cars[0].identifier).toEqual(scope.identifier);
+
+      _.each(scope.simpleCars, function(simpleCar) {
+        expect(simpleCar.identifierValue).toBeDefined();
+      });
+    });
+  });
+
+  it('should determine if there is at least one car', function() {
+    expect(scope.thereAreCars()).toEqual(true);
+
+    scope.cars = [];
+    expect(scope.thereAreCars()).toEqual(false);    
+  });  
 });

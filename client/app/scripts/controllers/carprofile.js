@@ -16,10 +16,4 @@ angular.module('clientApp')
     }
     $scope.getCar();
 
-    // $scope.tabs = [
-    //     { title: 'Data', route: 'carProfile.data' },
-    //     { title: 'Logs', route: 'carProfile.logs' }
-    //     // { title: 'Drivers', content: 'Drivers' }
-    // ];
-
   });

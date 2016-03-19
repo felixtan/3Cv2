@@ -11,7 +11,7 @@ describe('Service: assetHelpers', function () {
     assetHelpers = _assetHelpers_;
   }));
 
-  it('should do something', function () {
+  xit('should do something', function () {
     expect(!!assetHelpers).toBe(true);
   });
 
