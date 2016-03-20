@@ -24,9 +24,11 @@ angular.module('clientApp')
     // will then call updateDriver
     // to use this add following attribute to button element
     // e-ng-keypress="keypress($event, driverRowForm)"
-    $scope.keypress = function(e, form) {
-        if (e.which === 13) {
-            form.$submit();
-        }
-    };
+
+    // This actually works
+    // $scope.keypress = function(e, form) {
+    //     if (e.which === 13) {
+    //         form.$submit();
+    //     }
+    // };
 });

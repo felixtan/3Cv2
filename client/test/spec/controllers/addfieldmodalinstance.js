@@ -5,18 +5,17 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var controller, scope, dataService, state, modalInstance;
+  var controller, 
+      scope, 
+      dataService, 
+      state, 
+      modalInstance;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, _dataService_, $state) {
     scope = $rootScope.$new();
     dataService = _dataService_;
     state = $state;
-
-    spyOn(dataService, 'updateCar');
-    spyOn(dataService, 'updateDriver');
-    spyOn(dataService, 'updateProspect');
-    spyOn(dataService, 'updateAsset');
     
     controller = $controller('AddFieldModalInstanceCtrl', {
       $scope: scope,
@@ -25,6 +24,15 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       getProspects: getProspects,
       getAssets: getAssets
     });
+
+    spyOn(dataService, 'updateCar');
+    spyOn(dataService, 'updateDriver');
+    spyOn(dataService, 'updateProspect');
+    spyOn(dataService, 'updateAsset');
+    spyOn(scope.setInequalitySign).and.callThrough();
+    spyOn(scope.setDataType).and.callThrough();
+    spyOn(scope.invalidFieldType).and.callThrough();
+    spyOn(scope.appendItemToFunction).and.callThrough();
   }));
 
   describe('Recognizing the object', function() {

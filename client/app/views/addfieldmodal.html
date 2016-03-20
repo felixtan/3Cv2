@@ -111,7 +111,7 @@
                 <h5 class='expression' ng-if='field.type === "inequality"'>{{ field.leftExpression }} {{ field.inequalitySign }} {{ field.rightExpression }}</h5>
                 <br>
 
-                <div class='input-group'>
+                <div class='input-group' ng-if='field.type === "inequality"'>
                     <input bs-switch 
                         ng-model="rightSide" 
                         type="checkbox" 
@@ -144,10 +144,10 @@
                     </div>
                 </div><br>
 
-                <label>
+                <label ng-if='field.type === "inequality"'>
                     Sign
                 </label>
-                <select class='form-control' ng-model='field.inequalitySignId' ng-change='setInequalitySign(field.inequalitySignId)'>
+                <select ng-if='field.type === "inequality"' class='form-control' ng-model='field.inequalitySignId' ng-change='setInequalitySign(field.inequalitySignId)'>
                     <option value='0'>&gt; Greater Than</option>
                     <option value='1'>&ge; Greater Than or Equal To</option>
                     <option value='2'>&lt; Less Than</option>

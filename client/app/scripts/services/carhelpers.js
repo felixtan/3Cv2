@@ -185,42 +185,21 @@ angular.module('clientApp')
 
     getCars().then(function(result) {
       var cars = result.data;
-      
-      if(cars.length > 0) {
-        // TODO: Do we have to do a double each here? If we can ensure that all 
-        // car logs have the same dates, then we can just take the first car cars[0]
-        _.each(cars, function(car) {
-          _.each(car.logs, function(log) {
-            logDates.push(log.weekOf);
-            logDates = _.uniq(logDates.sort(), true).reverse();
-          });
+    
+      // TODO: Do we have to do a double each here? If we can ensure that all 
+      // car logs have the same dates, then we can just take the first car cars[0]
+      _.each(cars, function(car) {
+        _.each(car.logs, function(log) {
+          logDates.push(log.weekOf);
+          // logDates = _.uniq(logDates.sort(), true).reverse();
         });
-      }
+      });
 
-      deferred.resolve(logDates);
+      deferred.resolve(_.uniq(logDates.sort(), true).reverse());
       deferred.reject(new Error('Error getting log dates'));
     });
 
     return deferred.promise;
-      
-    // if(existingCars.constructor === Object) {
-    //   cars = existingCars.data;   // should be from dataService
-    //   getEm(cars).then(function(logDates) {
-    //     deferred1.resolve(logDates);
-    //     deferred1.reject(new Error('Error getting log dates'));
-    //   });
-    // } else if(existingCars.constructor === Array) {
-    //   cars = existingCars;
-    //   getEm(cars).then(function(logDates) {
-    //     deferred1.resolve(logDates);
-    //     deferred1.reject(new Error('Error getting log dates'));
-    //   });
-    // } else {
-    //   // idk wtf it is
-    //   deferred1.reject(new Error('Invalid existingCars data type:', existingCars));
-    // }
-    
-    // return deferred1.promise;
   };
 
   var createLog = function(data, weekOf) {

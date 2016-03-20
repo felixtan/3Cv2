@@ -21,6 +21,8 @@ describe('CarListCtrl', function () {
       $scope: scope,
       getCars: getCars
     });
+
+    // spyOn(scope, "keypress").and.callThrough();
   }));
 
   it('should direct to the correct url', function() {
@@ -70,4 +72,5 @@ describe('CarListCtrl', function () {
     scope.cars = [];
     expect(scope.thereAreCars()).toEqual(false);    
   });  
+
 });

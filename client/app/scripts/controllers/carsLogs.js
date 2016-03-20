@@ -8,29 +8,33 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('CarsLogsCtrl', function (carHelpers, dataService, $q, $scope, getCars, $state) {
+  .controller('CarsLogsCtrl', function (datepicker, carHelpers, dataService, $q, $scope, getCars, $state) {
 
-    $scope.getCars = function() {
-        $scope.cars = getCars.data;
-        $scope.identifier = $scope.cars[0].identifier || null;
-        $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
-    }
-    $scope.getCars();
+    $scope.datepicker = datepicker;
+    $scope.cars = getCars.data;
+    $scope.identifier = $scope.cars[0].identifier || null;
+    $scope.simpleCars = carHelpers.mapObject($scope.cars, $scope.identifier);
+    $scope.dates = [];
 
     // stores dates of log fors week starting/ending in milliseconds
     // store most recent date in a separate var just in case
     $scope.getLogDates = function() {
+        var deferred = $q.defer();
         var arr = [];
-        $scope.dates = [];
         _.each($scope.cars, function(car, index) {
             _.each(car.logs, function(log, index) {
                 arr.push(log.weekOf);
             });
         });
         
-        $scope.dates = _.uniq(arr.sort(), true).reverse();
+        deferred.resolve(_.uniq(arr.sort(), true).reverse());
+        deferred.reject(new Error('Error getting existing log dates'));
+        return deferred.promise;
     }
-    $scope.getLogDates();
+    
+    $scope.getLogDates().then(function(dates) {
+        $scope.dates = dates;
+    });
 
     $scope.getMostRecentLogDate = function() {
         // return Math.max(...$scope.dates); -> assuming unsorted
@@ -39,112 +43,6 @@ angular.module('clientApp')
         if($scope.dates.length > 0) $scope.mostRecentLogDate = $scope.dates[0];     
     }
     $scope.getMostRecentLogDate();
-
-    $scope.date = 0;
-
-    // Datepicker
-    // error when using const and 'use strict'
-    var oneWeekInMs = 604800000;
-    var oneDayInMs = 86400000;
-
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        startingDay: 0
-    };
-
-    $scope.getStartingDayNum = function() {
-        return $scope.dateOptions.startingDay;
-    }
-
-    $scope.getStartingDayWord = function() {
-        switch($scope.getStartingDayNum()) {
-            case 0:
-                return 'Sunday';
-                break;
-            case 1:
-                return 'Monday';
-                break;
-            default:
-                return 'Invalid day';
-        }
-    }
-
-    // @param day is of type int from 0-1 (Sunday/Monday)
-    $scope.setStartingDay = function(day) {
-        if((day < 0) || (day > 1)) alert('Invalid day');
-        $scope.dateOptions.startingDay = day;
-    }
-
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-    $scope.today();
-
-    $scope.clear = function () {
-        $scope.dt = null;
-    };
-
-    // Disable weekend selection
-    $scope.disabled = function(date, mode) {
-        return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };
-
-    $scope.toggleMin = function() {
-        $scope.minDate = $scope.minDate ? null : new Date();
-    };
-    $scope.toggleMin();
-
-    // Allows for a year in advance
-    $scope.maxDate = new Date($scope.dt.getFullYear()+1, $scope.dt.getMonth()+1);
-
-    $scope.open = function($event) {
-        $scope.status.opened = true;
-    };
-
-    $scope.setDate = function(year, month, day) {
-        $scope.dt = new Date(year, month, day);
-    };
-
-    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
-
-    $scope.status = {
-        opened: false
-    };
-
-    var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    var afterTomorrow = new Date();
-    afterTomorrow.setDate(tomorrow.getDate() + 2);
-  
-    $scope.events = 
-    [
-            {
-                date: tomorrow,
-                status: 'full'
-            },
-        {
-            date: afterTomorrow,
-            status: 'partially'
-        }
-    ];
-
-    $scope.getDayClass = function(date, mode) {
-        if (mode === 'day') {
-            var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-            for (var i=0;i<$scope.events.length;i++){
-                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-
-                if (dayToCheck === currentDay) {
-                    return $scope.events[i].status;
-                }
-            }
-        }
-
-        return '';
-    };
-    // End datepicker stuff
 
     $scope.getFieldsToBeLogged = function(car) {
         var deferred = $q.defer();
@@ -164,11 +62,6 @@ angular.module('clientApp')
         var data = {};
         // first car is taken because fields in car.data are assumed to be uniform for all cars
         $scope.getFieldsToBeLogged($scope.cars[0]).then(function(fields) {
-            // Turn this into modal?
-            if(fields.length === 0) {
-                deferred.reject(new Error('There are no fields to be logged!'));
-            }
-
             _.each(fields, function(field) {
                 data[field] = null;
             });
@@ -198,7 +91,7 @@ angular.module('clientApp')
         // 4. create for all cars
         // employ loading animation 
         
-        var d = $scope.dt;
+        var d = $scope.datepicker.dt;
         var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
 
         var promise = $scope.newDataObj().then(function(blankDataObj) {
@@ -210,6 +103,7 @@ angular.module('clientApp')
         if(!(_.contains($scope.dates, weekOf))) {
             $q.all([promise]).then(function(values) {
                 $scope.createNewRow(weekOf);
+                $state.forceReload();
             }).catch(function(err) {
                 console.error(err);
             });
@@ -236,7 +130,5 @@ angular.module('clientApp')
     $scope.createNewRow = function(date) {
         // add new date to array of log dates
         $scope.dates.push(date);
-        $state.forceReload();
-        $state.forceReload();
     };
   });

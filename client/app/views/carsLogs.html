@@ -5,7 +5,7 @@
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
-            <button class='btn btn-success' ng-click='newLog()' ng-disabled='dt.getDay() !== getStartingDayNum()'>
+            <button class='btn btn-success' ng-click='newLog()' ng-disabled='datepicker.dt.getDay() !== datepicker.getStartingDayNum()'>
                 + Log 
             </button>
         </div>
@@ -13,15 +13,15 @@
            <div class="input-group date-picker">
                 <input type="text" 
                     class="form-control" 
-                    datepicker-popup="{{format}}" 
-                    ng-model="dt" 
-                    is-open="status.opened" 
-                    max-date="maxDate" 
-                    datepicker-options="dateOptions"  
+                    datepicker-popup="{{ datepicker.format }}" 
+                    ng-model="datepicker.dt" 
+                    is-open="datepicker.status.opened" 
+                    max-date="datepicker.maxDate" 
+                    datepicker-options="datepicker.dateOptions"  
                     ng-required="true" 
                     close-text="Close" /> 
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" ng-click="open($event)">
+                    <button type="button" class="btn btn-primary" ng-click="datepicker.open($event)">
                         <i class="fa fa-calendar"></i>
                     </button>
                 </div>   
@@ -29,7 +29,7 @@
         </div>
         <div class='btn-group' role='group'>
             <p id='datepicker-instructions'>
-                * Choose the {{ ::getStartingDayWord() }} of the week to be logged.
+                * Choose the {{ ::datepicker.getStartingDayWord() }} of the week to be logged.
             </p>
         </div>
     </div>

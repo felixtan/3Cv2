@@ -10,6 +10,7 @@
 angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
+    // $scope.test = $scope.$eval("2 / 3");
     var self = this;        // for testing;
     $scope.car = getCar.data;
     // console.log($scope.car);
@@ -361,6 +362,7 @@ angular.module('clientApp')
             animation: true,
             templateUrl: 'views/addfieldmodal.html',
             controller: 'AddFieldModalInstanceCtrl',
+            // controllerAs: 'addField'
             size: 'md',
             resolve: {
                 getCars: function(dataService) {

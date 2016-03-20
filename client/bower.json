@@ -20,7 +20,9 @@
     "underscore": "~1.8.3",
     "stormpath-sdk-angularjs": "~0.8.2",
     "angular-bootstrap-switch": "~0.4.1",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "angular-toArrayFilter": "~1.0.1",
+    "math-expression-evaluator": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.7"
