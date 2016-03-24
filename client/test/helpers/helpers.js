@@ -16,9 +16,32 @@ var driver1,
     asset1,
     asset2,
     getAsset,
-    getAssets;
+    getAssets,
+
+    randomObjectType;
 
 beforeEach(function() {
+    randomObjectType = function() {
+      var num = Math.floor(Math.random() * 5);
+      switch(num) {
+        case 0:
+          return 'car';
+          break;
+        case 1:
+          return 'driver';
+          break;
+        case 2:
+          return 'prospect';
+          break;
+        case 3:
+          return 'asset';
+          break;
+        default:
+          return 'foo';
+          break;
+      }
+    };
+
     driver1 = {
     id: 1,
     organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
@@ -26,19 +49,27 @@ beforeEach(function() {
     data: {
       "First Name": {
         value: "John",
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       "Last Name": {
         value: "Doe",
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       fullName: {
         value: "John Doe",
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       revenue: {
         value: 1600,
-        log: true
+        log: true,
+        type: 'number',
+        dataType: 'number'
       }
     },
     logs: [
@@ -68,19 +99,27 @@ beforeEach(function() {
     data: {
       "First Name": {
         value: "Jane",
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       "Last Name": {
         value: "Wayne",
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       fullName: {
         value: 'Jane Wayne',
-        log: false
+        log: false,
+        type: 'text',
+        dataType: 'text'
       },
       revenue: {
         value: 1600,
-        log: true
+        log: true,
+        type: 'number',
+        dataType: 'number'
       }
     },
     logs: [
@@ -142,7 +181,7 @@ beforeEach(function() {
               dataType: 'number',
               expressionItems: [
                 {
-                  
+
                 }
               ]
           }
@@ -230,23 +269,33 @@ beforeEach(function() {
         data: {
           "First Name": {
             value: "Gandalf",
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           "Last Name": {
             value: "Grey",
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           fullName: {
             value: 'Gandalf Grey',
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           accidents: {
             value: 2,
-            log: false
+            log: false,
+            type: 'number',
+            dataType: 'number'
           },
           status: {
             value: 'Callers',
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           }
         }
     };
@@ -259,23 +308,33 @@ beforeEach(function() {
         data: {
           "First Name": {
             value: "Saruman",
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           "Last Name": {
             value: "White",
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           fullName: {
             value: 'Saruman White',
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           },
           accidents: {
             value: 0,
-            log: false
+            log: false,
+            type: 'number',
+            dataType: 'number'
           },
           status: {
             value: 'Interviewed',
-            log: false
+            log: false,
+            type: 'text',
+            dataType: 'text'
           }
         }
     };
@@ -291,15 +350,21 @@ beforeEach(function() {
         data: {
             assetType: {
                 value: 'Gas Card',
-                log: false
+                log: false,
+                type: 'text',
+                dataType: 'text'
             },
             "Number": {
                 value: 1234,
-                log: false
+                log: false,
+                type: 'text',
+                dataType: 'text'
             },
             "Balance": {
                 value: 33.20,
-                log: true
+                log: true,
+                type: 'number',
+                dataType: 'number'
             }
         },
         logs: [],
@@ -314,15 +379,21 @@ beforeEach(function() {
         data: {
             assetType: {
                 value: 'EZ Pass',
-                log: false
+                log: false,
+                type: 'text',
+                dataType: 'text'
             },
             "Number": {
                 value: 5678,
-                log: false
+                log: false,
+                type: 'text',
+                dataType: 'text'
             },
             "Balance": {
                 value: 101.41,
-                log: true
+                log: true,
+                type: 'number',
+              dataType: 'number'
             }
         },
         logs: [],
@@ -330,6 +401,6 @@ beforeEach(function() {
     };
 
     getAsset = { data: asset1 };
-    getAssets = { data: [asset1, asset2] };
+    getAssets = { data: [asset1, asset2], type: 'Gas Card' };
 });
 

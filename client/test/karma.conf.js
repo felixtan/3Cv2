@@ -44,7 +44,9 @@ module.exports = function(config) {
       'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
       'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
       'bower_components/angular-toArrayFilter/toArrayFilter.js',
+      'bower_components/math-expression-evaluator/dist/browser/math-expression-evaluator.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/jasmine-expect/dist/jasmine-matchers.js',
       // endbower
       "app/scripts/**/*.js",
       // "test/mock/**/*.js",
@@ -102,7 +104,7 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_DISABLE
+    logLevel: config.LOG_ERROR
 
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {

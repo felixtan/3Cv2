@@ -357,7 +357,7 @@ angular.module('clientApp')
     };
 
     // Add field
-    $scope.addField = function() {
+    $scope.addField = function(objectType) {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/addfieldmodal.html',
@@ -366,19 +366,22 @@ angular.module('clientApp')
             size: 'md',
             resolve: {
                 getCars: function(dataService) {
-                    return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});
+                    return (objectType === 'car') ? dataService.getCars() : {};
                 },
                 getDrivers: function(dataService) {
-                    return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});
+                    return (objectType === 'driver') ? dataService.getDrivers() : {};
                 },
                 getProspects: function(dataService) {
-                    return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  
+                    return (objectType === 'prospect') ? dataService.getProspects() : {};  
                 },
                 getAssets: function(dataService) {
-                    return (($state.includes('assetProfile') || $state.includes('dashboard.assets')) ? dataService.getAssets() : {});
+                    return (objectType === 'asset') ? dataService.getAssets() : {};
                 },
                 assetType: function() {
                     return null;
+                },
+                objectType: function() {
+                    return objectType;
                 }
             }
         });

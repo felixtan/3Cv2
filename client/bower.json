@@ -25,7 +25,8 @@
     "math-expression-evaluator": "*"
   },
   "devDependencies": {
-    "angular-mocks": "~1.4.7"
+    "angular-mocks": "~1.4.7",
+    "jasmine-expect": "~2.0.2"
   },
   "appPath": "app",
   "moduleName": "clientApp",

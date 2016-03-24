@@ -43,7 +43,7 @@ angular
         var authOn = { authenticate: true };
         var authOff = {};
         return authOff;
-    }
+    };
 
     // $urlRouterProvider.otherwise('/login');
     $urlRouterProvider.otherwise('/dashboard/cars');

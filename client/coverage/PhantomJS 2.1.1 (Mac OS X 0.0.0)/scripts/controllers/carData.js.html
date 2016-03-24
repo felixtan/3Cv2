@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">84.46% </span>
+        <span class="strong">84.02% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>163/193</span>
+        <span class='fraction'>163/194</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">80.21% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>77/96</span>
+        <span class='fraction'>77/88</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.86% </span>
+        <span class="strong">67.06% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>57/84</span>
+        <span class='fraction'>57/85</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">84.32% </span>
+        <span class="strong">83.87% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>156/185</span>
+        <span class='fraction'>156/186</span>
       </div>
     </div>
   </div>
@@ -526,7 +526,12 @@
 481
 482
 483
-484</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+484
+485
+486
+487
+488
+489</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -536,6 +541,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">45×</span>
@@ -892,6 +898,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1021,6 +1031,7 @@
 angular.module('clientApp')
   .controller('CarDataCtrl', function ($q, carHelpers, $state, dataService, $scope, getCar, getCars, $modal) {   
     
+    // $scope.test = $scope.$eval("2 / 3");
     var self = this;        // for testing;
     $scope.car = getCar.data;
     // console.log($scope.car);
@@ -1367,27 +1378,31 @@ angular.module('clientApp')
     };
 &nbsp;
     // Add field
-    $scope.addField = function() {
+    $scope.addField = function(objectType) {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/addfieldmodal.html',
             controller: 'AddFieldModalInstanceCtrl',
+            // controllerAs: 'addField'
             size: 'md',
             resolve: {
                 getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                    return (($state.includes('carProfile') || $state.includes('dashboard.cars')) ? dataService.getCars() : {});</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'car') ? dataService.getCars() : {};</span>
                 },
                 getDrivers: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                    return (($state.includes('driverProfile') || $state.includes('dashboard.drivers')) ? dataService.getDrivers() : {});</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'driver') ? dataService.getDrivers() : {};</span>
                 },
                 getProspects: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                    return (($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) ? dataService.getProspects() : {});  </span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'prospect') ? dataService.getProspects() : {};  </span>
                 },
                 getAssets: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
-<span class="cstat-no" title="statement not covered" >                    return (($state.includes('assetProfile') || $state.includes('dashboard.assets')) ? dataService.getAssets() : {});</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'asset') ? dataService.getAssets() : {};</span>
                 },
                 assetType: <span class="fstat-no" title="function not covered" >function() {</span>
 <span class="cstat-no" title="statement not covered" >                    return null;</span>
+                },
+                objectType: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return objectType;</span>
                 }
             }
         });
@@ -1498,7 +1513,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 20 2016 18:07:49 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Mar 24 2016 00:08:12 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

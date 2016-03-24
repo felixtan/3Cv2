@@ -22,31 +22,31 @@
                 <ul class='fieldTypes'>
                     <li>
                         <label class='radio'>
-                            <input ng-model='field.type' value='text' type='radio' ng-change='setDataType(field)'>Text
+                            <input ng-model='field.type' value='text' type='radio' ng-change='setDataType(field.type)'>Text
                             <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
                         </label>
                     </li>
                     <li>
                         <label class='radio'>
-                            <input ng-model='field.type' value='number' type='radio' ng-change='setDataType(field)'>Number
+                            <input ng-model='field.type' value='number' type='radio' ng-change='setDataType(field.type)'>Number
                             <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
                         </label>
                     </li>
                     <li>
                         <label class='radio'>
-                            <input ng-model='field.type' value='boolean' type='radio' ng-change='setDataType(field)'>Boolean
+                            <input ng-model='field.type' value='boolean' type='radio' ng-change='setDataType(field.type)'>Boolean
                             <i class="fa fa-question-circle" tooltip="ex. yes/no, true/false"></i>
                         </label>
                     </li>
                     <li>
                         <label class='radio'>
-                            <input ng-model='field.type' value='function' type='radio' ng-change='setDataType(field)'> Function
+                            <input ng-model='field.type' value='function' type='radio' ng-change='setDataType(field.type)'> Function
                             <i class="fa fa-question-circle" tooltip="Outputs a value in terms of other functions and numbers"></i>
                         </label>
                     </li>
                     <li>
                         <label class='radio'>
-                            <input ng-model='field.type' value='inequality' type='radio' ng-change='setDataType(field)'> Inequality
+                            <input ng-model='field.type' value='inequality' type='radio' ng-change='setDataType(field.type)'> Inequality
                             <i class="fa fa-question-circle" tooltip="Compares two values and returns a true or false value"></i>
                         </label>
                     </li>
@@ -185,6 +185,7 @@
                     <li>be alphanumeric</li>
                     <li>contain no special characters except _</li>
                     <li>contain no spaces</li>
+                    <li>not be empty</li>
                 </ul>
             </div>
         </div>
@@ -225,7 +226,7 @@
     {{ invalidFieldType() }}
     {{ !validExpression }} -->
     <!-- {{ field }} -->
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validExpression || !inequalityIsComplete()'>Submit</button>
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.field.$invalid || invalidFieldType() || !validExpression || !inequalityIsComplete() || emptyExpression()'>Submit</button>
     <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
     <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
