@@ -219,8 +219,8 @@
     </form>
 </div>
 
-<div class="modal-footer">
-    <button class='btn btn-danger' type='button' ng-click='delete(lg, { "field": field.name })' style='float: left;'>DELETE</button>
+<div class="modal-footer" popover="Please change the identifier if you want to delete this field." popover-enable='true' popover-trigger='mouseenter' popover-placement='bottom-left'>
+    <button class='btn btn-danger' type='button' ng-click='delete()' style='float: left;' ng-disabled='field.identifier'>DELETE</button>
   <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.$invalid || !validExpression.value || invalidFieldType() || !inequalityIsComplete() || emptyExpression() || fieldNameAlreadyExists()'>Submit</button>
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>

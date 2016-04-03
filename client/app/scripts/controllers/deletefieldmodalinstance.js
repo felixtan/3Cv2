@@ -8,49 +8,79 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalInstanceCtrl', function (getProspects, getDrivers, getCars, thing, dataService, $scope, $modalInstance, $state) {
-    $scope.input = null;
-    $scope.type = Object.keys(thing)[0];
-    $scope.value = thing[$scope.type];
+  .controller('DeleteFieldModalInstanceCtrl', function ($q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
+    
+    var ctrl = this;
+    $scope.confirmation = { value: "" };
     $scope.objects = [];
-    $scope.objectType = '';
-    $scope.update = function(object) { return; };
+    $scope.objectType = objectType;
+    $scope.update = null;
+    $scope.thing = thing;
 
     // determine the state or ui calling this modal
-    if($state.includes('driverProfile') || $state.includes('dashboard.drivers')) {
-        console.log('called from drivers ui');
+    if($scope.objectType === 'driver') {
+        // console.log('called from drivers ui');
         $scope.objectType = 'driver';
-        $scope.objects = getDrivers.data;
+        $scope.objects = getDrivers;
         $scope.update = dataService.updateDriver;
-    } else if($state.includes('carProfile') || $state.includes('dashboard.cars')) {
-        console.log('called from cars ui');
+    } else if($scope.objectType === 'car') {
+        // console.log('called from cars ui');
         $scope.objectType = 'car';
-        $scope.objects = getCars.data;
+        $scope.objects = getCars;
         $scope.update = dataService.updateCar;
-    } else if($state.includes('prospectProfile') || $state.includes('dashboard.prospects')) {
-        console.log('called from prospects ui');
+    } else if($scope.objectType === 'prospect') {
+        // console.log('called from prospects ui');
         $scope.objectType = 'prospect';
-        $scope.objects = getProspects.data;
+        $scope.objects = getProspects;
         $scope.update = dataService.updateProspect;
+    } else if($scope.objectType === 'asset') {
+        $scope.objectType = 'asset';
+        $scope.objects = getAssets;
+        $scope.update = dataService.updateDriver;
     } else {
-        console.log('delete field modal calle from invalid state', $state.current);
+        throw Error("Undefined object type");
     }
+
+    ctrl.deleteExpressionsUsingField = function (object) {
+        var deferred = $q.defer();
+       
+        _.each(object, function(data, field, list) {
+            if(data.type === 'function') {
+                _.each(data.expressionItems, function(item) {
+                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                });
+            } else if(data.type === 'inequality') {
+                _.each(data.leftExpressionItems, function(item) {
+                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                });
+
+                _.each(data.rightExpressionItems, function(item) {
+                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                });
+            }
+        });
+
+        deferred.resolve(object);
+        deferred.reject(new Error("Error deleting functions and inequalities using " + $scope.thing.fieldName));
+        return deferred.promise;
+    };
 
     $scope.submit = function () {  
         // assumes car, driver, etc. have the same schema structure
-        if($scope.input === 'DELETE') {
-            switch($scope.type) {
-                case 'field': 
-                    if($scope.objects.length > 0) {
+        if($scope.confirmation.value === 'DELETE') {
+            if($scope.objects !== undefined && $scope.objects !== null) {
+                switch($scope.thing.type) {
+                    case 'field': 
                         $scope.objects.forEach(function(obj) {
-                            delete obj.data[$scope.value];
-                            $scope.update(obj);
-                            // TODO: What to do with logs containing this field?
+                            delete obj.data[$scope.thing.fieldName];
+                            ctrl.deleteExpressionsUsingField(obj).then(function(objToUpdate) {
+                                $scope.update(obj);
+                                // TODO: What to do with logs containing this field?
+                                // TODO: Wht happens to fields used in expressions? -> delete them too
+                            });
                         });
-                    }
-                    break;
-                case 'log':
-                    if($scope.objects.length > 0) {
+                        break;
+                    case 'log':
                         $scope.objects.forEach(function(obj) {
                             obj.logs.forEach(function(log) {
                                 if(log.weekOf === $scope.value) {
@@ -59,19 +89,19 @@ angular.module('clientApp')
                                 }
                             });
                         });
-                    }
-                    break;
-                default:
-                    console.error('Invalid delete');
+                        break;
+                    default:
+                        console.error('Invalid delete');
+                }
             }
-
-            $scope.ok();
         }
-    }
+
+        $scope.ok();
+    };
 
     $scope.ok = function() {
         $state.forceReload();
-        $modalInstance.close(thing[$scope.type]);
+        $modalInstance.close();
     };
 
     $scope.close = function () {

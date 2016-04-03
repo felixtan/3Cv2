@@ -1,136 +1,18 @@
 "use strict";
 
-function getCarProfileLinks () {
-      return element.all(by.tagName("a")).filter(function(el, i) {
-            return el.getAttribute("ui-sref").then(function(value) {
-                  return value === "carProfile.data({ id: car.id })";
-            });
-      });
-}
+let helpers = require("../../helpers/e2e/helpers.js"),
+    elems = require("../../helpers/e2e/editField.js");
 
-function randomCarIndex () {
-    let cars = element.all(by.repeater("car in simpleCars"));
-    return cars.count().then(function(numberOfCars) {
-            return Math.floor(Math.random() * numberOfCars);
-    });
-}
-
-function getRandomCarProfileLink () {
-    return getCarProfileLinks().get(randomCarIndex());
-}
-
-function getFieldTypeRadios () {
-    return element.all(by.tagName("input")).filter(function(el, i) {
-        return el.getAttribute("ng-change").then(function(value) {
-            return value === "setDataType(field.type)";
-        });
-    });
-}
-
-function getEditBtnByField (fieldName) {
-    return element.all(by.buttonText("Edit")).filter(function(el, i) {
-        return el.getAttribute("data-field").then(function(value) {
-            return value === fieldName;
-        });
-    });
-}
-
-function randomFieldEdit () {
-    let editBtns = element.all(by.buttonText("Edit"));
-    return editBtns.count().then(function(numberOfFields) {
-        return Math.floor(Math.random() * numberOfFields);
-    });
-}
-
-function getFieldColText (fieldName) {
-    return element.all(by.className("field-name")).filter(function(el, i) {
-        return el.getAttribute("data-field").then(function(value) {
-            return value === fieldName;
-        });
-    }).first().getText();
-}
-
-function getValueColText (fieldName) {
-    return element.all(by.className("field-value")).filter(function(el, i) {
-        return el.getAttribute("data-field").then(function(value) {
-            return value === fieldName;
-        });
-    }).first().getText();
-}
-
-function getLogColValue (fieldName) {
-    return element.all(by.className("log-check")).filter(function(el, i) {
-        return el.getAttribute("data-field").then(function(value) {
-            return value === fieldName;
-        });
-    }).first().isPresent();
-}
-
-function getIdColValue (fieldName) {
-    return element.all(by.className("identifier-check")).filter(function(el, i) {
-        return el.getAttribute("data-field").then(function(value) {
-            return value === fieldName;
-        });
-    }).first().isPresent();
-}
-
-describe("Data", function () {
-    let addField = element(by.buttonText('+ Field')),
-        assignDriver = element(by.buttonText("+ Driver")),
-        submit = element(by.buttonText("Submit")),
-        EC = protractor.ExpectedConditions,
-        tabs = element.all(by.tagName("a")).filter(function(el, i) { 
-            return el.getAttribute("ng-click").then(function(value) {
-                return value === "select()";
-            });
-        }),
-
-        //
-        // car data
-        //////////////////////////////////////////////////////////////
-        header = element(by.id("identifier")),
-        fieldRows = element.all(by.repeater("(field, data) in car.data")),
-
-        //
-        // edit field modal
-        //////////////////////////////////////////////////////////////
-        errorMsg = element(by.id("number-field-error-msg")),
-        existingFieldMsg = element(by.id("field-name-exists-msg")),
-        name = element(by.model("field.name")),
-        value = element(by.model("field.value")),
-        log = element(by.model('field.log')),
-        identifier = element(by.model("field.identifier")),
-
-        constant = element(by.model("expressionConstantInput.value")),
-        addConst = element(by.id("add-const")),
-        sign = element(by.model("field.inequalitySignId")),
-
-        // inequality sign dropdown
-        inequalitySignOpts = element.all(by.className("inequality-sign-opt")),
-        gt = inequalitySignOpts.get(0),
-        ge = inequalitySignOpts.get(1),
-        lt = inequalitySignOpts.get(2),
-        le = inequalitySignOpts.get(3),
-
-        undo = element(by.buttonText("Undo")),
-        deleteField = element(by.buttonText("DELETE")),
-        // submit = element(by.buttonText("Submit")),
-        reset = element(by.buttonText("Reset")),
-        close = element(by.buttonText("Close")),
-
-        plus = element(by.id("add-operator")),
-
-        // only boolean has valueSwitch
-        switches = element.all(by.className("bootstrap-switch"));
+describe("Car Data", function () {
 
     beforeEach(function() {
         browser.get('http://localhost:3000/#/dashboard/cars');
     });
 
     it("should link to profile from list/dashboard", function() {
-        getRandomCarProfileLink().click().then(function() {
-            browser.wait(EC.elementToBeClickable(addField), 3000);
-            browser.wait(EC.elementToBeClickable(assignDriver), 3000);
+        helpers.getRandomCarProfileLink().click().then(function() {
+            browser.wait(elems.EC.elementToBeClickable(elems.addField), 3000);
+            browser.wait(elems.EC.elementToBeClickable(elems.assignDriver), 3000);
         });
     });
 
@@ -144,32 +26,32 @@ describe("Data", function () {
             5. + Driver button
             6. driver assignment table
         */
-        getRandomCarProfileLink().click().then(function() {
-            expect(header.isDisplayed()).toBe(true);
-            expect(tabs.count()).toBe(2);
-            expect(addField.isDisplayed()).toBe(true);
-            expect(fieldRows.count()).toBe(7);
-            expect(assignDriver.isDisplayed()).toBe(true);
+        helpers.getRandomCarProfileLink().click().then(function() {
+            expect(elems.header.isDisplayed()).toBe(true);
+            expect(elems.tabs.count()).toBe(2);
+            expect(elems.addField.isDisplayed()).toBe(true);
+            expect(elems.fieldRows.count()).toBe(7);
+            expect(elems.assignDriver.isDisplayed()).toBe(true);
         });
     });
 
     it("should open the add field modal", function() {
-        getRandomCarProfileLink().click().then(function() {
-            addField.click().then(function() {
-                expect(getFieldTypeRadios().count()).toBe(5);
-                expect(element(by.name("field")).isDisplayed()).toBe(true);
-                expect(submit.isDisplayed()).toBe(true);
-                expect(submit.isEnabled()).toBe(false);
+        helpers.getRandomCarProfileLink().click().then(function() {
+            elems.addField.click().then(function() {
+                expect(helpers.getFieldTypeRadios().count()).toBe(5);
+                expect(elems.name.isDisplayed()).toBe(true);
+                expect(elems.submit.isDisplayed()).toBe(true);
+                expect(elems.submit.isEnabled()).toBe(false);
             });
         });
     });
 
     it("should not allow repeated field names", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("mileage").click().then(function() {
-                name.clear().sendKeys("description").then(function() {
-                    expect(existingFieldMsg.isDisplayed()).toBe(true);
-                    expect(submit.isEnabled()).toBe(false);
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("mileage").click().then(function() {
+                elems.name.clear().sendKeys("description").then(function() {
+                    expect(elems.existingFieldMsg.isDisplayed()).toBe(true);
+                    expect(elems.submit.isEnabled()).toBe(false);
                 });
             });
         });
@@ -177,17 +59,17 @@ describe("Data", function () {
 
     // success of this tests requires db restart
     it("should edit a boolean field", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("ready").click().then(function() {
-                name.clear().sendKeys("foo").then(function() {
-                    switches.get(0).click().then(function() {
-                        switches.get(2).click().then(function() {
-                            submit.click().then(function() {
-                                expect(getFieldColText("foo")).toBe("foo");
-                                expect(getValueColText("foo")).toEqual("false");
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("ready").click().then(function() {
+                elems.name.clear().sendKeys("foo").then(function() {
+                    elems.switches.get(0).click().then(function() {
+                        elems.switches.get(2).click().then(function() {
+                            elems.submit.click().then(function() {
+                                expect(helpers.getFieldColText("foo")).toBe("foo");
+                                expect(helpers.getValueColText("foo")).toEqual("false");
                                 // expect(getLogColValue("foo")).toEqual(true);      // wasn't changed
-                                expect(getIdColValue('foo')).toEqual(true);
-                                expect(header.getText()).toBe("false");
+                                expect(helpers.getIdColValue('foo')).toEqual(true);
+                                expect(elems.header.getText()).toBe("false");
                             });
                         });
                     });
@@ -197,20 +79,20 @@ describe("Data", function () {
     });
 
     it("should edit a number field", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("mileage").click().then(function() {
-                name.clear().sendKeys("bar").then(function() {
-                    value.clear().sendKeys("bar").then(function() {
-                        expect(submit.isEnabled()).toBe(false);
-                        expect(errorMsg.isDisplayed()).toBe(true);
-                        value.clear().sendKeys("3003135").then(function() {
-                            switches.get(1).click().then(function() {
-                                submit.click().then(function() {
-                                    expect(getFieldColText("bar")).toBe("bar");
-                                    expect(getValueColText("bar")).toEqual("3003135");
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("mileage").click().then(function() {
+                elems.name.clear().sendKeys("bar").then(function() {
+                    elems.value.clear().sendKeys("bar").then(function() {
+                        expect(elems.submit.isEnabled()).toBe(false);
+                        expect(elems.errorMsg.isDisplayed()).toBe(true);
+                        elems.value.clear().sendKeys("300000").then(function() {
+                            elems.switches.get(1).click().then(function() {
+                                elems.submit.click().then(function() {
+                                    expect(helpers.getFieldColText("bar")).toBe("bar");
+                                    expect(helpers.getValueColText("bar")).toEqual("300000");
                                     // expect(getLogColValue("foo")).toEqual(true);      // wasn't changed
-                                    expect(getIdColValue("bar")).toEqual(true);
-                                    expect(header.getText()).toBe("3003135");
+                                    expect(helpers.getIdColValue("bar")).toEqual(true);
+                                    expect(elems.header.getText()).toBe("300000");
                                 });
                             });
                         });
@@ -221,17 +103,17 @@ describe("Data", function () {
     });
 
     it("should edit a text field", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("description").click().then(function() {
-                name.clear().sendKeys("baz").then(function() {
-                    value.clear().sendKeys("baz").then(function() {
-                        switches.get(1).click().then(function() {
-                            submit.click().then(function() {
-                                expect(getFieldColText("baz")).toBe("baz");
-                                expect(getValueColText("baz")).toEqual("baz");
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("description").click().then(function() {
+                elems.name.clear().sendKeys("baz").then(function() {
+                    elems.value.clear().sendKeys("baz").then(function() {
+                        elems.switches.get(1).click().then(function() {
+                            elems.submit.click().then(function() {
+                                expect(helpers.getFieldColText("baz")).toBe("baz");
+                                expect(helpers.getValueColText("baz")).toEqual("baz");
                                 // expect(getLogColValue("foo")).toEqual(true);      // wasn't changed
-                                expect(getIdColValue("baz")).toEqual(true);
-                                expect(header.getText()).toBe("baz");
+                                expect(helpers.getIdColValue("baz")).toEqual(true);
+                                expect(elems.header.getText()).toBe("baz");
                             });
                         });
                     });
@@ -241,21 +123,21 @@ describe("Data", function () {
     });
 
     it("should edit an inequality field", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("ineq").click().then(function() {
-                name.clear().sendKeys("test_inequality").then(function() {
-                    switches.get(1).click().then(function() {       // identifier switch
-                        switches.get(2).click().then(function() {   // inequality switch
-                            undo.click().then(function() {
-                                constant.sendKeys("25000").then(function() {
-                                    addConst.click().then(function() {
-                                        sign.click().then(function() {
-                                            lt.click().then(function() {
-                                                submit.click().then(function() {
-                                                    expect(getFieldColText("test_inequality")).toBe("test_inequality");
-                                                    // expect(getValueColText("test_inequality")).toEqual("false");
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("ineq").click().then(function() {
+                elems.name.clear().sendKeys("test_inequality").then(function() {
+                    elems.switches.get(1).click().then(function() {       // identifier switch
+                        elems.switches.get(2).click().then(function() {   // inequality switch
+                            elems.undo.click().then(function() {
+                                elems.constant.sendKeys("25000").then(function() {
+                                    elems.addConst.click().then(function() {
+                                        elems.sign.click().then(function() {
+                                            elems.lt.click().then(function() {
+                                                elems.submit.click().then(function() {
+                                                    expect(helpers.getFieldColText("test_inequality")).toBe("test_inequality");
+                                                    // expect(helpers.getValueColText("test_inequality")).toEqual("false");
                                                     // expect(getLogColValue("test_inequality")).toEqual(true);      // wasn't changed
-                                                    expect(getIdColValue("test_inequality")).toEqual(true);
+                                                    expect(helpers.getIdColValue("test_inequality")).toEqual(true);
                                                     // expect(header.getText()).toBe("false");
                                                 });
                                             });
@@ -271,22 +153,36 @@ describe("Data", function () {
     });
 
     it("should edit an function field", function() {
-        getRandomCarProfileLink().click().then(function() {
-            getEditBtnByField("fn").click().then(function() {
-                name.clear().sendKeys("func").then(function() {
-                    switches.get(1).click().then(function() {       // identifier switch
-                        plus.click().then(function() {
-                            constant.sendKeys("25000").then(function() {
-                                addConst.click().then(function() {
-                                    submit.click().then(function() {
-                                        expect(getFieldColText("func")).toBe("func");
-                                        // expect(getValueColText("func")).toEqual("1527067.5");
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("fn").click().then(function() {
+                elems.name.clear().sendKeys("func").then(function() {
+                    elems.switches.get(1).click().then(function() {       // identifier switch
+                        elems.plus.click().then(function() {
+                            elems.constant.sendKeys("25000").then(function() {
+                                elems.addConst.click().then(function() {
+                                    elems.submit.click().then(function() {
+                                        expect(helpers.getFieldColText("func")).toBe("func");
+                                        // expect(helpers.getValueColText("func")).toEqual("1527067.5");
                                         // expect(getLogColValue("test_inequality")).toEqual(true);      // wasn't changed
-                                        expect(getIdColValue("func")).toEqual(true);
+                                        expect(helpers.getIdColValue("func")).toEqual(true);
                                         // expect(header.getText()).toBe("1527067.5");
                                     });
                                 });
                             });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    it("should delete a field", function() {
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("baz").click().then(function() {
+                elems.delBtn.click().then(function() {
+                    elems.delInput.sendKeys("DELETE").then(function() {
+                        elems.delBtnFinal.click().then(function() {
+                            expect(elems.fieldRows.count()).toBe(6);
                         });
                     });
                 });

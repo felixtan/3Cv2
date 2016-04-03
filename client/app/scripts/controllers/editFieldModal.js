@@ -658,34 +658,39 @@ angular.module('clientApp')
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.delete = function (size, thing) {
+    $scope.delete = function () {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/deletefieldmodal.html',
             controller: 'DeleteFieldModalInstanceCtrl',
-            size: size,
+            size: 'md',
             resolve: {
                 thing: function() {
-                    return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                    return {
+                      fieldName: $scope.field.name,
+                      type: 'field',
+                    }   
+                    // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                 },
-                getCars: function(dataService) {
+                getCars: function() {
                     return (($scope.objectType === 'car') ? $scope.objects : {});
                 },
-                getDrivers: function(dataService) {
+                getDrivers: function() {
                     return (($scope.objectType === 'driver') ? $scope.objects : {});
                 },
-                getProspects: function(dataService) {
+                getProspects: function() {
                     return (($scope.objectType === 'prospect') ? $scope.objects : {});
                 },
-                getAssets: function(dataService) {
+                getAssets: function() {
                     return (($scope.objectType === 'prospect') ? $scope.objects : {});  
+                },
+                objectType: function() {
+                  return $scope.objectType;
                 }
             }
         });
 
-        modalInstance.result.then(function (input) {
-            $scope.input = input;
-            console.log('passed back from DeleteFieldModalInstanceCtrl:', input);
+        modalInstance.result.then(function () {
             $scope.ok();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
