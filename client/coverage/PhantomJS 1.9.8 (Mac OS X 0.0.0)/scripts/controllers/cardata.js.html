@@ -942,11 +942,11 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >        return expression;</span>
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    $scope.editExpression = <span class="fstat-no" title="function not covered" >function(object, field) {</span></span>
+<span class="cstat-no" title="statement not covered" >    $scope.editField = <span class="fstat-no" title="function not covered" >function(object, field) {</span></span>
 <span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
             animation: true,
-            templateUrl: 'views/editExpressionModal.html',
-            controller: 'EditExpressionModalCtrl',
+            templateUrl: 'views/editFieldModal.html',
+            controller: 'EditFieldModalCtrl',
             size: 'md',
             resolve: {
                 field: <span class="fstat-no" title="function not covered" >function() {</span>
@@ -974,7 +974,7 @@ angular.module('clientApp')
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (input) {</span></span>
-<span class="cstat-no" title="statement not covered" >            console.log('passed back from EditExpressionModalCtrl:', input);</span>
+<span class="cstat-no" title="statement not covered" >            console.log('passed back from EditFieldModalCtrl:', input);</span>
         }, <span class="fstat-no" title="function not covered" >function () {</span>
 <span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
         });

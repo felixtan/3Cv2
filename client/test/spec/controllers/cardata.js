@@ -673,8 +673,8 @@ describe('CarDataCtrl', function () {
     });
 
     it("should open a modal for editing expression UI", function() {
-      expect(scope.editExpression).toBeDefined();
-      scope.editExpression();
+      expect(scope.editField).toBeDefined();
+      scope.editField();
       expect(modal.open).toHaveBeenCalled();
     });
   });

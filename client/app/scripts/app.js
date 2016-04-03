@@ -90,7 +90,7 @@ angular
     .state('dashboard.drivers', {
         url: '/drivers',
         templateUrl: '/views/driverList.html',
-        controller: 'DriversUICtrl',
+        controller: 'DriversListCtrl',
         controllerAs: 'driversui',
         resolve: {
             getDrivers: function(dataService) {

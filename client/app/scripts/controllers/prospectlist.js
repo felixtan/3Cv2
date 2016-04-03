@@ -16,6 +16,42 @@ angular.module('clientApp')
     for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;    // populate order select
     $scope.prospects = getProspects.data;
 
+    $scope.addObject = function(objectType) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'views/addobjectmodal.html',
+            controller: 'AddObjectModalInstanceCtrl',
+            size: 'md',
+            resolve: {
+                objectType: function() {
+                    return objectType;
+                },
+                getCars: function(dataService) {
+                    return (objectType === 'car') ? dataService.getCars() : {};
+                },
+                getDrivers: function(dataService) {
+                    return (objectType === 'driver') ? dataService.getDrivers() : {};
+                },
+                getProspects: function(dataService) {
+                    return (objectType === 'prospect') ? dataService.getProspects() : {};  
+                },
+                getAssets: function(dataService) {
+                    return (objectType === 'asset') ? dataService.getAssets() : {};
+                },
+                assetType: function() {
+                    return null;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (formData) {
+            $state.forceReload();
+        }, function() {
+            $state.forceReload();
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
     $scope.thereAreProspects = function() {
         return (typeof $scope.prospects[0] !== 'undefined');
     };

@@ -26,9 +26,13 @@ module.exports = function (grunt) {
   };
 
   // Stuff I installed
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-protractor-runner');
+  grunt.loadNpmTasks('grunt-protractor-webdriver');
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -496,9 +500,41 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
-  });
+    },
 
+    protractor: {
+      options: {
+        // configFile: "node_modules/protractor/example/conf.js",
+        configFile: "test/protractor-conf.js",
+        keepAlive: true,
+        noColor: false,
+        args: {},
+      },
+      e2e: {
+        options: {
+          configFile: "test/protractor-conf.js",
+          keepAlive: true,
+          ngColor: false,
+          args: {},
+        },
+      },
+    },
+
+    protractor_webdriver: {
+      e2eUpdate: {
+        options: {
+          path: './node_modules/.bin/',
+          command: 'webdriver-manager update --standalone',
+        },
+      },
+      e2eStart: {
+        options: {
+          path: './node_modules/.bin/',
+          command: 'webdriver-manager start',
+        },
+      },
+    },
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -555,4 +591,13 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('e2e', [
+    'connect:test', 
+    'protractor:e2e', 
+    'watch:protractor',
+    'protractor_webdriver:e2eStart',
+  ]);
+
+  // grunt.registerTask('')
 };

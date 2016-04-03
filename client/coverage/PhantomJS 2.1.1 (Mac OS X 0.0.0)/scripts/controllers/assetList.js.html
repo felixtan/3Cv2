@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">2.63% </span>
+        <span class="strong">2% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/38</span>
+        <span class='fraction'>1/50</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>0/14</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>0/20</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">2.78% </span>
+        <span class="strong">2.08% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/36</span>
+        <span class='fraction'>1/48</span>
       </div>
     </div>
   </div>
@@ -126,7 +126,43 @@
 81
 82
 83
-84</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -203,6 +239,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -291,6 +363,42 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >            console.log('AssetTypeModal dismissed at: ' + new Date());</span>
         });
     };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.addObject = <span class="fstat-no" title="function not covered" >function(objectType) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
+            animation: true,
+            templateUrl: 'views/addobjectmodal.html',
+            controller: 'AddObjectModalInstanceCtrl',
+            size: 'md',
+            resolve: {
+                objectType: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return objectType;</span>
+                },
+                getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'car') ? dataService.getCars() : {};</span>
+                },
+                getDrivers: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'driver') ? dataService.getDrivers() : {};</span>
+                },
+                getProspects: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'prospect') ? dataService.getProspects() : {};  </span>
+                },
+                getAssets: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'asset') ? dataService.getAssets() : {};</span>
+                },
+                assetType: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return null;</span>
+                }
+            }
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (formData) {</span></span>
+<span class="cstat-no" title="statement not covered" >            $state.forceReload();</span>
+        }, <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
+        });
+    };
   });
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -298,7 +406,7 @@ angular.module('clientApp')
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Mar 24 2016 00:08:12 GMT-0400 (EDT)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 27 2016 20:33:42 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

@@ -9,23 +9,23 @@
  */
 angular.module('clientApp')
   .controller('AddFieldModalInstanceCtrl', function ($window, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
-    
+
     var _ = $window._;
     var ctrl = this;
     $scope.formData = {};
     $scope.objects = [];
     $scope.update = null;
     $scope.fields = [];
-    $scope.functionFieldSelect = { value: null };
-    $scope.functionConstantInput = { value: null };
+    $scope.expressionFieldSelect = { value: null };
+    $scope.expressionConstantInput = { value: null };
     $scope.objectType = objectType;
-    $scope.assetType = null;
+    $scope.assetType = assetType;
 
     // Inequalities
-    $scope.rightSide = false;
+    $scope.rightSide = { value: false };
 
     ctrl.testExpressionItems = [];
-    $scope.validExpression = true;      // this will depend on results from mexp
+    $scope.validExpression = { value: true };      // this will depend on results from mexp
     ctrl.testExpression = "";       // passed into mexp for validation, fields will be replaced with 1
     $scope.expressionErrorMessage = null;
     ctrl.rightTestExpressionItems = [];
@@ -38,6 +38,7 @@ angular.module('clientApp')
         // console.log(objectData);
         var keys = Object.keys(objectData);
         $scope.validFieldsForExpressions = _.filter(keys, function(key) {
+            // console.log(objectData[key].dataType);
             return ((objectData[key].dataType === 'number'));
         });
     };
@@ -136,7 +137,7 @@ angular.module('clientApp')
         _testExpressionItems_ = ctrl.testExpressionItems;
         // console.log(_testExpressionItems_);
       } else {
-        if($scope.rightSide) {
+        if($scope.rightSide.value) {
           $scope.field.rightExpressionItems.push({ type: typeOfItem, value: item });
           _testExpressionItems_ = ctrl.rightTestExpressionItems;
         } else {
@@ -152,8 +153,8 @@ angular.module('clientApp')
       // console.log(testExpressionItems);
       
       // resetting
-      $scope.functionFieldSelect.value = null;
-      $scope.functionConstantInput.value = null;
+      $scope.expressionFieldSelect.value = null;
+      $scope.expressionConstantInput.value = null;
     };
 
     // see if can work with only _testExpressionItems_
@@ -170,7 +171,7 @@ angular.module('clientApp')
               // call second stage
                 // console.log(result1.valid);
                 // console.log('testExpression:', ctrl.testExpression);
-                $scope.validExpression = true;  
+                $scope.validExpression.value = true;  
                 ctrl.validateExpression();
             } else {  
               // don't call second stage
@@ -182,7 +183,7 @@ angular.module('clientApp')
 
     ctrl.firstStageValidation = function(_testExpressionItems_, typeOfItem, item) {
       var deferred = $q.defer();
-      $scope.validExpression = true;
+      $scope.validExpression.value = true;
 
       if(_testExpressionItems_.length) {
         // validate before pushing
@@ -190,7 +191,7 @@ angular.module('clientApp')
           if(_testExpressionItems_[_testExpressionItems_.length-1].type !== 'operator') {
             // should fix 2mileage problem; not the first item and last item isnt an operator -> invalid
             _testExpressionItems_.push({ type: typeOfItem, value: item });    // this should render the expression invalid according to first stage validation
-            $scope.validExpression = false;
+            $scope.validExpression.value = false;
             $scope.expressionErrorMessage = "Missing operator before " + typeOfItem + " " + item;
           } else {
             // not the first item and last item is an operator -> ok
@@ -213,7 +214,7 @@ angular.module('clientApp')
         }
       }
 
-      deferred.resolve({ _testExpressionItems_: _testExpressionItems_, valid: $scope.validExpression });
+      deferred.resolve({ _testExpressionItems_: _testExpressionItems_, valid: $scope.validExpression.value });
       deferred.reject(new Error('Error in first stage validation of expression'));
       return deferred.promise;
     };
@@ -225,7 +226,7 @@ angular.module('clientApp')
         $scope.$eval(ctrl.testExpression);
       } catch(e){
         // console.error(e);
-        $scope.validExpression = false;
+        $scope.validExpression.value = false;
         $scope.expressionErrorMessage = e.message;
       }
     };
@@ -251,7 +252,7 @@ angular.module('clientApp')
           $scope.field.expression = $scope.field.expression + item.value;
         }));
       } else {
-        if($scope.rightSide) {
+        if($scope.rightSide.value) {
           $scope.field.rightExpression = "";
           deferred.resolve(_.each($scope.field.rightExpressionItems, function(item) {
             $scope.field.rightExpression += item.value;
@@ -276,7 +277,7 @@ angular.module('clientApp')
         _testExpressionItems_ = ctrl.testExpressionItems;
         item = $scope.field.expressionItems.pop();
       } else {
-        if($scope.rightSide) {
+        if($scope.rightSide.value) {
           _testExpressionItems_ = ctrl.rightTestExpressionItems;
           item = $scope.field.rightExpressionItems.pop();
         } else {
@@ -295,7 +296,7 @@ angular.module('clientApp')
             if(validExpression) {
               // call second stage
                 // console.log('testExpression:', ctrl.testExpression);
-                $scope.validExpression = true;  
+                $scope.validExpression.value = true;  
                 ctrl.validateExpression();
             } else {  
               // don't call second stage
@@ -313,26 +314,26 @@ angular.module('clientApp')
       if($scope.field.type === 'function') {
           _testExpressionItems_ = ctrl.testExpressionItems;        
       } else {
-        if($scope.rightSide) {
+        if($scope.rightSide.value) {
           _testExpressionItems_ = ctrl.rightTestExpressionItems;
         } else {
           _testExpressionItems_ = ctrl.leftTestExpressionItems;
         }
       }
        
-      $scope.validExpression = true;
+      $scope.validExpression.value = true;
       if(_testExpressionItems_.length > 1) {
         lastItem = _testExpressionItems_[_testExpressionItems_.length-1]; 
         if(lastItem.type === 'field' || lastItem.type === 'constant') {
           var previousItem = _testExpressionItems_[_testExpressionItems_.length-2];
           if(previousItem.type !== 'operator') {
-            $scope.validExpression = false;
+            $scope.validExpression.value = false;
             $scope.expressionErrorMessage = "Missing operator before " + previousItem.type + " " + previousItem.value;
           }
         }  
       }
 
-      deferred.resolve($scope.validExpression);
+      deferred.resolve($scope.validExpression.value);
       deferred.reject(new Error('Error during first stage validation after undo'));
       return deferred.promise;
     };
@@ -348,7 +349,7 @@ angular.module('clientApp')
       $scope.field.rightExpression = "";
       $scope.field.inequalitySign = "";
       $scope.field.inequalitySignId = null;
-      $scope.validExpression = true;
+      $scope.validExpression.value = true;
       $scope.expressionErrorMessage = undefined;
       ctrl.rightTestExpressionItems = [];
       ctrl.leftTestExpressionItems = [];
@@ -356,28 +357,38 @@ angular.module('clientApp')
 
     if(objectType === 'car') {
       // console.log("add field modal called from carProfile");
-      $scope.objects = getCars.data;
       $scope.update = dataService.updateCar;
+      if(typeof getCars !== 'undefined' && getCars.length > 0) $scope.objects = getCars;
     } else if(objectType === 'driver') {
       // console.log("add field modal called from driverProfile");
-      $scope.objects = getDrivers.data;
       $scope.update = dataService.updateDriver;
+      if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) $scope.objects = getDrivers;
     } else if(objectType === 'prospect') {
       // console.log("add field modal called from prospectProfile");
-      $scope.objects = getProspects.data;
       $scope.update = dataService.updateProspect;
+      if(typeof getProspects !== 'undefined' && getProspects.length > 0) $scope.objects = getProspects;
     } else if(objectType === 'asset') {
       // console.log("add field modal called from assetProfile");
-      $scope.assetType = getAssets.type;
-      $scope.objects = _.filter(getAssets.data, function(asset) { return asset.assetType === $scope.assetType; });
       $scope.update = dataService.updateAsset;
+      $scope.assetType = getAssets.type;
+      var assetsOfType = _.filter(getAssets, function(asset) { return asset.assetType === $scope.assetType; });
+      if(assetsOfType !== 'undefined' && assetsOfType.length > 0) $scope.objects = assetsOfType;
     } else {
       $state.go('dashboard.cars');
     }
 
+    //
     // General post-processing regardless of object
-    $scope.fields = $scope.objects[0] ? (Object.keys($scope.objects[0].data)) : [];
-    if($scope.objects[0]) { ctrl.setValidFieldsForExpressions($scope.objects[0].data); }
+    ////////////////////////////////////////////////
+    if($scope.objects.length > 0) {
+      $scope.fields = Object.keys($scope.objects[0].data);
+      ctrl.setValidFieldsForExpressions($scope.objects[0].data); 
+    }
+    ////////////////////////////////////////////
+
+    $scope.fieldNameAlreadyExists = function () {
+      return _.contains($scope.fields, $scope.field.name);
+    };
 
     ctrl.createNewFieldData = function(field) {
       var deferred = $q.defer();
@@ -388,7 +399,8 @@ angular.module('clientApp')
           log: $scope.formData.log || false,
           dataType: field.dataType,
           type: field.type,
-          expressionItems: field.expressionItems
+          expressionItems: field.expressionItems,
+          expression: field.expression,
         });
       } else if(field.type === 'inequality') {
         deferred.resolve({
@@ -398,14 +410,15 @@ angular.module('clientApp')
           type: field.type,
           leftExpressionItems: field.leftExpressionItems,
           rightExpressionItems: field.rightExpressionItems,
-          inequalitySignId: field.inequalitySignId
+          inequalitySignId: field.inequalitySignId,
+          expression: field.leftExpression + " " + field.inequalitySign + " " + field.rightExpression,
         });
       } else {
         deferred.resolve({
           value: null,
           log: $scope.formData.log || false,
           dataType: field.dataType,
-          type: field.type
+          type: field.type,
         });
       }
       
@@ -418,66 +431,23 @@ angular.module('clientApp')
       return object;
     };
 
-    // ctrl.updateObject = function(object) {
-      
-    // };
-
-    // ctrl.updateObjects = function() {
-    //   var deferred = $q.defer();
-    
-    //   if($scope.field.type === 'function') {
-    //     deferred.resolve(_.each($scope.objects, function(object) {
-    //       ctrl.evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
-    //         // console.log(expressionVal);
-    //         ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
-    //           fieldDataObj.value = expressionValue;
-    //           var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-    //           // console.log('object to update:', objectToUpdate);
-    //           $scope.update(objectToUpdate);
-    //         });
-    //       });
-    //     }));
-    //   } else if($scope.field.type === 'inequality') {
-    //     deferred.resolve(_.each($scope.objects, function(object) {
-    //       ctrl.evaluateExpression(object, $scope.field.leftExpressionItems).then(function(leftExpressionValue) {
-    //         ctrl.evaluateExpression(object, $scope.field.rightExpressionItems).then(function(rightExpressionValue) {
-    //           ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
-    //             leftExpressionValue = parseFloat(leftExpressionValue);
-    //             rightExpressionValue = parseFloat(rightExpressionValue);
-    //             var finalDataObj = ctrl.evaluateInequalityValue(fieldDataObj, leftExpressionValue, rightExpressionValue);
-    //             var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, finalDataObj, object);
-    //             $scope.update(objectToUpdate);
-    //           });
-    //         });
-    //       });
-    //     }));
-    //   }
-
-    //   deferred.reject(new Error('Error updating objects'));
-    //   return deferred.promise;
-    // };
-
     ctrl.evaluateInequalityValue = function(leftExpressionValue, rightExpressionValue) {
-      var value = null;
-
       if($scope.field.inequalitySignId === 0) {
-        // console.log(leftExpressionValue + ' > ' + rightExpressionValue);
-        value = (leftExpressionValue > rightExpressionValue) ? true : false;
+        console.log(leftExpressionValue + ' > ' + rightExpressionValue);
+        return leftExpressionValue > rightExpressionValue;
       } else if ($scope.field.inequalitySignId === 1) {
         // console.log(leftExpressionValue + ' >= ' + rightExpressionValue);
-        value = (leftExpressionValue >= rightExpressionValue) ? true : false;
+        return leftExpressionValue >= rightExpressionValue;
       } else if ($scope.field.inequalitySignId === 2) {
         // console.log(leftExpressionValue + ' < ' + rightExpressionValue);
-        value = (leftExpressionValue < rightExpressionValue) ? true : false;
+        return leftExpressionValue < rightExpressionValue;
       } else if ($scope.field.inequalitySignId === 3) {
         // console.log(leftExpressionValue + ' <= ' + rightExpressionValue);
-        value = (leftExpressionValue <= rightExpressionValue) ? true : false;
+        return leftExpressionValue <= rightExpressionValue;
       } else {
-        value = undefined;
-        throw "Error: Invalid inequality sign id";
+        return undefined;
+        // throw "Error: Invalid inequality sign id";
       }
-
-      return value;
     };
 
     $scope.inequalityIsComplete = function() {
@@ -515,34 +485,38 @@ angular.module('clientApp')
       // });
 
       ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
-        if($scope.field.type === 'function') {
-          _.each($scope.objects, function(object) {
-            ctrl.evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
-              // console.log(expressionValue);
-                fieldDataObj.value = expressionValue;
-                var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-                // console.log('object to update:', objectToUpdate);
-                $scope.update(objectToUpdate);
-            });
-          });
-        } else if($scope.field.type === 'inequality') {
-          _.each($scope.objects, function(object) {
-            ctrl.evaluateExpression(object, $scope.field.leftExpressionItems).then(function(leftExpressionValue) {
-              ctrl.evaluateExpression(object, $scope.field.rightExpressionItems).then(function(rightExpressionValue) {
-                leftExpressionValue = parseFloat(leftExpressionValue);
-                rightExpressionValue = parseFloat(rightExpressionValue);
-                fieldDataObj.value = ctrl.evaluateInequalityValue(leftExpressionValue, rightExpressionValue);
-                var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-                $scope.update(objectToUpdate);
+        if($scope.objects.length > 0) {
+          if($scope.field.type === 'function') {
+            _.each($scope.objects, function(object) {
+              ctrl.evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
+                // console.log(expressionValue);
+                  fieldDataObj.value = expressionValue;
+                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+                  // console.log('object to update:', objectToUpdate);
+                  $scope.update(objectToUpdate);
               });
             });
-          });
-        } else {
-          _.each($scope.objects, function(object) {
-            var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-            $scope.update(objectToUpdate);
-          });
+          } else if($scope.field.type === 'inequality') {
+            _.each($scope.objects, function(object) {
+              ctrl.evaluateExpression(object, $scope.field.leftExpressionItems).then(function(leftExpressionValue) {
+                ctrl.evaluateExpression(object, $scope.field.rightExpressionItems).then(function(rightExpressionValue) {
+                  leftExpressionValue = parseFloat(leftExpressionValue);
+                  rightExpressionValue = parseFloat(rightExpressionValue);
+                  fieldDataObj.value = ctrl.evaluateInequalityValue(leftExpressionValue, rightExpressionValue);
+                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+                  $scope.update(objectToUpdate);
+                });
+              });
+            });
+          } else {
+            _.each($scope.objects, function(object) {
+              var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+              $scope.update(objectToUpdate);
+            });
+          }
         }
+
+        $scope.ok(fieldDataObj, $scope.field.name);
       });
     };
 
@@ -553,9 +527,12 @@ angular.module('clientApp')
       $state.forceReload();
     };
 
-    $scope.ok = function(newFieldObj) {
+    $scope.ok = function(newFieldObject, newFieldName) {
       $state.forceReload();
-      $modalInstance.close(newFieldObj);
+      $modalInstance.close({
+        name: newFieldName,
+        data: newFieldObject,
+      });
     };
 
     $scope.close = function () {

@@ -51,7 +51,7 @@ angular.module('clientApp')
     };
 
     var notName = function(field) {
-      return ((field !== "First Name") && (field !== "Last Name") && (field !== "fullName"));
+      return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name"));
     };
 
     var namesNotNull = function(prospectData) {
@@ -62,11 +62,11 @@ angular.module('clientApp')
     var updateFullName = function(prospectData) {
       var deferred = $q.defer();
 
-      prospectData.fullName = {
+      prospectData['Name'] = {
         value: getFullName(prospectData),
         log: false,
         dataType: 'text',
-        type: 'variable'
+        type: 'text'
       };
 
       deferred.resolve(prospectData);
@@ -79,7 +79,7 @@ angular.module('clientApp')
       if(prospectData.assetType) delete prospectData.assetType;
       updateFullName(prospectData).then(function(prospectDataWithFullName) {
         deferred.resolve({
-          identifier: "fullName",
+          identifier: "Name",
           status: prospectDataWithFullName.status.value,
           data: prospectDataWithFullName,
           organizationId: getOrganizationId()
@@ -109,32 +109,32 @@ angular.module('clientApp')
       var deferred = $q.defer();
       getDefaultStatus().then(function(defaultStatus) {
         deferred.resolve({
-          identifier: "fullName",
+          identifier: "Name",
           status: defaultStatus,
           data: {
             "First Name": {
               value: null,
               log: false,
               dataType: 'text',
-              type: 'variable'
+              type: 'text'
             },
             "Last Name": {
               value: null,
               log: false,
               dataType: 'text',
-              type: 'variable'
+              type: 'text'
             },
-            fullName: {
+            'Name': {
               value: null,
               log: false,
               dataType: 'text',
-              type: 'variable'
+              type: 'text'
             },
             status: {
               value: defaultStatus.value,
               log: false,
               dataType: 'text',
-              type: 'variable'
+              type: 'text'
             }
           },
           organizationId: getOrganizationId()

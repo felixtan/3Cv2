@@ -14,7 +14,9 @@ angular.module('clientApp')
     var self = this;        // for testing;
     $scope.car = getCar.data;
     // console.log($scope.car);
-    $scope.cars = getCars.data;
+    $scope.cars = $scope.objects = getCars.data;
+    $scope.objectType = 'car';
+    $scope.assetType = { value: null };
 
     // TODO: see instead of having two variables, can use one and ng-change
     $scope.currentIdentifier = { name: $scope.car.identifier || null };
@@ -357,31 +359,33 @@ angular.module('clientApp')
     };
 
     // Add field
-    $scope.addField = function(objectType) {
+    $scope.addField = function() {
         var modalInstance = $modal.open({
             animation: true,
             templateUrl: 'views/addfieldmodal.html',
             controller: 'AddFieldModalInstanceCtrl',
-            // controllerAs: 'addField'
             size: 'md',
             resolve: {
                 getCars: function(dataService) {
-                    return (objectType === 'car') ? dataService.getCars() : {};
+                    return ($scope.objectType === 'car') ? $scope.objects : {};
                 },
                 getDrivers: function(dataService) {
-                    return (objectType === 'driver') ? dataService.getDrivers() : {};
+                    return ($scope.objectType === 'driver') ? $scope.objects : {};
                 },
                 getProspects: function(dataService) {
-                    return (objectType === 'prospect') ? dataService.getProspects() : {};  
+                    return ($scope.objectType === 'prospect') ? $scope.objects : {};  
                 },
                 getAssets: function(dataService) {
-                    return (objectType === 'asset') ? dataService.getAssets() : {};
+                    return {
+                        data: ($scope.objectType === 'asset') ? $scope.objects : {},
+                        type: $scope.assetType.value
+                    };
                 },
                 assetType: function() {
-                    return null;
+                    return $scope.objectType === 'asset' ? assetType : null;
                 },
                 objectType: function() {
-                    return objectType;
+                    return $scope.objectType;
                 }
             }
         });
@@ -449,41 +453,46 @@ angular.module('clientApp')
         return expression;
     };
 
-    $scope.editExpression = function(object, field) {
+    $scope.editField = function(object, field) {
+        // console.log(object);
+        // console.log(field);
         var modalInstance = $modal.open({
             animation: true,
-            templateUrl: 'views/editExpressionModal.html',
-            controller: 'EditExpressionModalCtrl',
+            templateUrl: 'views/editFieldModal.html',
+            controller: 'EditFieldModalCtrl',
             size: 'md',
             resolve: {
                 field: function() {
                     return field;
                 },
-                representativeObject: function() {
+                _object: function() {
                     return object;
                 },
                 objectType: function() {
-                    return 'car';
+                    return $scope.objectType;
                 },
-                getCars: function(dataService) {
-                    return dataService.getCars();
+                getCars: function() {
+                    // console.log($scope.objects);
+                    return $scope.objectType === 'car' ? $scope.objects : null;
                 },
                 getProspects: function() {
-                    return;
+                    return $scope.objectType === 'prospect' ? $scope.objects : null;
                 },
                 getDrivers: function() {
-                    return;
+                    return $scope.objectType === 'driver' ? $scope.objects : null;
                 },
                 getAssets: function() {
-                    return;
+                    return $scope.objectType === 'asset' ? $scope.objects : null;
                 }
             }
         });
 
-        modalInstance.result.then(function (input) {
-            console.log('passed back from EditExpressionModalCtrl:', input);
+        modalInstance.result.then(function () {
+            // console.log('passed back from EditFieldModalCtrl:', input);
+            $state.forceReload();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
+            $state.forceReload();
         });
     };
   });

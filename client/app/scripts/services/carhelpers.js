@@ -59,16 +59,16 @@ angular.module('clientApp')
     return deferred.promise;
   };
 
-  var createCar = function(carData, _identifier, assetType) {
+  var createCar = function(carData, identifier, assetType) {
     var deferred = $q.defer();
     if(carData.assetType) delete carData.assetType;
-    getIdentifier().then(function(identifier) {
+    // getIdentifier().then(function(identifier) {
       createLogData().then(function(logData) {
-        console.log(logData);
+        // console.log(logData);
         getLogDates().then(function(logDates) {
-          console.log(logDates);
+          // console.log(logDates);
           createLogs(logDates, logData).then(function(logs) {
-            console.log(logs);
+            // console.log(logs);
 
             deferred.resolve({
               identifier: identifier,
@@ -82,7 +82,7 @@ angular.module('clientApp')
           });
         });
       });
-    });
+    // });
 
     return deferred.promise;
   };
@@ -106,15 +106,21 @@ angular.module('clientApp')
         // console.log('there are cars');
         getCars().then(function(result) {
           var carData = result.data[0].data;
-          // console.log(car);
-          _.each(Object.keys(carData), function(field) {
+          // console.log(carData);
+          _.each(carData, function(data, field) {
             formData[field] = {
-              value: null,
-              log: carData[field].log,
-              dataType: carData[field].dataType || null,
-              type: carData[field].type || null
+              value: (data.type === 'boolean') ? false : null,
+              log: data.log,
+              dataType: data.dataType,
+              type: data.type,
+              expression: (data.type === 'function' || data.type === 'inequality') ? data.expression : undefined,
+              expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
+              leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
+              rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
+              inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
             }
           });
+          // console.log(fromData);
           deferred.resolve({
             formData: formData,
             representativeData: carData 
@@ -122,7 +128,7 @@ angular.module('clientApp')
           deferred.reject(new Error('Error initializing car form data'));
         });
       } else {
-        console.log('there are no cars');
+        // console.log('there are no cars');
         deferred.resolve({
           formData: getDefaultCar().data,
           representativeData: {}

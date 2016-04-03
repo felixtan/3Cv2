@@ -17,6 +17,7 @@ button.operator {
 
 h5.expression {
     text-align: center;
+    /*display: inline;*/
 }
 
 div.undoAndClear {

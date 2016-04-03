@@ -45,7 +45,7 @@ angular.module('clientApp')
     };
 
     var notName = function(field) {
-      return ((field != "First Name") && (field != "Last Name") && (field != "fullName"));
+      return ((field != "First Name") && (field != "Last Name") && (field != "Name"));
     };
 
     var namesNotNull = function(driverData) {
@@ -55,11 +55,11 @@ angular.module('clientApp')
     var updateFullName = function(driverData) {
       var deferred = $q.defer();
 
-      driverData.fullName = {
+      driverData["Name"] = {
         value: getFullName(driverData),
         log: false,
         dataType: 'text',
-        type: 'variable'
+        type: 'text'
       };
 
       deferred.resolve(driverData);
@@ -67,19 +67,20 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var createDriver = function(driverData, identifier, assetType) {
+    var createDriver = function(driverData, identifier) {
       var deferred = $q.defer();
       if(driverData.assetType) delete driverData.assetType;
       updateFullName(driverData).then(function(driverDataWithFullName) {
-        console.log(driverDataWithFullName);
+        // console.log(driverDataWithFullName);
         createLogData().then(function(logData) {
-          console.log(logData);
+          // console.log(logData);
           getLogDates().then(function(logDates) {
-            console.log(logDates);
+            // console.log(logDates);
             createLogs(logDates, logData).then(function(logs) {
-              console.log(logs);
+              // console.log(logs);
+              
               deferred.resolve({
-                identifier: "fullName",
+                identifier: "Name",
                 data: driverDataWithFullName,
                 logs: logs,
                 carsAssigned: [],
@@ -98,25 +99,25 @@ angular.module('clientApp')
 
     var getDefaultDriver = function() {
       return {
-        identifier: "fullName",
+        identifier: "Name",
         data: {
           "First Name": {
             value: null,
             log: false,
             dataType: 'text',
-            type: 'variable'
+            type: 'text'
           },
           "Last Name": {
             value: null,
             log: false,
             dataType: 'text',
-            type: 'variable'
+            type: 'text'
           },
-          fullName: {
+          "Name": {
             value: null,
             log: false,
             dataType: 'text',
-            type: 'variable'
+            type: 'text'
           }
         },
         logs: [],
@@ -145,7 +146,7 @@ angular.module('clientApp')
               }
             });
 
-            // console.log('there are cars, driver data:', formData);
+            console.log('there are cars, driver data:', formData);
             deferred.resolve({
               formData: formData,
               representativeData: driverData
@@ -153,10 +154,10 @@ angular.module('clientApp')
             deferred.reject(new Error('Error initializing driver form data'));
           });
         } else {
-          var defaultDriverData = getDefaultDriver().data;
+          var defaultDriver = getDefaultDriver();
           deferred.resolve({
-            formData: formData,
-            representativeData: {}
+            formData: defaultDriver.data,
+            representativeData: defaultDriver
           });
           // console.log('there are no drivers, default driver data:', defaultDriverData);
           deferred.reject(new Error('Error initializing driver form data'));
@@ -254,7 +255,7 @@ angular.module('clientApp')
       var logData = {};
 
       getFieldsToBeLogged().then(function(fields) {
-        console.log(fields);
+        // console.log(fields);
         _.each(fields, function(field) {
           logData[field] = null;
         });

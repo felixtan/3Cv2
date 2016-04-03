@@ -81,7 +81,7 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
 
     preprocessors: {
-      'app/scripts/**/*.js': ['coverage']
+      'app/scripts/**/*.js': ['coverage', 'jshint']
     },
 
     coverageReporter: {
@@ -93,7 +93,9 @@ module.exports = function(config) {
     plugins: [
       "karma-phantomjs2-launcher",
       "karma-jasmine",
-      'karma-coverage'
+      'karma-coverage',
+      "karma-eslint",
+      'karma-jshint'
     ],
 
     // Continuous Integration mode

@@ -15,7 +15,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       modalInstance;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($httpBackend, $q, $modal, $controller, $rootScope, _dataService_, $state) {
+  beforeEach(inject(function ($httpBackend, $q, $controller, $rootScope, _dataService_, $state) {
     scope = $rootScope.$new();
     dataService = _dataService_;
     state = $state;
@@ -72,17 +72,17 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   it("should extract fields with number data type for use in expressions given object's data", function() {
     
     if(objectType === 'car') {
+      ctrl.setValidFieldsForExpressions(scope.objects[0].data);
       expect(scope.validFieldsForExpressions).toEqual(['mileage', 'testExpression']);  
-      ctrl.setValidFieldsForExpressions(scope.objects[0].data);
     } else if(objectType === 'driver') {
-      expect(scope.validFieldsForExpressions).toEqual(['revenue']); 
-      ctrl.setValidFieldsForExpressions(scope.objects[0].data); 
+      ctrl.setValidFieldsForExpressions(scope.objects[0].data);
+      expect(scope.validFieldsForExpressions).toEqual(['revenue']);  
     } else if(objectType === 'prospect') {
+      ctrl.setValidFieldsForExpressions(scope.objects[0].data);
       expect(scope.validFieldsForExpressions).toEqual(['accidents']);
-      ctrl.setValidFieldsForExpressions(scope.objects[0].data);
     } else if(objectType === 'asset') {
-      expect(scope.validFieldsForExpressions).toEqual(['Balance']);  
       ctrl.setValidFieldsForExpressions(scope.objects[0].data);
+      expect(scope.validFieldsForExpressions).toEqual(['Balance']);  
     }
     
   });
@@ -208,13 +208,13 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       expect(scope.field.expressionItems.length).toBe(1);
       expect(ctrl.testExpressionItems.length).toBe(1);
       expect(ctrl.validate).toHaveBeenCalled();
-      expect(scope.functionFieldSelect.value).toBeNull();
-      expect(scope.functionConstantInput.value).toBeNull();
+      expect(scope.expressionFieldSelect.value).toBeNull();
+      expect(scope.expressionConstantInput.value).toBeNull();
     });
 
     it("should append items to the lhs expression of an inequality", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = false;
+      scope.rightSide.value = false;
       scope.setDataType(scope.field);
       scope.appendItemToFunction('operator', '+');
 
@@ -223,13 +223,13 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       expect(ctrl.leftTestExpressionItems.length).toBe(1);
       expect(ctrl.rightTestExpressionItems.length).toBe(0);
       expect(ctrl.validate).toHaveBeenCalled();
-      expect(scope.functionFieldSelect.value).toBeNull();
-      expect(scope.functionConstantInput.value).toBeNull();
+      expect(scope.expressionFieldSelect.value).toBeNull();
+      expect(scope.expressionConstantInput.value).toBeNull();
     });
 
     it("should append items to the rhs expression of an inequality", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = true;
+      scope.rightSide.value = true;
       scope.setDataType(scope.field);
       scope.appendItemToFunction('1000', 'constant');
 
@@ -238,8 +238,8 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       expect(ctrl.rightTestExpressionItems.length).toBe(1);
       expect(ctrl.leftTestExpressionItems.length).toBe(0);
       expect(ctrl.validate).toHaveBeenCalled();
-      expect(scope.functionFieldSelect.value).toBeNull();
-      expect(scope.functionConstantInput.value).toBeNull();
+      expect(scope.expressionFieldSelect.value).toBeNull();
+      expect(scope.expressionConstantInput.value).toBeNull();
     });
 
     it("should replace values of fields with 1 for testing - functions", function() {
@@ -253,7 +253,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     it("should replace values of fields with 1 for testing - inequalities", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = false;
+      scope.rightSide.value = false;
       scope.setDataType(scope.field);
       scope.appendItemToFunction('mileage', 'field');
 
@@ -268,7 +268,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
     describe("general validation", function() {
       beforeEach(function() {
         httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
         httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
         httpBackend.expectGET("views/carList.html");
       });
@@ -330,7 +330,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       
       beforeEach(function() {
         httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
         httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
         httpBackend.expectGET("views/carList.html");
       });
@@ -434,7 +434,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
       beforeEach(function() {
         httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
         httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
         httpBackend.expectGET("views/carList.html");
       });
@@ -471,7 +471,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       it("should build a display expression out of leftTestExpressionItems if inequality and left side selected", function() {
         scope.field.leftExpressionItems = [{ type: 'field', value: 'mileage' }, { type: 'operator', value: '*' }, { type: 'constant', value: '3.14' }];
         scope.field.type = 'inequality';
-        scope.rightSide = false;
+        scope.rightSide.value = false;
         ctrl.displayExpression().then(function(expression) {
           expect(scope.field.leftExpression).toEqual('mileage*3.14');
         });
@@ -481,7 +481,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       it("should build a display expression out of rightTestExpressionItems if inequality and right side selected", function() {
         scope.field.rightExpressionItems = [{ type: 'field', value: 'mileage' }, { type: 'operator', value: '*' }, { type: 'constant', value: '3.14' }, { type: 'operator', value: '(' }];
         scope.field.type = 'inequality';
-        scope.rightSide = true;
+        scope.rightSide.value = true;
         ctrl.displayExpression().then(function(expression) {
           expect(scope.field.rightExpression).toEqual('mileage*3.14(');
         });
@@ -531,7 +531,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     it('should validate after removing last item from expression', function() {
       httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
       httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
       httpBackend.expectGET("views/carList.html");
 
@@ -560,7 +560,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     it("should remove last item from lhs of inequality", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = false;
+      scope.rightSide.value = false;
       scope.field.leftExpressionItems = ctrl.leftTestExpressionItems = [{ type: 'constant', value: '3.14'}];
       scope.undoExpression();
       expect(scope.field.leftExpressionItems.length).toBe(0);
@@ -569,7 +569,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     it("should remove last item from rhs of inequality", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = true;
+      scope.rightSide.value = true;
       scope.field.rightExpressionItems = ctrl.rightTestExpressionItems = [{ type: 'constant', value: '3.14'}];
       scope.undoExpression();
       expect(scope.field.rightExpressionItems.length).toBe(0);
@@ -583,7 +583,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     beforeEach(function() {
       httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
       httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
       httpBackend.expectGET("views/carList.html");
     });
@@ -603,7 +603,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     it("should return true if testExpressionItems has 0 items", function() {
       scope.field.type = 'inequality';
-      scope.rightSide = true;
+      scope.rightSide.value = true;
       ctrl.rightTestExpressionItems = [];
       ctrl.firstStageValidate_Undo().then(function(valid) {
         expect(scope.validExpression).toBe(true);
@@ -715,7 +715,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     beforeEach(function() {
       httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
       httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
       httpBackend.expectGET("views/carList.html");
     });
@@ -969,11 +969,11 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
     });
   });
 
-  describe('build and evaluate expression for objec', function() {
+  describe('build and evaluate expression for object', function() {
 
     beforeEach(function() {
       httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
       httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
       httpBackend.expectGET("views/carList.html");
     });
@@ -1009,7 +1009,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
      
     beforeEach(function() {
       httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
       httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
       httpBackend.expectGET("views/carList.html");
     });

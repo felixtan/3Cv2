@@ -114,15 +114,15 @@ angular.module('clientApp')
 
     var createAsset = function(assetData, identifier, assetType) {
       var deferred = $q.defer();
-      console.log(assetData);
-      console.log(identifier);
-      console.log(assetType);
+      // console.log(assetData);
+      // console.log(identifier);
+      // console.log(assetType);
       createLogData(assetType).then(function(logData) {
-        console.log(logData);
+        // console.log(logData);
         getLogDates(assetType).then(function(logDates) {
-          console.log(logDates);
+          // console.log(logDates);
           createLogs(logDates, logData).then(function(logs) {
-            console.log(logs);
+            // console.log(logs);
             
             deferred.resolve({
               identifier: identifier,
@@ -170,7 +170,7 @@ angular.module('clientApp')
       var assetsOfType = _.filter(allAssets, function(asset) {
           return asset.assetType === assetType;
       });
-      console.log(assetsOfType);
+      // console.log(assetsOfType);
       deferred.resolve(assetsOfType);
       deferred.reject(new Error('Error filtering assets of type ' + assetType));
       return deferred.promise;

@@ -184,7 +184,13 @@ beforeEach(function() {
 
                 }
               ]
-          }
+          },
+          ready: {
+            value: true,
+            log: false,
+            type: 'boolean',
+            dataType: 'boolean',
+          },
     },
     logs: [
         {
@@ -234,8 +240,14 @@ beforeEach(function() {
           value: 'lorem ipsum',
           log: false,
           type: 'text',
-          dataType: 'text'
-      }
+          dataType: 'text',
+      },
+      ready: {
+          value: true,
+          log: false,
+          type: 'boolean',
+          dataType: 'boolean',
+        },
     },
     logs: [
       {

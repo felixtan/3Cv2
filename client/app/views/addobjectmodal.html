@@ -17,10 +17,10 @@
             </button>
         </div>
     </div>
-
+    <!-- add field disabled: {{ disableAddField() }} -->
     <br ng-show='disableAddField()'>
 
-    <div class="alert alert-danger" role="alert" ng-show='disableAddField()'>
+    <div class="alert alert-danger" role="alert" ng-show='objectType === "asset" && disableAddField()'>
         Please add an asset type before adding fields.
     </div>
     
@@ -36,11 +36,11 @@
             </select>
         </div>
 
+        <h4>Fields</h4>
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
             <label>Organize {{  formData.assetType.value || objectType }}<span ng-if='!formData.assetType'>s</span> with this identifier</label>
 
-            <select ng-model='identifier.value' class='form-control'>
-                <option ng-repeat='field in fields' value='{{ ::field }}' ng-if='field !== "assetType"'>{{ ::field }}</option>
+            <select ng-model='identifier.value' class='form-control' ng-options='field for field in fields' ng-if='field !== "assetType"'>
             </select>
         </div>
 
@@ -52,22 +52,51 @@
             </select>
         </div>
 
-        <div class='form-group' ng-repeat='(field, value) in formData' ng-if='!hide(field)'>
+        <div class='form-group' ng-repeat='(field, data) in formData' ng-if='!hide(field)'>
             <label for="{{ ::field }}">{{ ::field }}</label>
             <!-- 
             <span style='margin-left:1vw;' ng-if='!dontLog(field)'>
                 <input type='checkbox' ng-model='formData[field].log'> Log this
             </span> -->
 
-            <input type='text' class='form-control' ng-model="formData[field].value">
+            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "text"'>
+
+            <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
+
+            <br ng-if='data.type === "boolean"'>
+            <input bs-switch 
+                ng-model="formData[field].value" 
+                type="checkbox" 
+                switch-on-text="Yes"
+                switch-off-text="No" 
+                switch-label="" 
+                switch-inverse='true' 
+                switch-off-color='primary'  
+                ng-if='data.type === "boolean"' 
+                class='boolean-field-switch' 
+                id='{{ ::field }}' 
+                name='{{ ::field }}' 
+                data-dataType='{{ ::data.dataType }}' 
+                data-fieldType='{{ ::data.type }}' >
+                <!-- {{ formData[field].value }} -->
+        </div>
+
+        <!-- Error messages -->
+        <div id='add-object-error-msg' ng-messages="form.numberField.$error" ng-show='form.numberField.$dirty && form.numberField.$invalid' class="alert alert-danger" role="alert">
+            <p>
+                Error: Non-number entered into number field.
+            </p>
         </div>
     </form>
     <!-- {{ formData }} -->
     <!-- Show expressions -->
-    <div>
-        <h4>Expressions</h4>
+    <div ng-show='expressions.length > 0'>
+        <h4 id='expression-header'>Expressions</h4>
         <div ng-repeat='expression in expressions'>
-            <h5>{{ expression.field }}: {{ expression.expression }}</h5>
+            <h5>
+                <span><strong>{{ ::expression.field }}:</strong></span> 
+                <span>{{ ::expression.expression }}</span>
+            </h5>
         </div>
     </div>
 
@@ -77,7 +106,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier)'>Submit</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.$invalid'>Submit</button>
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

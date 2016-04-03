@@ -52,6 +52,63 @@ module.exports = {
                     log: false,
                     type: 'text',
                     dataType: 'text'
+                },
+                ready: {
+                    value: true,
+                    log: false,
+                    type: 'boolean',
+                    dataType: 'boolean',
+                },
+                fn: {
+                    value:'6961.5',
+                    log: false,
+                    type: 'function',
+                    dataType: 'number',
+                    expression: '(1000+mileage)/2',
+                    expressionItems: [
+                        {
+                            type: 'operator',
+                            value: '(',
+                        }, {
+                            type: 'constant',
+                            value: '1000',
+                        }, {
+                            type: 'operator',
+                            value: "+",
+                        }, {
+                            type: 'field',
+                            value: 'mileage',
+                        }, {
+                            type: 'operator',
+                            value: ')',
+                        }, {
+                            type: 'operator',
+                            value: '/',
+                        }, {
+                            type: 'constant',
+                            value: "2",
+                        },
+                    ]
+                },
+                ineq: {
+                    value: false,
+                    log: false,
+                    type: 'inequality',
+                    dataType: 'boolean',
+                    expression: 'mileage>50000',
+                    leftExpressionItems: [
+                        {
+                            type: 'field',
+                            value: 'mileage',
+                        }
+                    ],
+                    rightExpressionItems: [
+                        {
+                            type: 'constant',
+                            value: '50000',
+                        }
+                    ],
+                    inequalitySignId: '0'
                 }
             },
             logs: [
@@ -101,6 +158,63 @@ module.exports = {
                         log: false,
                         type: 'text',
                         dataType: 'text'
+                    },
+                    ready: {
+                        value: true,
+                        log: false,
+                        type: 'boolean',
+                        dataType: 'boolean',
+                    },
+                    fn: {
+                        value:'7540.5',
+                        log: false,
+                        type: 'function',
+                        dataType: 'number',
+                        expression: '(1000+mileage)/2',
+                        expressionItems: [
+                            {
+                                type: 'operator',
+                                value: '(',
+                            }, {
+                                type: 'constant',
+                                value: '1000',
+                            }, {
+                                type: 'operator',
+                                value: "+",
+                            }, {
+                                type: 'field',
+                                value: 'mileage',
+                            }, {
+                                type: 'operator',
+                                value: ')',
+                            }, {
+                                type: 'operator',
+                                value: '/',
+                            }, {
+                                type: 'constant',
+                                value: "2",
+                            },
+                        ]
+                    },
+                    ineq: {
+                        value: false,
+                        log: false,
+                        type: 'inequality',
+                        dataType: 'boolean',
+                        expression: 'mileage>50000',
+                        leftExpressionItems: [
+                            {
+                                type: 'field',
+                                value: 'mileage',
+                            }
+                        ],
+                        rightExpressionItems: [
+                            {
+                                type: 'constant',
+                                value: '50000',
+                            }
+                        ],
+                        inequalitySignId: '0'
                     }
                 },
                 logs: [
@@ -150,6 +264,63 @@ module.exports = {
                         log: false,
                         type: 'text',
                         dataType: 'text'
+                    },
+                    ready: {
+                        value: true,
+                        log: false,
+                        type: 'boolean',
+                        dataType: 'boolean',
+                    },
+                    fn: {
+                        value:'60730.5',
+                        log: false,
+                        type: 'function',
+                        dataType: 'number',
+                        expression: '(1000+mileage)/2',
+                        expressionItems: [
+                            {
+                                type: 'operator',
+                                value: '(',
+                            }, {
+                                type: 'constant',
+                                value: '1000',
+                            }, {
+                                type: 'operator',
+                                value: "+",
+                            }, {
+                                type: 'field',
+                                value: 'mileage',
+                            }, {
+                                type: 'operator',
+                                value: ')',
+                            }, {
+                                type: 'operator',
+                                value: '/',
+                            }, {
+                                type: 'constant',
+                                value: "2",
+                            },
+                        ]
+                    },
+                    ineq: {
+                        value: true,
+                        log: false,
+                        type: 'inequality',
+                        dataType: 'boolean',
+                        expression: 'mileage>50000',
+                        leftExpressionItems: [
+                            {
+                                type: 'field',
+                                value: 'mileage',
+                            }
+                        ],
+                        rightExpressionItems: [
+                            {
+                                type: 'constant',
+                                value: '50000',
+                            }
+                        ],
+                        inequalitySignId: '0'
                     }
                 },
                 logs: [
