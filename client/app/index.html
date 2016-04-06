@@ -44,12 +44,33 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <!-- <li>
-              <a>current state: {{ $state.current.name }}</a>
-            </li> -->
             <li>
-              <a ui-sref="settings">Settings</a>
+              <a ui-sref='dashboard.cars'>Cars</a>
             </li>
+            <li>
+              <a ui-sref='dashboard.drivers'>Drivers</a>
+            </li>
+            <li>
+              <a ui-sref='logs.cars'>Car Logs</a>
+            </li>
+            <li>
+              <a ui-sref='logs.drivers'>Driver Logs</a>
+            </li>
+            <!-- <li>
+              <a ui-sref='dashboard.prospects'>Prospects</a>
+            </li>
+            <li>
+              <a ui-sref='dashboard.assets'>Assets</a>
+            </li> -->
+            <!-- <li class='dropdown'>
+                <a href="#" class='dropdown-toggle' data-toggle='dropdown' role='button' >Logs<span class='caret'></span></a>
+                <ul class='dropdown-menu'>
+                    <li><a ui-sref='logs.cars'>Cars</a></li>
+                    <li><a ui-sref='logs.drivers'>Drivers</a></li>
+                    <li><a ui-sref='logs.prospects'>Prospects</a></li>
+                    <li><a ui-sref='logs.assets'>Assets</a></li>
+                </ul>
+            </li> -->
             <li>
               <a sp-logout ui-sref="login">Logout</a>
             </li>
@@ -68,11 +89,11 @@
           <ul class="nav nav-sidebar">
             <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
             <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
-            <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Driver Assets</a></li>
-            <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li>
+            <!-- <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Driver Assets</a></li>
+            <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li> -->
             <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
             <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
-            <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
+            <!-- <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li> -->
           </ul>
         </div>
 
@@ -137,19 +158,12 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src='bower_components/angular-xeditable/dist/js/xeditable.min.js'></script>
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/carList.js"></script>
         <script src="scripts/services/dataservice.js"></script>
         <script src="scripts/directives/repeatfinished.js"></script>
-        <script src="scripts/controllers/carsLogs.js"></script>
-        <script src="scripts/controllers/carprofile.js"></script>
-        <script src="scripts/controllers/cardata.js"></script>
-        <script src="scripts/controllers/carLogs.js"></script>
         <script src="scripts/controllers/addfieldmodalinstance.js"></script>
         <script src="scripts/services/carhelpers.js"></script>
         <script src="scripts/services/underscore.js"></script>
-        <script src="scripts/controllers/driverlist.js"></script>
         <script src="scripts/services/driverhelpers.js"></script>
-        <script src="scripts/controllers/driverprofile.js"></script>
         <script src="scripts/controllers/driverdata.js"></script>
         <script src="scripts/controllers/driverlogs.js"></script>
         <script src="scripts/controllers/driverslogs.js"></script>
@@ -158,16 +172,12 @@
         <script src="scripts/controllers/deleteFieldModal.js"></script>
         <script src="scripts/controllers/deleteFieldModalInstance.js"></script>
         <script src="scripts/controllers/assignmentmodal.js"></script>
-        <script src="scripts/controllers/prospectprofile.js"></script>
         <script src="scripts/controllers/prospectdata.js"></script>
-        <script src="scripts/controllers/prospectList.js"></script>
         <script src="scripts/services/prospecthelpers.js"></script>
         <script src="scripts/controllers/prospectstatusmodal.js"></script>
         <script src="scripts/controllers/addobjectmodal.js"></script>
         <script src="scripts/controllers/addobjectmodalinstance.js"></script>
-        <script src="scripts/controllers/assetlist.js"></script>
         <script src="scripts/controllers/assetlogs.js"></script>
-        <script src="scripts/controllers/assetprofile.js"></script>
         <script src="scripts/controllers/assetdata.js"></script>
         <script src="scripts/controllers/assettypelogs.js"></script>
         <script src="scripts/services/assethelpers.js"></script>
@@ -176,6 +186,12 @@
         <script src="scripts/controllers/editFieldModal.js"></script>
         <script src="scripts/services/datepicker.js"></script>
         <script src="scripts/services/fieldHelpers.js"></script>
+        <script src="scripts/controllers/objectsList.js"></script>
+        <script src="scripts/services/objectHelpers.js"></script>
+        <script src="scripts/controllers/objectProfile.js"></script>
+        <script src="scripts/controllers/objectData.js"></script>
+        <script src="scripts/controllers/objectLogs.js"></script>
+        <script src="scripts/controllers/objectsLogs.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->

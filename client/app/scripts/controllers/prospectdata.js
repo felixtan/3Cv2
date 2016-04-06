@@ -28,7 +28,7 @@ angular.module('clientApp')
     };
 
     $scope.notNameOrStatus = function(field) {
-        return ((field != "First Name") && (field != "Last Name") && (field !== "fullName") && (field.toLowerCase() != "status"));
+        return ((field != "First Name") && (field != "Last Name") && (field !== "Name") && (field.toLowerCase() != "status"));
     };
 
     $scope.statusChanged = false;
@@ -65,7 +65,7 @@ angular.module('clientApp')
             prospect.data[field].log = false;
 
             if((field == 'First Name') || (field == 'Last Name')) {
-                prospect.data.fullName.value = prospect.data["First Name"].value + " " + prospect.data["Last Name"].value;
+                prospect.data.Name.value = prospect.data["First Name"].value + " " + prospect.data["Last Name"].value;
             }
             // console.log(prospect);
         }
@@ -98,9 +98,9 @@ angular.module('clientApp')
     // pass in prospect and data.name
     $scope.updateProspectName = function(prospect) {
         var deferred = $q.defer();
-        prospect.data.fullName.value = prospect.data["First Name"].value + " " + prospect.data["Last Name"].value;
+        prospect.data.Name.value = prospect.data["First Name"].value + " " + prospect.data["Last Name"].value;
         deferred.resolve(prospect);
-        deferred.reject(new Error('Error updating driver fullName, id: ' + prospect.id));
+        deferred.reject(new Error('Error updating driver Name, id: ' + prospect.id));
         return deferred.promise;
     };
 

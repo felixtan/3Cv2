@@ -8,7 +8,7 @@
         <button class='btn btn-success' ng-click='addStatus()'>
             + Status
         </button>
-        <h4 ng-if='!thereAreProspects()' style='text-align:center;'>No prospects currently.</h4>
+        <!-- <h4 ng-if='!thereAreProspects()' style='text-align:center;'>No prospects currently.</h4> -->
     </div>
 
     <!-- Order by user provided order -->
@@ -59,7 +59,7 @@
                         <h4>
                             <a ui-sref='prospectProfile.data({ id: prospect.id })'>
                                 <!-- {{ ::prospect.identifierValue }} -->
-                                {{ ::prospect.data.fullName.value }}
+                                {{ ::prospect.data.Name.value }}
                             </a>
                         </h4>
                     </td>

@@ -14,11 +14,12 @@ angular.module('clientApp')
     //  Data CRUD and Forms //
     //////////////////////////
 
-    var getProspects = dataService.getProspects;
+    var get = dataService.getProspects;
+    var getById = dataService.getProspect;
     var saveProspect = dataService.createProspect;
-    var updateProspect = dataService.updateProspect;
+    var update = dataService.updateProspect;
     var deleteProspect = dataService.deleteProspect;
-    var getProspectStatuses = dataService.getProspectStatuses;
+    var getStatuses = dataService.getProspectStatuses;
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -30,7 +31,7 @@ angular.module('clientApp')
 
     var thereAreProspects = function() {
       var deferred = $q.defer();
-      getProspects().then(function(result) {
+      get().then(function(result) {
         deferred.resolve((typeof result.data[0] !== 'undefined'));
         deferred.reject(new Error('Error determining if there are prospects.'));
       });
@@ -39,7 +40,7 @@ angular.module('clientApp')
 
     var _getFields = function() {
       var deferred = $q.defer();
-      getProspects().then(function(result) {
+      get().then(function(result) {
         deferred.resolve(Object.keys(result.data[0].data));
         deferred.reject(new Error('Failed to get fields'));
       });
@@ -94,7 +95,7 @@ angular.module('clientApp')
     var getDefaultStatus = function() {
       var deferred = $q.defer();
 
-      getProspectStatuses().then(function(result) {
+      getStatuses().then(function(result) {
         var statuses = result.data.statuses;
         // console.log(statuses);
         var defaultStatus = _.find(statuses, function(status) { return status.special; });
@@ -106,44 +107,39 @@ angular.module('clientApp')
     };
 
     var getDefaultProspect = function() {
-      var deferred = $q.defer();
-      getDefaultStatus().then(function(defaultStatus) {
-        deferred.resolve({
-          identifier: "Name",
-          status: defaultStatus,
-          data: {
-            "First Name": {
-              value: null,
-              log: false,
-              dataType: 'text',
-              type: 'text'
+      return getDefaultStatus().then(function(defaultStatus) {
+        return {
+            identifier: "Name",
+            status: defaultStatus,
+            data: {
+              "First Name": {
+                value: null,
+                log: false,
+                dataType: 'text',
+                type: 'text'
+              },
+              "Last Name": {
+                value: null,
+                log: false,
+                dataType: 'text',
+                type: 'text'
+              },
+              'Name': {
+                value: null,
+                log: false,
+                dataType: 'text',
+                type: 'text'
+              },
+              status: {
+                value: defaultStatus.value,
+                log: false,
+                dataType: 'text',
+                type: 'text'
+              }
             },
-            "Last Name": {
-              value: null,
-              log: false,
-              dataType: 'text',
-              type: 'text'
-            },
-            'Name': {
-              value: null,
-              log: false,
-              dataType: 'text',
-              type: 'text'
-            },
-            status: {
-              value: defaultStatus.value,
-              log: false,
-              dataType: 'text',
-              type: 'text'
-            }
-          },
-          organizationId: getOrganizationId()
+            organizationId: getOrganizationId(),
+          }
         });
-
-        deferred.reject(new Error('Error getting default prospect.'));
-      });
-
-      return deferred.promise;
     };
 
     var getFormDataAndRepresentative = function() {
@@ -153,7 +149,7 @@ angular.module('clientApp')
       thereAreProspects().then(function(ans) {
         if(ans) {
           console.log('there are prospects');
-          getProspects().then(function(result) {
+          get().then(function(result) {
             // console.log(result);
             var prospectData = result.data[0].data;
             // console.log(prospect);
@@ -175,8 +171,8 @@ angular.module('clientApp')
           getDefaultProspect().then(function(defaultProspect) {
             console.log('there are no prospects');
             deferred.resolve({
-              formData: defaultProspect.data,
-              representativeData: {}
+                formData: defaultProspect,
+                representativeData: {}
             });
             deferred.reject(new Error('Error initializing prospect form data'));
           });
@@ -186,15 +182,6 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var mapObject = function(objects, identifier) {
-      return _.map(objects, function(object) {
-          return {
-              id: object.id,
-              identifierValue: object.data[identifier].value
-          };
-      });
-    };
-
     var belongsToStatus = function(prospect, status) {
         return prospect.status.value === status.value;
     };
@@ -202,12 +189,12 @@ angular.module('clientApp')
     return {
 
       // Data
-      mapObject: mapObject,
       getOrganizationId: getOrganizationId,
-      getProspects: getProspects,
-      getProspectStatuses: getProspectStatuses,
+      get: get,
+      getById: getById,
+      getStatuses: getStatuses,
       saveProspect: saveProspect,
-      updateProspect: updateProspect,
+      update: update,
       createProspect: createProspect,
       deleteProspect: deleteProspect,
       thereAreProspects: thereAreProspects,

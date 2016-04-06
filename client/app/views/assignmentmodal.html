@@ -18,7 +18,7 @@
         </div>
 
         <div class='form-group' ng-if='objectType !== "asset"'>
-            Select <span ng-if='objIdentifier !== "fullName"'>{{ ::objIdentifier }}</span><span ng-if='objIdentifier === "fullName"'>Driver</span>
+            Select <span ng-if='objIdentifier !== "Name"'>{{ ::objIdentifier }}</span><span ng-if='objIdentifier === "Name"'>Driver</span>
             <select class='form-control' ng-model='formData.objId'>
                 <option ng-repeat='object in simpleObjects | orderBy:"id"' 
                 value='{{ object.id }}'>

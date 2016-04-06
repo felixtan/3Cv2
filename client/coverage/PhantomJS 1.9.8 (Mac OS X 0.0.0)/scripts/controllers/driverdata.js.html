@@ -602,7 +602,7 @@ angular.module('clientApp')
     ///////////////////
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    $scope.notName = <span class="fstat-no" title="function not covered" >function(field) {</span></span>
-<span class="cstat-no" title="statement not covered" >        return ((field != "First Name") &amp;&amp; (field != "Last Name") &amp;&amp; (field !== "fullName"));</span>
+<span class="cstat-no" title="statement not covered" >        return ((field != "First Name") &amp;&amp; (field != "Last Name") &amp;&amp; (field !== "Name"));</span>
     };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    $scope.getFields = <span class="fstat-no" title="function not covered" >function(driver) {</span></span>
@@ -694,9 +694,9 @@ angular.module('clientApp')
     // pass in driver and data.name
 <span class="cstat-no" title="statement not covered" >    $scope.updateDriverName = <span class="fstat-no" title="function not covered" >function(driver) {</span></span>
 <span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
-<span class="cstat-no" title="statement not covered" >        driver.data.fullName.value = driver.data["First Name"].value + " " + driver.data["Last Name"].value;</span>
+<span class="cstat-no" title="statement not covered" >        driver.data.Name.value = driver.data["First Name"].value + " " + driver.data["Last Name"].value;</span>
 <span class="cstat-no" title="statement not covered" >        deferred.resolve(driver);</span>
-<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error updating driver fullName, id: ' + driver.id));</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error updating driver Name, id: ' + driver.id));</span>
 <span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
     };
 &nbsp;
@@ -718,7 +718,7 @@ angular.module('clientApp')
 &nbsp;
         // the scope driver's field value and log value are already changed,
         // so only need to check if field name changed
-        // "First Name" and "Last Name" can't be changed so don't need to update fullName here
+        // "First Name" and "Last Name" can't be changed so don't need to update Name here
         // check it:
         // console.log('did it change?', $scope.driver);
        

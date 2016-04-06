@@ -23,7 +23,7 @@ angular.module('clientApp')
     ///////////////////
 
     $scope.notName = function(field) {
-        return ((field != "First Name") && (field != "Last Name") && (field !== "fullName"));
+        return ((field != "First Name") && (field != "Last Name") && (field !== "Name"));
     };
 
     $scope.getFields = function(driver) {
@@ -115,9 +115,9 @@ angular.module('clientApp')
     // pass in driver and data.name
     $scope.updateDriverName = function(driver) {
         var deferred = $q.defer();
-        driver.data.fullName.value = driver.data["First Name"].value + " " + driver.data["Last Name"].value;
+        driver.data.Name.value = driver.data["First Name"].value + " " + driver.data["Last Name"].value;
         deferred.resolve(driver);
-        deferred.reject(new Error('Error updating driver fullName, id: ' + driver.id));
+        deferred.reject(new Error('Error updating driver Name, id: ' + driver.id));
         return deferred.promise;
     };
 
@@ -139,7 +139,7 @@ angular.module('clientApp')
 
         // the scope driver's field value and log value are already changed,
         // so only need to check if field name changed
-        // "First Name" and "Last Name" can't be changed so don't need to update fullName here
+        // "First Name" and "Last Name" can't be changed so don't need to update Name here
         // check it:
         // console.log('did it change?', $scope.driver);
        

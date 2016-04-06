@@ -1,0 +1,148 @@
+<link rel="stylesheet" type="text/css" href="styles/tables.css">
+
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
+    <div class='sub-header'>
+        <h3 id='identifier'>{{ ::identifierValue }}</h3>
+        <!-- <button class='btn btn-danger btn-xs delete-obj' ng-controller='DeleteObjModalCtrl' ng-click='open(lg, car.id)'>Delete</button> -->
+    </div>
+
+    <tabset>
+        <tab ng-repeat='tab in tabs' data-tabName='{{ ::tab.title }}' heading='{{ ::tab.title }}' active='tab.active' ui-sref='{{ ::tab.state }}'>
+        </tab>
+    </tabset>
+
+    <br>
+
+    <div class='btn-toolbar' role='toolbar'>
+        <div class='btn-group' role='group'>
+            <button class='btn btn-success' ng-click='addField()'>
+                + Field
+            </button>
+            <!-- {{ test }} -->
+        </div>
+        
+        <!-- <div class='btn-group' role='group' style='float:right;'>
+            <button class='btn btn-danger' role='group' ng-click='open(prospect.id)' ng-controller='DeleteObjModalCtrl'>
+                Delete
+            </button>
+        </div> -->
+    </div>
+
+    <br>
+
+    <div class='table-responsive table-bordered'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                    <th>Logged</th>
+                    <th>Identifier</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- non expressions -->
+                <!-- TODO: only allow these to be identifiers? -->
+                <tr ng-repeat='(field, data) in object.data' ng-if='data.type !== "function" && data.type !== "inequality"'>
+                    <td data-field='{{ ::field }}' class='field-name'>
+                        {{ ::field }}
+                    </td>
+                    <td class='field-value' data-field='{{ ::field }}'>
+                        {{ ::data.value }}
+                    </td>
+                    <td>
+                        <i class='fa fa-check log-check' data-field='{{ ::field }}' ng-if='data.log'></i>                 
+                    </td>
+                    <td>
+                        <i class='fa fa-check identifier-check' data-field='{{ ::field }}' ng-if='field === object.identifier'></i>
+                    </td>
+                    <td>
+                        <button class='btn btn-warning btn-xs' ng-click='editField(object, field)' data-field='{{ ::field }}'>Edit</button>
+                    </td>
+                </tr>
+
+                <!-- functions -->
+                <tr ng-repeat='(field, data) in object.data' ng-if='data.type === "function"'>
+                    <td class='field-name' data-field='{{ ::field }}'>
+                        {{ ::field }}
+                    </td>
+                    <td class='field-value' data-field='{{ ::field }}'>
+                        {{ ::data.value | number : 2 }}
+                    </td>
+                    <td>
+                        <!-- TODO: logging of functions disallowed until thinking about how to impelment -->
+                        <i class='fa fa-check log-check' ng-if='data.log' data-field='{{ ::field }}'></i>                    
+                    </td>
+                    <td>
+                        <!-- disallow functions from being identifiers -->
+                        <!-- <i class='fa fa-check' ng-if='field === currentIdentifier.name && !expressionForm.$visible'></i>
+                        <input type='radio' e-name='identifier' value='{{ field }}' e-form='expressionForm' ng-model='identifier.name' ng-show='expressionForm.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input> -->
+                        <i class='fa fa-check identifier-check' ng-if='field === object.identifier' data-field='{{ ::field }}'></i>
+                    </td>
+                    <td>
+                        <button class='btn btn-warning btn-xs' ng-click='editField(object, field)' data-field='{{ ::field }}'>Edit</button>
+                    </td>
+                </tr>
+
+                <!-- inequality -->
+                <tr ng-repeat='(field, data) in object.data' ng-if='data.type === "inequality"'>
+                    <td data-field='{{ ::field }}' class='field-name'>
+                        {{ ::field }}
+                    </td>
+                    <td data-field='{{ ::field }}' class='field-value'>
+                        {{ ::data.value }}
+                    </td>
+                    <td>
+                        <!-- TODO: logging of functions disallowed until thinking about how to impelment -->
+                        <!-- <i class='fa fa-check' ng-if='data.log && !expressionForm.$visible'></i>
+                        <input type='checkbox' editable-checkbox='data.log' e-name='log' e-form='expressionForm' ng-show='expressionForm.$visible' onbeforesave='checkLogValue($data, data.log)'></input>        -->
+                        <i class='fa fa-check log-check' ng-if='data.log' data-field='{{ ::field }}'></i>          
+                    </td>
+                    <td>
+                        <!-- disallow functions from being identifiers -->
+                        <!-- <i class='fa fa-check' ng-if='field === currentIdentifier.name && !expressionForm.$visible'></i>
+                        <input type='radio' e-name='identifier' value='{{ field }}' e-form='expressionForm' ng-model='identifier.name' ng-show='expressionForm.$visible' onbeforesave='checkIdentifierValue($data, currentIdentifier.name)'></input> -->
+                        <i class='fa fa-check identifier-check' ng-if='field === object.identifier' data-field='{{ ::field }}'></i>
+                    </td>
+                    <td>
+                        <button class='btn btn-warning btn-xs' ng-click='editField(object, field)' data-field='{{ ::field }}'>Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- {{ object.data }} -->
+    </div>
+
+    <br>
+
+    <!-- Driver Assignment UI -->
+    <div ng-if='objectType === "car"'>
+        <h3>Driver<span ng-if='(object.driversAssigned > 1) || (object.driversAssigned === 0)'>s</span> Assigned</h3>
+
+        <div class='btn-toolbar' role='toolbar'>
+            <div class='btn-group' role='group'>
+                <button class='btn btn-success' ng-click='assign("driver")'>+ Driver</button>
+            </div>
+        </div>
+
+        <br>
+
+        <div class='table-responsive table-bordered'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Assigned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat='driver in object.driversAssigned | orderBy:"dateAssigned"' ui-sref='driverData({ id: driver.id })' class='table-row-link'>
+                        <td>{{ ::driver.identifier.value }}</td>
+                        <td>{{ ::driver.dateAssigned | date: 'fullDate' }}<span ng-if='driver.dateUnassigned !== null'> - {{ ::driver.dateEnded | date: 'fullDate' }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

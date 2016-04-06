@@ -681,7 +681,7 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >        console.log("assignment modal called from driverProfile");</span>
 <span class="cstat-no" title="statement not covered" >        $scope.subject = driver;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.updateSubj = dataService.updateDriver;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.subjIdentifier = "fullName" || null;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.subjIdentifier = "Name" || null;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        if($scope.objectType === 'car') {</span>
 <span class="cstat-no" title="statement not covered" >            $scope.updateObj = dataService.updateCar;</span>
@@ -707,7 +707,7 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >        $scope.updateObj = dataService.updateDriver;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.subjIdentifier = $scope.subject.identifier;  </span>
 <span class="cstat-no" title="statement not covered" >        $scope.fullObjects = getDrivers.data;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.objIdentifier = "fullName" || null;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.objIdentifier = "Name" || null;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.simpleObjects = $scope.mapObject($scope.fullObjects);</span>
     } else <span class="cstat-no" title="statement not covered" >if($scope.subjectType === 'asset') {</span>
 <span class="cstat-no" title="statement not covered" >        console.log("assignment modal called from assetProfile");</span>
@@ -716,7 +716,7 @@ angular.module('clientApp')
 <span class="cstat-no" title="statement not covered" >        $scope.updateObj = dataService.updateDriver;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.subjIdentifier = $scope.subject.identifier;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.fullObjects = getDrivers.data;</span>
-<span class="cstat-no" title="statement not covered" >        $scope.objIdentifier = "fullName" || null;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.objIdentifier = "Name" || null;</span>
 <span class="cstat-no" title="statement not covered" >        $scope.simpleObjects = $scope.mapObject($scope.fullObjects);</span>
     } else {
 <span class="cstat-no" title="statement not covered" >        console.log('assignment modal called from invalid state', $state.current);</span>

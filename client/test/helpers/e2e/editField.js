@@ -70,7 +70,7 @@ tabs = element.all(by.tagName("a")).filter(function(el, i) {
 });
 
 header = element(by.id("identifier"));
-fieldRows = element.all(by.repeater("(field, data) in car.data"));
+fieldRows = element.all(by.repeater("(field, data) in object.data"));
 
 delBtn = element(by.buttonText("DELETE"));
 

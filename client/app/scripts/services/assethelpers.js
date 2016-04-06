@@ -15,8 +15,9 @@ angular.module('clientApp')
     //////////////////////////
 
     var getAssets = dataService.getAssets;
+    var getById = dataService.getAsset;
     var saveAsset = dataService.createAsset;
-    var updateAsset = dataService.updateAsset;
+    var update = dataService.updateAsset;
     var deleteAsset = dataService.deleteAsset;
     var getAssetTypes = dataService.getAssetTypes;
     var getAssetsOfType = dataService.getAssetsOfType;
@@ -214,16 +215,6 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var mapObject = function(objects) {
-      return _.map(objects, function(object) {
-          return {
-              id: object.id,
-              identifierValue: object.data[object.identifier].value,
-              assetType: object.assetType
-          };
-      });
-    };
-
     var belongsToType = function(asset, type) {
       return asset.assetType === type.value;
     };
@@ -276,13 +267,12 @@ angular.module('clientApp')
     return {
 
       // Data
-      mapObject: mapObject,
       getOrganizationId: getOrganizationId,
       getAssets: getAssets,
       getAssetsOfType: getAssetsOfType,
       getAssetTypes: getAssetTypes,
       saveAsset: saveAsset,
-      updateAsset: updateAsset,
+      update: update,
       createAsset: createAsset,
       deleteAsset: deleteAsset,
       thereAreAssetsOfType: thereAreAssetsOfType,

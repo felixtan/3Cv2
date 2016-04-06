@@ -77,50 +77,54 @@ angular
     })
     .state('dashboard.cars', {
         url: '/cars',
-        templateUrl: 'views/carList.html',
-        controller: 'CarListCtrl',
-        controllerAs: 'carList',
+        templateUrl: 'views/objectsList.html',
+        controller: 'ObjectListCtrl',
         resolve: {
-          getCars: function(dataService) {
-            return dataService.getCars();
+          objectType: function() {
+            return "car";
           }
         },
-        sp: getsp()
+        // sp: getsp()
     })
     .state('dashboard.drivers', {
         url: '/drivers',
-        templateUrl: '/views/driverList.html',
-        controller: 'DriversListCtrl',
-        controllerAs: 'driversui',
+        templateUrl: 'views/objectsList.html',
+        controller: 'ObjectListCtrl',
         resolve: {
-            getDrivers: function(dataService) {
-                return dataService.getDrivers();
+            objectType: function() {
+                return "driver";
             }
         }
     })
     .state('dashboard.prospects', {
         url: '/prospects',
-        templateUrl: '/views/prospectList.html',
-        controller: 'ProspectListCtrl',
+        templateUrl: 'views/objectsList.html',
+        controller: 'ObjectListCtrl',
         resolve: {
-            getProspectStatuses: function(dataService) {
-                return dataService.getProspectStatuses();
-            },
-            getProspects: function(dataService) {
-                return dataService.getProspects();
+            // getProspectStatuses: function(dataService) {
+            //     return dataService.getProspectStatuses();
+            // },
+            // getProspects: function(dataService) {
+            //     return dataService.getProspects();
+            // },
+            objectType: function() {
+                return "prospect";
             }
         }
     })
     .state('dashboard.assets', {
         url: '/assets',
-        templateUrl: '/views/assetList.html',
-        controller: 'AssetListCtrl',
+        templateUrl: 'views/objectsList.html',
+        controller: 'ObjectListCtrl',
         resolve: {
-            getAssetTypes: function(dataService) {
-                return dataService.getAssetTypes();
-            },
-            getAssets: function(dataService) {
-                return dataService.getAssets();
+            // getAssetTypes: function(dataService) {
+            //     return dataService.getAssetTypes();
+            // },
+            // getAssets: function(dataService) {
+            //     return dataService.getAssets();
+            // },
+            objectType: function() {
+                return "asset";
             }
         }
     })
@@ -132,11 +136,14 @@ angular
     })
     .state('logs.cars', {
         url: '/cars',
-        templateUrl: 'views/carsLogs.html',
-        controller: 'CarsLogsCtrl',
+        templateUrl: 'views/objectsLogs.html',
+        controller: 'ObjectsLogsCtrl',
         resolve: {
-            getCars: function(dataService) {
-                return dataService.getCars();
+            // getCars: function(dataService) {
+            //     return dataService.getCars();
+            // },
+            objectType: function () {
+                return "car";
             }
         },
         sp: getsp()
@@ -167,113 +174,103 @@ angular
         },
         sp: getsp()
     })
-    .state('carProfile', {
-        abstract: true,
-        url: '/car/:id',
-        templateUrl: '/views/carProfile.html',
-        controller: 'CarProfileCtrl',
+    .state('carData', {
+        url: '/car/:id/data',
+        templateUrl: '/views/objectData.html',
+        controller: 'ObjectDataCtrl',
+        sp: getsp(),
         resolve: {
-            getCar: function(dataService, $stateParams) {
-                return dataService.getCar($stateParams.id);
+            objectType: function() {
+                return "car";
             },
-            getCars: function(dataService) {
-                return dataService.getCars();
+            objectId: function($stateParams) {
+                return $stateParams.id;
             }
-        },
-        sp: getsp()
+        }
     })
-    .state('carProfile.data', {
-        url: '/data',
-        templateUrl: '/views/carData.html',
-        controller: 'CarDataCtrl',
-        sp: getsp()
-    })
-    .state('carProfile.logs', {
-        url: '/logs',
-        templateUrl: '/views/carLogs.html',
-        controller: 'CarLogsCtrl',
-        sp: getsp()
-    })
-    .state('driverProfile', {
-        abstract: true,
-        url: '/driver/:id',
-        templateUrl: '/views/driverProfile.html',
-        controller: 'DriverProfileCtrl',
+    .state('carLogs', {
+        url: '/car/:id/logs',
+        templateUrl: '/views/objectLogs.html',
+        controller: 'ObjectLogsCtrl',
+        sp: getsp(),
         resolve: {
-            getDriver: function(dataService, $stateParams) {
-                return dataService.getDriver($stateParams.id);
+            objectType: function() {
+                return "car";
             },
-            getDrivers: function(dataService) {
-                return dataService.getDrivers();
+            objectId: function($stateParams) {
+                return $stateParams.id;
             }
-        },
-        sp: getsp()
+        }
     })
-    .state('driverProfile.data', {
-        url: '/data',
-        templateUrl: '/views/driverData.html',
-        controller: 'DriverDataCtrl',
-        sp: getsp()
+    .state('driverData', {
+        url: '/driver/:id/data',
+        templateUrl: '/views/objectData.html',
+        controller: 'ObjectDataCtrl',
+        sp: getsp(),
+        resolve: {
+            objectType: function() {
+                return "driver";
+            },
+            objectId: function($stateParams) {
+                return $stateParams.id;
+            }
+        }
     })
     .state('driverProfile.logs', {
-        url: '/logs',
+        url: '/driver/:id/logs',
         templateUrl: '/views/driverLogs.html',
         controller: 'DriverLogCtrl',
-        sp: getsp()
-    })
-    .state('prospectProfile', {
-        abstract: true,
-        url: '/prospect/:id',
-        templateUrl: '/views/prospectProfile.html',
-        controller: 'ProspectProfileCtrl',
+        sp: getsp(),
         resolve: {
-            getProspect: function(dataService, $stateParams) {
-                return dataService.getProspect($stateParams.id);
+            objectType: function() {
+                return "driver";
             },
-            getProspects: function(dataService) {
-                return dataService.getProspects();
-            },
-            getProspectStatuses: function(dataService) {
-                return dataService.getProspectStatuses();
+            objectId: function($stateParams) {
+                return $stateParams.id;
             }
-        },
-        sp: getsp()
+        }
     })
     .state('prospectProfile.data', {
-        url: '/data',
-        templateUrl: '/views/prospectData.html',
-        controller: 'ProspectDataCtrl',
-        sp: getsp()
-    })
-    .state('assetProfile', {
-        abstract: true,
-        url: '/assets/:type/:id',
-        templateUrl: '/views/assetProfile.html',
-        controller: 'AssetProfileCtrl',
+        url: '/prospect/:id/data',
+        templateUrl: '/views/objectData.html',
+        controller: 'ObjectDataCtrl',
+        sp: getsp(),
         resolve: {
-            getAsset: function(dataService, $stateParams) {
-                return dataService.getAsset($stateParams.id);
+            objectType: function() {
+                return "prospect";
             },
-            getAssets: function(dataService) {
-                return dataService.getAssets();
-            },
-            getAssetTypes: function(dataService) {
-                return dataService.getAssetTypes();
-            },
-        },
-        sp: getsp()
+            objectId: function($stateParams) {
+                return $stateParams.id;
+            }
+        }
     })
     .state('assetProfile.data', {
         url: '/data',
-        templateUrl: '/views/assetData.html',
-        controller: 'AssetDataCtrl',
-        sp: getsp()
+        templateUrl: '/views/objectData.html',
+        controller: 'ObjectDataCtrl',
+        sp: getsp(),
+        resolve: {
+            objectType: function() {
+                return "asset";
+            },
+            objectId: function($stateParams) {
+                return $stateParams.id;
+            }
+        }
     })
     .state('assetProfile.logs', {
         url: '/logs',
         templateUrl: '/views/assetLogs.html',
         controller: 'AssetLogsCtrl',
-        sp: getsp()
+        sp: getsp(),
+        resolve: {
+            objectType: function() {
+                return "asset";
+            },
+            objectId: function($stateParams) {
+                return $stateParams.id;
+            }
+        }
     }); 
   })
     // inject ENV when grunt-ng-constant is working

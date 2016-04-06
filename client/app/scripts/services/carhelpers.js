@@ -14,9 +14,10 @@ angular.module('clientApp')
   //  Data CRUD and Forms //
   //////////////////////////
 
-  var getCars = dataService.getCars;
+  var get = dataService.getCars;
+  var getById = dataService.getCar;
   var saveCar = dataService.createCar;
-  var updateCar = dataService.updateCar;
+  var update = dataService.updateCar;
 
   var getOrganizationId = function() {
     return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -24,7 +25,7 @@ angular.module('clientApp')
 
   var thereAreCars = function() {
     var deferred = $q.defer();
-    getCars().then(function(result) {
+    get().then(function(result) {
       deferred.resolve((typeof result.data[0] !== 'undefined'));
       deferred.reject(new Error('Error determining if there are cars.'));
     });
@@ -33,7 +34,7 @@ angular.module('clientApp')
 
   var getFields = function() {
     var deferred = $q.defer();
-    getCars().then(function(result) {
+    get().then(function(result) {
       deferred.resolve(Object.keys(result.data[0].data));
       deferred.reject(new Error('Failed to get fields'));
     });
@@ -45,7 +46,7 @@ angular.module('clientApp')
     
     thereAreCars().then(function(result) {
       if(result) {
-        getCars().then(function(result) {
+        get().then(function(result) {
           var driver = result.data[0];
           deferred.resolve(driver.identifier);
           deferred.reject(new Error("Error getting identifier."));
@@ -104,7 +105,7 @@ angular.module('clientApp')
     thereAreCars().then(function(ans) {
       if(ans) {
         // console.log('there are cars');
-        getCars().then(function(result) {
+        get().then(function(result) {
           var carData = result.data[0].data;
           // console.log(carData);
           _.each(carData, function(data, field) {
@@ -140,17 +141,6 @@ angular.module('clientApp')
     return deferred.promise;
   };
 
-  var mapObject = function(objects, identifier) {
-    return _.map(objects, function(object) {
-        // console.log(object.data);
-        // console.log(identifier);
-        return {
-            id: object.id,
-            identifierValue: object.data[identifier].value
-        };
-    });
-  };
-
   // same as map except for one
   var simplify = function(object, identifier) {
     return {
@@ -172,11 +162,11 @@ angular.module('clientApp')
   };
 
   var _updateIdentifier = function(identifier) {
-    getCars().then(function(result) {
+    get().then(function(result) {
       var cars = result.data;
       _.each(cars, function(car) {
         car.identifier = identifier;
-        updateCar(car);
+        update(car);
       });
     });
   };
@@ -189,7 +179,7 @@ angular.module('clientApp')
     var deferred = $q.defer();
     var logDates = [];
 
-    getCars().then(function(result) {
+    get().then(function(result) {
       var cars = result.data;
     
       // TODO: Do we have to do a double each here? If we can ensure that all 
@@ -241,7 +231,7 @@ angular.module('clientApp')
     var deferred = $q.defer();
     var fields = [];
 
-    getCars().then(function(result) {
+    get().then(function(result) {
       var cars = result.data;
       if(cars.length > 0) {
         fields = _.filter(Object.keys(cars[0].data), function(field) {
@@ -275,13 +265,13 @@ angular.module('clientApp')
   var populateLogs = function(car) {
     // promise groups
     // 1. getFieldsToBeLogged -> createLogData
-    // 2. getCars -> getLogDates
+    // 2. get -> getLogDates
     // 3. 1,2 -> createLogs (_.each combine with createLog)
 
     var deferred = $q.defer();
     var errcb = function(err) { console.error(err) };
     var promise1 = getFieldsToBeLogged(car).then(createLogData, errcb);
-    var promise2 = getCars().then(getLogDates, errcb);
+    var promise2 = get().then(getLogDates, errcb);
 
     $q.all([promise1, promise2]).then(function(values) {
       createLogs(values[1], values[0]).then(function(logs) {
@@ -298,14 +288,14 @@ angular.module('clientApp')
   return {
 
     // Data
-    getCars: getCars,
-    updateCar: updateCar,
+    get: get,
+    getById: getById,
+    update: update,
     saveCar: saveCar,
     createCar: createCar,
     thereAreCars: thereAreCars,
     getDefaultCar: getDefaultCar,
     getFields: getFields,
-    mapObject: mapObject,
     simplify: simplify,
     updateIdentifier: updateIdentifier,
     _updateIdentifier: _updateIdentifier,

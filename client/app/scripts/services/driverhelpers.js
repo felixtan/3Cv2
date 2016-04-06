@@ -14,9 +14,10 @@ angular.module('clientApp')
     //  Data CRUD and Forms //
     //////////////////////////
 
-    var getDrivers = dataService.getDrivers;
+    var get = dataService.getDrivers;
+    var getById = dataService.getDriver;
     var saveDriver = dataService.createDriver;
-    var updateDriver = dataService.updateDriver;
+    var update = dataService.updateDriver;
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -28,7 +29,7 @@ angular.module('clientApp')
 
     var thereAreDrivers = function() {
       var deferred = $q.defer();
-      getDrivers().then(function(result) {
+      get().then(function(result) {
         deferred.resolve((typeof result.data[0] !== 'undefined'));
         deferred.reject(new Error('Error determining if there are drivers.'));
       });
@@ -37,7 +38,7 @@ angular.module('clientApp')
 
     var getFields = function() {
       var deferred = $q.defer();
-      getDrivers().then(function(result) {
+      get().then(function(result) {
         deferred.resolve(Object.keys(result.data[0].data));
         deferred.reject(new Error('Failed to get fields'));
       });
@@ -134,7 +135,7 @@ angular.module('clientApp')
       thereAreDrivers().then(function(ans) {
         if(ans) {
           // console.log('there are drivers');
-          getDrivers().then(function(result) {
+          get().then(function(result) {
             var driverData = result.data[0].data;
             // console.log(driver);
             _.each(Object.keys(driverData), function(field) {
@@ -184,7 +185,7 @@ angular.module('clientApp')
       //   reject(new Error('Invalid existingDrivers data type:', existingDrivers));
       // }
 
-      getDrivers().then(function(result) {
+      get().then(function(result) {
         var drivers = result.data;
         if(drivers.length > 0) {
           _.each(drivers, function(driver) {
@@ -235,7 +236,7 @@ angular.module('clientApp')
       var deferred = $q.defer();
       var fields = [];
 
-      getDrivers().then(function(result) {
+      get().then(function(result) {
         var drivers = result.data
         if(drivers.length > 0) {
           fields = _.filter(Object.keys(drivers[0].data), function(field) {
@@ -276,7 +277,7 @@ angular.module('clientApp')
       var deferred = $q.defer();
       var errcb = function(err) { console.error(err) };
       var promise1 = getFieldsToBeLogged(driver).then(createLogData, errcb);
-      var promise2 = getDrivers().then(getLogDates, errcb);
+      var promise2 = get().then(getLogDates, errcb);
 
       $q.all([promise1, promise2]).then(function(values) {
         createLogs(values[1], values[0]).then(function(logs) {
@@ -293,9 +294,10 @@ angular.module('clientApp')
 
       // Data
       getOrganizationId: getOrganizationId,
-      getDrivers: getDrivers,
+      get: get,
+      getById: getById,
       saveDriver: saveDriver,
-      updateDriver: updateDriver,
+      update: update,
       createDriver: createDriver,
       thereAreDrivers: thereAreDrivers,
       getFields: getFields,

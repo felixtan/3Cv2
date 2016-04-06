@@ -186,22 +186,24 @@ angular.module('clientApp')
         $scope.save = prospectHelpers.saveProspect;
         $scope.getFormDataAndRepresentative = prospectHelpers.getFormDataAndRepresentative;
 
-        $scope.getFormDataAndRepresentative().then(function(result) {
-            prospectHelpers.getProspectStatuses().then(function(result) {
-                ctrl.hideExpressions(result.representativeData).then(function() {
-                    // console.log('prospect form data:', result.formData);
+        $scope.getFormDataAndRepresentative().then(function(result1) {
+            console.log('result1:', result1);
+            prospectHelpers.getProspectStatuses().then(function(result2) {
+                console.log('result2:', result2);
+                ctrl.hideExpressions(result1.representativeData).then(function() {
                     // console.log(statuses);
+                    $scope.fieldsToHide.push('assetType');
                     $scope.fieldsToHide.push("Name");
                     $scope.fieldsToHide.push("status");
                     $scope.fieldsToNotLog.push("First Name");
                     $scope.fieldsToNotLog.push("Last Name");
                     $scope.currentIdentifier.value = "Name";
                     angular.copy($scope.currentIdentifier, $scope.identifier);
-                    $scope.formData = result.formData;
-                    $scope.fieldsToHide.push('assetType');
-                    $scope.formData.assetType = { value: null };
-                    $scope.statuses = result.data.statuses;
+                    $scope.statuses = result2.data.statuses;
                     $scope.disableConditions = prospectHelpers.namesNotNull;
+
+                    $scope.formData = result1.formData;
+                    $scope.formData.assetType = { value: null };
                 });
             });
         });

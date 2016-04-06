@@ -13,14 +13,10 @@
             <tr>
                 <td>
                     <strong>
-                        Week \ Fields<span ng-if='fieldsToBeLogged.length === 0' style='font-size: 0.80em; font-style: italic;'>
-                            <a ui-sref='driverProfile.data({ id: driver.id })'>
-                                *Currently there are no fields to be logged. Add some here.
-                            </a>
-                        </span>
+                        Week \ Fields
                     </strong>
                 </td>
-                <td ng-repeat="(field, value) in driver.logs[0].data | orderBy:'$index'">
+                <td ng-repeat="(field, value) in driver.logs[0].data">
                     {{ ::field }}
                 </td>
             </tr>
@@ -45,13 +41,16 @@
                         </form>
                     </div>
                 </td>
-                <td ng-repeat='(field, value) in log.data | orderBy:"$index"'>
+                <td ng-repeat='(field, value) in log.data'>
                     <p ng-show='logform.$visible'></p>
                     <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform' e-required>
                         {{ value }}
                     </span>
                 </td>
             </tr>
+            <a ui-sref='driverProfile.data({ id: driver.id })' ng-if='fieldsToBeLogged.length === 0' style='font-size: 0.80em; font-style: italic; color:red;'>
+                *Currently there are no fields to be logged.
+            </a>
         </tbody>
     </table>
 </div>

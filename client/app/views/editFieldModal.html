@@ -64,7 +64,8 @@
                 name='logValue' 
                 data-dataType='{{ ::field.dataType }}' 
                 data-fieldType='{{ ::field.type }}' 
-                switch-active='{{ validExpression.value }}' >
+                switch-active='{{ validExpression.value }}' 
+                ng-change="logValueChanged.value = !logValueChanged.value" >
         </div>
 
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
@@ -219,7 +220,7 @@
     </form>
 </div>
 
-<div class="modal-footer" popover="Please change the identifier if you want to delete this field." popover-enable='true' popover-trigger='mouseenter' popover-placement='bottom-left'>
+<div class="modal-footer" popover="Please change the identifier if you want to delete this field." popover-enable='field.identifier' popover-trigger='mouseenter' popover-placement='bottom-left'>
     <button class='btn btn-danger' type='button' ng-click='delete()' style='float: left;' ng-disabled='field.identifier'>DELETE</button>
   <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.$invalid || !validExpression.value || invalidFieldType() || !inequalityIsComplete() || emptyExpression() || fieldNameAlreadyExists()'>Submit</button>
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>

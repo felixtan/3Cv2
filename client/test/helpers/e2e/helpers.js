@@ -16,7 +16,7 @@
 function getCarProfileLinks () {
       return element.all(by.tagName("a")).filter(function(el, i) {
             return el.getAttribute("ui-sref").then(function(value) {
-                  return value === "carProfile.data({ id: car.id })";
+                  return value === "carData({ id: object.id })";
             });
       });
 };

@@ -45,7 +45,7 @@ beforeEach(function() {
     driver1 = {
     id: 1,
     organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
-    identifier: 'fullName',
+    identifier: 'Name',
     data: {
       "First Name": {
         value: "John",
@@ -59,7 +59,7 @@ beforeEach(function() {
         type: 'text',
         dataType: 'text'
       },
-      fullName: {
+      Name: {
         value: "John Doe",
         log: false,
         type: 'text',
@@ -95,7 +95,7 @@ beforeEach(function() {
   driver2 = {
     id: 2,
     organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
-    identifier: 'fullName',
+    identifier: 'Name',
     data: {
       "First Name": {
         value: "Jane",
@@ -109,7 +109,7 @@ beforeEach(function() {
         type: 'text',
         dataType: 'text'
       },
-      fullName: {
+      Name: {
         value: 'Jane Wayne',
         log: false,
         type: 'text',
@@ -275,7 +275,7 @@ beforeEach(function() {
 
     prospect1 = {
         id: 1,
-        identifier: 'fullName',
+        identifier: 'Name',
         status: 'Callers',
         organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
         data: {
@@ -291,7 +291,7 @@ beforeEach(function() {
             type: 'text',
             dataType: 'text'
           },
-          fullName: {
+          Name: {
             value: 'Gandalf Grey',
             log: false,
             type: 'text',
@@ -314,7 +314,7 @@ beforeEach(function() {
 
     prospect2 = {
         id: 2,
-        identifier: 'fullName',
+        identifier: 'Name',
         status: 'Interviewed',
         organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
         data: {
@@ -330,7 +330,7 @@ beforeEach(function() {
             type: 'text',
             dataType: 'text'
           },
-          fullName: {
+          Name: {
             value: 'Saruman White',
             log: false,
             type: 'text',

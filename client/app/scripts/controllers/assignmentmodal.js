@@ -44,7 +44,7 @@ angular.module('clientApp')
         console.log("assignment modal called from driverProfile");
         $scope.subject = driver;
         $scope.updateSubj = dataService.updateDriver;
-        $scope.subjIdentifier = "fullName" || null;
+        $scope.subjIdentifier = "Name" || null;
 
         if($scope.objectType === 'car') {
             $scope.updateObj = dataService.updateCar;
@@ -70,7 +70,7 @@ angular.module('clientApp')
         $scope.updateObj = dataService.updateDriver;
         $scope.subjIdentifier = $scope.subject.identifier;  
         $scope.fullObjects = getDrivers.data;
-        $scope.objIdentifier = "fullName" || null;
+        $scope.objIdentifier = "Name" || null;
         $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
     } else if($scope.subjectType === 'asset') {
         console.log("assignment modal called from assetProfile");
@@ -79,7 +79,7 @@ angular.module('clientApp')
         $scope.updateObj = dataService.updateDriver;
         $scope.subjIdentifier = $scope.subject.identifier;
         $scope.fullObjects = getDrivers.data;
-        $scope.objIdentifier = "fullName" || null;
+        $scope.objIdentifier = "Name" || null;
         $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
     } else {
         console.log('assignment modal called from invalid state', $state.current);
@@ -217,6 +217,8 @@ angular.module('clientApp')
     };
 
     $scope.assignSubjectToObject = function() {
+        console.log($scope.subjIdentifier);
+        console.log($scope.subject);
         var subject = {
             id: $scope.subject.id,
             identifier: {

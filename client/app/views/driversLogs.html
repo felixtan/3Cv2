@@ -43,7 +43,7 @@
                     <td><strong>Week \ Driver</strong></td>
                     <td ng-repeat="driver in drivers | orderBy:'id'">
                         <a ui-sref='driverProfile.logs({ id: driver.id })'>
-                            {{ ::driver.data["fullName"].value }}
+                            {{ ::driver.data["Name"].value }}
                         </a>
                     </td>
                 </tr>

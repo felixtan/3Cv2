@@ -1,0 +1,36 @@
+<div class='col-md-offset-2 table-responsive' id='object-list'> 
+
+  <h2 class='page-header' ng-if='objectType === "car"'>{{ title.value }}s</h2>
+  <h2 class='page-header' ng-if='objectType === "driver"'>{{ title.value }}s</h2>
+  <h2 class='page-header' ng-if='objectType === "prospect"'>{{ title.value }}s</h2>
+  <h2 class='page-header' ng-if='objectType === "asset"'>{{ title.value }}s</h2>
+
+  <br>
+
+  <table class='table table-striped'>
+    <thead>
+      <td>
+        <button type='button' class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
+          + {{ title.value }}
+        </button>
+      </td>
+      <td>
+        <h4 ng-if='thereAreObjects()'>{{ ::objects[0].identifier }}</h4>
+      </td>
+    </thead>
+    <tbody>
+      <tr ng-repeat='object in simpleObjects | orderBy:"id"'>
+        <td>
+          <h4>{{ ::$index+1 }}</h4>
+        </td>
+        <td>
+          <h4>
+            <a ui-sref='{{ profile.state }}'>
+              {{ ::object.identifierValue }}
+            </a>
+          </h4>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

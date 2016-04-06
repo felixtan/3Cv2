@@ -189,4 +189,28 @@ describe("Car Data", function () {
             });
         });
     });
+
+    it("should add a field to object's logs", function() {
+        helpers.getRandomCarProfileLink().click().then(function() {
+            helpers.getEditBtnByField("func").click().then(function() {
+                elems.switches.get(0).click().then(function() {       // log switch
+                    elems.submit.click().then(function() {
+                        element.all(by.tagName("a")).filter(function(el, i){
+                            return el.getAttribute("data-tabName").then(function(value) {
+                                return value === "Logs"; 
+                            });
+                        }).click().then(function() {
+                            element.all(by.tagName("span")).filter(function(el, i) {
+                                return el.getAttribute("data-fieldentry").then(function(value) {
+                                    return value === "func";
+                                });
+                            }).count().then(function(numberOfLogEntries) {
+                                expect(numberOfLogEntries).toBe(2);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 });

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="styles/partials/logs.css">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='page-header'>Car Logs</h2>
+    <h2 class='page-header'>{{ title }} Logs</h2>
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
@@ -40,10 +40,10 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <td><strong>Week \ Car</strong></td>
-                    <td ng-repeat="car in simpleCars | orderBy:'id'">
-                        <a ui-sref='carProfile.logs({ id: car.id })'>
-                            {{ ::car.identifierValue }}
+                    <td><strong>Week \ {{ title }}</strong></td>
+                    <td ng-repeat="object in simpleObjects | orderBy:'id'">
+                        <a ui-sref='{{ state.logs }}'>
+                            {{ ::object.identifierValue }}
                         </a>
                     </td>
                 </tr>
@@ -71,14 +71,14 @@
                             </form>
                         </div>
                     </td>
-                    <td ng-repeat='car in cars | orderBy:"id"'>
-                        <ul ng-repeat="log in car.logs" ng-if='log.weekOf === date' class='log'>
+                    <td ng-repeat='object in objects | orderBy:"id"'>
+                        <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span ng-show='logform.$visible'>
-                                    {{ ::field }}: 
-                                </span>
-                                <span editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform'>
+                                <span ng-if='notExpressionField(field)' editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
+                                </span>
+                                <span ng-if='!notExpressionField(field)'>
+                                    {{ ::field }}: {{ ::value }}
                                 </span>
                             </li>
                         </ul>
