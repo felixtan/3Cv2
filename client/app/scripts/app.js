@@ -150,12 +150,14 @@ angular
     })
     .state('logs.drivers', {
         url: '/drivers',
-        templateUrl: 'views/driversLogs.html',
-        controller: 'DriverLogsCtrl',
-        controllerAs: 'driverlogs',
+        templateUrl: 'views/objectsLogs.html',
+        controller: 'ObjectsLogsCtrl',
         resolve: {
-            getDrivers: function(dataService) {
-                return dataService.getDrivers();
+            // getDrivers: function(dataService) {
+            //     return dataService.getDrivers();
+            // }
+            objectType: function () {
+                return "driver";
             }
         },
         sp: getsp()
@@ -216,10 +218,10 @@ angular
             }
         }
     })
-    .state('driverProfile.logs', {
+    .state('driverLogs', {
         url: '/driver/:id/logs',
-        templateUrl: '/views/driverLogs.html',
-        controller: 'DriverLogCtrl',
+        templateUrl: '/views/objectLogs.html',
+        controller: 'ObjectLogsCtrl',
         sp: getsp(),
         resolve: {
             objectType: function() {

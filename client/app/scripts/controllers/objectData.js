@@ -13,6 +13,11 @@ angular.module('clientApp')
     var ctrl = this;        // for testing;
     $scope.objectType = objectType;
     $scope.assetType = { value: null };
+    $scope.carIdentifier = null;
+
+    $scope.valid = function (thing) {
+        return thing !== null && typeof thing !== "undefined";
+    };
 
     ctrl.getObject = function () {
         if($scope.objectType === 'car') {
@@ -26,6 +31,11 @@ angular.module('clientApp')
                 data: 'driverData({ id: object.id })',
                 logs: 'driverLogs({ id: object.id })',
             };
+            // console.log($scope.state);
+            carHelpers.getIdentifier().then(function(identifier) {
+                $scope.carIdentifier = identifier;
+            });
+
             return driverHelpers.getById;
         } else if($scope.objectType === 'prospect') {
             $scope.state = {
@@ -56,10 +66,6 @@ angular.module('clientApp')
 
     ctrl.getObject()(objectId).then(function(result1) {
         $scope.object = result1.data;
-        
-        // TODO: see instead of having two variables, can use one and ng-change
-        $scope.currentIdentifier = { name: $scope.object.identifier || null };
-        $scope.newIdentifier = { name: $scope.object.identifier || null };
 
         $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
@@ -117,7 +123,7 @@ angular.module('clientApp')
     // Driver Assignment UI /////
     /////////////////////////////
 
-    $scope.assign = function () {
+    $scope.assign = function (thing) {
 
         var modalInstance = $modal.open({
             animation: true,
@@ -126,31 +132,31 @@ angular.module('clientApp')
             size: 'md',
             resolve: {
                 getDrivers: function() {
-                    return driverHelpers.get;
+                    return $scope.objectType === 'car' ? driverHelpers.get : null;
                 },
                 getCars: function() {
-                    return [];
+                    return $scope.objectType === 'driver' ? carHelpers.get : null;
                 },
                 driver: function() {
-                    return {};
+                    return $scope.objectType === 'driver' ? $scope.object : null;
                 },
                 car: function() {
-                    return $scope.object;
+                    return $scope.objectType === 'car' ? $scope.object : null;
                 },
                 subjectType: function() {
-                    return "car";
+                    return $scope.objectType;
                 },
                 objectType: function() {
-                    return 'driver';
+                    return thing;
                 },
                 getAssetTypes: function() {
-                    return [];
+                    return $scope.objectType === 'driver' ? assetHelpers.getAssetTypes : null;
                 },
                 getAssets: function() {
-                    return [];
+                    return $scope.objectType === 'driver' ? assetHelpers.getAssets : null;
                 },
                 asset: function() {
-                    return {};
+                    return $scope.objectType === 'asset' ? driverHelpers.get : null;
                 },
             }
         });

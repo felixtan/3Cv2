@@ -43,20 +43,18 @@ angular.module('clientApp')
 
   var getIdentifier = function() {
     var deferred = $q.defer();
-    
-    thereAreCars().then(function(result) {
-      if(result) {
-        get().then(function(result) {
-          var driver = result.data[0];
-          deferred.resolve(driver.identifier);
-          deferred.reject(new Error("Error getting identifier."));
-        });
+
+    get().then(function(result) {
+      if(typeof result.data !== "undefined" && result.data.length > 0) {
+        var driver = result.data[0];
+        deferred.resolve(driver.identifier);
+        deferred.reject(new Error("Error getting identifier."));
       } else {
         deferred.resolve(null);
         deferred.reject(new Error("Error getting identifier."));
       }
     });
-
+      
     return deferred.promise;
   };
 

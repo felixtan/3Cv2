@@ -50,27 +50,21 @@
             <li>
               <a ui-sref='dashboard.drivers'>Drivers</a>
             </li>
+             <li>
+              <a ui-sref='dashboard.prospects'>Drivers</a>
+            </li>
+             <li>
+              <a ui-sref='dashboard.assets'>Drivers</a>
+            </li>
             <li>
               <a ui-sref='logs.cars'>Car Logs</a>
             </li>
             <li>
               <a ui-sref='logs.drivers'>Driver Logs</a>
             </li>
-            <!-- <li>
-              <a ui-sref='dashboard.prospects'>Prospects</a>
+             <li>
+              <a ui-sref='log.assets'>Asset Logs</a>
             </li>
-            <li>
-              <a ui-sref='dashboard.assets'>Assets</a>
-            </li> -->
-            <!-- <li class='dropdown'>
-                <a href="#" class='dropdown-toggle' data-toggle='dropdown' role='button' >Logs<span class='caret'></span></a>
-                <ul class='dropdown-menu'>
-                    <li><a ui-sref='logs.cars'>Cars</a></li>
-                    <li><a ui-sref='logs.drivers'>Drivers</a></li>
-                    <li><a ui-sref='logs.prospects'>Prospects</a></li>
-                    <li><a ui-sref='logs.assets'>Assets</a></li>
-                </ul>
-            </li> -->
             <li>
               <a sp-logout ui-sref="login">Logout</a>
             </li>
@@ -89,11 +83,11 @@
           <ul class="nav nav-sidebar">
             <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
             <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
-            <!-- <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Driver Assets</a></li>
-            <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li> -->
+            <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Driver Assets</a></li>
+            <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li>
             <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
             <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
-            <!-- <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li> -->
+            <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
           </ul>
         </div>
 
@@ -164,9 +158,6 @@
         <script src="scripts/services/carhelpers.js"></script>
         <script src="scripts/services/underscore.js"></script>
         <script src="scripts/services/driverhelpers.js"></script>
-        <script src="scripts/controllers/driverdata.js"></script>
-        <script src="scripts/controllers/driverlogs.js"></script>
-        <script src="scripts/controllers/driverslogs.js"></script>
         <script src="scripts/controllers/deleteobjmodal.js"></script>
         <script src="scripts/controllers/deleteobjmodalinstance.js"></script>
         <script src="scripts/controllers/deleteFieldModal.js"></script>

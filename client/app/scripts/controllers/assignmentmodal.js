@@ -48,20 +48,22 @@ angular.module('clientApp')
 
         if($scope.objectType === 'car') {
             $scope.updateObj = dataService.updateCar;
-            $scope.fullObjects = getCars.data;
-            $scope.objIdentifier = $scope.fullObjects[0].identifier;
-            $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+            
+            getCars().then(function(result) {
+                $scope.fullObjects = result.data;
+                $scope.objIdentifier = $scope.fullObjects[0].identifier;
+                $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+            });
         } else if($scope.objectType === 'asset') {
             $scope.updateObj = dataService.updateAsset;
-            $scope.fullObjects = getAssets.data;
-            
-            $scope.objIdentifiers = _.uniq(_.map($scope.fullObjects, function(asset) {
-                return asset.assetType;
-            }));
 
-            // console.log($scope.fullObjects);
-            $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
-            // console.log($scope.simpleObjects);
+            getAssets().then(function(result) {
+                $scope.fullObjects = result.data;
+                $scope.simpleObjects = $scope.mapObject($scope.fullObjects);
+                $scope.objIdentifiers = _.uniq(_.map($scope.fullObjects, function(asset) {
+                    return asset.assetType;
+                }));
+            });
         }
     } else if($scope.subjectType === 'car') {
         console.log("assignment modal called from carProfile");
