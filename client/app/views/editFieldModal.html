@@ -11,13 +11,27 @@
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='submit()'>
 
+        <!-- <div class='form-group' ng-if='objectType === "prospect" && field.name === "status"'>
+            <label for='status'>Status</label>
+
+            <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' data-fieldType='{{ ::field.type }}' name='fieldName' type='text' class='form-control' ng-model='field.value' ng-required='true'>
+        </div> -->
+
         <div class='form-group'>
             <label for='fieldName'>Name</label>
 
-            <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' data-fieldType='{{ ::field.type }}' name='fieldName' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
+            <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' data-fieldType='{{ ::field.type }}' name='fieldName' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/" ng-if='!dontEditFieldName(field.name)'>
+
+            <p ng-if='dontEditFieldName(field.name)'>{{ ::field.name.capitalizeIfStatus() }}</p>
         </div>
 
-        <div class='form-group' ng-if='field.type === "text"'>
+        <div class='form-group' ng-if='isProspectStatus(field.name)'>
+            <label for='fieldValue'>Value</label>
+            {{ field.value }}
+            <select id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' data-fieldType='{{ ::field.type }}' type='text' class='form-control' ng-model='field.value' ng-required='true' ng-options='status.value for status in statuses' name='textField'></select>
+        </div>
+
+        <div class='form-group' ng-if='field.type === "text"' ng-hide="isProspectStatus(field.name)">
             <label for='fieldValue'>Value</label>
 
             <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' data-fieldType='{{ ::field.type }}' name='textField' type='text' class='form-control' ng-model='field.value' ng-required='true'>
@@ -48,7 +62,7 @@
                 <!-- {{ formData[field].value }} -->
         </div>
 
-        <div class='form-group'>
+        <div class='form-group' ng-if='objectType !== "prospect"'>
             <label for='logValue'>Log?</label>
             <br>
             <input bs-switch 
@@ -93,7 +107,7 @@
                 <h4 ng-if='field.type === "inequality"'>Inequality</h4><br>
 
                 <h5 class='expression' ng-if='field.type === "function"'>{{ field.expression }}</h5>
-                <h5 class='expression' ng-if='field.type === "inequality"'>{{ field.leftExpression }} {{ field.inequalitySign }} {{ field.rightExpression }}</h5>
+                <h5 class='expression' ng-if='field.type === "inequality"'>{{ field.leftExpression }} {{ displayInequalitySign(field.inequalitySignId) }} {{ field.rightExpression }}</h5>
                 <br>
 
                 <div class='input-group' ng-if='field.type === "inequality"'>
@@ -222,7 +236,15 @@
 
 <div class="modal-footer" popover="Please change the identifier if you want to delete this field." popover-enable='field.identifier' popover-trigger='mouseenter' popover-placement='bottom-left'>
     <button class='btn btn-danger' type='button' ng-click='delete()' style='float: left;' ng-disabled='field.identifier'>DELETE</button>
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.$invalid || !validExpression.value || invalidFieldType() || !inequalityIsComplete() || emptyExpression() || fieldNameAlreadyExists()'>Submit</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.fieldName.$invalid || form.numberField.$invalid || form.functionConst.$invalid || !validExpression.value || invalidFieldType() || !inequalityIsComplete() || emptyExpression() || fieldNameAlreadyExists()'>Submit</button>
+    <!-- {{ form.fieldName.$invalid }}
+    {{ form.numberField.$invalid }}
+    {{ form.functionConst.$invalid }}
+    {{ !validExpression.value }}
+    {{ invalidFieldType() }}
+    {{ !inequalityIsComplete() }}
+    {{ emptyExpression() }}
+    {{ fieldNameAlreadyExists() }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

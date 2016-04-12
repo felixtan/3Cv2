@@ -8,10 +8,12 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', function ($window, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
+  .controller('AddFieldModalInstanceCtrl', function (objectHelpers, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
 
-    var _ = $window._;
-    var ctrl = this;
+    var ctrl = this,
+        isValid = objectHelpers.isValid,
+        buildEvalExpression = objectHelpers.buildEvalExpression;
+
     $scope.formData = {};
     $scope.objects = [];
     $scope.update = null;
@@ -64,7 +66,7 @@ angular.module('clientApp')
       leftExpressionItems: [],
       leftExpression: '',
       rightExpressionItems: [],
-      rightExpression: ''
+      rightExpression: '',
     };
 
     $scope.setInequalitySign = function(signId) {
@@ -133,15 +135,15 @@ angular.module('clientApp')
       var _testExpressionItems_ = [];
 
       if($scope.field.type === 'function') {
-        $scope.field.expressionItems.push({ type: typeOfItem, value: item });
+        $scope.field.expressionItems.push({ type: typeOfItem, value: item, location: 'expressionItems' });
         _testExpressionItems_ = ctrl.testExpressionItems;
         // console.log(_testExpressionItems_);
       } else {
         if($scope.rightSide.value) {
-          $scope.field.rightExpressionItems.push({ type: typeOfItem, value: item });
+          $scope.field.rightExpressionItems.push({ type: typeOfItem, value: item, location: 'rightExpressionItems' });
           _testExpressionItems_ = ctrl.rightTestExpressionItems;
         } else {
-          $scope.field.leftExpressionItems.push({ type: typeOfItem, value: item });
+          $scope.field.leftExpressionItems.push({ type: typeOfItem, value: item, location: "leftExpressionItems" });
           _testExpressionItems_ = ctrl.leftTestExpressionItems;
         }
       }
@@ -221,7 +223,7 @@ angular.module('clientApp')
 
     ctrl.validateExpression = function() {
       $scope.expressionErrorMessage = undefined;
-      // console.log('blank?', $scope.$eval(""));
+
       try {
         $scope.$eval(ctrl.testExpression);
       } catch(e){
@@ -401,6 +403,8 @@ angular.module('clientApp')
           type: field.type,
           expressionItems: field.expressionItems,
           expression: field.expression,
+          fieldsUsed: {},
+          expressionsUsedIn: {},
         });
       } else if(field.type === 'inequality') {
         deferred.resolve({
@@ -411,7 +415,10 @@ angular.module('clientApp')
           leftExpressionItems: field.leftExpressionItems,
           rightExpressionItems: field.rightExpressionItems,
           inequalitySignId: field.inequalitySignId,
-          expression: field.leftExpression + " " + field.inequalitySign + " " + field.rightExpression,
+          leftExpression: field.leftExpression,
+          rightExpression: field.rightExpression,
+          inequalitySign: objectHelpers.getInequalitySign(field.inequalitySignId),
+          fieldsUsed: {},
         });
       } else {
         deferred.resolve({
@@ -419,6 +426,7 @@ angular.module('clientApp')
           log: $scope.formData.log || false,
           dataType: field.dataType,
           type: field.type,
+          expressionsUsedIn: field.type === 'number' ? {} : undefined,
         });
       }
       
@@ -491,9 +499,12 @@ angular.module('clientApp')
               ctrl.evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
                 // console.log(expressionValue);
                   fieldDataObj.value = expressionValue;
-                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-                  // console.log('object to update:', objectToUpdate);
-                  $scope.update(objectToUpdate);
+                  var objectv2 = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+                  // console.log('object after appending field:', objectv2);
+                  objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
+                    // console.log(objectv3);
+                    $scope.update(objectv3);
+                  });
               });
             });
           } else if($scope.field.type === 'inequality') {
@@ -503,8 +514,11 @@ angular.module('clientApp')
                   leftExpressionValue = parseFloat(leftExpressionValue);
                   rightExpressionValue = parseFloat(rightExpressionValue);
                   fieldDataObj.value = ctrl.evaluateInequalityValue(leftExpressionValue, rightExpressionValue);
-                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-                  $scope.update(objectToUpdate);
+                  var objectv2 = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+                  objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
+                    // console.log(objectv3);
+                    $scope.update(objectv3);
+                  });
                 });
               });
             });
@@ -540,33 +554,15 @@ angular.module('clientApp')
         $modalInstance.dismiss('cancel');
     };
 
-    // build expression
-    ctrl.buildExpression = function(object, expressionItems) {
-        var deferred = $q.defer();
-        var expression = "";
-
-        _.each(expressionItems, function(item) {
-            if(item.type === 'field') {
-                expression += object.data[item.value].value;
-            } else {
-                expression += item.value;
-            }
-        });
-
-        deferred.resolve(expression);
-        deferred.reject(new Error('Error building expression'));
-        return deferred.promise;
-    };
-
     // evaluate expression
     ctrl.evaluateExpression = function(object, expressionItems) {
       var deferred = $q.defer();
-      ctrl.buildExpression(object, expressionItems).then(function(expression) {
+      buildEvalExpression(object.data, expressionItems).then(function(expression) {
           // console.log(expression);
           // console.log($scope.$eval(expression));
           // return ((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : null);
           // result = ((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : null);
-          deferred.resolve(((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : null));
+          deferred.resolve(isValid($scope.$eval(expression)) ? $scope.$eval(expression) : null);
           deferred.reject(new Error('Error evaluating expression'));
       });
 

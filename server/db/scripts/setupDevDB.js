@@ -45,7 +45,19 @@ module.exports = {
                     value: '12923',
                     log: true,
                     type: 'number',
-                    dataType: 'number'
+                    dataType: 'number',
+                    expressionsUsedIn: {
+                        "fn": {
+                            locations: {
+                                expressionItems: [3]
+                            }
+                        },
+                        "ineq": {
+                            locations: {
+                                leftExpressionItems: [0]
+                            }
+                        }
+                    }
                 },
                 description: {
                     value: 'lorem ipsum',
@@ -65,6 +77,14 @@ module.exports = {
                     type: 'function',
                     dataType: 'number',
                     expression: '(1000+mileage)/2',
+                    fieldsUsed: {
+                        'mileage': {
+                            locations: {
+                                expressionItems: [3]
+                            }
+                        }
+                    },
+                    expressionsUsedIn: {},
                     expressionItems: [
                         {
                             type: 'operator',
@@ -95,7 +115,14 @@ module.exports = {
                     log: false,
                     type: 'inequality',
                     dataType: 'boolean',
-                    expression: 'mileage>50000',
+                    fieldsUsed: {
+                        'mileage': {
+                            locations: {
+                                leftExpressionItems: [0]
+                            }
+                        }
+                    },
+                    expressionsUsedIn: {},
                     leftExpressionItems: [
                         {
                             type: 'field',
@@ -108,8 +135,11 @@ module.exports = {
                             value: '50000',
                         }
                     ],
-                    inequalitySignId: '0'
-                }
+                    inequalitySignId: '0',
+                    leftExpression: "mileage",
+                    rightExpression: "50000",
+                    inequalitySign: ">",
+                },
             },
             logs: [
                 {
@@ -151,7 +181,19 @@ module.exports = {
                         value: '14081',
                         log: true,
                         type: 'number',
-                        dataType: 'number'
+                        dataType: 'number',
+                        expressionsUsedIn: {
+                            "fn": {
+                                locations: {
+                                    expressionItems: [3]
+                                }
+                            },
+                            "ineq": {
+                                locations: {
+                                    leftExpressionItems: [0]
+                                }
+                            }
+                        }
                     },
                     description: {
                         value: 'lorem ipsum',
@@ -171,6 +213,14 @@ module.exports = {
                         type: 'function',
                         dataType: 'number',
                         expression: '(1000+mileage)/2',
+                        fieldsUsed: {
+                            'mileage': {
+                                locations: {
+                                    expressionItems: [3]
+                                }
+                            }
+                        },
+                        expressionsUsedIn: {},
                         expressionItems: [
                             {
                                 type: 'operator',
@@ -201,7 +251,14 @@ module.exports = {
                         log: false,
                         type: 'inequality',
                         dataType: 'boolean',
-                        expression: 'mileage>50000',
+                        fieldsUsed: {
+                            'mileage': {
+                                locations: {
+                                    leftExpressionItems: [0]
+                                }
+                            }
+                        },
+                        expressionsUsedIn: {},
                         leftExpressionItems: [
                             {
                                 type: 'field',
@@ -214,7 +271,10 @@ module.exports = {
                                 value: '50000',
                             }
                         ],
-                        inequalitySignId: '0'
+                        inequalitySignId: '0',
+                        leftExpression: "mileage",
+                        rightExpression: "50000",
+                        inequalitySign: ">",
                     }
                 },
                 logs: [
@@ -257,7 +317,19 @@ module.exports = {
                         value: '120461',
                         log: true,
                         type: 'number',
-                        dataType: 'number'
+                        dataType: 'number',
+                        expressionsUsedIn: {
+                            "fn": {
+                                locations: {
+                                    expressionItems: [3]
+                                }
+                            },
+                            "ineq": {
+                                locations: {
+                                    leftExpressionItems: [0]
+                                }
+                            }
+                        }
                     },
                     description: {
                         value: 'lorem ipsum',
@@ -277,6 +349,14 @@ module.exports = {
                         type: 'function',
                         dataType: 'number',
                         expression: '(1000+mileage)/2',
+                        fieldsUsed: {
+                            'mileage': {
+                                locations: {
+                                    expressionItems: [3]
+                                }
+                            }
+                        },
+                        expressionsUsedIn: {},
                         expressionItems: [
                             {
                                 type: 'operator',
@@ -307,7 +387,14 @@ module.exports = {
                         log: false,
                         type: 'inequality',
                         dataType: 'boolean',
-                        expression: 'mileage>50000',
+                        fieldsUsed: {
+                            'mileage': {
+                                locations: {
+                                    leftExpressionItems: [0]
+                                }
+                            }
+                        },
+                        expressionsUsedIn: {},
                         leftExpressionItems: [
                             {
                                 type: 'field',
@@ -320,7 +407,10 @@ module.exports = {
                                 value: '50000',
                             }
                         ],
-                        inequalitySignId: '0'
+                        inequalitySignId: '0',
+                        leftExpression: "mileage",
+                        rightExpression: "50000",
+                        inequalitySign: ">",
                     }
                 },
                 logs: [

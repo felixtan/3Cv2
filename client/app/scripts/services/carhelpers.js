@@ -61,27 +61,26 @@ angular.module('clientApp')
   var createCar = function(carData, identifier, assetType) {
     var deferred = $q.defer();
     if(carData.assetType) delete carData.assetType;
-    // getIdentifier().then(function(identifier) {
-      createLogData().then(function(logData) {
-        // console.log(logData);
-        getLogDates().then(function(logDates) {
-          // console.log(logDates);
-          createLogs(logDates, logData).then(function(logs) {
-            // console.log(logs);
 
-            deferred.resolve({
-              identifier: identifier,
-              data: carData,
-              logs: logs,
-              driversAssigned: [],
-              organizationId: getOrganizationId()
-            });
-            
-            deferred.reject(new Error('Error creating car'));
+    createLogData().then(function(logData) {
+      // console.log(logData);
+      getLogDates().then(function(logDates) {
+        // console.log(logDates);
+        createLogs(logDates, logData).then(function(logs) {
+          // console.log(logs);
+
+          deferred.resolve({
+            identifier: identifier,
+            data: carData,
+            logs: logs,
+            driversAssigned: [],
+            organizationId: getOrganizationId()
           });
+          
+          deferred.reject(new Error('Error creating car'));
         });
       });
-    // });
+    });
 
     return deferred.promise;
   };
@@ -112,11 +111,14 @@ angular.module('clientApp')
               log: data.log,
               dataType: data.dataType,
               type: data.type,
-              expression: (data.type === 'function' || data.type === 'inequality') ? data.expression : undefined,
+              expression: (data.type === 'function') ? data.expression : undefined,
               expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
               leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
               rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
               inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
+              leftExpression: (data.type === 'inequality') ? data.leftExpression : undefined,
+              rightExpression: (data.type === 'inequality') ? data.rightExpression : undefined,
+              inequalitySign: (data.type === 'inequality') ? data.inequalitySign : undefined,
             }
           });
           // console.log(fromData);

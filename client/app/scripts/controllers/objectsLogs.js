@@ -52,6 +52,7 @@ angular.module('clientApp')
 
     ctrl.getObjects()().then(function(result) {
         $scope.objects = result.data;
+        console.log($scope.objects);
         $scope.identifier = $scope.objects[0].identifier || null;
         $scope.assetType = $scope.objects[0].assetType || null;
         $scope.simpleObjects = objectHelpers.simplify($scope.objects);
@@ -143,7 +144,10 @@ angular.module('clientApp')
     }
 
     $scope.notExpressionField = function (field) {
+        // console.log(field);
         var type = $scope.objects[0].data[field].type;
+        // console.log($scope.objects);
+        // console.log($scope.objects[0]);
         // console.log(type);
         // console.log(type !== "function" && type !== 'inequality');
         return type !== "function" && type !== 'inequality';

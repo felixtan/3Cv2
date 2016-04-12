@@ -50,6 +50,7 @@ angular.module('clientApp')
     };
 
     var namesNotNull = function(driverData) {
+      console.log(driverData);
       return ((driverData["First Name"].value !== null) && (driverData["Last Name"].value !== null));
     };
 
@@ -147,7 +148,7 @@ angular.module('clientApp')
               }
             });
 
-            console.log('there are cars, driver data:', formData);
+            // console.log('there are cars, driver data:', formData);
             deferred.resolve({
               formData: formData,
               representativeData: driverData
@@ -158,7 +159,7 @@ angular.module('clientApp')
           var defaultDriver = getDefaultDriver();
           deferred.resolve({
             formData: defaultDriver.data,
-            representativeData: defaultDriver
+            representativeData: defaultDriver.data
           });
           // console.log('there are no drivers, default driver data:', defaultDriverData);
           deferred.reject(new Error('Error initializing driver form data'));
@@ -303,6 +304,7 @@ angular.module('clientApp')
       getFields: getFields,
       notName: notName,
       namesNotNull: namesNotNull,
+      // namesNotNullOnFormdata: namesNotNullOnFormdata,
       getFullName: getFullName,
       updateFullName: updateFullName,
       getDefaultDriver: getDefaultDriver,

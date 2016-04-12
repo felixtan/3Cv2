@@ -232,7 +232,7 @@ angular
             }
         }
     })
-    .state('prospectProfile.data', {
+    .state('prospectData', {
         url: '/prospect/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
@@ -246,7 +246,7 @@ angular
             }
         }
     })
-    .state('assetProfile.data', {
+    .state('assetData', {
         url: '/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
@@ -260,7 +260,7 @@ angular
             }
         }
     })
-    .state('assetProfile.logs', {
+    .state('assetLogs', {
         url: '/logs',
         templateUrl: '/views/assetLogs.html',
         controller: 'AssetLogsCtrl',

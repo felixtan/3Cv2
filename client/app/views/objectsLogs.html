@@ -74,7 +74,7 @@
                     <td ng-repeat='object in objects | orderBy:"id"'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span ng-if='notExpressionField(field)' editable-text='log.data.{{ field }}' e-name='{{ field }}' e-form='logform'>
+                                <span ng-if='notExpressionField(field)' editable-text="log.data[{{ field }}]" e-name='{{ field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                                 <span ng-if='!notExpressionField(field)'>

@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalInstanceCtrl', function ($q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
+  .controller('DeleteFieldModalInstanceCtrl', function (objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
     
     var ctrl = this;
     $scope.confirmation = { value: "" };
@@ -43,19 +43,31 @@ angular.module('clientApp')
 
     ctrl.deleteExpressionsUsingField = function (object) {
         var deferred = $q.defer();
-       
-        _.each(object, function(data, field, list) {
+        // console.log(object);
+        _.each(object.data, function(data, field, list) {
+            // console.log(data);
+            // console.log(field);
+            // console.log(list);
             if(data.type === 'function') {
                 _.each(data.expressionItems, function(item) {
-                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                    if(item.value === $scope.thing.fieldName) {
+                        console.log(item.value + " is used in " + field + ". deleting " + field + " from" + $scope.objectType + " " + object.id);
+                        delete object.data[field];
+                    }
                 });
             } else if(data.type === 'inequality') {
                 _.each(data.leftExpressionItems, function(item) {
-                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                    if(item.value === $scope.thing.fieldName) {
+                        console.log(item.value + " is used in " + field + ". deleting " + field + " from" + $scope.objectType + " " + object.id);
+                        delete object.data[field];
+                    }
                 });
 
                 _.each(data.rightExpressionItems, function(item) {
-                    if(item.value === $scope.thing.fieldName) delete object.data[field];
+                    if(item.value === $scope.thing.fieldName) {
+                        console.log(item.value + " is used in " + field + ". deleting " + field + " from" + $scope.objectType + " " + object.id);
+                        delete object.data[field];
+                    }
                 });
             }
         });
@@ -72,11 +84,14 @@ angular.module('clientApp')
                 switch($scope.thing.type) {
                     case 'field': 
                         $scope.objects.forEach(function(obj) {
-                            delete obj.data[$scope.thing.fieldName];
-                            ctrl.deleteExpressionsUsingField(obj).then(function(objToUpdate) {
-                                $scope.update(obj);
-                                // TODO: What to do with logs containing this field?
-                                // TODO: Wht happens to fields used in expressions? -> delete them too
+                            objectHelpers.removeFieldFromExpressions(obj, $scope.thing.fieldName).then(function(objWithRemovedField) {
+                                objectHelpers.updateDisplayExpressions(objWithRemovedField).then(function(objToUpdate) {
+                                    delete obj.data[$scope.thing.fieldName];
+                                    // console.log(objToUpdate);
+                                    $scope.update(objToUpdate);
+                                    // TODO: What to do with logs containing this field?
+                                    // TODO: Wht happens to fields used in expressions? -> delete them too
+                                });
                             });
                         });
                         break;

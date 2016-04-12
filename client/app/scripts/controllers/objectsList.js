@@ -12,7 +12,12 @@ angular.module('clientApp')
     
     var ctrl = this;
     $scope.objectType = objectType;
-    $scope.objects = [];
+    console.log($scope.$eval("3*null"));
+    console.log($scope.$eval("null"));
+    console.log($scope.$eval(null));
+    console.log($scope.$eval("undefined"));
+    console.log($scope.$eval(undefined));
+    console.log($scope.$eval(null+"<="+"3000"));
 
     ctrl.getObjects = function () {
         switch($scope.objectType) {
@@ -27,11 +32,15 @@ angular.module('clientApp')
             case "prospect":
                 $scope.title = { value: "Prospect" };
                 $scope.profile = { state: 'prospectData({ id: object.id })' };
-                // $scope.prospectStatuses = prospectHelpers.getProspectStatuses;
-                // $scope.statuses = $scope.prospectStatuses.statuses;
-                // $scope.order = [];
-                // $scope.newIndex = { val: null };    // stores index changes
-                // for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i; 
+
+                prospectHelpers.getStatuses().then(function(result) {
+                    $scope.prospectStatuses = result.data; 
+                    $scope.statuses = $scope.prospectStatuses.statuses;
+                    $scope.order = [];
+                    $scope.newIndex = { val: null };    // stores index changes
+                    for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;
+                });
+                 
                 return prospectHelpers.get;
             case "asset":
                 $scope.title = { value: "Asset" };
@@ -44,6 +53,7 @@ angular.module('clientApp')
                 return assetHelpers.getAssets;
             default:
                 $scope.title = { value: "Car" };
+                $scope.profile = { state: 'carData({ id: object.id })' };
                 return carHelpers.get;
         }
     };
@@ -163,14 +173,14 @@ angular.module('clientApp')
             if(asset.status.value === oldName) {
                 asset.status.value = newName;
                 asset.data.status.value = newName;
-                dataService.updateAsset(asset);
+                assetHelpers.update(asset);
             }
         });
     };
 
     $scope.saveType = function(data, oldIndex, oldName) {
         if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val)
-        dataService.updateAssetTypes($scope.assetTypes);
+        assetHelpers.updateTypes($scope.assetTypes);
         $scope.updateTypeInAssets(oldName, data.name);
         $state.forceReload();
     };
@@ -187,18 +197,18 @@ angular.module('clientApp')
 
     // when status name changes
     $scope.updateStatusInProspects = function(oldName, newName) {
-        _.each($scope.prospects, function(prospect) {
+        _.each($scope.objects, function(prospect) {
             if(prospect.status.value === oldName) {
                 prospect.status.value = newName;
                 prospect.data.status.value = newName;
-                dataService.updateProspect(prospect);
+                prospectHelpers.update(prospect);
             }
         });
     };
 
     $scope.saveStatus = function(data, oldIndex, oldName) {
-        if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val)
-        dataService.updateProspectStatuses($scope.prospectStatuses);
+        if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val);
+        prospectHelpers.updateStatuses($scope.prospectStatuses);
         $scope.updateStatusInProspects(oldName, data.name);
         $state.forceReload();
     };
@@ -210,11 +220,11 @@ angular.module('clientApp')
     // when a status is deleted
     $scope.unassignProspects = function(statusName) {
         var defaultStatus = $scope.getDefaultStatus();
-        _.each($scope.prospects, function(prospect) {
+        _.each($scope.objects, function(prospect) {
             if(prospect.status.value === statusName) {
                 prospect.status = defaultStatus;
                 prospect.data.status = defaultStatus;
-                dataService.updateProspect(prospect);
+                prospectHelpers.update(prospect);
             }
         });
     }
@@ -224,7 +234,7 @@ angular.module('clientApp')
     $scope.deleteStatus = function(index, statusName) {
         $scope.statuses.splice(index, 1);
         $scope.prospectStatuses.statuses = $scope.statuses;
-        dataService.updateProspectStatuses($scope.prospectStatuses);
+        prospectHelpers.updateStatuses($scope.prospectStatuses);
         $scope.unassignProspects(statusName);
         $state.forceReload();
     };
@@ -236,8 +246,8 @@ angular.module('clientApp')
             controller: 'ProspectStatusModalCtrl',
             size: 'md',
             resolve: {
-                getProspectStatuses: function(dataService) {
-                    return dataService.getProspectStatuses();
+                getProspectStatuses: function() {
+                    return prospectHelpers.getStatuses();
                 }
             }
         });

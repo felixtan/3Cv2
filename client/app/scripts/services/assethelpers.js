@@ -184,22 +184,32 @@ angular.module('clientApp')
       // console.log(assetType);
       getAssets().then(function(result) {
         filterAssets(result.data, assetType).then(function(assets) {
-          if(assets.length) {
-            // console.log('there are assets of type ' + assetType);
-            _.each(Object.keys(assets[0].data), function(field) {
-              formData[field] = {
-                value: ((field === 'assetType') ? assetType : null),
-                log: assets[0].data[field].log,
-                dataType: assets[0].data[field].dataType || null,
-                type: assets[0].data[field].type || null,
-              }
-            });
-            // console.log(formData);
-            deferred.resolve({
-              formData: formData,
-              representativeData: assets[0].data
-            });
-            deferred.reject(new Error('Error initializing asset form data'));
+          if(typeof assets !== 'undefined') {
+            if(assets.length > 0) {
+              // console.log('there are assets of type ' + assetType);
+              _.each(assets[0].data, function(data, field) {
+                formData[field] = {
+                  value: (field === 'assetType') ? assetType : null,
+                  log: data.log,
+                  dataType: data.dataType || null,
+                  type: data.type || null,
+                  expression: (data.type === 'function') ? data.expression : undefined,
+                  expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
+                  leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
+                  rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
+                  inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
+                  leftExpression: (data.type === 'inequality') ? data.leftExpression : undefined,
+                  rightExpression: (data.type === 'inequality') ? data.rightExpression : undefined,
+                  inequalitySign: (data.type === 'inequality') ? data.inequalitySign : undefined,
+                }
+              });
+              // console.log(formData);
+              deferred.resolve({
+                formData: formData,
+                representativeData: assets[0].data
+              });
+              deferred.reject(new Error('Error initializing asset form data'));
+            }
           } else {
             // console.log(result);
             // console.log('there are no assets of type ' + assetType);

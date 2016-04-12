@@ -8,60 +8,42 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('EditFieldModalCtrl', function ($modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+  .controller('EditFieldModalCtrl', function (objectHelpers, $modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
     
-    var ctrl = this;
+    var ctrl = this,
+        buildEvalExpression = objectHelpers.buildEvalExpression,
+        buildDisplayExpression = objectHelpers.buildDisplayExpression;
 
-    $scope.setInequalitySign = function() {
-      switch(parseInt($scope.field.inequalitySignId)) {
-        case 0:
-          // $scope.field.inequalitySign = '>';      // might want to use html codes instead
-          $scope.field.inequalitySign = ">";
-          // $scope.field.inequalitySignId = 0;
-          break;
-        case 1:
-          $scope.field.inequalitySign = '≥';
-          // $scope.field.inequalitySignId = 1;
-          break;
-        case 2:
-          $scope.field.inequalitySign = '<';
-          // $scope.field.inequalitySignId = 2;
-          break;
-        case 3:
-          $scope.field.inequalitySign = '≤';
-          // $scope.field.inequalitySignId = 3;
-          break;
-        default:
-          $scope.field.inequalitySign = undefined;
-          break;
-      }
+    $scope.fieldNamesNotToEdit = [];
+    $scope.statuses = null;
+    $scope.prospectStatuses = null;
+
+    String.prototype.capitalizeIfStatus = function() {
+        return (this === 'status' && $scope.objectType === "prospect") ? (this.charAt(0).toUpperCase() + this.slice(1)) : this;
     };
 
-    ctrl.updateExpressionFieldsIfFieldNameChanged = function (oldName, newName, object) {
-      var deferred = $q.defer();
+    $scope.dontEditFieldName = function(fieldName) {
+      return _.contains($scope.fieldNamesNotToEdit, fieldName);
+    };
 
-      if(oldName !== newName) {
-        ctrl.replaceFieldNameInExpressions(oldName, newName, object.data).then(function(objectDataWithUpdatedExpressions) {
-          _.each(objectDataWithUpdatedExpressions, function(data, field, list) {
-            if(data.type === 'function') {
-              ctrl.buildEvalExpressionv2(list, data.expressionItems, object.id).then(function(expression) {
-                object.data[field].value = $scope.$eval(expression);
-              });
-            } else if(data.type === 'inequality') {
-              ctrl.buildEvalExpressionv2(list, data.leftExpressionItems, object.id).then(function(leftExpression) {
-                ctrl.buildEvalExpressionv2(list, data.rightExpressionItems, object.id).then(function(rightExpression) {
-                  var inequalitySign = ctrl.getInequalitySign(data.inequalitySignId);
-                  object.data[field].value = $scope.$eval(leftExpression+inequalitySign+rightExpression);
-                });
-              });
-            }
-          });
-        });
+    $scope.displayInequalitySign = function(signId) {
+      switch(parseInt(signId)) {
+        case 0:
+          return ">";
+          break;
+        case 1:
+          return '≥';
+          break;
+        case 2:
+          return '<';
+          break;
+        case 3:
+          return '≤';
+          break;
+        default:
+          return "?";
+          break;
       }
-
-      deferred.resolve(object);
-      deferred.reject(new Error("Error updating expressions"));
-      return deferred.promise;
     };
 
     ctrl.replaceFieldNameInExpressions = function (oldName, newName, objectData) {
@@ -72,8 +54,13 @@ angular.module('clientApp')
         if(data.type === 'function') {
           console.log(data);
           console.log(field);
+          
           data.expression = _.each(data.expressionItems, function(item) {
-            if(item.type === 'field' && item.value === oldName) item.value = newName;
+            if(item.type === 'field' && item.value === oldName) {
+              item.value = newName;
+              data.fieldsUsed[newName] = data.fieldsUsed[oldName];
+              delete data.fieldsUsed[oldName];
+            }
           }).reduce(function(memo, item) {
             return memo + item.value;
           }, "");
@@ -83,25 +70,26 @@ angular.module('clientApp')
         } else if(data.type === 'inequality') {
           console.log(data);
           console.log(field);
-          var leftExpression = _.each(data.leftExpressionItems, function(item) {
+          
+          data.leftExpression = _.each(data.leftExpressionItems, function(item) {
             if(item.type === 'field' && item.value === oldName) item.value = newName;
           }).reduce(function(memo, item) {
             return memo + item.value;
           }, "");
 
-          var rightExpression = _.each(data.rightExpressionItems, function(item) {
+          data.rightExpression = _.each(data.rightExpressionItems, function(item) {
             if(item.type === 'field' && item.value === oldName) item.value = newName;
           }).reduce(function(memo, item) {
             return memo + item.value;
           }, "");
 
-          var inequalitySign = ctrl.getInequalitySign(data.inequalitySignId);
+          data.inequalitySign = objectHelpers.getInequalitySign(data.inequalitySignId);
+          data.fieldsUsed[newName] = data.fieldsUsed[oldName];
+          delete data.fieldsUsed[oldName];
 
-          data.expression = leftExpression + inequalitySign + rightExpression; 
-
-          console.log('expression:', data.expression);
-          console.log('leftExpressionItems:', data.leftExpressionItems);
-          console.log('rightExpressionItems:', data.rightExpressionItems);
+          // console.log('expression:', data.expression);
+          // console.log('leftExpressionItems:', data.leftExpressionItems);
+          // console.log('rightExpressionItems:', data.rightExpressionItems);
         }
       });
 
@@ -149,7 +137,7 @@ angular.module('clientApp')
       // angular.copy(object.data[field], newFieldData);       // for car 2 was being saved to both cars 2 and 3
 
       if($scope.field.type === 'function') {
-        ctrl.buildEvalExpression(object, object.data[field].expressionItems).then(function(expression) {
+        buildEvalExpression(object.data, object.data[field].expressionItems).then(function(expression) {
           // console.log(expression);
           object.data[field].value = $scope.$eval(expression);
 
@@ -157,9 +145,9 @@ angular.module('clientApp')
           deferred.reject(new Error('Error evaluating expression'));
         });
       } else if($scope.field.type === 'inequality') {
-        ctrl.buildEvalExpression(object, object.data[field].leftExpressionItems).then(function(leftExpression) {
-          ctrl.buildEvalExpression(object, object.data[field].rightExpressionItems).then(function(rightExpression) {
-            inequalitySign = ctrl.getInequalitySign(object.data[field].inequalitySignId);                       
+        buildEvalExpression(object.data, object.data[field].leftExpressionItems).then(function(leftExpression) {
+          buildEvalExpression(object.data, object.data[field].rightExpressionItems).then(function(rightExpression) {
+            inequalitySign = objectHelpers.getInequalitySign(object.data[field].inequalitySignId);                       
             
             // console.log(leftExpression + inequalitySign + rightExpression);
             object.data[field].value = $scope.$eval(leftExpression + inequalitySign + rightExpression);
@@ -174,51 +162,6 @@ angular.module('clientApp')
         deferred.reject(new Error('Error evaluating expression'));
       }
       
-      return deferred.promise;
-    };
-
-    // build expression for $scope.$eval
-    ctrl.buildEvalExpression = function(object, expressionItems) {
-      var deferred = $q.defer(),
-          expression = "";
-      // console.log(fieldData);
-      // console.log(expressionItems);
-      _.each(expressionItems, function(item) {
-        if(item.type === 'field') {
-          // console.log(item);
-          // console.log(object.data);
-          // console.log(object.data[item.value]);
-          // console.log(object.data[item.value].value);
-          expression += object.data[item.value].value;
-        } else {
-          expression += item.value;          
-        }
-      });
-
-      deferred.resolve(expression);
-      deferred.reject(new Error('Error building expression'));
-      return deferred.promise;
-    };
-
-    ctrl.buildEvalExpressionForLogs = function(object, expressionItems) {
-      var deferred = $q.defer(),
-          expression = "";
-      // console.log(fieldData);
-      // console.log(expressionItems);
-      _.each(expressionItems, function(item) {
-        if(item.type === 'field') {
-          // console.log(item);
-          // console.log(object.data);
-          // console.log(object.data[item.value]);
-          // console.log(object.data[item.value].value);
-          expression += object.data[item.value].value;
-        } else {
-          expression += item.value;          
-        }
-      });
-
-      deferred.resolve(expression);
-      deferred.reject(new Error('Error building expression'));
       return deferred.promise;
     };
 
@@ -249,75 +192,13 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    // display (string only) expression
-    ctrl.buildExpression = function(expressionItems) {
-        var deferred = $q.defer(),
-            expression = "";
-
-        _.each(expressionItems, function(item) {
-          expression += item.value
-        });
-
-        deferred.resolve(expression);
-        deferred.reject(new Error('Error building expression'));
-        return deferred.promise;
-    };
-
-    ctrl.getInequalitySign = function(signId) {
-      switch(parseInt(signId)) {
-        case 0:
-          return ">";
-          break;
-        case 1:
-          return '>=';
-          break;
-        case 2:
-          return '<';
-          break;
-        case 3:
-          return '<=';
-          break;
-        default:
-          return '?';
-          break;
-      }
-    };
-
-    ctrl.initDisplayExpression = function() {
-
-        if($scope.field.type === 'function') {
-            $scope.field.expression = "";
-            _.each($scope.field.expressionItems, function(item) {
-                // console.log(item);
-                $scope.field.expression += item.value;
-                // console.log($scope.field.expression);
-            });
-        } else if($scope.field.type === 'inequality') {
-            $scope.field.leftExpression = "";
-            _.each($scope.field.leftExpressionItems, function(item) {
-                // console.log(item.value);
-                $scope.field.leftExpression += item.value;
-                // console.log($scope.field.leftExpression);
-            });
-
-            $scope.field.rightExpression = "";
-            _.each($scope.field.rightExpressionItems, function(item) {
-                // console.log(item.value);
-                $scope.field.rightExpression += item.value;
-                // console.log($scope.field.rightExpression);
-            });
-
-            $scope.setInequalitySign();
-        }
-    };
-
     ctrl.buildAndValidateExpression = function() {
       // console.log('building and validating');
       ctrl.displayExpression().then(function(expressionItems) {
         // console.log(expressionItems);
         ctrl.buildTestExpressionItems(expressionItems).then(function(testExpressionItems) {
           // console.log(testExpressionItems);
-          ctrl.buildExpression(testExpressionItems).then(function(testExpression) {
+          buildDisplayExpression(testExpressionItems).then(function(testExpression) {
             // console.log(testExpression);
             ctrl.validateExpression(testExpression);
           }); 
@@ -340,7 +221,7 @@ angular.module('clientApp')
         deferred.reject(new Error('Error building display expression'));
       } else {
         
-        $scope.setInequalitySign();
+        // $scope.setInequalitySign();
 
         if(!$scope.rightSide.value) {
           $scope.field.leftExpression = "";
@@ -379,29 +260,12 @@ angular.module('clientApp')
       // set $scope.validExpression
     };
 
-    ctrl.nothingChanged = function() {
-
+    $scope.isProspectStatus = function(fieldName) {
+      return $scope.objectType === 'prospect' && fieldName === 'status';
     };
 
     // INITIALIZE
     ctrl.initialize = function() {
-      $scope.field = {
-          name: field,
-          type: _object.data[field].type,
-          dataType: _object.data[field].dataType,
-          value: _object.data[field].value,
-          log: _object.data[field].log,
-          expression: null,
-          expressionItems: null,
-          leftExpression: null,
-          leftExpressionItems: null,
-          rightExpression: null,
-          rightExpressionItems: null,
-          inequalitySignId: null,
-          inequalitySign: null,
-          identifier: _object.identifier === field,
-      };
-
       $scope.logValueChanged = { value: false };
       $scope.expressionFieldSelect = { value: null };
       $scope.expressionConstantInput = { value: null };
@@ -413,35 +277,66 @@ angular.module('clientApp')
       $scope.objects = [];
       $scope.objectType = objectType;
 
+      // console.log($scope.object.status);
+      // console.log(field);
+      // console.log($scope.objectType);
+      // console.log($scope.isProspectStatus(field));
+      $scope.field = {
+          name: field,
+          type: $scope.object.data[field].type,
+          dataType: $scope.object.data[field].dataType,
+          value: $scope.isProspectStatus(field) ? $scope.object.status : $scope.object.data[field].value,
+          log: $scope.object.data[field].log,
+          expression: null,
+          expressionItems: null,
+          leftExpression: null,
+          leftExpressionItems: null,
+          rightExpression: null,
+          rightExpressionItems: null,
+          inequalitySignId: null,
+          inequalitySign: null,
+          identifier: $scope.object.identifier === field,
+      };
+
       if($scope.field.type === 'function') {
-        $scope.field.expression = _object.data[field].expression;
-        $scope.field.expressionItems = _object.data[field].expressionItems;
-        ctrl.initDisplayExpression(); 
+        $scope.field.expression = $scope.object.data[field].expression;
+        $scope.field.expressionItems = $scope.object.data[field].expressionItems;
+        // ctrl.initDisplayExpression(); 
       } else if($scope.field.type === 'inequality') {
-        $scope.field.leftExpressionItems = _object.data[field].leftExpressionItems;
-        $scope.field.rightExpressionItems = _object.data[field].rightExpressionItems;
-        $scope.field.inequalitySignId = _object.data[field].inequalitySignId;
-        ctrl.initDisplayExpression(); 
+        $scope.field.leftExpressionItems = $scope.object.data[field].leftExpressionItems;
+        $scope.field.rightExpressionItems = $scope.object.data[field].rightExpressionItems;
+        $scope.field.inequalitySignId = $scope.object.data[field].inequalitySignId;
+        $scope.field.inequalitySign = $scope.object.data[field].inequalitySign;
+        $scope.field.rightExpression = $scope.object.data[field].rightExpression;
+        $scope.field.leftExpression = $scope.object.data[field].leftExpression;
+        // ctrl.initDisplayExpression(); 
       } else {
         // nada
       }
     };
     ctrl.initialize();
-    ctrl.setValidFieldsForExpressions(_object.data);
+    ctrl.setValidFieldsForExpressions($scope.object.data);
 
     if(objectType === 'car') {
         // console.log('object type is car');
         $scope.update = carHelpers.update;
         $scope.objects = getCars;
     } else if(objectType === 'driver') {
+      $scope.fieldNamesNotToEdit.push("First Name", "Last Name");
         $scope.update = driverHelpers.update;
         $scope.objects = getDrivers;
     } else if(objectType === 'prospect') {
+        $scope.fieldNamesNotToEdit.push("status", "First Name", "Last Name");
         $scope.update = prospectHelpers.update;
         $scope.objects = getProspects;
+        prospectHelpers.getStatuses().then(function(result) {
+          $scope.prospectStatuses = result.data;
+          $scope.statuses = $scope.prospectStatuses.statuses;
+          // console.log($scope.statuses);
+        });
     } else if (objectType === 'asset') {
         $scope.update = assetHelpers.update;
-        // $scope.objects = assetHelpers.getAssetsOfType(_object.assetType);
+        // $scope.objects = assetHelpers.getAssetsOfType($scope.object.assetType);
         $scope.objects = getAssets;
     } else {
         alert('Unrecognized object type!');
@@ -552,8 +447,7 @@ angular.module('clientApp')
       } else if($scope.field.type === 'inequality') {
         delete data.expressionItems;
         delete data.inequalitySign;
-        delete data.rightExpression;
-        delete data.leftExpression;
+        delete data.expression;
 
         fieldData.leftExpressionItems = $scope.field.leftExpressionItems;
         fieldData.rightExpressionItems = $scope.field.rightExpressionItems;
@@ -574,18 +468,20 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    ctrl.appendExpressionToData = function(object) {
+    ctrl.buildAndAppendDisplayExpression = function(object) {
       var deferred = $q.defer();
 
       if($scope.field.type === 'function') {
-        ctrl.buildExpression($scope.field.expressionItems).then(function(expression) {
+        buildDisplayExpression($scope.field.expressionItems).then(function(expression) {
           object.data[field].expression = expression;
         });
       } else if($scope.field.type === 'inequality') {
-        ctrl.buildExpression($scope.field.leftExpressionItems).then(function(leftExpression) {
-          ctrl.buildExpression($scope.field.rightExpressionItems).then(function(rightExpression) {
-            var inequalitySign = ctrl.getInequalitySign($scope.field.inequalitySignId);
-            object.data[field].expression = leftExpression + inequalitySign + rightExpression;
+        buildDisplayExpression($scope.field.leftExpressionItems).then(function(leftExpression) {
+          buildDisplayExpression($scope.field.rightExpressionItems).then(function(rightExpression) {
+            var inequalitySign = objectHelpers.getInequalitySign($scope.field.inequalitySignId);
+            object.data[field].leftExpression = leftExpression;
+            object.data[field].inequalitySign = inequalitySign;
+            object.data[field].rightExpression = rightExpression;
           });
         });
       }
@@ -609,18 +505,6 @@ angular.module('clientApp')
                 Implement functions and inequalities for logs
                 1. It calculates value only if all requisite fields are also logged and have a value for a given log
             */ 
-            // if($scope.field.type === 'function') {
-            //   ctrl.buildEvalExpression(object, object.data[field].expressionItems).then(function(expression) {
-            //     log.data[$scope.field.name] = $scope.$eval(expression);
-            //   });
-            // } else if($scope.field.type === 'inequality') {
-            //   ctrl.buildEvalExpression(object, object.data[field].leftExpressionItems).then(function(leftExpression) {
-            //     ctrl.buildEvalExpression(object, object.data[field].rightExpressionItems).then(function(rightExpression) {
-            //       var inequalitySign = ctrl.getInequalitySign($scope.field.inequalitySignId);
-            //       log.data[$scope.field.name] = $scope.$eval(leftExpression+inequalitySign+rightExpression);
-            //     });
-            //   });
-            // }
           });
         }
       } else {
@@ -638,44 +522,61 @@ angular.module('clientApp')
     };
 
     $scope.submit = function() {
-      console.log($scope.field);
-      _.each($scope.objects, function(object) {
-        ctrl.updateLogStuff(object).then(function(withUpdatedLogs) {
-          console.log('1 object:', withUpdatedLogs);
-          ctrl.appendExpressionToData(withUpdatedLogs).then(function(withAppendedExpression) {
-            console.log('2 object:', withAppendedExpression);
-            ctrl.pruneFieldData(withAppendedExpression.data[field]).then(function() {
-              ctrl.updateExpressionFieldsIfFieldNameChanged(field, $scope.field.name, withUpdatedLogs).then(function(withUpdatedExpressions) {
-                console.log('3  object data:', withUpdatedExpressions);
-                ctrl.evaluateExpressionAndAppendValue(withAppendedExpression).then(function(withValue) {
-                  console.log('4 field data:', withValue);
-                  // ctrl.updateLogStuff()
+      if($scope.objectType === 'prospect' && $scope.field.name === 'status') {
+        // console.log($scope.field);
+        $scope.object.status = $scope.field.value;
+        $scope.object.data[$scope.field.name].value = $scope.field.value.value;
+        $scope.update($scope.object);
+      } else {
+        _.each($scope.objects, function(object) {
+          ctrl.updateLogStuff(object).then(function(withUpdatedLogs) {
+            console.log('1 object:', withUpdatedLogs);
+            ctrl.buildAndAppendDisplayExpression(withUpdatedLogs).then(function(withAppendedExpression) {
+              console.log('2 object:', withAppendedExpression);
+              ctrl.pruneFieldData(withAppendedExpression.data[field]).then(function() {
+                objectHelpers.updateExpressionFieldsIfFieldNameChanged(field, $scope.field.name, withAppendedExpression.data).then(function(dataWithUpdatedExpressions) {
+                  withAppendedExpression.data = dataWithUpdatedExpressions;
+                  var withUpdatedExpressions = withAppendedExpression;
+                  console.log('3 object:', withUpdatedExpressions);
+                  ctrl.evaluateExpressionAndAppendValue(withUpdatedExpressions).then(function(withValue) {
+                    console.log('4 object:', withValue);
+                    objectHelpers.storeFieldsUsed(withValue, field).then(function(withUpdatedFieldsUsed) {
+                      console.log('5 object:', withUpdatedFieldsUsed);
+                      objectHelpers.updateFieldValueAndExpressionValues($scope.field.value, field, withUpdatedFieldsUsed, $scope.object.id).then(function(objectToSave) {
+                        console.log('6 object:', objectToSave);
+                        // ctrl.updateLogStuff()
 
-                  // identifier changed?
-                  if($scope.field.identifier) {
-                    withValue.identifier = $scope.field.name;
-                  }
+                        // identifier changed?
+                        if($scope.field.identifier) {
+                          objectToSave.identifier = $scope.field.name;
+                        }
 
-                  // relevant car AND field has no expression?
-                  if($scope.object.id === object.id && !($scope.field.type === 'function' || $scope.field.type === 'inequality')) {
-                    console.log("this should only be called once");
-                    withValue.data[field].value = $scope.field.value;
-                  }
+                        // if driver/prospect Last Name and/or First Name was changed, then update Name
+                        if(($scope.objectType === 'prospect' || $scope.objectType === 'driver') && ($scope.field.name === "First Name" || $scope.field.name === "Last Name")) {
+                          if($scope.field.name === "First Name") {
+                            objectToSave.data["Name"].value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
+                          } else if($scope.field.name === "Last Name") {
+                            objectToSave.data["Name"].value = objectToSave.data["First Name"].value + " " + $scope.field.value;
+                          }
+                        }
 
-                  // name changed?
-                  if(field !== $scope.field.name) {
-                    withValue.data[$scope.field.name] = withValue.data[field];
-                    delete withValue.data[field];
-                  }
+                        // field name changed?
+                        if(field !== $scope.field.name) {
+                          objectToSave.data[$scope.field.name] = objectToSave.data[field];
+                          delete objectToSave.data[field];
+                        }
 
-                  // console.log(object);
-                  $scope.update(withValue);
+                        // console.log(object);
+                        // $scope.update(objectToSave);
+                      });
+                    });
+                  });
                 });
               });
             });
           });
         });
-      });
+      }
 
       $scope.ok();
     };
@@ -716,7 +617,7 @@ angular.module('clientApp')
     };
 
     $scope.close = function () {
-        $state.forceReload();
+        // $state.forceReload();
         $modalInstance.dismiss('cancel');
     };
 
@@ -758,4 +659,36 @@ angular.module('clientApp')
             console.log('Modal dismissed at: ' + new Date());
         });
     };
+
+    //
+    // Prospect edit field stuff
+    ////////////////////////////////////////////////////////////
+
+    
+
+    // $scope.statusChanged = false;
+    // $scope.status = $scope.object.status.value;
+    $scope.setStatusChanged = function(statusName) {
+        var prospect = $scope.object;
+        if((prospect.status.value != statusName) 
+            || (prospect.data.status.value != statusName)
+            && (typeof statusName !== 'undefined') 
+            && (statusName !== null)) {
+            $scope.statusChanged = true;
+            $scope.status = statusName;
+        }
+    };
+
+    // when status name changes
+    $scope.updateStatus = function(prospect) {
+        console.log(prospect);
+        var deferred = $q.defer();
+        prospect.status.value = $scope.status;
+        prospect.data.status.value = $scope.status;
+        deferred.resolve(prospect);
+        deferred.reject(new Error("Error updating status of prospect" + prospect.id));
+        return deferred.promise;
+    };
+
+
   });

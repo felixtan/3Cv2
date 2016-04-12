@@ -20,6 +20,7 @@ angular.module('clientApp')
     var update = dataService.updateProspect;
     var deleteProspect = dataService.deleteProspect;
     var getStatuses = dataService.getProspectStatuses;
+    var updateStatuses = dataService.updateProspectStatuses;
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -169,10 +170,10 @@ angular.module('clientApp')
           });
         } else {
           getDefaultProspect().then(function(defaultProspect) {
-            console.log('there are no prospects');
+            // console.log('there are no prospects');
             deferred.resolve({
-                formData: defaultProspect,
-                representativeData: {}
+                formData: defaultProspect.data,
+                representativeData: defaultProspect,
             });
             deferred.reject(new Error('Error initializing prospect form data'));
           });
@@ -195,6 +196,7 @@ angular.module('clientApp')
       getStatuses: getStatuses,
       saveProspect: saveProspect,
       update: update,
+      updateStatuses: updateStatuses,
       createProspect: createProspect,
       deleteProspect: deleteProspect,
       thereAreProspects: thereAreProspects,
