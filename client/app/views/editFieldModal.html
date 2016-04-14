@@ -62,7 +62,7 @@
                 <!-- {{ formData[field].value }} -->
         </div>
 
-        <div class='form-group' ng-if='objectType !== "prospect"'>
+        <div class='form-group' ng-if='loggable(field.name)'>
             <label for='logValue'>Log?</label>
             <br>
             <input bs-switch 

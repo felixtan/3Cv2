@@ -8,7 +8,7 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-    .factory('objectHelpers', function ($rootScope, ENV, $q, dataService, $state) {
+    .factory('objectHelpers', function ($rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
         return {
             isValid: isValid,
@@ -26,6 +26,8 @@ angular.module('clientApp')
             buildEvalExpression: buildEvalExpression,
             updateDisplayExpressions: updateDisplayExpressions,
             updateFieldValueAndExpressionValues: updateFieldValueAndExpressionValues,
+            updateDataIfFieldNameChanged: updateDataIfFieldNameChanged,
+            getFormDataAndReference: getFormDataAndReference,
         }
 
         /*
@@ -174,10 +176,14 @@ angular.module('clientApp')
 
         function simplify (objects) {
             return _.map(objects, function(object) {
+                // console.log(object.id);
+                // console.log(object.identifier);
+                // console.log(object.data);
                 return {
                     id: object.id,
+                    identifier: object.identifier,
                     identifierValue: object.data[object.identifier].value,
-                    assetType: object.assetType || null,
+                    assetType: (!(object.assetType === null) && (typeof object.assetType === 'string')) ? object.assetType : null,
                 };
             });
         };
@@ -185,8 +191,9 @@ angular.module('clientApp')
         function simplifyOne (object) {
             return {
                 id: object.id,
+                identifier: object.identifier,
                 identifierValue: object.data[object.identifier].value,
-                assetType: object.assetType || null,
+                assetType: (!(object.assetType === null) && (typeof object.assetType === 'string')) ? object.assetType : null,
             };
         };
 
@@ -250,6 +257,19 @@ angular.module('clientApp')
           return deferred.promise;
         };
 
+        function updateDataIfFieldNameChanged (oldName, newName, object) {
+            var deferred = $q.defer();    
+
+            if(oldName !== newName) {
+                object.data[newName] = object.data[oldName];
+                delete object.data[oldName];
+            }
+
+            deferred.resolve(object);
+            deferred.reject(new Error("Error changing field name " + oldName + " to " + newName));
+            return deferred.promise;
+        };
+
         // This is only used in editFieldModal.js as far as I can can tell so it's a waste puttin it here
         function updateExpressionFieldsIfFieldNameChanged (oldName, newName, objectData) {
             var deferred = $q.defer();
@@ -286,6 +306,9 @@ angular.module('clientApp')
       
           // console.log('field name changed, checking if expressions should be updated');
           _.each(objectData, function(data, field, list) {
+            // console.log(data);
+            // console.log(field);
+            // console.log(list);
             if(data.type === 'function') {
               // console.log(data);
               // console.log(field);
@@ -340,10 +363,10 @@ angular.module('clientApp')
             // console.log(expressionItems);
             _.each(expressionItems, function(item) {
                 if(item.type === 'field') {
-                // console.log(item);
-                // console.log(objectData);
-                // console.log(objectData[item.value]);
-                // console.log(isValid(objectData[item.value].value));
+                console.log(item);
+                console.log(objectData);
+                console.log(objectData[item.value]);
+
                     if(isValid(objectData[item.value].value)) {
                         expression += objectData[item.value].value;
                     } else {
@@ -580,6 +603,87 @@ angular.module('clientApp')
 
             deferred.resolve(reduced);
             deferred.reject(new Error("Error pairing field with indices in expression items"));
+            return deferred.promise;
+        };
+
+        /*
+            Used when creating a new field
+        */
+        function getFormDataAndReference (objectType, assetType) {
+            var deferred = $q.defer(),
+                objectData,
+                formData = {},
+                get,
+                getDefaultObject,
+                object;
+
+            if (objectType === 'car') {
+                get = carHelpers.get;
+                getDefaultObject = carHelpers.getDefaultCar;
+            } else if (objectType === 'driver') {
+                get = driverHelpers.get;
+                getDefaultObject = driverHelpers.getDefaultDriver;
+            } else if (objectType === 'prospect') {
+                get = prospectHelpers.get;
+                getDefaultObject = prospectHelpers.getDefaultProspect;
+            } else if (objectType === 'asset') {
+                get = assetHelpers.getByType(assetType);
+            } else {
+                deferred.reject(undefined);
+            }
+
+            get().then(function(result) {
+                if(isValid(result.data)) {
+                    if(result.data.length > 0) {
+                        object = result.data[0];
+                        objectData = object.data;
+
+                        _.each(objectData, function(data, field, list) {
+                            // console.log(data);
+                            // console.log(field);
+                            // console.log(list);
+                            formData[field] = {
+                                value: (data.type === 'boolean') ? false : null,
+                                log: data.log,
+                                dataType: data.dataType,
+                                type: data.type,
+                            };
+
+                            if (data.type === 'function') formData[field].expression = data.expression;
+                            if (data.type === 'function') formData[field].expressionItems = data.expressionItems;
+                            if (data.type === 'inequality') formData[field].leftExpressionItems = data.leftExpressionItems;
+                            if (data.type === 'inequality') formData[field].rightExpressionItems = data.rightExpressionItems;
+                            if (data.type === 'inequality') formData[field].inequalitySignId = data.inequalitySignId;
+                            if (data.type === 'inequality') formData[field].leftExpression = data.leftExpression;
+                            if (data.type === 'inequality') formData[field].rightExpression = data.rightExpression;
+                            if (data.type === 'inequality') formData[field].inequalitySign = data.inequalitySign;
+
+                            if (data.type === 'number' || data.type === 'function') formData[field].expressionsUsedIn = data.expressionsUsedIn;
+                            if (data.type === 'inequality' || data.type === 'function') formData[field].fieldsUsed = data.fieldsUsed;
+                        });
+
+                        deferred.resolve({
+                            formData: formData,
+                            referenceObject: object,
+                        });
+                        deferred.reject(new Error('Error initializing form data for ' + objectType));
+                    } else {
+                        deferred.resolve({
+                            formData: getDefaultObject().data,
+                            referenceObject: getDefaultObject(),
+                        });
+                        deferred.reject(new Error('Error initializing form data for ' + objectType));
+                    }
+                } else {
+                    deferred.resolve({
+                        formData: getDefaultObject().data,
+                        referenceObject: getDefaultObject(),
+                    });
+                    deferred.reject(new Error('Error initializing form data for ' + objectType));
+                }
+            });
+            
+            // deferred.reject(new Error('Error initializing form data for ' + objectType));
             return deferred.promise;
         };
     });

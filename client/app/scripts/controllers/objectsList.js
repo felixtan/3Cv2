@@ -12,12 +12,6 @@ angular.module('clientApp')
     
     var ctrl = this;
     $scope.objectType = objectType;
-    console.log($scope.$eval("3*null"));
-    console.log($scope.$eval("null"));
-    console.log($scope.$eval(null));
-    console.log($scope.$eval("undefined"));
-    console.log($scope.$eval(undefined));
-    console.log($scope.$eval(null+"<="+"3000"));
 
     ctrl.getObjects = function () {
         switch($scope.objectType) {
@@ -34,8 +28,8 @@ angular.module('clientApp')
                 $scope.profile = { state: 'prospectData({ id: object.id })' };
 
                 prospectHelpers.getStatuses().then(function(result) {
-                    $scope.prospectStatuses = result.data; 
-                    $scope.statuses = $scope.prospectStatuses.statuses;
+                    ctrl.prospectStatuses = result.data; 
+                    $scope.statuses = ctrl.prospectStatuses.statuses;
                     $scope.order = [];
                     $scope.newIndex = { val: null };    // stores index changes
                     for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;
@@ -60,8 +54,8 @@ angular.module('clientApp')
 
     ctrl.getObjects()().then(function(result) {
         $scope.objects = result.data;
-        $scope.identifier = $scope.thereAreObjects() ? $scope.objects[0].identifier : null;
         $scope.simpleObjects = objectHelpers.simplify($scope.objects);
+        // ctrl.identifier = $scope.thereAreObjects() ? $scope.objects[0].identifier : null;
     });
 
     // submit xeditable row form by pressing enter
@@ -162,7 +156,7 @@ angular.module('clientApp')
         this.splice(new_index, 0, this.splice(old_index, 1)[0]);
     };
 
-    $scope.updateOrder = function(oldIndex, newIndex) {
+    ctrl.updateOrder = function(oldIndex, newIndex) {
         $scope.types.move(oldIndex, newIndex);
         $scope.assetTypes.types = $scope.types;
     };
@@ -179,7 +173,7 @@ angular.module('clientApp')
     };
 
     $scope.saveType = function(data, oldIndex, oldName) {
-        if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val)
+        if(oldIndex != $scope.newIndex.val) ctrl.updateOrder(oldIndex, $scope.newIndex.val)
         assetHelpers.updateTypes($scope.assetTypes);
         $scope.updateTypeInAssets(oldName, data.name);
         $state.forceReload();
@@ -190,13 +184,13 @@ angular.module('clientApp')
     /////////////////////////////////////////////////////////////////////
     $scope.belongsToStatus = prospectHelpers.belongsToStatus;
 
-    $scope.updateOrder = function(oldIndex, newIndex) {
+    ctrl.updateOrder = function(oldIndex, newIndex) {
         $scope.statuses.move(oldIndex, newIndex);
-        $scope.prospectStatuses.statuses = $scope.statuses;
+        ctrl.prospectStatuses.statuses = $scope.statuses;
     };
 
     // when status name changes
-    $scope.updateStatusInProspects = function(oldName, newName) {
+    ctrl.updateStatusInProspects = function(oldName, newName) {
         _.each($scope.objects, function(prospect) {
             if(prospect.status.value === oldName) {
                 prospect.status.value = newName;
@@ -207,19 +201,19 @@ angular.module('clientApp')
     };
 
     $scope.saveStatus = function(data, oldIndex, oldName) {
-        if(oldIndex != $scope.newIndex.val) $scope.updateOrder(oldIndex, $scope.newIndex.val);
-        prospectHelpers.updateStatuses($scope.prospectStatuses);
-        $scope.updateStatusInProspects(oldName, data.name);
+        if(oldIndex != $scope.newIndex.val) ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+        prospectHelpers.updateStatuses(ctrl.prospectStatuses);
+        ctrl.updateStatusInProspects(oldName, data.name);
         $state.forceReload();
     };
 
-    $scope.getDefaultStatus = function() {
+    ctrl.getDefaultStatus = function() {
         return _.findWhere($scope.statuses, { special: true });
     };
 
     // when a status is deleted
-    $scope.unassignProspects = function(statusName) {
-        var defaultStatus = $scope.getDefaultStatus();
+    ctrl.unassignProspects = function(statusName) {
+        var defaultStatus = ctrl.getDefaultStatus();
         _.each($scope.objects, function(prospect) {
             if(prospect.status.value === statusName) {
                 prospect.status = defaultStatus;
@@ -233,9 +227,9 @@ angular.module('clientApp')
     // Prospects with the deleted status are reassigned to Unassigned
     $scope.deleteStatus = function(index, statusName) {
         $scope.statuses.splice(index, 1);
-        $scope.prospectStatuses.statuses = $scope.statuses;
-        prospectHelpers.updateStatuses($scope.prospectStatuses);
-        $scope.unassignProspects(statusName);
+        ctrl.prospectStatuses.statuses = $scope.statuses;
+        prospectHelpers.updateStatuses(ctrl.prospectStatuses);
+        ctrl.unassignProspects(statusName);
         $state.forceReload();
     };
 

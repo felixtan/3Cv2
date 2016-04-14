@@ -10,40 +10,30 @@
 angular.module('clientApp')
   .controller('AddFieldModalInstanceCtrl', function (objectHelpers, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
 
-    var ctrl = this,
-        isValid = objectHelpers.isValid,
+    var isValid = objectHelpers.isValid,
         buildEvalExpression = objectHelpers.buildEvalExpression;
 
+    var ctrl = this;
+    ctrl.update = null;
+    ctrl.fields = [];
+    ctrl.objects = [];
+    ctrl.objectType = objectType;
+    ctrl.assetType = assetType;
+
     $scope.formData = {};
-    $scope.objects = [];
-    $scope.update = null;
-    $scope.fields = [];
     $scope.expressionFieldSelect = { value: null };
     $scope.expressionConstantInput = { value: null };
-    $scope.objectType = objectType;
-    $scope.assetType = assetType;
-
-    // Inequalities
+    
+    // Expressions
     $scope.rightSide = { value: false };
-
-    ctrl.testExpressionItems = [];
     $scope.validExpression = { value: true };      // this will depend on results from mexp
-    ctrl.testExpression = "";       // passed into mexp for validation, fields will be replaced with 1
     $scope.expressionErrorMessage = null;
-    ctrl.rightTestExpressionItems = [];
-    ctrl.leftTestExpressionItems = [];
     $scope.validFieldsForExpressions = [];
 
-    ctrl.setValidFieldsForExpressions = function(objectData) {
-        // only numbers
-        // neglect the field in questions or else shit gets recursive
-        // console.log(objectData);
-        var keys = Object.keys(objectData);
-        $scope.validFieldsForExpressions = _.filter(keys, function(key) {
-            // console.log(objectData[key].dataType);
-            return ((objectData[key].dataType === 'number'));
-        });
-    };
+    ctrl.testExpressionItems = [];
+    ctrl.testExpression = "";       // passed into mexp for validation, fields will be replaced with 1
+    ctrl.rightTestExpressionItems = [];
+    ctrl.leftTestExpressionItems = [];
 
     /*
       Type of field     Data type 
@@ -67,6 +57,17 @@ angular.module('clientApp')
       leftExpression: '',
       rightExpressionItems: [],
       rightExpression: '',
+    };
+
+    ctrl.setValidFieldsForExpressions = function(objectData) {
+        // only numbers
+        // neglect the field in questions or else shit gets recursive
+        // console.log(objectData);
+        var keys = Object.keys(objectData);
+        $scope.validFieldsForExpressions = _.filter(keys, function(key) {
+            // console.log(objectData[key].dataType);
+            return ((objectData[key].dataType === 'number'));
+        });
     };
 
     $scope.setInequalitySign = function(signId) {
@@ -96,7 +97,7 @@ angular.module('clientApp')
 
     $scope.setDataType = function(field) {
       $scope.clearExpression();
-      // setTimeout(function() {
+
       switch(field) {
         case "text":
           $scope.field.dataType = "text";
@@ -117,7 +118,6 @@ angular.module('clientApp')
           $scope.field.dataType = undefined;
           break;
       }
-      // }, 1000);
     };
 
     $scope.invalidFieldType = function() {
@@ -342,9 +342,12 @@ angular.module('clientApp')
 
     $scope.clearExpression = function() {
       ctrl.testExpression = "";
+      ctrl.testExpressionItems = [];
+      ctrl.leftTestExpressionItems = [];
+      ctrl.rightTestExpressionItems = [];
+
       $scope.field.expression = "";
       $scope.field.expressionItems = [];
-      ctrl.testExpressionItems = [];
       $scope.field.leftExpressionItems = [];
       $scope.field.leftExpression = "";
       $scope.field.rightExpressionItems = [];
@@ -353,28 +356,26 @@ angular.module('clientApp')
       $scope.field.inequalitySignId = null;
       $scope.validExpression.value = true;
       $scope.expressionErrorMessage = undefined;
-      ctrl.rightTestExpressionItems = [];
-      ctrl.leftTestExpressionItems = [];
     };
 
     if(objectType === 'car') {
       // console.log("add field modal called from carProfile");
-      $scope.update = dataService.updateCar;
-      if(typeof getCars !== 'undefined' && getCars.length > 0) $scope.objects = getCars;
+      ctrl.update = dataService.updateCar;
+      if(typeof getCars !== 'undefined' && getCars.length > 0) ctrl.objects = getCars;
     } else if(objectType === 'driver') {
       // console.log("add field modal called from driverProfile");
-      $scope.update = dataService.updateDriver;
-      if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) $scope.objects = getDrivers;
+      ctrl.update = dataService.updateDriver;
+      if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) ctrl.objects = getDrivers;
     } else if(objectType === 'prospect') {
       // console.log("add field modal called from prospectProfile");
-      $scope.update = dataService.updateProspect;
-      if(typeof getProspects !== 'undefined' && getProspects.length > 0) $scope.objects = getProspects;
+      ctrl.update = dataService.updateProspect;
+      if(typeof getProspects !== 'undefined' && getProspects.length > 0) ctrl.objects = getProspects;
     } else if(objectType === 'asset') {
       // console.log("add field modal called from assetProfile");
-      $scope.update = dataService.updateAsset;
-      $scope.assetType = getAssets.type;
-      var assetsOfType = _.filter(getAssets, function(asset) { return asset.assetType === $scope.assetType; });
-      if(assetsOfType !== 'undefined' && assetsOfType.length > 0) $scope.objects = assetsOfType;
+      ctrl.update = dataService.updateAsset;
+      ctrl.assetType = getAssets.type;
+      var assetsOfType = _.filter(getAssets, function(asset) { return asset.assetType === ctrl.assetType; });
+      if(assetsOfType !== 'undefined' && assetsOfType.length > 0) ctrl.objects = assetsOfType;
     } else {
       $state.go('dashboard.cars');
     }
@@ -382,14 +383,14 @@ angular.module('clientApp')
     //
     // General post-processing regardless of object
     ////////////////////////////////////////////////
-    if($scope.objects.length > 0) {
-      $scope.fields = Object.keys($scope.objects[0].data);
-      ctrl.setValidFieldsForExpressions($scope.objects[0].data); 
+    if(ctrl.objects.length > 0) {
+      ctrl.fields = Object.keys(ctrl.objects[0].data);
+      ctrl.setValidFieldsForExpressions(ctrl.objects[0].data); 
     }
     ////////////////////////////////////////////
 
     $scope.fieldNameAlreadyExists = function () {
-      return _.contains($scope.fields, $scope.field.name);
+      return _.contains(ctrl.fields, $scope.field.name);
     };
 
     ctrl.createNewFieldData = function(field) {
@@ -493,9 +494,9 @@ angular.module('clientApp')
       // });
 
       ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
-        if($scope.objects.length > 0) {
+        if(ctrl.objects.length > 0) {
           if($scope.field.type === 'function') {
-            _.each($scope.objects, function(object) {
+            _.each(ctrl.objects, function(object) {
               ctrl.evaluateExpression(object, $scope.field.expressionItems).then(function(expressionValue) {
                 // console.log(expressionValue);
                   fieldDataObj.value = expressionValue;
@@ -503,12 +504,12 @@ angular.module('clientApp')
                   // console.log('object after appending field:', objectv2);
                   objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
                     // console.log(objectv3);
-                    $scope.update(objectv3);
+                    ctrl.update(objectv3);
                   });
               });
             });
           } else if($scope.field.type === 'inequality') {
-            _.each($scope.objects, function(object) {
+            _.each(ctrl.objects, function(object) {
               ctrl.evaluateExpression(object, $scope.field.leftExpressionItems).then(function(leftExpressionValue) {
                 ctrl.evaluateExpression(object, $scope.field.rightExpressionItems).then(function(rightExpressionValue) {
                   leftExpressionValue = parseFloat(leftExpressionValue);
@@ -517,15 +518,15 @@ angular.module('clientApp')
                   var objectv2 = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
                   objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
                     // console.log(objectv3);
-                    $scope.update(objectv3);
+                    ctrl.update(objectv3);
                   });
                 });
               });
             });
           } else {
-            _.each($scope.objects, function(object) {
+            _.each(ctrl.objects, function(object) {
               var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-              $scope.update(objectToUpdate);
+              ctrl.update(objectToUpdate);
             });
           }
         }

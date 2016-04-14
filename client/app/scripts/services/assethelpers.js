@@ -21,6 +21,7 @@ angular.module('clientApp')
     var deleteAsset = dataService.deleteAsset;
     var getAssetTypes = dataService.getAssetTypes;
     var getAssetsOfType = dataService.getAssetsOfType;
+    var getByType = dataService.getAssetsOfType;
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -142,6 +143,10 @@ angular.module('clientApp')
       // deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
 
       return deferred.promise;
+    };
+
+    function getDefaultAsset () {
+      
     };
 
     var getIdentifier = function(assetType) {

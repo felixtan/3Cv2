@@ -11,8 +11,8 @@ angular.module('clientApp')
   .controller('ObjectDataCtrl', function (objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $modal) {   
     
     var ctrl = this;        // for testing;
+    ctrl.assetType = { value: null };
     $scope.objectType = objectType;
-    $scope.assetType = { value: null };
     $scope.carIdentifier = null;
 
     $scope.valid = function (thing) {
@@ -75,7 +75,7 @@ angular.module('clientApp')
         ];
 
         ctrl.getObjects()().then(function(result2) {
-            $scope.objects = result2.data;
+            ctrl.objects = result2.data;
         });
     });
 
@@ -88,18 +88,18 @@ angular.module('clientApp')
             size: 'md',
             resolve: {
                 getCars: function() {
-                    return ($scope.objectType === 'car') ? $scope.objects : {};
+                    return ($scope.objectType === 'car') ? ctrl.objects : {};
                 },
                 getDrivers: function() {
-                    return ($scope.objectType === 'driver') ? $scope.objects : {};
+                    return ($scope.objectType === 'driver') ? ctrl.objects : {};
                 },
                 getProspects: function() {
-                    return ($scope.objectType === 'prospect') ? $scope.objects : {};  
+                    return ($scope.objectType === 'prospect') ? ctrl.objects : {};  
                 },
                 getAssets: function() {
                     return {
-                        data: ($scope.objectType === 'asset') ? $scope.objects : {},
-                        type: $scope.assetType.value
+                        data: ($scope.objectType === 'asset') ? ctrl.objects : {},
+                        type: ctrl.assetType.value
                     };
                 },
                 assetType: function() {
@@ -187,17 +187,17 @@ angular.module('clientApp')
                     return $scope.objectType;
                 },
                 getCars: function() {
-                    // console.log($scope.objects);
-                    return $scope.objectType === 'car' ? $scope.objects : [];
+                    // console.log(ctrl.objects);
+                    return $scope.objectType === 'car' ? ctrl.objects : [];
                 },
                 getProspects: function() {
-                    return $scope.objectType === 'prospect' ? $scope.objects : [];
+                    return $scope.objectType === 'prospect' ? ctrl.objects : [];
                 },
                 getDrivers: function() {
-                    return $scope.objectType === 'driver' ? $scope.objects : [];
+                    return $scope.objectType === 'driver' ? ctrl.objects : [];
                 },
                 getAssets: function() {
-                    return $scope.objectType === 'asset' ? $scope.objects : [];
+                    return $scope.objectType === 'asset' ? ctrl.objects : [];
                 }
             }
         });
@@ -291,7 +291,7 @@ angular.module('clientApp')
     };
 
     // used in convert?
-    $scope.splitProspectData = function(driverData, prospectData, fieldsInCommon) {
+    ctrl.splitProspectData = function (driverData, prospectData, fieldsInCommon) {
         var deferred = $q.defer();
         var prospectDataMinusFieldsInCommon = {};
         var prospectDataOnlyFieldsInCommon = {};
@@ -367,7 +367,7 @@ angular.module('clientApp')
                                         };
 
                                         delete driver.data.status;
-                                        console.log(driver);
+                                        // console.log(driver);
 
                                         // Runs regardless of whether fieldsUniqueToProspect >= 0
                                         driverHelpers.update(driver).then(function(result) {
@@ -397,23 +397,23 @@ angular.module('clientApp')
 
     ctrl.buildNewDriverData = function(driverData, partedFields) {
         var deferred = $q.defer();
-        console.log(driverData);
+        // console.log(driverData);
         _.each(driverData, function(data, field) {
             var temp = field.replace(/~/g, "");
             // console.log(temp);
-            console.log()
+
             if(_.contains(partedFields.inCommon, temp) && data.type === $scope.object.data[temp].type) {
-                console.log('in common:', temp, field);
-                console.log($scope.object.data);
-                console.log($scope.object.data[temp]);
+                // console.log('in common:', temp, field);
+                // console.log($scope.object.data);
+                // console.log($scope.object.data[temp]);
                 data = $scope.object.data[temp];
             } else if(_.contains(partedFields.uniqueToProspect, temp) && driverData[field].type === $scope.object.data[temp].type) {
-                console.log('unique to p:', temp, field);
-                console.log($scope.object.data);
-                console.log($scope.object.data[temp]);
+                // console.log('unique to p:', temp, field);
+                // console.log($scope.object.data);
+                // console.log($scope.object.data[temp]);
                 data = $scope.object.data[temp];
             } else if(_.contains(partedFields.uniqueToDriver, temp)) {
-                console.log('unique to d:', temp, field);
+                // console.log('unique to d:', temp, field);
                 data.value = null;
             }
         });
@@ -444,37 +444,6 @@ angular.module('clientApp')
                         });
                     }                 
                 });
-
-
-                // var newDriverData = _.extend(driversData.representativeData, result.prospectDataOnlyFieldsInCommon, result.prospectDataMinusFieldsInCommon);
-                // delete newDriverData.status;
-                // console.log('newDriverData:', newDriverData);
-                // console.log('add these fields to all drivers:', result.prospectFieldsToAddToAllDrivers);
-                // driverHelpers.createDriver(newDriverData).then(function(newDriverObj) {
-                //     console.log('newDriverObj:', newDriverObj);
-                //     driverHelpers.saveDriver(newDriverObj).then(function(newDriver) {
-                //         console.log(newDriver);
-                //         driverHelpers.getById(newDriver.data.id).then(function(promiseResult) {
-                //             var driver = promiseResult.data;
-                //             console.log(driver);
-                //             console.log(result.prospectDataOnlyFieldsInCommon);
-                //             _.each(result.prospectFieldsToAddToAllDrivers, function(field) {
-                //                 driver.data[field] = { 
-                //                     value: newDriver[field].value, 
-                //                     log: false,
-                //                     type: newDriver[field].type,
-                //                     dataType: newDriver[field].dataType,
-                //                 };
-                //             });
-                //             console.log(driver);
-                //             driverHelpers.update(driver);
-                //         });
-                            
-                //         prospectHelpers.deleteProspect($scope.object.id).then(function() {
-                //             $state.go('dashboard.prospects');
-                //         });
-                //     });
-                // });
             });
         });
     };

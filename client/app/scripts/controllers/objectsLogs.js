@@ -11,71 +11,70 @@ angular.module('clientApp')
   .controller('ObjectsLogsCtrl', function (objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state) {
 
     var ctrl = this;
-    $scope.objectType = objectType;
+    ctrl.objectType = objectType;
     $scope.datepicker = datepicker;
 
     ctrl.getObjects = function () {
-        if($scope.objectType === 'car') {
+        if(ctrl.objectType === 'car') {
             $scope.title = 'Car';
             $scope.state = { logs: 'carData({ id: object.id })' };
-            $scope.update = carHelpers.update;
+            ctrl.update = carHelpers.update;
             return carHelpers.get;
-        } else if($scope.objectType === 'driver') {
+        } else if(ctrl.objectType === 'driver') {
             $scope.title = 'Driver';
             $scope.state = { logs: 'driverData({ id: object.id })' };
-            $scope.update = driverHelpers.update;
+            ctrl.update = driverHelpers.update;
             return driverHelpers.get;
-        } else if($scope.objectType === 'prospect') {
+        } else if(ctrl.objectType === 'prospect') {
             $scope.title = 'Prospect';
             $scope.state = null;
-            $scope.update = prospectHelpers.update;
+            ctrl.update = prospectHelpers.update;
             return prospectHelpers.get;
-        } else if($scope.objectType === 'asset') {
+        } else if(ctrl.objectType === 'asset') {
             $scope.title = 'Asset';
             $scope.state = { logs: 'assetData({ id: object.id })' };
-            $scope.update = assetHelpers.update;
+            ctrl.update = assetHelpers.update;
             return assetHelpers.get;
         }
     };
 
     ctrl.getLogDates = function () {
-        if($scope.objectType === 'car') {
+        if(ctrl.objectType === 'car') {
             return carHelpers.getLogDates;
-        } else if($scope.objectType === 'driver') {
+        } else if(ctrl.objectType === 'driver') {
             return driverHelpers.getLogDates;
-        } else if($scope.objectType === 'prospect') {
+        } else if(ctrl.objectType === 'prospect') {
             return function () {};
-        } else if($scope.objectType === 'asset') {
+        } else if(ctrl.objectType === 'asset') {
             return assetHelpers.getLogDates;
         }
     };
 
     ctrl.getObjects()().then(function(result) {
         $scope.objects = result.data;
-        console.log($scope.objects);
-        $scope.identifier = $scope.objects[0].identifier || null;
-        $scope.assetType = $scope.objects[0].assetType || null;
         $scope.simpleObjects = objectHelpers.simplify($scope.objects);
+        ctrl.identifier = $scope.objects[0].identifier || null;
+        ctrl.assetType = $scope.objects[0].assetType || null;
 
-        ctrl.getLogDates()($scope.assetType).then(function(dates) {
+        ctrl.getLogDates()(ctrl.assetType).then(function(dates) {
             $scope.dates = dates;
-            $scope.getMostRecentLogDate();
+            ctrl.getMostRecentLogDate();
         });
     });
 
     
-    $scope.getMostRecentLogDate = function() {
+    ctrl.getMostRecentLogDate = function() {
         // return Math.max(...$scope.dates); -> assuming unsorted
 
         // assuming sorted from recent to past
         if($scope.dates.length > 0) {
-            $scope.mostRecentLogDate = $scope.dates[0];    
+            ctrl.mostRecentLogDate = $scope.dates[0];    
         } else {
-            $scope.mostRecentLogDate = null;
+            ctrl.mostRecentLogDate = null;
         }
     };
 
-    $scope.getFieldsToBeLogged = function(object) {
+    ctrl.getFieldsToBeLogged = function(object) {
         var deferred = $q.defer();
         var fields = [];
         for(var field in object.data) {
@@ -88,11 +87,11 @@ angular.module('clientApp')
     }
 
     // returns an object to be object.logs[i].data with keys (feilds) to be logged
-    $scope.newDataObj = function() {
+    ctrl.newDataObj = function() {
         var deferred = $q.defer();
         var data = {};
         // first object is taken because fields in object.data are assumed to be uniform for all objects
-        $scope.getFieldsToBeLogged($scope.objects[0]).then(function(fields) {
+        ctrl.getFieldsToBeLogged($scope.objects[0]).then(function(fields) {
             _.each(fields, function(field) {
                 data[field] = null;
             });
@@ -103,7 +102,7 @@ angular.module('clientApp')
         return deferred.promise;
     }
 
-    $scope.createLogForCar = function(object, date, data) {
+    ctrl.createLogForCar = function(object, date, data) {
         var deferred = $q.defer();
         object.logs.push({
             createdAt: (new Date()),
@@ -125,15 +124,15 @@ angular.module('clientApp')
         var d = $scope.datepicker.dt;
         var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
 
-        var promise = $scope.newDataObj().then(function(blankDataObj) {
+        var promise = ctrl.newDataObj().then(function(blankDataObj) {
             _.each($scope.objects, function(object) {
-                $scope.createLogForCar(object, weekOf, blankDataObj).then($scope.update);
+                ctrl.createLogForCar(object, weekOf, blankDataObj).then(ctrl.update);
             });
         });
 
         if(!(_.contains($scope.dates, weekOf))) {
             $q.all([promise]).then(function(values) {
-                $scope.createNewRow(weekOf);
+                ctrl.createNewRow(weekOf);
                 $state.forceReload();
             }).catch(function(err) {
                 console.error(err);
@@ -156,19 +155,19 @@ angular.module('clientApp')
     // need to make this more efficient
     $scope.save = function(logDate) {
         _.each($scope.objects, function(object) {
-            if(logDate === $scope.mostRecentLogDate) {
+            if(logDate === ctrl.mostRecentLogDate) {
                 // update object.data is new value isn't null
-                var mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate });
+                var mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate });
                 for(var field in mostRecentLog.data) {
                     if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') object.data[field].value = mostRecentLog.data[field];
                 }
             }
 
-            $scope.update(object);
+            ctrl.update(object);
         });
     };
 
-    $scope.createNewRow = function(date) {
+    ctrl.createNewRow = function(date) {
         // add new date to array of log dates
         $scope.dates.push(date);
     };

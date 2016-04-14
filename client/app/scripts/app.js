@@ -177,7 +177,7 @@ angular
         sp: getsp()
     })
     .state('carData', {
-        url: '/car/:id/data',
+        url: '/cars/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
         sp: getsp(),
@@ -191,7 +191,7 @@ angular
         }
     })
     .state('carLogs', {
-        url: '/car/:id/logs',
+        url: '/cars/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
         sp: getsp(),
@@ -205,7 +205,7 @@ angular
         }
     })
     .state('driverData', {
-        url: '/driver/:id/data',
+        url: '/drivers/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
         sp: getsp(),
@@ -219,7 +219,7 @@ angular
         }
     })
     .state('driverLogs', {
-        url: '/driver/:id/logs',
+        url: '/drivers/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
         sp: getsp(),
@@ -233,7 +233,7 @@ angular
         }
     })
     .state('prospectData', {
-        url: '/prospect/:id/data',
+        url: '/prospects/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
         sp: getsp(),
@@ -247,7 +247,7 @@ angular
         }
     })
     .state('assetData', {
-        url: '/data',
+        url: '/assets/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
         sp: getsp(),
@@ -261,7 +261,7 @@ angular
         }
     })
     .state('assetLogs', {
-        url: '/logs',
+        url: '/assets/:id/logs',
         templateUrl: '/views/assetLogs.html',
         controller: 'AssetLogsCtrl',
         sp: getsp(),

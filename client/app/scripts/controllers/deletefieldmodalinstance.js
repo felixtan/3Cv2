@@ -10,33 +10,32 @@
 angular.module('clientApp')
   .controller('DeleteFieldModalInstanceCtrl', function (objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
     
+    // not used by view
     var ctrl = this;
+    ctrl.objects = [];
+    ctrl.update = null;
+
+    // used by view
     $scope.confirmation = { value: "" };
-    $scope.objects = [];
     $scope.objectType = objectType;
-    $scope.update = null;
     $scope.thing = thing;
 
     // determine the state or ui calling this modal
     if($scope.objectType === 'driver') {
-        // console.log('called from drivers ui');
-        $scope.objectType = 'driver';
-        $scope.objects = getDrivers;
-        $scope.update = dataService.updateDriver;
+        // console.log('called from drivers uaq
+        ctrl.objects = getDrivers;
+        ctrl.update = dataService.updateDriver;
     } else if($scope.objectType === 'car') {
         // console.log('called from cars ui');
-        $scope.objectType = 'car';
-        $scope.objects = getCars;
-        $scope.update = dataService.updateCar;
+        ctrl.objects = getCars;
+        ctrl.update = dataService.updateCar;
     } else if($scope.objectType === 'prospect') {
         // console.log('called from prospects ui');
-        $scope.objectType = 'prospect';
-        $scope.objects = getProspects;
-        $scope.update = dataService.updateProspect;
+        ctrl.objects = getProspects;
+        ctrl.update = dataService.updateProspect;
     } else if($scope.objectType === 'asset') {
-        $scope.objectType = 'asset';
-        $scope.objects = getAssets;
-        $scope.update = dataService.updateDriver;
+        ctrl.objects = getAssets;
+        ctrl.update = dataService.updateDriver;
     } else {
         throw Error("Undefined object type");
     }
@@ -80,15 +79,15 @@ angular.module('clientApp')
     $scope.submit = function () {  
         // assumes car, driver, etc. have the same schema structure
         if($scope.confirmation.value === 'DELETE') {
-            if($scope.objects !== undefined && $scope.objects !== null) {
+            if(ctrl.objects !== undefined && ctrl.objects !== null) {
                 switch($scope.thing.type) {
                     case 'field': 
-                        $scope.objects.forEach(function(obj) {
+                        ctrl.objects.forEach(function(obj) {
                             objectHelpers.removeFieldFromExpressions(obj, $scope.thing.fieldName).then(function(objWithRemovedField) {
                                 objectHelpers.updateDisplayExpressions(objWithRemovedField).then(function(objToUpdate) {
                                     delete obj.data[$scope.thing.fieldName];
                                     // console.log(objToUpdate);
-                                    $scope.update(objToUpdate);
+                                    ctrl.update(objToUpdate);
                                     // TODO: What to do with logs containing this field?
                                     // TODO: Wht happens to fields used in expressions? -> delete them too
                                 });
@@ -96,11 +95,11 @@ angular.module('clientApp')
                         });
                         break;
                     case 'log':
-                        $scope.objects.forEach(function(obj) {
+                        ctrl.objects.forEach(function(obj) {
                             obj.logs.forEach(function(log) {
                                 if(log.weekOf === $scope.value) {
                                     obj.logs.splice(obj.logs.indexOf(log), 1);
-                                    $scope.update(obj);
+                                    ctrl.update(obj);
                                 }
                             });
                         });

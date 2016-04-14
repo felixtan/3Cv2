@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="styles/partials/logs.css">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='page-header'>{{ title }} Logs</h2>
+    <h2 class='page-header'>{{ ::title }} Logs</h2>
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
@@ -42,7 +42,7 @@
                 <tr>
                     <td><strong>Week \ {{ title }}</strong></td>
                     <td ng-repeat="object in simpleObjects | orderBy:'id'">
-                        <a ui-sref='{{ state.logs }}'>
+                        <a ui-sref='{{ ::state.logs }}'>
                             {{ ::object.identifierValue }}
                         </a>
                     </td>
@@ -74,7 +74,7 @@
                     <td ng-repeat='object in objects | orderBy:"id"'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span ng-if='notExpressionField(field)' editable-text="log.data[{{ field }}]" e-name='{{ field }}' e-form='logform'>
+                                <span ng-if='notExpressionField(field)' editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                                 <span ng-if='!notExpressionField(field)'>

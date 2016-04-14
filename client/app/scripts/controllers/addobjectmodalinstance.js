@@ -32,7 +32,7 @@ angular.module('clientApp')
         });
     };
     
-    $scope.getFormDataAndRepresentative = function() {};
+    ctrl.getFormDataAndReference = function() {};
 
     $scope.create = function() {};
 
@@ -65,40 +65,6 @@ angular.module('clientApp')
     // only for assets
     $scope.renderForm = function() {};
 
-    // ctrl.buildDisplayExpression = function(expressionItems) {
-    //     var deferred = $q.defer();
-    //     var expression = '';
-        
-    //     _.each(expressionItems, function(item) {
-    //         expression = expression + item.value;
-    //         // console.log(expression);
-    //     });
-
-    //     deferred.resolve(expression);
-    //     deferred.reject(new Error('Error building expression'));
-    //     return deferred.promise;
-    // };
-
-    ctrl.getInequalitySign = function(signId) {
-        switch(parseInt(signId)) {
-            case 0:
-                return ">";
-                break;
-            case 1:
-                return '≥';
-                break;
-            case 2:
-                return '<';
-                break;
-            case 3:
-                return '≤';
-                break;
-            default:
-                return '?';
-                break;
-        }
-    };
-
     ctrl.hideExpressions = function(dataOfRepresentativeObject) {
         var deferred = $q.defer();
         // console.log($scope.objects);
@@ -106,24 +72,16 @@ angular.module('clientApp')
             // console.log(data);
             if(data.type === 'function') {
                 $scope.fieldsToHide.push(field);
-                // ctrl.buildDisplayExpression(data.expressionItems).then(function(expression) {
-                    // console.log('built expression', expression);
-                    $scope.expressions.push({
-                        field: field,
-                        expression: data.expression
-                    });
-                // });
+                $scope.expressions.push({
+                    field: field,
+                    expression: data.expression
+                });
             } else if(data.type === 'inequality') {
                 $scope.fieldsToHide.push(field);
-                // ctrl.buildDisplayExpression(data.leftExpressionItems).then(function(leftExpression) {
-                    // ctrl.buildDisplayExpression(data.rightExpressionItems).then(function(rightExpression) {
-                        // var inequalitySign = ctrl.getInequalitySign(data.inequalitySignId);
-                        $scope.expressions.push({
-                            field: field,
-                            expression: data.leftExpression + " " + data.inequalitySign + " " + data.rightExpression
-                        });
-                    // });
-                // });
+                $scope.expressions.push({
+                    field: field,
+                    expression: data.leftExpression + " " + data.inequalitySign + " " + data.rightExpression
+                });
             } else {
                 // do nothing
             }
@@ -139,9 +97,9 @@ angular.module('clientApp')
         $scope.update = driverHelpers.updateDriver;
         $scope.create = driverHelpers.createDriver;
         $scope.save = driverHelpers.saveDriver;
-        $scope.getFormDataAndRepresentative = driverHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = driverHelpers.getFormDataAndRepresentative;
 
-        $scope.getFormDataAndRepresentative().then(function(result) {
+        ctrl.getFormDataAndReference().then(function(result) {
             ctrl.hideExpressions(result.representativeData).then(function() {
                 // console.log('formData:', result.formData);
                 $scope.fieldsToHide.push("Name");
@@ -161,11 +119,11 @@ angular.module('clientApp')
         $scope.update = carHelpers.updateCar;
         $scope.create = carHelpers.createCar;
         $scope.save = carHelpers.saveCar;
-        $scope.getFormDataAndRepresentative = carHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
 
-        $scope.getFormDataAndRepresentative().then(function(result) {
+        ctrl.getFormDataAndReference('car').then(function(result) {
             carHelpers.getIdentifier().then(function(identifier) {
-                ctrl.hideExpressions(result.representativeData).then(function() {
+                ctrl.hideExpressions(result.referenceObject.data).then(function() {
                     // console.log('car form data:', result.formData);
                     $scope.formData = result.formData;
                     $scope.fieldsToHide.push('assetType');
@@ -184,9 +142,9 @@ angular.module('clientApp')
         $scope.update = prospectHelpers.update;
         $scope.create = prospectHelpers.createProspect;
         $scope.save = prospectHelpers.saveProspect;
-        $scope.getFormDataAndRepresentative = prospectHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = prospectHelpers.getFormDataAndRepresentative;
 
-        $scope.getFormDataAndRepresentative().then(function(result1) {
+        ctrl.getFormDataAndReference().then(function(result1) {
             // console.log('result1:', result1);
             prospectHelpers.getStatuses().then(function(result2) {
                 // console.log('result2:', result2);
@@ -215,12 +173,12 @@ angular.module('clientApp')
         $scope.save = assetHelpers.saveAsset;
         $scope.fieldsToHide.push("assetType");
         $scope.fieldsToNotLog.push("assetType");
-        $scope.getFormDataAndRepresentative = assetHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = assetHelpers.getFormDataAndRepresentative;
 
         assetHelpers.getAssetTypes().then(function(result){
             $scope.assetTypes = result.data.types;
             $scope.renderForm = function(assetType) {
-                $scope.getFormDataAndRepresentative(assetType).then(function(result) {
+                ctrl.getFormDataAndReference(assetType).then(function(result) {
                     // console.log(result.formData);
                     assetHelpers.getIdentifier(assetType).then(function(identifier) {
                         ctrl.hideExpressions(result.representativeData).then(function() {

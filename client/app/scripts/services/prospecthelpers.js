@@ -22,6 +22,10 @@ angular.module('clientApp')
     var getStatuses = dataService.getProspectStatuses;
     var updateStatuses = dataService.updateProspectStatuses;
 
+    function isValid (value) {
+        return value !== null && typeof value !== "undefined";
+    };
+
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
     };
@@ -94,13 +98,22 @@ angular.module('clientApp')
     };
 
     var getDefaultStatus = function() {
-      var deferred = $q.defer();
+      var deferred = $q.defer(),
+          statuses,
+          defaultStatus;
 
       getStatuses().then(function(result) {
-        var statuses = result.data.statuses;
-        // console.log(statuses);
-        var defaultStatus = _.find(statuses, function(status) { return status.special; });
-        deferred.resolve(defaultStatus);
+        if(isValid(result.data)) {
+          if(result.data.length > 0) {
+            statuses = result.data.statuses,
+            defaultStatus = _.find(statuses, function(status) { return status.special; });
+            deferred.resolve(defaultStatus);
+          } else {
+            deferred.resolve(defaultStatus);
+          }
+          deferred.resolve(defaultStatus);
+        }
+
         deferred.reject(new Error('Error getting default prospect status'));
       });
 
