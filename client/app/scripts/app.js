@@ -262,8 +262,8 @@ angular
     })
     .state('assetLogs', {
         url: '/assets/:id/logs',
-        templateUrl: '/views/assetLogs.html',
-        controller: 'AssetLogsCtrl',
+        templateUrl: '/views/objectLogs.html',
+        controller: 'ObjectLogsCtrl',
         sp: getsp(),
         resolve: {
             objectType: function() {

@@ -17,20 +17,13 @@ angular.module('clientApp')
     $scope.identifier = { value: null };
     $scope.currentIdentifier = { value: null };
     $scope.fields = [];
-    $scope.fieldsToHide = []
-    $scope.fieldsToNotLog = [];
+    $scope.fieldsToHide = ["Name", "assetType", 'status'];
     $scope.statuses = [];
     $scope.status = {};
     $scope.assetTypes = [];
     $scope.assetType = { value: null };
     $scope.expressions = [];
     $scope.objectType = objectType;
-
-    $scope.getNewFieldsToLog = function(formData) {
-        return _.filter(Object.keys(formData), function(field) {
-            return formData[field].log;
-        });
-    };
     
     ctrl.getFormDataAndReference = function() {};
 
@@ -44,10 +37,6 @@ angular.module('clientApp')
 
     $scope.hide = function(field) {
         return _.contains($scope.fieldsToHide, field);
-    };
-
-    $scope.dontLog = function(field) {
-        return _.contains($scope.fieldsToNotLog, field);
     };
 
     $scope.invalidIdentifier = function(identifier) {
@@ -83,7 +72,7 @@ angular.module('clientApp')
                     expression: data.leftExpression + " " + data.inequalitySign + " " + data.rightExpression
                 });
             } else {
-                // do nothing
+                 //
             }
         }));
         deferred.reject(new Error('Error building or storing expression'));
@@ -97,20 +86,19 @@ angular.module('clientApp')
         $scope.update = driverHelpers.updateDriver;
         $scope.create = driverHelpers.createDriver;
         $scope.save = driverHelpers.saveDriver;
-        ctrl.getFormDataAndReference = driverHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
 
-        ctrl.getFormDataAndReference().then(function(result) {
-            ctrl.hideExpressions(result.representativeData).then(function() {
+        ctrl.getFormDataAndReference('driver').then(function(result) {
+            ctrl.hideExpressions(result.referenceObject.data).then(function() {
                 // console.log('formData:', result.formData);
-                $scope.fieldsToHide.push("Name");
-                // $scope.fieldsToNotLog.push("First Name");
-                // $scope.fieldsToNotLog.push("Last Name");
+                // $scope.fieldsToHide.push("Name");
                 $scope.currentIdentifier.value = "Name";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.formData = result.formData;
-                $scope.fieldsToHide.push('assetType');
                 $scope.formData.assetType = { value: null };
                 // $scope.disableConditions = driverHelpers.namesNotNull;
+
+                console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
             });
         });
     } else if($scope.objectType === 'car') {
@@ -126,13 +114,15 @@ angular.module('clientApp')
                 ctrl.hideExpressions(result.referenceObject.data).then(function() {
                     // console.log('car form data:', result.formData);
                     $scope.formData = result.formData;
-                    $scope.fieldsToHide.push('assetType');
+                    // $scope.fieldsToHide.push('assetType');
                     $scope.formData.assetType = { value: null };
                     $scope.fields = Object.keys(result.formData);
                     $scope.fields = _.without($scope.fields, "assetType");
                     $scope.currentIdentifier.value = identifier;
                     angular.copy($scope.currentIdentifier, $scope.identifier);
                     $scope.disableConditions = function(formData) { return true; };
+
+                    console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                 });
             });
         });
@@ -142,26 +132,23 @@ angular.module('clientApp')
         $scope.update = prospectHelpers.update;
         $scope.create = prospectHelpers.createProspect;
         $scope.save = prospectHelpers.saveProspect;
-        ctrl.getFormDataAndReference = prospectHelpers.getFormDataAndRepresentative;
+        ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
 
-        ctrl.getFormDataAndReference().then(function(result1) {
+        ctrl.getFormDataAndReference('prospect').then(function(result1) {
             // console.log('result1:', result1);
             prospectHelpers.getStatuses().then(function(result2) {
                 // console.log('result2:', result2);
-                ctrl.hideExpressions(result1.representativeData).then(function() {
+                ctrl.hideExpressions(result1.referenceObject.data).then(function() {
                     // console.log(statuses);
-                    $scope.fieldsToHide.push('assetType');
-                    $scope.fieldsToHide.push("Name");
-                    $scope.fieldsToHide.push("status");
-                    $scope.fieldsToNotLog.push("First Name");
-                    $scope.fieldsToNotLog.push("Last Name");
                     $scope.currentIdentifier.value = "Name";
                     angular.copy($scope.currentIdentifier, $scope.identifier);
                     $scope.statuses = result2.data.statuses;
-                    $scope.disableConditions = prospectHelpers.namesNotNull;
+                    // $scope.disableConditions = prospectHelpers.namesNotNull;
 
                     $scope.formData = result1.formData;
                     $scope.formData.assetType = { value: null };
+
+                    console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                 });
             });
         });
@@ -172,7 +159,6 @@ angular.module('clientApp')
         $scope.create = assetHelpers.createAsset;
         $scope.save = assetHelpers.saveAsset;
         $scope.fieldsToHide.push("assetType");
-        $scope.fieldsToNotLog.push("assetType");
         ctrl.getFormDataAndReference = assetHelpers.getFormDataAndRepresentative;
 
         assetHelpers.getAssetTypes().then(function(result){
@@ -188,6 +174,8 @@ angular.module('clientApp')
                             $scope.disableConditions = assetHelpers.invalidAssetType;
                             $scope.currentIdentifier.value = identifier;
                             angular.copy($scope.currentIdentifier, $scope.identifier);
+
+                            console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                         });
                     });
                 });
@@ -198,14 +186,12 @@ angular.module('clientApp')
     }
 
     $scope.submit = function() {
-        // console.log($scope.identifier);
-        // console.log($scope.formData.assetType);
-
         $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
-            // console.log('saving:', object);
-            objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(object) {
+            // console.log(newObject);
+            objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
+                // console.log(newObject);
                 if($scope.objectType === 'car') {
-                    $scope.save(object).then(function(result) {
+                    $scope.save(newObject).then(function(result) {
                         if($scope.identifierChanged()) {
                             _.each($scope.objects, function(obj) {
                                 // console.log(obj.id);
@@ -217,23 +203,23 @@ angular.module('clientApp')
                             });
                         }
 
-                        $scope.close(object);
+                        $scope.ok(newObject);
                     });
                 } else if($scope.objectType === 'prospect') {
                     prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
                         
-                        object.status = { 
+                        newObject.status = { 
                             value: ($scope.status.value || defaultStatus.value) 
                         };
                         
-                        object.data.status = { 
+                        newObject.data.status = { 
                             value: ($scope.status.value || defaultStatus.value), 
                             log: false,
                             type: 'text',
                             dataType: 'text'
                         };
 
-                        $scope.save(object).then(function(result) {
+                        $scope.save(newObject).then(function(result) {
                             if($scope.identifierChanged()) {
                                 _.each($scope.objects, function(obj) {
                                     if(obj.id !== result.data.id) {
@@ -243,12 +229,12 @@ angular.module('clientApp')
                                 });
                             }
 
-                            $scope.close(object);
+                            $scope.ok(newObject);
                         });
                     });
                 } else if($scope.objectType === 'driver') {
-                    // console.log(object);
-                    $scope.save(object).then(function(result) {
+                    // console.log(newObject);
+                    $scope.save(newObject).then(function(result) {
                         if($scope.identifierChanged()) {
                             _.each($scope.objects, function(obj) {
                                 if(obj.id !== result.data.id) {
@@ -258,11 +244,11 @@ angular.module('clientApp')
                             });
                         }
 
-                        $scope.close(object);
+                        $scope.ok(newObject);
                     });
                 } else if($scope.objectType === 'asset') {
                     // console.log(object);
-                    $scope.save(object).then(function(result) {
+                    $scope.save(newObject).then(function(result) {
                         if($scope.identifierChanged()) {
                             assetHelpers.filterAssets($scope.objects, result.data.assetType).then(function(assetsOfType) {
                                 _.each(assetsOfType, function(asset) {
@@ -274,7 +260,7 @@ angular.module('clientApp')
                             });
                         }
 
-                        $scope.close(object);
+                        $scope.ok(newObject);
                     });
                 }
             });
@@ -338,11 +324,14 @@ angular.module('clientApp')
                 getProspects: function(dataService) {
                     return (objectType === 'prospect' ? $scope.objects : {});  
                 },
-                getAssets: function(dataService) {
-                    return {
-                        data: (objectType === 'asset' ? $scope.objects : {}),
-                        type: $scope.assetType.value
-                    };
+                // getAssets: function(dataService) {
+                //     return {
+                //         data: (objectType === 'asset' ? $scope.objects : {}),
+                //         type: $scope.assetType.value
+                //     };
+                // },
+                getAssets: function () {
+                    return (objectType === 'asset' ? $scope.objects : {});
                 },
                 objectType: function() {
                     return objectType;

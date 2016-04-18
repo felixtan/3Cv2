@@ -49,13 +49,14 @@
                 </button>
             </form>
         </h3>
+
         <table class='table table-striped'>
             <tbody>
                 <!-- filter assets with type -->
                 <tr ng-repeat='asset in assets' ng-if='belongsToType(asset, type)'>
                     <td>
                         <h4>
-                            <a ui-sref='assetProfile.data({ type: asset.assetType, id: asset.id })'>
+                            <a ui-sref='assetData({ type: asset.assetType, id: asset.id })'>
                                 {{ ::asset.identifierValue }}
                             </a>
                         </h4>

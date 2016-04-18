@@ -80,10 +80,11 @@ angular.module('clientApp')
             // console.log(logDates);
             createLogs(logDates, logData).then(function(logs) {
               // console.log(logs);
-              
+              // console.log(driverData);
+
               deferred.resolve({
                 identifier: "Name",
-                data: driverDataWithFullName,
+                data: driverData,
                 logs: logs,
                 carsAssigned: [],
                 assetsAssigned: [],
@@ -100,33 +101,37 @@ angular.module('clientApp')
     };
 
     var getDefaultDriver = function() {
-      return {
-        identifier: "Name",
-        data: {
-          "First Name": {
-            value: null,
-            log: false,
-            dataType: 'text',
-            type: 'text'
+      var deferred = $q.defer();
+
+      deferred.resolve({
+          identifier: "Name",
+          data: {
+            "First Name": {
+              value: null,
+              log: false,
+              dataType: 'text',
+              type: 'text'
+            },
+            "Last Name": {
+              value: null,
+              log: false,
+              dataType: 'text',
+              type: 'text'
+            },
+            "Name": {
+              value: null,
+              log: false,
+              dataType: 'text',
+              type: 'text'
+            }
           },
-          "Last Name": {
-            value: null,
-            log: false,
-            dataType: 'text',
-            type: 'text'
-          },
-          "Name": {
-            value: null,
-            log: false,
-            dataType: 'text',
-            type: 'text'
-          }
-        },
-        logs: [],
-        carsAssigned: [],
-        assetsAssigned: [],
-        organizationId: getOrganizationId()
-      };
+          logs: [],
+          carsAssigned: [],
+          assetsAssigned: [],
+          organizationId: getOrganizationId(),
+      });
+      deferred.reject(new Error("Error getting default driver."));
+      return deferred.promise;
     };
 
     var getFormDataAndRepresentative = function() {

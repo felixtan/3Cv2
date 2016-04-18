@@ -1,6 +1,6 @@
 "use strict";
 
- module.exports = {
+module.exports = {
     getCarProfileLinks,
     randomCarIndex,
     getRandomCarProfileLink,
@@ -11,7 +11,28 @@
     getValueColText,
     getLogColValue,
     getIdColValue,
- }
+    getFieldLabel,
+    getFieldInput,
+};
+
+let elems = require("./elems.js");
+
+// add object modal
+function getFieldLabel (fieldName) {
+    return elems.fieldLabels.filter(function(el, i) {
+        return el.getAttribute("for").then(function(value) {
+            return value === fieldName;
+        });
+    }).first();
+};
+
+function getFieldInput (fieldName) {
+    return elems.fieldInputs.filter(function(el, i) {
+        return el.getAttribute("id").then(function(value) {
+            return value === fieldName;
+        });
+    }).first();
+};
 
 function getCarProfileLinks () {
       return element.all(by.tagName("a")).filter(function(el, i) {

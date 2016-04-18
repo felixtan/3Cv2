@@ -12,6 +12,7 @@ angular.module('clientApp')
     
     var ctrl = this;
     $scope.objectType = objectType;
+    $scope.order = [];
 
     ctrl.getObjects = function () {
         switch($scope.objectType) {
@@ -30,7 +31,6 @@ angular.module('clientApp')
                 prospectHelpers.getStatuses().then(function(result) {
                     ctrl.prospectStatuses = result.data; 
                     $scope.statuses = ctrl.prospectStatuses.statuses;
-                    $scope.order = [];
                     $scope.newIndex = { val: null };    // stores index changes
                     for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;
                 });
@@ -39,11 +39,17 @@ angular.module('clientApp')
             case "asset":
                 $scope.title = { value: "Asset" };
                 $scope.profile = { state: 'assetData({ id: object.id })' };
-                // $scope.assetTypes = assetHelpers.getAssetTypes;
-                // $scope.types = $scope.assetTypes.types;
+                
+                assetHelpers.getAssetTypes().then(function(result) {
+                    console.log(result);
+                    $scope.assetTypes = result.data;
+                    $scope.types = $scope.assetTypes.types;
+                    for(var i = 0; i < $scope.types.length; i++) $scope.order[i] = i;    // populate order select
+                });
+                
                 // $scope.order = [];
                 // $scope.newIndex = { val: null };    // stores index changes
-                // for(var i = 0; i < $scope.types.length; i++) $scope.order[i] = i;    // populate order select
+                
                 return assetHelpers.getAssets;
             default:
                 $scope.title = { value: "Car" };

@@ -1,7 +1,7 @@
 "use strict";
 
 let helpers = require("../../helpers/e2e/helpers.js"),
-    elems = require("../../helpers/e2e/editField.js");
+    elems = require("../../helpers/e2e/elems.js");
 
 describe("Car Data", function () {
 

@@ -104,17 +104,21 @@ angular.module('clientApp')
 
       getStatuses().then(function(result) {
         if(isValid(result.data)) {
-          if(result.data.length > 0) {
+          if(result.data.statuses.length > 0) {
             statuses = result.data.statuses,
             defaultStatus = _.find(statuses, function(status) { return status.special; });
+            
             deferred.resolve(defaultStatus);
+            deferred.reject(new Error('Error getting default prospect status'));
           } else {
-            deferred.resolve(defaultStatus);
+            // deferred.resolve(undefined);
+            deferred.reject(new Error('Error getting default prospect status: no statuses'));
           }
-          deferred.resolve(defaultStatus);
-        }
 
-        deferred.reject(new Error('Error getting default prospect status'));
+        } else {
+          // deferred.resolve(undefined);
+          deferred.reject(new Error('Error getting default prospect status: return from getStatuses undefined'));
+        }
       });
 
       return deferred.promise;
@@ -122,6 +126,7 @@ angular.module('clientApp')
 
     var getDefaultProspect = function() {
       return getDefaultStatus().then(function(defaultStatus) {
+        // console.log(defaultStatus);
         return {
             identifier: "Name",
             status: defaultStatus,
@@ -149,11 +154,11 @@ angular.module('clientApp')
                 log: false,
                 dataType: 'text',
                 type: 'text'
-              }
+              },
             },
             organizationId: getOrganizationId(),
-          }
-        });
+          };
+      });
     };
 
     var getFormDataAndRepresentative = function() {

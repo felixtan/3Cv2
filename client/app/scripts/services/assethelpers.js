@@ -58,7 +58,7 @@ angular.module('clientApp')
       var deferred = $q.defer();
       var logDates = [];
       thereAreAssetsOfType(assetType).then(function(result) {
-        console.log(result);
+        // console.log(result);
         if(result) {
           getAssets().then(function(result) {
             filterAssets(result.data, assetType).then(function(assetsOfType) {
@@ -239,12 +239,12 @@ angular.module('clientApp')
     };
 
     var getFieldsToBeLogged = function(assetType) {
-      console.log(assetType);
+      // console.log(assetType);
       var deferred = $q.defer();
       var fields = [];
       getAssets().then(function(result) {
         filterAssets(result.data, assetType).then(function(assetsOfType) {
-          console.log(assetType);
+          // console.log(assetType);
           console.log(assetsOfType);
           // console.log(assetsOfType.length);
           // console.log(Object.keys(assetsOfType[0].data));

@@ -20,7 +20,8 @@ let errorMsg,
     close,
     plus,
     switches,
-    submit,
+    submitField,
+    submitObject,
     EC,
     tabs,
     addField,
@@ -29,7 +30,14 @@ let errorMsg,
     fieldRows,
     delBtn,
     delBtnFinal,
-    delInput;
+    delInput, 
+    addDriver,
+
+    // add object modal
+    fieldLabels = element.all(by.className("field-name-label")),
+    fieldInputs = element.all(by.className("field-value-input"));
+
+addDriver = element(by.buttonText("+ Driver"));
 
 errorMsg = element(by.id("number-field-error-msg"));
 existingFieldMsg = element(by.id("field-name-exists-msg"));
@@ -61,7 +69,8 @@ switches = element.all(by.className("bootstrap-switch"));
 
 addField = element(by.buttonText('+ Field'));
 assignDriver = element(by.buttonText("+ Driver"));
-submit = element(by.buttonText("Submit"));
+submitField = element(by.id("submit-field"));
+submitObject = element(by.id("submit-object"));
 EC = protractor.ExpectedConditions;
 tabs = element.all(by.tagName("a")).filter(function(el, i) { 
     return el.getAttribute("ng-click").then(function(value) {
@@ -99,7 +108,8 @@ module.exports = {
     close,
     plus,
     switches,
-    submit,
+    submitField,
+    submitObject,
     EC,
     tabs,
     addField,
@@ -109,4 +119,9 @@ module.exports = {
     delBtn,
     delInput,
     delBtnFinal,
+    addDriver,
+
+    // add object modal
+    fieldLabels,
+    fieldInputs,
  }

@@ -7,6 +7,7 @@
     </button>
 </div>
 <!-- {{ formData }} -->
+<!-- {{ identifier }} -->
 <div class="modal-body">
 
     <div class="btn-toolbar" role="toolbar">
@@ -36,7 +37,7 @@
             </select>
         </div>
 
-        <h4>Fields</h4>
+        <h4 id='fields-header' ng-show="expressions.length">Fields</h4>
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
             <label>Organize {{  formData.assetType.value || objectType }}<span ng-if='!formData.assetType'>s</span> with this identifier</label>
 
@@ -53,13 +54,9 @@
         </div>
 
         <div class='form-group' ng-repeat='(field, data) in formData' ng-if='!hide(field)'>
-            <label for="{{ ::field }}">{{ ::field }}</label>
-            <!-- 
-            <span style='margin-left:1vw;' ng-if='!dontLog(field)'>
-                <input type='checkbox' ng-model='formData[field].log'> Log this
-            </span> -->
+            <label for="{{ ::field }}" class='field-name-label'>{{ ::field }}</label>
 
-            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "text"'>
+            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "text"' >
 
             <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
 
@@ -106,7 +103,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.$invalid'>Submit</button> 
+  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.$invalid'>Submit</button> 
   <!-- {{ !disableConditions(formData) }}
   {{ invalidIdentifier(identifier) }}
   {{ form.$invalid }} -->

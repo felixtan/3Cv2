@@ -36,6 +36,7 @@
     </table>
   </div>
 
+  <!-- Prospect List -->
   <div ng-if='objectType === "prospect"'>
     <div>
         <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
@@ -103,5 +104,37 @@
         </table>
         <br>
     </div>
+  </div>
+
+  <!-- Assets List -->
+  <div ng-if='objectType === "asset"'>
+    
+    <div>
+      <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
+          + Asset
+      </button>
+      <button class='btn btn-success' ng-click='addType()'>
+          + Type
+      </button>
+    </div><br>
+
+    <accordion>
+      <accordion-group ng-repeat='type in types' heading='{{ type.value }}'>
+        <table class='table table-striped'>
+            <tbody>
+                <!-- filter assets with type -->
+                <tr ng-repeat='asset in assets' ng-if='belongsToType(asset, type)'>
+                    <td>
+                        <h4>
+                            <a ui-sref='assetProfile.data({ id: asset.id })'>
+                                {{ ::asset.identifierValue }}
+                            </a>
+                        </h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>   
+      </accordion-group>
+    </accordion>
   </div>
 </div>

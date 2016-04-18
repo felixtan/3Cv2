@@ -374,7 +374,13 @@ angular.module('clientApp')
       // console.log("add field modal called from assetProfile");
       ctrl.update = dataService.updateAsset;
       ctrl.assetType = getAssets.type;
-      var assetsOfType = _.filter(getAssets, function(asset) { return asset.assetType === ctrl.assetType; });
+      
+      var assetsOfType = _.filter(getAssets, function(asset) { 
+        console.log(asset.assetType);
+        console.log(ctrl.assetType);
+        return asset.assetType === ctrl.assetType; 
+      });
+      
       if(assetsOfType !== 'undefined' && assetsOfType.length > 0) ctrl.objects = assetsOfType;
     } else {
       $state.go('dashboard.cars');

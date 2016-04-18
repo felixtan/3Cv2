@@ -86,13 +86,17 @@ angular.module('clientApp')
   };
 
   var getDefaultCar = function() {
-    return {
-      identifier: null,
-      data: {},
-      logs: [],
-      driversAssigned: [],
-      organizationId: getOrganizationId()
-    };
+    var deferred = $q.defer();
+
+    deferred.resolve({
+        identifier: null,
+        data: {},
+        logs: [],
+        driversAssigned: [],
+        organizationId: getOrganizationId()
+    });
+    deferred.reject(new Error("Error getting default car."));
+    return deferred.promise;
   };
 
   var getFormDataAndRepresentative = function() {
