@@ -674,12 +674,14 @@ angular.module('clientApp')
                 get = prospectHelpers.get;
                 getDefaultObject = prospectHelpers.getDefaultProspect;
             } else if (objectType === 'asset') {
-                get = assetHelpers.getByType(assetType);
+                get = assetHelpers.getByType;
+                getDefaultObject = assetHelpers.getDefaultAsset;
             } else {
                 deferred.reject(undefined);
             }
 
-            get().then(function(result) {
+            get(assetType).then(function(result) {
+                console.log(result);
                 if(isValid(result.data)) {
                     if(result.data.length > 0) {
                         object = result.data[0];
@@ -715,7 +717,7 @@ angular.module('clientApp')
                         });
                         deferred.reject(new Error('Error initializing form data for ' + objectType));
                     } else {
-                        getDefaultObject().then(function(result) {
+                        getDefaultObject(assetType).then(function(result) {
                             // console.log(result);
                             deferred.resolve({
                                 formData: result.data,
@@ -725,7 +727,7 @@ angular.module('clientApp')
                         });   
                     }
                 } else {
-                    getDefaultObject().then(function(result) {
+                    getDefaultObject(assetType).then(function(result) {
                         // console.log(result);
                         deferred.resolve({
                             formData: result.data,

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="styles/assetList.css">
+
 <div class='col-md-offset-2 table-responsive' id='object-list'> 
 
   <h2 class='page-header' ng-if='objectType === "car"'>{{ title.value }}s</h2>
@@ -119,21 +121,19 @@
     </div><br>
 
     <accordion>
-      <accordion-group ng-repeat='type in types' heading='{{ type.value }}'>
-        <table class='table table-striped'>
-            <tbody>
-                <!-- filter assets with type -->
-                <tr ng-repeat='asset in assets' ng-if='belongsToType(asset, type)'>
-                    <td>
-                        <h4>
-                            <a ui-sref='assetProfile.data({ id: asset.id })'>
-                                {{ ::asset.identifierValue }}
-                            </a>
-                        </h4>
-                    </td>
-                </tr>
-            </tbody>
-        </table>   
+      <accordion-group ng-repeat='type in types'>
+        <accordion-heading>
+          {{ type.value }} <i class="pull-right fa fa-chevron-down"></i>
+        </accordion-heading>
+          <ul class='assetsOfType'>
+            <li ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
+              <h4>
+                <a ui-sref='assetData({ id: asset.id })'>
+                  {{ ::asset.identifierValue }}
+                </a>
+              </h4>
+            </li>
+          </ul>
       </accordion-group>
     </accordion>
   </div>

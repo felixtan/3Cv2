@@ -14,14 +14,32 @@ angular.module('clientApp')
     //  Data CRUD and Forms //
     //////////////////////////
 
-    var getAssets = dataService.getAssets;
+    var get = dataService.getAssets;
     var getById = dataService.getAsset;
     var saveAsset = dataService.createAsset;
     var update = dataService.updateAsset;
     var deleteAsset = dataService.deleteAsset;
     var getAssetTypes = dataService.getAssetTypes;
-    var getAssetsOfType = dataService.getAssetsOfType;
-    var getByType = dataService.getAssetsOfType;
+
+    function getByType (assetType) {
+      // console.log(assetType);
+      return get().then(function(result) {
+        // console.log(result);
+        if(typeof result.data !== 'undefined' && result.data !== null) {
+          return {
+            data: (_.filter(result.data, function(asset) {
+              var _assetType_ = '';
+              angular.copy(asset.assetType, _assetType_);
+              // console.log(asset);
+              // return asset.data.assetType.value === assetType;
+              return asset.assetType === assetType;
+            }))
+          };
+        } else {
+          return { data: [] };
+        }
+      });
+    };
 
     var getOrganizationId = function() {
       return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
@@ -29,7 +47,7 @@ angular.module('clientApp')
 
     var thereAreAssetsOfType = function(assetType) {
       var deferred = $q.defer();
-      getAssets().then(function(result) {
+      get().then(function(result) {
         // console.log('checking if there are assets of type', result);
         var assets = _.filter(result.data, function(asset) {
             return asset.assetType === assetType;
@@ -43,7 +61,7 @@ angular.module('clientApp')
 
     var _getFields = function() {
       var deferred = $q.defer();
-      getAssets().then(function(result) {
+      get().then(function(result) {
         deferred.resolve(Object.keys(result.data[0].data));
         deferred.reject(new Error('Failed to get fields'));
       });
@@ -60,15 +78,16 @@ angular.module('clientApp')
       thereAreAssetsOfType(assetType).then(function(result) {
         // console.log(result);
         if(result) {
-          getAssets().then(function(result) {
-            filterAssets(result.data, assetType).then(function(assetsOfType) {
+          get().then(function(result) {
+            // filterAssetsByType(result.data, assetType).then(function(assetsOfType) {
+              var assetsOfType = filterAssetsByType(result.data, assetType);
               _.each(assetsOfType[0].logs, function(log) {
                 logDates.push(log.weekOf);
               });
               console.log(logDates);
               deferred.resolve(_.uniq(logDates.sort(), true).reverse());
               deferred.reject(new Error('Error getting asset log dates'));
-            });
+            // });
           }); 
         } else {
           deferred.resolve([]);
@@ -145,14 +164,32 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    function getDefaultAsset () {
-      
+    function getDefaultAsset (assetType) {
+      var deferred = $q.defer();
+
+      deferred.resolve({
+          identifier: null,
+          assetType: assetType,
+          data: {
+            assetType: {
+              value: assetType,
+              log: false,
+              type: 'text',
+              dataType: 'text',
+            }
+          },
+          logs: [],
+          driversAssigned: [],
+          organizationId: getOrganizationId(),
+      });
+      deferred.reject(new Error("Error getting default car."));
+      return deferred.promise;
     };
 
     var getIdentifier = function(assetType) {
       var deferred = $q.defer();
       
-      getAssets().then(function(result) {
+      get().then(function(result) {
         var assets = _.filter(result.data, function(asset) {
           return (asset.assetType === assetType);
         });
@@ -169,69 +206,16 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var filterAssets = function(allAssets, assetType) {
-      var deferred = $q.defer();
-      // console.log(allAssets);
-      // console.log(assetType);
-      var assetsOfType = _.filter(allAssets, function(asset) {
+    var filterAssetsByType = function(allAssets, assetType) {
+      return _.filter(allAssets, function(asset) {
           return asset.assetType === assetType;
       });
-      // console.log(assetsOfType);
-      deferred.resolve(assetsOfType);
-      deferred.reject(new Error('Error filtering assets of type ' + assetType));
-      return deferred.promise;
-    };
-
-    // Needs overhaul
-    var getFormDataAndRepresentative = function(assetType) {
-      var deferred = $q.defer();
-      var formData = {};
-      // console.log(assetType);
-      getAssets().then(function(result) {
-        filterAssets(result.data, assetType).then(function(assets) {
-          if(typeof assets !== 'undefined') {
-            if(assets.length > 0) {
-              // console.log('there are assets of type ' + assetType);
-              _.each(assets[0].data, function(data, field) {
-                formData[field] = {
-                  value: (field === 'assetType') ? assetType : null,
-                  log: data.log,
-                  dataType: data.dataType || null,
-                  type: data.type || null,
-                  expression: (data.type === 'function') ? data.expression : undefined,
-                  expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
-                  leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
-                  rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
-                  inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
-                  leftExpression: (data.type === 'inequality') ? data.leftExpression : undefined,
-                  rightExpression: (data.type === 'inequality') ? data.rightExpression : undefined,
-                  inequalitySign: (data.type === 'inequality') ? data.inequalitySign : undefined,
-                }
-              });
-              // console.log(formData);
-              deferred.resolve({
-                formData: formData,
-                representativeData: assets[0].data
-              });
-              deferred.reject(new Error('Error initializing asset form data'));
-            }
-          } else {
-            // console.log(result);
-            // console.log('there are no assets of type ' + assetType);
-            deferred.resolve({
-              formData: { assetType: { value: assetType, log: false } },
-              representativeData: {}
-            });
-            deferred.reject(new Error('Error initializing asset form data'));
-          }
-        });
-      });
-      
-      return deferred.promise;
     };
 
     var belongsToType = function(asset, type) {
-      return asset.assetType === type.value;
+      // console.log(asset);
+      // console.log(type);
+      return asset.assetType === type;
     };
 
     var invalidAssetType = function(formData) {
@@ -242,9 +226,10 @@ angular.module('clientApp')
       // console.log(assetType);
       var deferred = $q.defer();
       var fields = [];
-      getAssets().then(function(result) {
-        filterAssets(result.data, assetType).then(function(assetsOfType) {
+      get().then(function(result) {
+        // filterAssetsByType(result.data, assetType).then(function(assetsOfType) {
           // console.log(assetType);
+          var assetsOfType = filterAssetsByType(result.data, assetType);
           console.log(assetsOfType);
           // console.log(assetsOfType.length);
           // console.log(Object.keys(assetsOfType[0].data));
@@ -261,7 +246,7 @@ angular.module('clientApp')
             deferred.resolve(fields);
             deferred.reject(new Error('Error getting fields to be logged'));
           }
-        });
+        // });
       });
 
       return deferred.promise;
@@ -283,9 +268,10 @@ angular.module('clientApp')
 
       // Data
       getOrganizationId: getOrganizationId,
-      getAssets: getAssets,
-      getAssetsOfType: getAssetsOfType,
+      get: get,
       getAssetTypes: getAssetTypes,
+      getByType: getByType,
+      getById: getById,
       saveAsset: saveAsset,
       update: update,
       createAsset: createAsset,
@@ -293,13 +279,12 @@ angular.module('clientApp')
       thereAreAssetsOfType: thereAreAssetsOfType,
       _getFields: _getFields,
       getFields: getFields,
-      getFormDataAndRepresentative: getFormDataAndRepresentative,
       belongsToType: belongsToType,
       invalidAssetType: invalidAssetType,
       getIdentifier: getIdentifier,
       getFieldsToBeLogged: getFieldsToBeLogged,
       updateIdentifier: updateIdentifier,
-      filterAssets: filterAssets
-
+      filterAssetsByType: filterAssetsByType,
+      getDefaultAsset: getDefaultAsset,
     };
   });

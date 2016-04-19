@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('ObjectDataCtrl', function (objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $modal) {   
     
     var ctrl = this;        // for testing;
-    ctrl.assetType = { value: null };
+    // ctrl.assetType = { value: null };
     $scope.objectType = objectType;
     $scope.carIdentifier = null;
 
@@ -52,7 +52,7 @@ angular.module('clientApp')
         }
     };
 
-    ctrl.getObjects = function () {
+    ctrl.getObjects = function (assetType) {
         if($scope.objectType === 'car') {
             return carHelpers.get;
         } else if($scope.objectType === 'driver') {
@@ -60,13 +60,14 @@ angular.module('clientApp')
         } else if($scope.objectType === 'prospect') {
             return prospectHelpers.get;
         } else if($scope.objectType === 'asset') {
-            return assetHelpers.get;
+            return assetHelpers.getByType;
         }
     };
 
     ctrl.getObject()(objectId).then(function(result1) {
+        // console.log(result1);
         if(typeof result1 !== 'undefined') $scope.object = result1.data;
-        // console.log($scope.objectType);
+        ctrl.assetType = $scope.object.assetType;
         $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
         $scope.tabs = [
@@ -74,7 +75,8 @@ angular.module('clientApp')
             { title: 'Logs', active: false, state: $scope.state.logs }
         ];
 
-        ctrl.getObjects()().then(function(result2) {
+        ctrl.getObjects()($scope.object.assetType).then(function(result2) {
+            // console.log(result2);
             ctrl.objects = result2.data;
         });
     });
@@ -88,22 +90,19 @@ angular.module('clientApp')
             size: 'md',
             resolve: {
                 getCars: function() {
-                    return ($scope.objectType === 'car') ? ctrl.objects : {};
+                    return $scope.objectType === 'car' ? ctrl.objects : {};
                 },
                 getDrivers: function() {
-                    return ($scope.objectType === 'driver') ? ctrl.objects : {};
+                    return $scope.objectType === 'driver' ? ctrl.objects : {};
                 },
                 getProspects: function() {
-                    return ($scope.objectType === 'prospect') ? ctrl.objects : {};  
+                    return $scope.objectType === 'prospect' ? ctrl.objects : {};  
                 },
                 getAssets: function() {
-                    return {
-                        data: ($scope.objectType === 'asset') ? ctrl.objects : {},
-                        type: ctrl.assetType.value
-                    };
+                    return $scope.objectType === 'asset' ? ctrl.objects : {};
                 },
                 assetType: function() {
-                    return $scope.objectType === 'asset' ? assetType : null;
+                    return $scope.objectType === 'asset' ? ctrl.assetType : null;
                 },
                 objectType: function() {
                     return $scope.objectType;
@@ -216,7 +215,7 @@ angular.module('clientApp')
     /////////////////////////////////////////////////
     $scope.notName = function(field) {
         // console.log(field);
-        return ($scope.objectType === "prospect" || $scope.objectType === 'driver') && field === "Name";
+        return ($scope.objectType === "prospect" || $scope.objectType === 'driver') && field === "Name" || field === 'assetType';
     };
 
     $scope.notStatus = function(field) {
@@ -374,43 +373,32 @@ angular.module('clientApp')
                         // console.log(list);
 
                         _.each(fields, function(field) {
-                            // var temp = ctrl.getUniqueFieldName(fields.uniqueToDriver, field);
-        
-                            // objectHelpers.updateExpressionFieldsIfFieldNameChanged(field, temp, prospectData).then(function(prospectDataWithUpdatedExpressions) {
-                            //     console.log(prospectDataWithUpdatedExpressions);
-                            //     objectHelpers.evaluateExpressionAndAppendValue(prospectDataWithUpdatedExpressions, field).then(function(prospectDataWithUpdatedExpressionValues) {
-                            //         console.log(prospectDataWithUpdatedExpressionValues);
-                            //         objectHelpers.storeFieldsUsed(prospectDataWithUpdatedExpressionValues, field).then(function(prospectDataToConvert) {
+                            driver.data[field] = {
+                                value: null,
+                                log: false,
+                                type: prospectData[field].type,
+                                dataType: prospectData[field].dataType,
+                                expression: (prospectData[field].type === 'function') ? prospectData[field].expression : undefined,
+                                expressionItems: prospectData[field].type === 'function' ? prospectData[field].expressionItems : undefined,
+                                leftExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].leftExpressionItems : undefined,
+                                rightExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].rightExpressionItems : undefined,
+                                inequalitySignId: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySignId : undefined,
+                                inequalitySign: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySign : undefined,
+                                leftExpression: prospectData[field].type === 'inequality' ? prospectData[field].leftExpression : undefined,
+                                rightExpression: prospectData[field].type === 'inequality' ? prospectData[field].rightExpression : undefined,
+                            };
 
-                                        driver.data[field] = {
-                                            value: null,
-                                            log: false,
-                                            type: prospectData[field].type,
-                                            dataType: prospectData[field].dataType,
-                                            expression: (prospectData[field].type === 'function') ? prospectData[field].expression : undefined,
-                                            expressionItems: prospectData[field].type === 'function' ? prospectData[field].expressionItems : undefined,
-                                            leftExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].leftExpressionItems : undefined,
-                                            rightExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].rightExpressionItems : undefined,
-                                            inequalitySignId: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySignId : undefined,
-                                            inequalitySign: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySign : undefined,
-                                            leftExpression: prospectData[field].type === 'inequality' ? prospectData[field].leftExpression : undefined,
-                                            rightExpression: prospectData[field].type === 'inequality' ? prospectData[field].rightExpression : undefined,
-                                        };
+                            if (driver.data.status) delete driver.data.status;
+                            // console.log(driver);
 
-                                        if (driver.data.status) delete driver.data.status;
-                                        // console.log(driver);
-
-                                        // Runs regardless of whether fieldsUniqueToProspect >= 0
-                                        driverHelpers.update(driver).then(function(result) {
-                                            if(index === 0) {
-                                                // console.log(result.config.data.data);
-                                                deferred.resolve(result.config.data.data);
-                                                deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
-                                            }
-                                        });
-                                    // });
-                                // });
-                            // });
+                            // Runs regardless of whether fieldsUniqueToProspect >= 0
+                            driverHelpers.update(driver).then(function(result) {
+                                if(index === 0) {
+                                    // console.log(result.config.data.data);
+                                    deferred.resolve(result.config.data.data);
+                                    deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
+                                }
+                            });
                         });
                     });
                 } else {

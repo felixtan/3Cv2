@@ -466,12 +466,12 @@ module.exports = {
             organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
             data: {},
             types: [
-                {
-                    value: 'Gas Cards'
-                },
-                {
-                    value: 'EZ Passes'
-                }
+                // {
+                //     value: 'Gas Cards'
+                // },
+                // {
+                //     value: 'EZ Passes'
+                // }
             ]
         });
     }

@@ -6,7 +6,7 @@
         &times;
     </button>
 </div>
-<!-- {{ formData }} -->
+{{ assetType }}
 <!-- {{ identifier }} -->
 <div class="modal-body">
 
@@ -32,14 +32,14 @@
         <div class='form-group' ng-if='objectType === "asset"'>
             <label>Type</label>
 
-            <select ng-model='formData.assetType.value' ng-change='renderForm(formData.assetType.value)' class='form-control'>
+            <select ng-model='formData.assetType.value' class='form-control' ng-change='renderForm(formData.assetType.value)'>
                 <option ng-repeat='type in assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
             </select>
         </div>
 
         <h4 id='fields-header' ng-show="expressions.length">Fields</h4>
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
-            <label>Organize {{  formData.assetType.value || objectType }}<span ng-if='!formData.assetType'>s</span> with this identifier</label>
+            <label>Organize {{  assetType.value || objectType }}<span ng-if='!formData.assetType'></span> with this identifier</label>
 
             <select ng-model='identifier.value' class='form-control' ng-options='field for field in fields' ng-if='field !== "assetType"'>
             </select>
@@ -103,10 +103,10 @@
 </div>
 
 <div class="modal-footer">
-  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.$invalid'>Submit</button> 
-  <!-- {{ !disableConditions(formData) }}
+  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button> 
+  {{ !disableConditions(formData) }}
   {{ invalidIdentifier(identifier) }}
-  {{ form.$invalid }} -->
+  {{ form.$invalid }}
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

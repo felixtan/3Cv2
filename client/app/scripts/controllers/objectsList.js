@@ -41,7 +41,7 @@ angular.module('clientApp')
                 $scope.profile = { state: 'assetData({ id: object.id })' };
                 
                 assetHelpers.getAssetTypes().then(function(result) {
-                    console.log(result);
+                    // console.log(result);
                     $scope.assetTypes = result.data;
                     $scope.types = $scope.assetTypes.types;
                     for(var i = 0; i < $scope.types.length; i++) $scope.order[i] = i;    // populate order select
@@ -50,7 +50,7 @@ angular.module('clientApp')
                 // $scope.order = [];
                 // $scope.newIndex = { val: null };    // stores index changes
                 
-                return assetHelpers.getAssets;
+                return assetHelpers.get;
             default:
                 $scope.title = { value: "Car" };
                 $scope.profile = { state: 'carData({ id: object.id })' };
@@ -61,7 +61,7 @@ angular.module('clientApp')
     ctrl.getObjects()().then(function(result) {
         $scope.objects = result.data;
         $scope.simpleObjects = objectHelpers.simplify($scope.objects);
-        // ctrl.identifier = $scope.thereAreObjects() ? $scope.objects[0].identifier : null;
+        // console.log($scope.simpleObjects);
     });
 
     // submit xeditable row form by pressing enter
@@ -101,7 +101,7 @@ angular.module('clientApp')
                     return ($scope.objectType === 'prospect') ? prospectHelpers.get() : [];  
                 },
                 getAssets: function() {
-                    return ($scope.objectType === 'asset') ? assetHelpers.getAssets() : [];
+                    return ($scope.objectType === 'asset') ? assetHelpers.get() : [];
                 },
                 assetType: function() {
                     return null;

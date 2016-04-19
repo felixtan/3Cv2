@@ -54,10 +54,10 @@ angular.module('clientApp')
     // only for assets
     $scope.renderForm = function() {};
 
-    ctrl.hideExpressions = function(dataOfRepresentativeObject) {
+    ctrl.hideExpressions = function(referenceObject) {
         var deferred = $q.defer();
         // console.log($scope.objects);
-        deferred.resolve(_.each(dataOfRepresentativeObject, function(data, field) {
+        deferred.resolve(_.each(referenceObject.data, function(data, field) {
             // console.log(data);
             if(data.type === 'function') {
                 $scope.fieldsToHide.push(field);
@@ -163,21 +163,27 @@ angular.module('clientApp')
 
         assetHelpers.getAssetTypes().then(function(result){
             $scope.assetTypes = result.data.types;
+
             $scope.renderForm = function(assetType) {
-                ctrl.getFormDataAndReference(assetType).then(function(result) {
-                    // console.log(result.formData);
-                    assetHelpers.getIdentifier(assetType).then(function(identifier) {
-                        ctrl.hideExpressions(result.representativeData).then(function() {
+                console.log('rendering form for ' + assetType);
+                objectHelpers.getFormDataAndReference('asset', assetType).then(function(result) {
+                    console.log(result);
+                    $scope.currentIdentifier.value = result.referenceObject.identifier;
+                    // assetHelpers.getIdentifier(assetType).then(function(identifier) {
+                        ctrl.hideExpressions(result.referenceObject).then(function() {
                             $scope.fields = Object.keys(result.formData);
-                            // $scope.fields = _.without($scope.fields, "assetType");
                             $scope.formData = result.formData;
+
+                            console.log($scope.formData);
+                            $scope.formData.assetType.value = assetType;
+
                             $scope.disableConditions = assetHelpers.invalidAssetType;
-                            $scope.currentIdentifier.value = identifier;
+                            // $scope.currentIdentifier.value = identifier;
                             angular.copy($scope.currentIdentifier, $scope.identifier);
 
                             console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                         });
-                    });
+                    // });
                 });
             };
         });
@@ -187,7 +193,7 @@ angular.module('clientApp')
 
     $scope.submit = function() {
         $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
-            // console.log(newObject);
+            console.log(newObject);
             objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
                 // console.log(newObject);
                 if($scope.objectType === 'car') {
@@ -235,6 +241,7 @@ angular.module('clientApp')
                 } else if($scope.objectType === 'driver') {
                     // console.log(newObject);
                     $scope.save(newObject).then(function(result) {
+                        console.log(result);
                         if($scope.identifierChanged()) {
                             _.each($scope.objects, function(obj) {
                                 if(obj.id !== result.data.id) {
@@ -246,17 +253,16 @@ angular.module('clientApp')
 
                         $scope.ok(newObject);
                     });
-                } else if($scope.objectType === 'asset') {
-                    // console.log(object);
+                } else if($scope.objectType === 'asset') { 
                     $scope.save(newObject).then(function(result) {
+                        // console.log(result);
                         if($scope.identifierChanged()) {
-                            assetHelpers.filterAssets($scope.objects, result.data.assetType).then(function(assetsOfType) {
-                                _.each(assetsOfType, function(asset) {
-                                    if(asset.id !== result.data.id) {
-                                       asset.identifier = $scope.identifier.value;
-                                        $scope.update(obj);
-                                    }
-                                })
+                            var assetsOfType = assetHelpers.filterAssetsByType($scope.objects, result.data.assetType);
+                            _.each(assetsOfType, function(asset) {
+                                if(asset.id !== result.data.id) {
+                                   asset.identifier = $scope.identifier.value;
+                                    $scope.update(obj);
+                                }
                             });
                         }
 
@@ -324,12 +330,6 @@ angular.module('clientApp')
                 getProspects: function(dataService) {
                     return (objectType === 'prospect' ? $scope.objects : {});  
                 },
-                // getAssets: function(dataService) {
-                //     return {
-                //         data: (objectType === 'asset' ? $scope.objects : {}),
-                //         type: $scope.assetType.value
-                //     };
-                // },
                 getAssets: function () {
                     return (objectType === 'asset' ? $scope.objects : {});
                 },
