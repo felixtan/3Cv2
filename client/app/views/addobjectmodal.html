@@ -6,7 +6,7 @@
         &times;
     </button>
 </div>
-{{ assetType }}
+<!-- {{ assetType }} -->
 <!-- {{ identifier }} -->
 <div class="modal-body">
 
@@ -104,9 +104,9 @@
 
 <div class="modal-footer">
   <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button> 
-  {{ !disableConditions(formData) }}
+  {{ !disableConditions(formData) }}<!-- 
   {{ invalidIdentifier(identifier) }}
-  {{ form.$invalid }}
+  {{ form.$invalid }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

@@ -28,6 +28,9 @@ angular.module('clientApp')
                 },
                 getProspects: function(dataService) {
                     return (($state.includes('prospectProfile') || ($state.includes('dashboard.prospects'))) ? dataService.getProspects() : {});
+                },
+                getAssets: function () {
+                    
                 }
             }
         });

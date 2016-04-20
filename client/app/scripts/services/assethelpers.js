@@ -72,23 +72,24 @@ angular.module('clientApp')
       return Object.keys(asset.data); 
     };
 
-    var getLogDates = function(assetType) {
+    function getLogDates (assetType) {
       var deferred = $q.defer();
       var logDates = [];
-      thereAreAssetsOfType(assetType).then(function(result) {
-        // console.log(result);
-        if(result) {
-          get().then(function(result) {
-            // filterAssetsByType(result.data, assetType).then(function(assetsOfType) {
-              var assetsOfType = filterAssetsByType(result.data, assetType);
-              _.each(assetsOfType[0].logs, function(log) {
-                logDates.push(log.weekOf);
-              });
-              console.log(logDates);
-              deferred.resolve(_.uniq(logDates.sort(), true).reverse());
-              deferred.reject(new Error('Error getting asset log dates'));
-            // });
-          }); 
+
+      getByType(assetType).then(function(result) {
+        var assets = result.data; 
+        if(isValid(assets)) {
+          if(assets.length > 0) {
+            _.each(assets[0].logs, function(log) {
+              logDates.push(log.weekOf);
+            });
+            // console.log(logDates);
+            deferred.resolve(_.uniq(logDates.sort(), true).reverse());
+            deferred.reject(new Error('Error getting asset log dates'));
+          } else {
+            deferred.resolve([]);
+            deferred.reject(new Error('Error getting asset log dates'));
+          }
         } else {
           deferred.resolve([]);
           deferred.reject(new Error('Error getting asset log dates'));
@@ -98,7 +99,11 @@ angular.module('clientApp')
       return deferred.promise;
     };
 
-    var createLogs = function(logDates, blankLogData) {
+    function isValid (value) {
+        return value !== null && typeof value !== "undefined";
+    };
+
+    function createLogs (logDates, blankLogData) {
       var deferred = $q.defer();
       var logs = [];
   
@@ -286,5 +291,6 @@ angular.module('clientApp')
       updateIdentifier: updateIdentifier,
       filterAssetsByType: filterAssetsByType,
       getDefaultAsset: getDefaultAsset,
+      getLogDates: getLogDates,
     };
   });

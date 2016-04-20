@@ -390,10 +390,15 @@ angular.module('clientApp')
       var deferred = $q.defer();
       
       if($scope.logValueChanged.value) {
+        object.data[field].log = $scope.field.log;
+        object.data[$scope.field.name].log = $scope.field.log;
+        // console.log(object.data[field]);
+        // console.log(object.data[$scope.field.name]);
+        // console.log($scope.object);
         if($scope.field.log) {
+          console.log('log value changed to true');
           _.each(object.logs, function(log) {
             log.data[$scope.field.name] = null;
-
             /*
               TODO:
                 Implement functions and inequalities for logs
@@ -402,6 +407,11 @@ angular.module('clientApp')
           });
         }
       } else {
+        /*
+          1. log value didn't change
+          2. log value is true
+          3. field name changed
+        */
         if($scope.field.log && $scope.field.name !== field) {
           _.each(object.logs, function(log) {
             log.data[$scope.field.name] = log.data[field];

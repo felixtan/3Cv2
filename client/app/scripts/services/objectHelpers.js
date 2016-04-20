@@ -210,7 +210,7 @@ angular.module('clientApp')
                     id: object.id,
                     identifier: object.identifier,
                     identifierValue: object.data[object.identifier].value,
-                    assetType: ((typeof object.assetType !== 'undefined') && (object.assetType !== null) && (typeof object.assetType === 'string')) ? object.assetType : null,
+                    assetType: (isValid(object.assetType) && (typeof object.assetType === 'string')) ? object.assetType : null,
                 };
             });
         };
@@ -220,7 +220,7 @@ angular.module('clientApp')
                 id: object.id,
                 identifier: object.identifier,
                 identifierValue: object.data[object.identifier].value,
-                assetType: (!(object.assetType === null) && (typeof object.assetType === 'string')) ? object.assetType : null,
+                assetType: (isValid(object.assetType) && (typeof object.assetType === 'string')) ? object.assetType : null,
             };
         };
 

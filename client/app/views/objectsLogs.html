@@ -1,7 +1,15 @@
 <link rel="stylesheet" href="styles/partials/logs.css">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
-    <h2 class='page-header'>{{ ::title }} Logs</h2>
+    <div class='sub-header'>
+        <!-- class='page-header' -->
+        <h2>{{ ::title }} Logs</h2>
+    </div>
+
+    <tabset ng-if="objectType === 'asset'">
+        <tab ng-repeat='tab in tabs' data-tabName='{{ ::tab.title }}' heading='{{ ::tab.title }}' active='tab.active' select='renderLogs(tab.title)'>
+        </tab>
+    </tabset><br>
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
@@ -36,12 +44,19 @@
     <!-- <div>most recent log: {{ mostRecentLogDate | date:'longDate' }}</div> -->
     <br>
 
+    <div ng-messages="logForm.$error" ng-show='invalidEntries.length > 0' class="alert alert-danger" role="alert">
+        <!-- field is object with name, identifierVal, logDate properties -->
+        <p ng-repeat='entry in invalidEntries'>
+            Invalid entry for number field <span class='underline'>{{ ::entry.fieldName }}</span> of <span class='underline'>{{ ::entry.identifierValue }}</span>, date <span class='underline'>{{ ::entry.logDate | date:'longDate'}}</span>.
+        </p>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <td><strong>Week \ {{ title }}</strong></td>
-                    <td ng-repeat="object in simpleObjects | orderBy:'id'">
+                    <td ng-repeat="object in simpleObjects | orderBy:'id'" ng-if='ifAssetIsOfType(object)'>
                         <a ui-sref='{{ ::state.logs }}'>
                             {{ ::object.identifierValue }}
                         </a>
@@ -59,25 +74,25 @@
                         </button>
                         <div class='btn-toolbar' role='toolbar'>
                             <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
-                                <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs">
+                                <button type="submit" ng-disabled="logform.$waiting || !validValue" class="btn btn-success btn-xs">
                                     Save
                                 </button>
                                 <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
                                     Cancel
                                 </button>
-                                <button class='btn btn-danger btn-xs' style='margin-left:1vw' ng-click='open(lg, { "log": date })' ng-controller='DeleteFieldModalCtrl'>
+                                <button class='btn btn-danger btn-xs' style='margin-left:1vw' ng-click='open(lg, { type: "log", logDate: date })'>
                                     Delete
                                 </button>
                             </form>
                         </div>
                     </td>
-                    <td ng-repeat='object in objects | orderBy:"id"'>
+                    <td ng-repeat='object in objects | orderBy:"id"' ng-if='ifAssetIsOfType(object)'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span ng-if='notExpressionField(field)' editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform'>
+                                <span ng-if='notExpressionField(field, object)' editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform' onbeforesave='validate($data, value, field, log, object)'>
                                     {{ ::field }}: {{ value }}
                                 </span>
-                                <span ng-if='!notExpressionField(field)'>
+                                <span ng-if='!notExpressionField(field, object)'>
                                     {{ ::field }}: {{ ::value }}
                                 </span>
                             </li>
@@ -86,5 +101,7 @@
                 </tr>
             </tbody>
         </table>
+        <!-- {{ invalidEntries }} -->
+        <!-- {{ objects }} -->
     </div>
 </div>

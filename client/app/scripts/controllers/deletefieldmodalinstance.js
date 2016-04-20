@@ -35,7 +35,8 @@ angular.module('clientApp')
         ctrl.update = dataService.updateProspect;
     } else if($scope.objectType === 'asset') {
         ctrl.objects = getAssets;
-        ctrl.update = dataService.updateDriver;
+        console.log(getAssets);
+        ctrl.update = dataService.updateAsset;
     } else {
         throw Error("Undefined object type");
     }
@@ -77,6 +78,7 @@ angular.module('clientApp')
     };
 
     $scope.submit = function () {  
+        console.log($scope.thing);
         // assumes car, driver, etc. have the same schema structure
         if($scope.confirmation.value === 'DELETE') {
             if(ctrl.objects !== undefined && ctrl.objects !== null) {
@@ -97,7 +99,7 @@ angular.module('clientApp')
                     case 'log':
                         ctrl.objects.forEach(function(obj) {
                             obj.logs.forEach(function(log) {
-                                if(log.weekOf === $scope.value) {
+                                if(log.weekOf === $scope.thing.logDate) {
                                     obj.logs.splice(obj.logs.indexOf(log), 1);
                                     ctrl.update(obj);
                                 }
