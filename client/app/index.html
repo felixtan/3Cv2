@@ -15,7 +15,7 @@
     <!-- endbuild -->
 
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    
     <!-- endbuild -->
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -23,6 +23,7 @@
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
+    <link rel="stylesheet" href="styles/main.css">
   </head>
   <body ng-app="clientApp">
     <!--[if lte IE 8]>
@@ -44,26 +45,35 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li>
+            <li class='top-nav-link'>
               <a ui-sref='dashboard.cars'>Cars</a>
             </li>
-            <li>
+            <li class='top-nav-link'>
               <a ui-sref='dashboard.drivers'>Drivers</a>
             </li>
-             <li>
-              <a ui-sref='dashboard.prospects'>Drivers</a>
+             <li class='top-nav-link'>
+              <a ui-sref='dashboard.prospects'>Prospects</a>
             </li>
-             <li>
-              <a ui-sref='dashboard.assets'>Drivers</a>
+             <li class='top-nav-link'>
+              <a ui-sref='dashboard.assets'>Assets</a>
             </li>
-            <li>
-              <a ui-sref='logs.cars'>Car Logs</a>
-            </li>
-            <li>
-              <a ui-sref='logs.drivers'>Driver Logs</a>
-            </li>
-             <li>
-              <a ui-sref='log.assets'>Asset Logs</a>
+            <li class='top-nav-link dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Logs
+                <i class='fa fa-caret-down'></i>
+              </a>  
+
+              <ul class='dropdown-menu'>
+                <li>
+                  <a ui-sref='logs.cars'>Cars</a>
+                </li>
+                <li>
+                  <a ui-sref='logs.drivers'>Drivers</a>
+                </li>
+                <li>
+                  <a ui-sref='logs.assets'>Assets</a>
+                </li>
+              </ul>
             </li>
             <li>
               <a sp-logout ui-sref="login">Logout</a>
@@ -79,7 +89,7 @@
     <div class="container-fluid">
       <div class="row">
         <!-- if-user this div -->
-        <div class="col-sm-3 col-md-2 sidebar" ng-if="!$state.includes('settings')">
+        <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
             <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
@@ -135,17 +145,14 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/Sortable/Sortable.js"></script>
     <script src="bower_components/Sortable/ng-sortable.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
     <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
-    <script src="bower_components/angular-toArrayFilter/toArrayFilter.js"></script>
-    <script src="bower_components/math-expression-evaluator/dist/browser/math-expression-evaluator.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -167,8 +174,6 @@
         <script src="scripts/controllers/prospectstatusmodal.js"></script>
         <script src="scripts/controllers/addobjectmodal.js"></script>
         <script src="scripts/controllers/addobjectmodalinstance.js"></script>
-        <script src="scripts/controllers/assetlogs.js"></script>
-        <script src="scripts/controllers/assetdata.js"></script>
         <script src="scripts/controllers/assettypelogs.js"></script>
         <script src="scripts/services/assethelpers.js"></script>
         <script src="scripts/controllers/assettypemodal.js"></script>
@@ -193,11 +198,33 @@
     <!-- Applies css to side nav active page element -->
     <script type="text/javascript">
       $(document).ready(function() {
-        $('.nav.nav-sidebar li').each(function() {
-          var href = $(this).find('a').attr('href');
-          if(href === window.location.pathname) {
-            $(this).addClass('active');
-          }
+        
+        $(window).width(function(index, value) {
+          if(value >= 768) $(".top-nav-link").toggleClass("hidden");
+        });
+
+
+        $(window).on('resize', function() {
+          $(this).width(function(index, value) {
+            /*
+              Hide top nav links in desktop view
+              Show them in collapsed version for tablet and mobile view
+            */
+            var isHidden = $(".top-nav-link").hasClass("hidden");
+            if(value >= 768) { 
+              if(!isHidden) $(".top-nav-link").toggleClass("hidden");
+            } else {
+              if(isHidden) $(".top-nav-link").toggleClass("hidden");
+            }
+          });
+        });
+
+        /*
+          Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
+          Based on this solution: https://jsfiddle.net/Frondor/sey4wsah/
+        */ 
+        $(".top-nav-link").on("click", "a", function (e) {
+          if(!$(e.currentTarget).hasClass("dropdown-toggle")) $('.navbar-collapse.in').collapse('hide');
         });
       });
     </script>

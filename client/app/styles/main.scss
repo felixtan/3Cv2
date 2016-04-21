@@ -91,6 +91,12 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+
+
+  div#navbar ul.nav li.top-nav-link {
+  // Should hide links in the top navbar 
+    display: none !important;
+  }
 }
 
 /* Bootstrap Dashboard Template */
@@ -290,3 +296,4 @@ body {
 .addressLink:active {
   color: #FF0000;
 }
+

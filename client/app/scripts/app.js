@@ -25,7 +25,6 @@ angular
     'stormpath.templates',
     'config',
     'frapontillo.bootstrap-switch',
-    'angular-toArrayFilter'
   ])
   .config(function (ENV, $stateProvider, $urlRouterProvider, $provide) {
     $provide.decorator('$state', function($delegate, $stateParams) {

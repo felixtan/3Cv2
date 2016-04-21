@@ -77,23 +77,6 @@ angular.module('clientApp')
         });
     });
 
-    /*
-        It needs to look something like this
-
-        For each log (by weekOf) in logs
-            For each data in log (by weekOf)
-                For each field in fields
-                    return {
-                        weekOf: [
-                            { field: field, value: value }
-                            .
-                            .
-                        ],
-                        .
-                        .
-                        .
-                    }
-    */
     $scope.getLogDataByDate = function (date) {
         // console.log(date);
         return ctrl.logDataObj[date];
@@ -151,9 +134,6 @@ angular.module('clientApp')
 
         return deffered.promise;
     }
-
-    
-    // setInterval(function() { }, 1000);
 
     ctrl.updateMostRecentData = function() {
         var deferred = $q.defer();

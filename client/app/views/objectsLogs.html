@@ -74,7 +74,7 @@
                         </button>
                         <div class='btn-toolbar' role='toolbar'>
                             <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
-                                <button type="submit" ng-disabled="logform.$waiting || !validValue" class="btn btn-success btn-xs">
+                                <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs">
                                     Save
                                 </button>
                                 <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">

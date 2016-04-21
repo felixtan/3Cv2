@@ -105,7 +105,7 @@ angular.module('clientApp')
           params: params,
           data: asset
         }).then(function(data) {
-          $state.forceReload();
+          // $state.forceReload();
           return data;
         }, function(err) {
           $state.forceReload();
@@ -147,7 +147,7 @@ angular.module('clientApp')
           params: params,
           data: statuses
         }).then(function(data) {
-          $state.forceReload();
+          // $state.forceReload();
           return data;
         }, function(err) {
           $state.forceReload();
