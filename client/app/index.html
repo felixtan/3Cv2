@@ -45,18 +45,29 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class='top-nav-link'>
-              <a ui-sref='dashboard.cars'>Cars</a>
+            
+            <li class='top-nav-link dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Tables
+                <i class='fa fa-caret-down'></i>
+              </a> 
+
+              <ul class='dropdown-menu'>
+                <li>
+                  <a ui-sref='dashboard.cars'>Cars</a>
+                </li>
+                <li>
+                  <a ui-sref='dashboard.drivers'>Drivers</a>
+                </li>
+                 <li>
+                  <a ui-sref='dashboard.prospects'>Prospects</a>
+                </li>
+                 <li>
+                  <a ui-sref='dashboard.assets'>Assets</a>
+                </li>
+                </ul>
             </li>
-            <li class='top-nav-link'>
-              <a ui-sref='dashboard.drivers'>Drivers</a>
-            </li>
-             <li class='top-nav-link'>
-              <a ui-sref='dashboard.prospects'>Prospects</a>
-            </li>
-             <li class='top-nav-link'>
-              <a ui-sref='dashboard.assets'>Assets</a>
-            </li>
+
             <li class='top-nav-link dropdown'>
               <a href="" class='dropdown-toggle' data-toggle='dropdown'>
                 Logs
@@ -95,9 +106,18 @@
             <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
             <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Driver Assets</a></li>
             <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li>
-            <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
-            <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
-            <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
+            <!-- <li class='dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Logs
+                <i class='fa fa-caret-down'></i>
+              </a> -->
+
+              <!-- <ul class='dropdown-menu' role='menu'> -->
+                <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
+                <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
+                <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
+              <!-- </ul> -->
+            <!-- </li> -->
           </ul>
         </div>
 
@@ -150,7 +170,7 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js"></script>
     <script src="bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
     <!-- endbower -->

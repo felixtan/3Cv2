@@ -34,7 +34,6 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-xeditable/dist/js/xeditable.js',
-      'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/Sortable/Sortable.js',
       'bower_components/Sortable/ng-sortable.js',
       'bower_components/underscore/underscore.js',
@@ -43,8 +42,6 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
       'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
-      'bower_components/angular-toArrayFilter/toArrayFilter.js',
-      'bower_components/math-expression-evaluator/dist/browser/math-expression-evaluator.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/jasmine-expect/dist/jasmine-matchers.js',
       // endbower
