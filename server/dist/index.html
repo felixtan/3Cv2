@@ -1,0 +1,44 @@
+<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width,initial-scale=1"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/vendor.06f336c5.css"> <!-- Font Awesome --> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"> <!-- Angular xeditable --> <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet"> <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet" type="text/css"> <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css"> <link rel="stylesheet" href="styles/main.d41d8cd9.css"> </head> <body ng-app="clientApp"> <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]--> <!-- Add your site or application content here --> <!-- if-user this nav --> <nav class="navbar navbar-inverse navbar-fixed-top"> <div class="container-fluid"> <div class="navbar-header"> <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" ui-sref="dashboard.cars">{{ user.customData.organization }} <span ng-show="!user.customData.organization">Dashboard</span></a> </div> <div id="navbar" class="navbar-collapse collapse"> <ul class="nav navbar-nav navbar-right"> <li class="top-nav-link dropdown"> <a href="" class="dropdown-toggle" data-toggle="dropdown"> Tables <i class="fa fa-caret-down"></i> </a> <ul class="dropdown-menu"> <li> <a ui-sref="dashboard.cars">Cars</a> </li> <li> <a ui-sref="dashboard.drivers">Drivers</a> </li> <li> <a ui-sref="dashboard.prospects">Prospects</a> </li> <li> <a ui-sref="dashboard.assets">Assets</a> </li> </ul> </li> <li class="top-nav-link dropdown"> <a href="" class="dropdown-toggle" data-toggle="dropdown"> Logs <i class="fa fa-caret-down"></i> </a> <ul class="dropdown-menu"> <li> <a ui-sref="logs.cars">Cars</a> </li> <li> <a ui-sref="logs.drivers">Drivers</a> </li> <li> <a ui-sref="logs.assets">Assets</a> </li> </ul> </li> <li> <a sp-logout ui-sref="login">Logout</a> </li> </ul> <!-- <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form> --> </div> </div> </nav> <div class="container-fluid"> <div class="row"> <!-- if-user this div --> <div class="col-sm-3 col-md-2 sidebar"> <ul class="nav nav-sidebar"> <li><a ui-sref="dashboard.cars" class="fa fa-car"> Cars<span class="sr-only">(current)</span></a></li> <li><a ui-sref="dashboard.drivers" class="fa fa-users"> Drivers<span class="sr-only">(current)</span></a></li> <li><a ui-sref="dashboard.assets" class="fa fa-credit-card"> Driver Assets</a></li> <li><a ui-sref="dashboard.prospects" class="fa fa-user-plus"> Prospects</a></li> <!-- <li class='dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Logs
+                <i class='fa fa-caret-down'></i>
+              </a> --> <!-- <ul class='dropdown-menu' role='menu'> --> <li><a ui-sref="logs.cars" class="fa fa-wrench"> Car Logs</a></li> <li><a ui-sref="logs.drivers" class="fa fa-clipboard"> Driver Logs</a></li> <li><a ui-sref="logs.assets" class="fa fa-credit-card-alt"> Asset Logs</a></li> <!-- </ul> --> <!-- </li> --> </ul> </div> <!-- settings sidebar --> <!-- if-user this div --> <div class="col-sm-3 col-md-2 sidebar" ng-if="$state.includes('settings')"> <ul class="nav nav-sidebar"> <li> <a ui-sref="settings.models.car" class="fa fa-user">Cars</a> </li> </ul> </div> <div ui-view></div> <!-- ngView --> </div> </div> <!-- Google Analytics: change UA-XXXXX-X to be your site's ID --> <script>!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');</script> <!-- IE10 viewport hack for Surface/desktop Windows 8 bug --> <script src="scripts/ie10-viewport-bug-workaround.js"></script> <script src="scripts/vendor.9bdbf229.js"></script> <script src="scripts/scripts.b4dd9e05.js"></script> <!-- produced by grunt-ng-constant --> <script src="/scripts/config.js"></script> <script src="/scripts/login.js"></script> <!-- math expression parser --> <!-- <script src="bower_components/math-expression-evaluator/dist/math-expression-evaluator.min.js"></script> --> <!-- Applies css to side nav active page element --> <script type="text/javascript">$(document).ready(function() {
+        
+        $(window).width(function(index, value) {
+          if(value >= 768) $(".top-nav-link").toggleClass("hidden");
+        });
+
+
+        $(window).on('resize', function() {
+          $(this).width(function(index, value) {
+            /*
+              Hide top nav links in desktop view
+              Show them in collapsed version for tablet and mobile view
+            */
+            var isHidden = $(".top-nav-link").hasClass("hidden");
+            if(value >= 768) { 
+              if(!isHidden) $(".top-nav-link").toggleClass("hidden");
+            } else {
+              if(isHidden) $(".top-nav-link").toggleClass("hidden");
+            }
+          });
+        });
+
+        /*
+          Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
+          Based on this solution: https://jsfiddle.net/Frondor/sey4wsah/
+        */ 
+        $(".top-nav-link").on("click", "a", function (e) {
+          if(!$(e.currentTarget).hasClass("dropdown-toggle")) $('.navbar-collapse.in').collapse('hide');
+        });
+      });</script> </body> </html>

@@ -8,10 +8,11 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddFieldModalInstanceCtrl', function (objectHelpers, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
+  .controller('AddFieldModalInstanceCtrl', function ($window, objectHelpers, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
 
     var isValid = objectHelpers.isValid,
-        buildEvalExpression = objectHelpers.buildEvalExpression;
+        buildEvalExpression = objectHelpers.buildEvalExpression,
+        _ = $window._;
 
     var ctrl = this;
     ctrl.update = null;
@@ -361,15 +362,21 @@ angular.module('clientApp')
     if(objectType === 'car') {
       // console.log("add field modal called from carProfile");
       ctrl.update = dataService.updateCar;
-      if(typeof getCars !== 'undefined' && getCars.length > 0) ctrl.objects = getCars;
+      if(typeof getCars !== 'undefined' && getCars.length > 0) { 
+        ctrl.objects = getCars; 
+      }
     } else if(objectType === 'driver') {
       // console.log("add field modal called from driverProfile");
       ctrl.update = dataService.updateDriver;
-      if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) ctrl.objects = getDrivers;
+      if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) {
+        ctrl.objects = getDrivers;
+      }
     } else if(objectType === 'prospect') {
       // console.log("add field modal called from prospectProfile");
       ctrl.update = dataService.updateProspect;
-      if(typeof getProspects !== 'undefined' && getProspects.length > 0) ctrl.objects = getProspects;
+      if(typeof getProspects !== 'undefined' && getProspects.length > 0) {
+        ctrl.objects = getProspects;
+      }
     } else if(objectType === 'asset') {
       // console.log("add field modal called from assetProfile");
       ctrl.update = dataService.updateAsset;
@@ -380,7 +387,9 @@ angular.module('clientApp')
         return asset.assetType === ctrl.assetType; 
       });
 
-      if(assetsOfType !== 'undefined' && assetsOfType.length > 0) ctrl.objects = assetsOfType;
+      if(assetsOfType !== 'undefined' && assetsOfType.length > 0) {
+        ctrl.objects = assetsOfType;
+      }
     } else {
       $state.go('dashboard.cars');
     }

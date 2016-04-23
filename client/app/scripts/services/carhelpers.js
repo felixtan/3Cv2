@@ -8,8 +8,10 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('carHelpers', function (ENV, $q, dataService, $state) {
+  .factory('carHelpers', function ($rootScope, $window, ENV, $q, dataService) {
   
+    var _ = $window._;
+
   //////////////////////////
   //  Data CRUD and Forms //
   //////////////////////////
@@ -19,29 +21,11 @@ angular.module('clientApp')
   var saveCar = dataService.createCar;
   var update = dataService.updateCar;
 
-  var getOrganizationId = function() {
-    return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
-  };
+  function getOrganizationId () {
+    return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
+  }
 
-  var thereAreCars = function() {
-    var deferred = $q.defer();
-    get().then(function(result) {
-      deferred.resolve((typeof result.data[0] !== 'undefined'));
-      deferred.reject(new Error('Error determining if there are cars.'));
-    });
-    return deferred.promise;
-  };
-
-  var getFields = function() {
-    var deferred = $q.defer();
-    get().then(function(result) {
-      deferred.resolve(Object.keys(result.data[0].data));
-      deferred.reject(new Error('Failed to get fields'));
-    });
-    return deferred.promise;
-  };
-
-  var getIdentifier = function() {
+  function getIdentifier () {
     var deferred = $q.defer();
 
     get().then(function(result) {
@@ -56,11 +40,14 @@ angular.module('clientApp')
     });
       
     return deferred.promise;
-  };
+  }
 
-  var createCar = function(carData, identifier, assetType) {
+  function createCar (carData, identifier) {
     var deferred = $q.defer();
-    if(carData.assetType) delete carData.assetType;
+    
+    if(carData.assetType) {
+      delete carData.assetType;
+    }
 
     createLogData().then(function(logData) {
       // console.log(logData);
@@ -83,9 +70,9 @@ angular.module('clientApp')
     });
 
     return deferred.promise;
-  };
+  }
 
-  var getDefaultCar = function() {
+  function getDefaultCar () {
     var deferred = $q.defer();
 
     deferred.resolve({
@@ -97,89 +84,13 @@ angular.module('clientApp')
     });
     deferred.reject(new Error("Error getting default car."));
     return deferred.promise;
-  };
-
-  var getFormDataAndRepresentative = function() {
-    var deferred = $q.defer();
-    var formData = {};
-
-    thereAreCars().then(function(ans) {
-      if(ans) {
-        // console.log('there are cars');
-        get().then(function(result) {
-          var carData = result.data[0].data;
-          // console.log(carData);
-          _.each(carData, function(data, field) {
-            formData[field] = {
-              value: (data.type === 'boolean') ? false : null,
-              log: data.log,
-              dataType: data.dataType,
-              type: data.type,
-              expression: (data.type === 'function') ? data.expression : undefined,
-              expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
-              leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
-              rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
-              inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
-              leftExpression: (data.type === 'inequality') ? data.leftExpression : undefined,
-              rightExpression: (data.type === 'inequality') ? data.rightExpression : undefined,
-              inequalitySign: (data.type === 'inequality') ? data.inequalitySign : undefined,
-            }
-          });
-          // console.log(fromData);
-          deferred.resolve({
-            formData: formData,
-            representativeData: carData 
-          });
-          deferred.reject(new Error('Error initializing car form data'));
-        });
-      } else {
-        // console.log('there are no cars');
-        deferred.resolve({
-          formData: getDefaultCar().data,
-          representativeData: {}
-        });
-        deferred.reject(new Error('Error initializing car form data'));
-      }
-    });
-
-    return deferred.promise;
-  };
-
-  // same as map except for one
-  var simplify = function(object, identifier) {
-    return {
-      id: object.id,
-      identifierValue: object.data[identifier].value
-    }
-  };
-
-  var updateIdentifier = function(cars, currentVal, newVal) {
-    if(currentVal !== newVal) {
-      _.each(cars, function(car) {    
-          car.identifier = newVal;
-          // console.log('updating identifier:',car);
-          dataService.updateCar(car);
-      });
-    }
-
-    $state.forceReload();
-  };
-
-  var _updateIdentifier = function(identifier) {
-    get().then(function(result) {
-      var cars = result.data;
-      _.each(cars, function(car) {
-        car.identifier = identifier;
-        update(car);
-      });
-    });
-  };
+  }
 
   /////////////////
   /// Logs CRUD ///
   /////////////////
 
-  var getLogDates = function() {
+  function getLogDates () {
     var deferred = $q.defer();
     var logDates = [];
 
@@ -200,21 +111,9 @@ angular.module('clientApp')
     });
 
     return deferred.promise;
-  };
+  }
 
-  var createLog = function(data, weekOf) {
-    return $q(function(resolve, reject) {
-      var log = {};
-      log.data = data;
-      log.createdAt = (new Date());
-      log.weekOf = weekOf;
-
-      resolve(log);
-      reject(new Error('Error creating blank log object'));
-    });
-  };
-
-  var createLogs = function(logDates, blankLogData) {
+  function createLogs (logDates, blankLogData) {
     var deferred = $q.defer();
     var logs = [];
 
@@ -229,9 +128,9 @@ angular.module('clientApp')
     deferred.resolve(logs);
     deferred.reject(new Error("Error creating logs"));
     return deferred.promise;
-  };
+  }
 
-  var getFieldsToBeLogged = function() {
+  function getFieldsToBeLogged () {
     var deferred = $q.defer();
     var fields = [];
 
@@ -248,9 +147,9 @@ angular.module('clientApp')
     });
 
     return deferred.promise;
-  };
+  }
 
-  var createLogData = function() {
+  function createLogData () {
     var deferred = $q.defer();
     var logData = {};
 
@@ -264,29 +163,7 @@ angular.module('clientApp')
     });
 
     return deferred.promise;
-  };
-
-  var populateLogs = function(car) {
-    // promise groups
-    // 1. getFieldsToBeLogged -> createLogData
-    // 2. get -> getLogDates
-    // 3. 1,2 -> createLogs (_.each combine with createLog)
-
-    var deferred = $q.defer();
-    var errcb = function(err) { console.error(err) };
-    var promise1 = getFieldsToBeLogged(car).then(createLogData, errcb);
-    var promise2 = get().then(getLogDates, errcb);
-
-    $q.all([promise1, promise2]).then(function(values) {
-      createLogs(values[1], values[0]).then(function(logs) {
-        car.logs = logs;
-        deferred.resolve(car);
-        deferred.reject(new Error('Failed to populate logs for car ' + car.id));
-      }, errcb);
-    }, errcb);
-
-    return deferred.promise;
-  };
+  }
 
   // Public API here
   return {
@@ -297,22 +174,14 @@ angular.module('clientApp')
     update: update,
     saveCar: saveCar,
     createCar: createCar,
-    thereAreCars: thereAreCars,
     getDefaultCar: getDefaultCar,
-    getFields: getFields,
-    simplify: simplify,
-    updateIdentifier: updateIdentifier,
-    _updateIdentifier: _updateIdentifier,
     getIdentifier: getIdentifier,
     getOrganizationId: getOrganizationId,
-    getFormDataAndRepresentative: getFormDataAndRepresentative,
     
     // Logs
     getLogDates: getLogDates,
     getFieldsToBeLogged: getFieldsToBeLogged,
     createLogData: createLogData,
-    createLog: createLog,
-    populateLogs: populateLogs
-
+    createLogs: createLogs,
   }; 
 });

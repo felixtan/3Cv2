@@ -11,7 +11,7 @@ angular.module('clientApp')
   .controller('DeleteObjModalInstanceCtrl', function (id, dataService, $scope, $modalInstance, $state) {
     $scope.input = null;
     $scope.objectType = null;
-    $scope.delete = function(id) { return; };
+    $scope.delete = function() { return; };
     $scope.postDeleteState = null;
 
     // determine the state or ui calling this modal

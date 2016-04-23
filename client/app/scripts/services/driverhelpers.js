@@ -8,7 +8,9 @@
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .factory('driverHelpers', function ($q, dataService, ENV) {
+  .factory('driverHelpers', function ($rootScope, $q, dataService, ENV, $window) {
+
+    var _ = $window._;
 
     //////////////////////////
     //  Data CRUD and Forms //
@@ -19,42 +21,24 @@ angular.module('clientApp')
     var saveDriver = dataService.createDriver;
     var update = dataService.updateDriver;
 
-    var getOrganizationId = function() {
-      return (ENV.name === ('production' || 'staging')) ? $scope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
-    };
+    function getOrganizationId () {
+      return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
+    }
 
-    var getFullName = function(driverData) {
+    function getFullName (driverData) {
       return driverData["First Name"].value + " " + driverData["Last Name"].value;
-    };
+    }
 
-    var thereAreDrivers = function() {
-      var deferred = $q.defer();
-      get().then(function(result) {
-        deferred.resolve((typeof result.data[0] !== 'undefined'));
-        deferred.reject(new Error('Error determining if there are drivers.'));
-      });
-      return deferred.promise;
-    };
+    function notName (field) {
+      return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name"));
+    }
 
-    var getFields = function() {
-      var deferred = $q.defer();
-      get().then(function(result) {
-        deferred.resolve(Object.keys(result.data[0].data));
-        deferred.reject(new Error('Failed to get fields'));
-      });
-      return deferred.promise;
-    };
-
-    var notName = function(field) {
-      return ((field != "First Name") && (field != "Last Name") && (field != "Name"));
-    };
-
-    var namesNotNull = function(driverData) {
+    function namesNotNull (driverData) {
       console.log(driverData);
       return ((driverData["First Name"].value !== null) && (driverData["Last Name"].value !== null));
-    };
+    }
 
-    var updateFullName = function(driverData) {
+    function updateFullName (driverData) {
       var deferred = $q.defer();
 
       driverData["Name"] = {
@@ -67,12 +51,16 @@ angular.module('clientApp')
       deferred.resolve(driverData);
       deferred.reject(new Error('Failed to inject full name'));
       return deferred.promise;
-    };
+    }
 
-    var createDriver = function(driverData, identifier) {
+    function createDriver (driverData, identifier) {
       var deferred = $q.defer();
-      if(driverData.assetType) delete driverData.assetType;
-      updateFullName(driverData).then(function(driverDataWithFullName) {
+      
+      if(driverData.assetType) {
+        delete driverData.assetType;
+      }
+
+      updateFullName(driverData).then(function() {
         // console.log(driverDataWithFullName);
         createLogData().then(function(logData) {
           // console.log(logData);
@@ -98,9 +86,9 @@ angular.module('clientApp')
       });
 
       return deferred.promise;
-    };
+    }
 
-    var getDefaultDriver = function() {
+    function getDefaultDriver () {
       var deferred = $q.defer();
 
       deferred.resolve({
@@ -132,64 +120,15 @@ angular.module('clientApp')
       });
       deferred.reject(new Error("Error getting default driver."));
       return deferred.promise;
-    };
-
-    var getFormDataAndRepresentative = function() {
-      var deferred = $q.defer();
-      var formData = {};
-
-      thereAreDrivers().then(function(ans) {
-        if(ans) {
-          // console.log('there are drivers');
-          get().then(function(result) {
-            var driverData = result.data[0].data;
-            // console.log(driver);
-            _.each(Object.keys(driverData), function(field) {
-              formData[field] = {
-                value: null,
-                log: driverData[field].log,
-                dataType: driverData[field].dataType,
-                type: driverData[field].type
-              }
-            });
-
-            // console.log('there are cars, driver data:', formData);
-            deferred.resolve({
-              formData: formData,
-              representativeData: driverData
-            });
-            deferred.reject(new Error('Error initializing driver form data'));
-          });
-        } else {
-          var defaultDriver = getDefaultDriver();
-          deferred.resolve({
-            formData: defaultDriver.data,
-            representativeData: defaultDriver.data
-          });
-          // console.log('there are no drivers, default driver data:', defaultDriverData);
-          deferred.reject(new Error('Error initializing driver form data'));
-        }
-      });
-
-      return deferred.promise;
-    };
+    }
 
     /////////////////
     /// Logs CRUD ///
     /////////////////
 
-    var getLogDates = function() {
+    function getLogDates () {
       var deferred = $q.defer();
       var logDates = [];
-
-      // if(existingDrivers.constructor === Object) {
-      //   drivers = existingDrivers.data;   // should be from dataService
-      // } else if(existingDrivers.constructor === Array) {
-      //   drivers = existingDrivers; 
-      // } else {
-      //   // idk wtf it is
-      //   reject(new Error('Invalid existingDrivers data type:', existingDrivers));
-      // }
 
       get().then(function(result) {
         var drivers = result.data;
@@ -207,21 +146,9 @@ angular.module('clientApp')
       });
 
       return deferred.promise;
-    };
+    }
 
-    var createLog = function(data, weekOf) {
-      return $q(function(resolve, reject) {
-        var log = {};
-        log.data = data;
-        log.createdAt = (new Date());
-        log.weekOf = weekOf;
-
-        resolve(log);
-        reject(new Error('Error creating blank log object'));
-      });
-    };
-
-    var createLogs = function(logDates, blankLogData) {
+    function createLogs (logDates, blankLogData) {
       var deferred = $q.defer();
       var logs = [];
 
@@ -236,14 +163,14 @@ angular.module('clientApp')
       deferred.resolve(logs);
       deferred.reject(new Error("Error creating blank logs array"));
       return deferred.promise;
-    };
+    }
 
-    var getFieldsToBeLogged = function() {
+    function getFieldsToBeLogged () {
       var deferred = $q.defer();
       var fields = [];
 
       get().then(function(result) {
-        var drivers = result.data
+        var drivers = result.data;
         if(drivers.length > 0) {
           fields = _.filter(Object.keys(drivers[0].data), function(field) {
             return drivers[0].data[field].log;
@@ -255,9 +182,9 @@ angular.module('clientApp')
       });
 
       return deferred.promise;
-    };
+    }
 
-    var createLogData = function() {
+    function createLogData () {
       var deferred = $q.defer();
       var logData = {};
 
@@ -272,29 +199,7 @@ angular.module('clientApp')
       });
 
       return deferred.promise;
-    };
-
-    var populateLogs = function(driver) {
-      // promise groups
-      // 1. getFieldsToBeLogged -> createLogData
-      // 2. getDrivers -> getLogDates
-      // 3. 1,2 -> createLogs (_.each combine with createLog)
-
-      var deferred = $q.defer();
-      var errcb = function(err) { console.error(err) };
-      var promise1 = getFieldsToBeLogged(driver).then(createLogData, errcb);
-      var promise2 = get().then(getLogDates, errcb);
-
-      $q.all([promise1, promise2]).then(function(values) {
-        createLogs(values[1], values[0]).then(function(logs) {
-          driver.logs = logs;
-          deferred.resolve(driver);
-          deferred.reject(new Error('Failed to populate logs for driver ' + driver.id));
-        }, errcb);
-      }, errcb);
-
-      return deferred.promise;
-    };
+    }
 
     return {
 
@@ -305,23 +210,16 @@ angular.module('clientApp')
       saveDriver: saveDriver,
       update: update,
       createDriver: createDriver,
-      thereAreDrivers: thereAreDrivers,
-      getFields: getFields,
       notName: notName,
       namesNotNull: namesNotNull,
-      // namesNotNullOnFormdata: namesNotNullOnFormdata,
       getFullName: getFullName,
       updateFullName: updateFullName,
       getDefaultDriver: getDefaultDriver,
-      getFormDataAndRepresentative: getFormDataAndRepresentative,
 
       // Logs
       getLogDates: getLogDates,                   // returns array of log dates in ms in present to past order; logDates[0] stores most recent log date
       getFieldsToBeLogged: getFieldsToBeLogged,
       createLogData: createLogData,               // relies on getFieldsToBeLogged
-      createLog: createLog,                       // relies on createLogData and calcLogDates
       createLogs: createLogs,
-      populateLogs: populateLogs
-
     };
 });

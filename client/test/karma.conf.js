@@ -42,6 +42,7 @@ module.exports = function(config) {
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
       'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
+      'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/jasmine-expect/dist/jasmine-matchers.js',
       // endbower

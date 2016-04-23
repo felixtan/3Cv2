@@ -8,9 +8,11 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ObjectsLogsCtrl', function ($modal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state) {
+  .controller('ObjectsLogsCtrl', function ($window, $modal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state) {
 
-    var ctrl = this;
+    var ctrl = this,
+        _ = $window;
+
     $scope.objectType = objectType;
     $scope.datepicker = datepicker;
     $scope.dummyNum = { value: null };
@@ -69,17 +71,21 @@ angular.module('clientApp')
             $scope.objects = result.data;
         } else {
             $scope.assetTypes = result.data.types;
-            $scope.assetType = $scope.assetTypes[0].value;
+
             $scope.tabs = [];
+            $scope.assetType = null;
+            if($scope.assetTypes.length) {
+                $scope.assetType = $scope.assetTypes[0].value;
 
-            _.each($scope.assetTypes, function(assetType, index) {
-                $scope.tabs.push({
-                    title: assetType.value,
-                    active: (index === 0),
+                _.each($scope.assetTypes, function(assetType, index) {
+                    $scope.tabs.push({
+                        title: assetType.value,
+                        active: (index === 0),
+                    });
                 });
-            });
 
-            ctrl.getAssetsOfTypeAndLogs($scope.assetType);
+                ctrl.getAssetsOfTypeAndLogs($scope.assetType);
+            }
         }
     });
 
@@ -115,13 +121,15 @@ angular.module('clientApp')
         var deferred = $q.defer();
         var fields = [];
         for(var field in object.data) {
-            if(object.data[field].log === true) fields.push(field);
+            if(object.data[field].log === true) {
+                fields.push(field);
+            }
         }
         
         deferred.resolve(fields);
         deferred.reject(new Error('Error getting fields to be logged'));
         return deferred.promise;
-    }
+    };
 
     // returns an object to be object.logs[i].data with keys (feilds) to be logged
     ctrl.newDataObj = function() {
@@ -140,7 +148,7 @@ angular.module('clientApp')
         deferred.resolve(data);
         deferred.reject(new Error('Error creating log.data'));
         return deferred.promise;
-    }
+    };
 
     ctrl.createLogForObject = function(object, date, data) {
         var deferred = $q.defer();
@@ -184,7 +192,7 @@ angular.module('clientApp')
         } else {
             alert('Log for ' + d.toDateString() + ' already exists!');
         }
-    }
+    };
 
     $scope.notExpressionField = function (field, object) {
         var type, assets;
@@ -209,23 +217,28 @@ angular.module('clientApp')
 
     // need to make this more efficient
     $scope.save = function(logDate) {
+        var mostRecentLog;
         // if($scope.invalidEntries.length === 0) {
             _.each($scope.objects, function(object) {
                 if ($scope.objectType !== 'asset') {
                     if (logDate === ctrl.mostRecentLogDate) {
                         // update object.data is new value isn't null
-                        var mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate });
+                        mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
                         for(var field in mostRecentLog.data) {
-                            if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') object.data[field].value = mostRecentLog.data[field];
+                            if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
+                                object.data[field].value = mostRecentLog.data[field];
+                            }
                         }
                     }
                 } else {
                     if ($scope.assetType === $scope.objectType) {
                         if (logDate === ctrl.mostRecentLogDate) {
                             // update object.data is new value isn't null
-                            var mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate });
+                            mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
                             for(var field in mostRecentLog.data) {
-                                if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') object.data[field].value = mostRecentLog.data[field];
+                                if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
+                                    object.data[field].value = mostRecentLog.data[field];
+                                }
                             }
                         }
                     }
@@ -278,7 +291,9 @@ angular.module('clientApp')
 
     ctrl.createNewRow = function(date) {
         // add new date to array of log dates
-        if (!_.contains($scope.dates, date)) $scope.dates.push(date);
+        if (!_.contains($scope.dates, date)) {
+            $scope.dates.push(date);
+        }
     };
 
     $scope.open = function (size, thing) {
@@ -315,5 +330,5 @@ angular.module('clientApp')
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
-    }
+    };
   });

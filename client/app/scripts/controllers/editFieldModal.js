@@ -8,12 +8,13 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('EditFieldModalCtrl', function (objectHelpers, $modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+  .controller('EditFieldModalCtrl', function ($window, objectHelpers, $modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
     
     var ctrl = this,
-        buildEvalExpression = objectHelpers.buildEvalExpression,
         buildDisplayExpression = objectHelpers.buildDisplayExpression,
-        notName = driverHelpers.notName;
+        notName = driverHelpers.notName,
+        _ = $window._,
+        alert = $window.alert;
 
     $scope.fieldNamesNotToEdit = [];
     $scope.statuses = null;
@@ -279,23 +280,24 @@ angular.module('clientApp')
     };
 
     $scope.undoExpression = function() {
+      var item;
       if($scope.field.type === 'function') {
         if($scope.field.expressionItems.length) {
-          var item = $scope.field.expressionItems[$scope.field.expressionItems.length-1];
-          console.log('removed:', item);
+          item = $scope.field.expressionItems[$scope.field.expressionItems.length-1];
+          // console.log('removed:', item);
           $scope.field.expressionItems.pop();
         }
       } else {
         if($scope.rightSide.value) {
           if($scope.field.rightExpressionItems.length) {
-            var item = $scope.field.rightExpressionItems[$scope.field.rightExpressionItems.length-1];
-            console.log('removed:', item);
+            item = $scope.field.rightExpressionItems[$scope.field.rightExpressionItems.length-1];
+            // console.log('removed:', item);
             $scope.field.rightExpressionItems.pop();
           }
         } else {
           if($scope.field.leftExpressionItems.length) {
-            var item = $scope.field.leftExpressionItems[$scope.field.leftExpressionItems.length-1];
-            console.log('removed:', item);
+            item = $scope.field.leftExpressionItems[$scope.field.leftExpressionItems.length-1];
+            // console.log('removed:', item);
             $scope.field.leftExpressionItems.pop();
           }
         }
@@ -535,7 +537,7 @@ angular.module('clientApp')
                     return {
                       fieldName: $scope.field.name,
                       type: 'field',
-                    }   
+                    };   
                     // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                 },
                 getCars: function() {
@@ -571,10 +573,7 @@ angular.module('clientApp')
     // $scope.status = $scope.object.status.value;
     $scope.setStatusChanged = function(statusName) {
         var prospect = $scope.object;
-        if((prospect.status.value != statusName) 
-            || (prospect.data.status.value != statusName)
-            && (typeof statusName !== 'undefined') 
-            && (statusName !== null)) {
+        if((prospect.status.value !== statusName) || (prospect.data.status.value !== statusName) && (typeof statusName !== 'undefined') && (statusName !== null)) {
             $scope.statusChanged = true;
             $scope.status = statusName;
         }

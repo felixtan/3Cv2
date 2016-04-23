@@ -8,9 +8,11 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ObjectLogsCtrl', function (objectType, objectId, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $q, $scope) {
+  .controller('ObjectLogsCtrl', function ($window, objectType, objectId, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $q, $scope) {
     
-    var ctrl = this;
+    var ctrl = this,
+        _ = $window._;
+        
     ctrl.objectType = objectType;
     ctrl.logDataObj = {};
 
@@ -91,9 +93,9 @@ angular.module('clientApp')
     ctrl.logDataToArray = function () {
         _.each(ctrl.dates, function(date) {
             // console.log(date);
-            var log = _.findWhere($scope.object.logs, { weekOf: date });
+            var a = [],
+                log = _.findWhere($scope.object.logs, { weekOf: date });
             // console.log(log);
-            var a = []
 
             _.each($scope.fields, function(loggedField) {
                 // console.log(loggedField);
@@ -117,7 +119,7 @@ angular.module('clientApp')
     ctrl.getMostRecentLogDate = function() {
         // assuming sorted from recent to past
         return ctrl.dates[0];     
-    }
+    };
 
     ctrl.getFieldsToBeLogged = function(object) {
         var deffered = $q.defer();
@@ -125,7 +127,9 @@ angular.module('clientApp')
 
         if(object) {
             for(var field in object.data) {
-                if(object.data[field].log === true) fields.push(field);
+                if(object.data[field].log === true) {
+                    fields.push(field);
+                }
             }
         }
 
@@ -133,21 +137,22 @@ angular.module('clientApp')
         deffered.reject(new Error('Error getting fields to be logged'));
 
         return deffered.promise;
-    }
+    };
 
     ctrl.updateMostRecentData = function() {
-        var deferred = $q.defer();
-        var mostRecentLog = _.find($scope.object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate });
+        var deferred = $q.defer(),
+            mostRecentLog = _.find($scope.object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
      
         for(var field in mostRecentLog.data) {
-            if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') 
+            if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
                 $scope.object.data[field].value = mostRecentLog.data[field];
+            }
         }
 
         deferred.resolve($scope.object);
         deferred.reject(new Error('Errror updating most recent log'));
         return deferred.promise;
-    }
+    };
 
     // need to make this more efficient
     $scope.save = function(logDate) {
@@ -161,5 +166,5 @@ angular.module('clientApp')
         }
 
         ctrl.update($scope.object);
-    }
+    };
   });

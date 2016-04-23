@@ -8,8 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AssignmentModalCtrl', function ($datepicker, objectHelpers, objectType, subjectType, $q, $scope, getAssetTypes, getAssets, getCars, getDrivers, asset, car, driver, dataService, $modalInstance, $state) {
+  .controller('AssignmentModalCtrl', function ($window, datepicker, objectHelpers, objectType, subjectType, $q, $scope, getAssetTypes, getAssets, getCars, getDrivers, asset, car, driver, dataService, $modalInstance, $state) {
     
+    var _ = $window._;
     var ctrl = this;
     ctrl.fullObjects = [];
     ctrl.simpleObjects = [];
@@ -99,7 +100,7 @@ angular.module('clientApp')
     ctrl.getObjectIdentifierValue = function(id) {
         var deferred = $q.defer();
         var obj = _.find(ctrl.simpleObjects, function(obj) {
-            return obj.id == id;
+            return obj.id === id;
         });
 
         deferred.resolve(obj.identifierValue);
@@ -122,7 +123,7 @@ angular.module('clientApp')
         };
 
         var obj = _.find(ctrl.fullObjects, function(object) {
-            return object.id == $scope.formData.objId;
+            return object.id === $scope.formData.objId;
         });
 
         // setting the correct reciprocal update call

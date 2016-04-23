@@ -8,27 +8,8 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-    .factory('objectHelpers', function ($rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
-
-        return {
-            isValid: isValid,
-            simplify: simplify,
-            simplifyOne: simplifyOne,
-            getInequalitySign: getInequalitySign,
-            updateExpressionFieldsIfFieldNameChanged: updateExpressionFieldsIfFieldNameChanged,
-            updateExpressionNameInFields: updateExpressionNameInFields,
-            updateFieldNameInExpressions: updateFieldNameInExpressions,
-            storeFieldsUsed: storeFieldsUsed,
-            evaluateExpressionAndAppendValue: evaluateExpressionAndAppendValue,
-            evaluateExpressions: evaluateExpressions,
-            removeFieldFromExpressions: removeFieldFromExpressions,
-            buildDisplayExpression: buildDisplayExpression,
-            buildEvalExpression: buildEvalExpression,
-            updateDisplayExpressions: updateDisplayExpressions,
-            updateFieldValueAndExpressionValues: updateFieldValueAndExpressionValues,
-            updateDataIfFieldNameChanged: updateDataIfFieldNameChanged,
-            getFormDataAndReference: getFormDataAndReference,
-        }
+    .factory('objectHelpers', function ($window, $rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+        var _ = $window._;
 
         /*
             Used in a loop over objects and updates the field value
@@ -44,11 +25,13 @@ angular.module('clientApp')
 
             if(object.id === id) {
                 if(fieldData.type === 'number' || fieldData.type === 'function') {
-                    if (fieldData.type === 'number') fieldData.value = value;
+                    if (fieldData.type === 'number') {
+                        fieldData.value = value;
+                    }
                     
                     _.each(fieldData.expressionsUsedIn, function(data, expression) {
                         // console.log(data);
-                        console.log(expression);
+                        // console.log(expression);
                         evaluateExpressionAndAppendValue(object.data, expression).then(function(objectData) {
                             // console.log(expression);
                             // console.log(objectData);
@@ -73,7 +56,7 @@ angular.module('clientApp')
             }
 
             return deferred.promise;
-        };
+        }
 
         function updateDisplayExpressions (object) {
             var deferred = $q.defer();
@@ -102,7 +85,7 @@ angular.module('clientApp')
             deferred.resolve(object);
             deferred.reject(new Error('Error building or storing expression'));
             return deferred.promise;
-        };
+        }
 
         function buildDisplayExpression (expressionItems) {
             var deferred = $q.defer();
@@ -116,7 +99,7 @@ angular.module('clientApp')
             deferred.resolve(expression);
             deferred.reject(new Error('Error building expression'));
             return deferred.promise;
-        };
+        }
 
         function removeFieldFromExpressions (object, fieldName) {
             var deferred = $q.defer(),
@@ -157,11 +140,11 @@ angular.module('clientApp')
             deferred.resolve(object);
             deferred.reject(new Error("Error removing " + fieldName + " from functions and inequalities"));
             return deferred.promise;
-        };
+        }
 
         function isValid (value) {
             return value !== null && typeof value !== "undefined";
-        };
+        }
 
         /*
             inputs
@@ -199,7 +182,7 @@ angular.module('clientApp')
             deferred.resolve(object);
             deferred.reject(new Error("Error evaluating expressions"));
             return deferred.promise;
-        };
+        }
 
         function simplify (objects) {
             return _.map(objects, function(object) {
@@ -213,7 +196,7 @@ angular.module('clientApp')
                     assetType: (isValid(object.assetType) && (typeof object.assetType === 'string')) ? object.assetType : null,
                 };
             });
-        };
+        }
 
         function simplifyOne (object) {
             return {
@@ -222,7 +205,7 @@ angular.module('clientApp')
                 identifierValue: object.data[object.identifier].value,
                 assetType: (isValid(object.assetType) && (typeof object.assetType === 'string')) ? object.assetType : null,
             };
-        };
+        }
 
         function getInequalitySign (signId) {
             switch(parseInt(signId)) {
@@ -242,7 +225,7 @@ angular.module('clientApp')
                     return '?';
                     break;
             }
-        };
+        }
 
         function evaluateExpressionAndAppendValue (objectData, fieldName, object) {
           var deferred = $q.defer(),
@@ -255,7 +238,7 @@ angular.module('clientApp')
           // console.log(fieldName);
           if(objectData[fieldName].type === 'function') {
             buildEvalExpression(objectData, objectData[fieldName].expressionItems).then(function(expression) {
-              console.log(expression);
+              // console.log(expression);
 
               objectData[fieldName].value = isValid(expression) ? $rootScope.$eval(expression) : null;
 
@@ -289,7 +272,7 @@ angular.module('clientApp')
           }
           
           return deferred.promise;
-        };
+        }
 
         function updateDataIfFieldNameChanged (oldName, newName, object) {
             var deferred = $q.defer();    
@@ -302,7 +285,7 @@ angular.module('clientApp')
             deferred.resolve(object);
             deferred.reject(new Error("Error changing field name " + oldName + " to " + newName));
             return deferred.promise;
-        };
+        }
 
         // This is only used in editFieldModal.js as far as I can can tell so it's a waste puttin it here
         function updateExpressionFieldsIfFieldNameChanged (oldName, newName, objectData, objectId) {
@@ -315,25 +298,25 @@ angular.module('clientApp')
                         if(data.type === 'function') {
                             // console.log('list?', list);
                             buildEvalExpression(list, data.expressionItems, objectId).then(function(expression) {
-                                objectData[field].value = $rootScope.$eval(expression);
+                                objectData[field].value = isValid(expression) ? $rootScope.$eval(expression) : null;
                             });
                         } else if(data.type === 'inequality') {
                             // console.log('list?', list);
                             buildEvalExpression(list, data.leftExpressionItems, objectId).then(function(leftExpression) {
                                 buildEvalExpression(list, data.rightExpressionItems, objectId).then(function(rightExpression) {
                                     var inequalitySign = getInequalitySign(data.inequalitySignId);
-                                    objectData[field].value = $rootScope.$eval(leftExpression+inequalitySign+rightExpression);
+                                    objectData[field].value = (isValid(leftExpression) && isValid(rightExpression) && isValid(inequalitySign)) ? $rootScope.$eval(leftExpression+inequalitySign+rightExpression) : null;
                                 });
                             });
                         }
                     });
                 });
-            };
+            }
 
             deferred.resolve(objectData);
             deferred.reject(new Error("Error updating expressions"));
             return deferred.promise;
-        };
+        }
 
         function replaceFieldNameInExpressions (oldName, newName, objectData) {
           var deferred = $q.defer();
@@ -364,13 +347,17 @@ angular.module('clientApp')
               // console.log(field);
               
               data.leftExpression = _.each(data.leftExpressionItems, function(item) {
-                if(item.type === 'field' && item.value === oldName) item.value = newName;
+                if(item.type === 'field' && item.value === oldName) {
+                    item.value = newName;
+                }
               }).reduce(function(memo, item) {
                 return memo + item.value;
               }, "");
 
               data.rightExpression = _.each(data.rightExpressionItems, function(item) {
-                if(item.type === 'field' && item.value === oldName) item.value = newName;
+                if(item.type === 'field' && item.value === oldName) {
+                    item.value = newName;
+                }
               }).reduce(function(memo, item) {
                 return memo + item.value;
               }, "");
@@ -414,7 +401,7 @@ angular.module('clientApp')
             deferred.resolve(expression);
             deferred.reject(new Error('Error building evaluation expression'));
             return deferred.promise;
-        };
+        }
 
         /*
             Updates the array in field's data containing the func/ineq fields that it is used in
@@ -427,7 +414,8 @@ angular.module('clientApp')
                 2. function and ineq fields store array of fields used in expressions
         */
         function updateExpressionNameInFields (oldName, newName, object) {
-            var deferred = $q.defer();
+            var deferred = $q.defer(),
+                fieldName;
 
             /*
                 fieldsUsed will be 
@@ -443,15 +431,16 @@ angular.module('clientApp')
                 ]
             */
             _.each(object.data[oldName].fieldsUsed, function(field) {
+                fieldName = field;
                 _.where(object.data[field.name].expressionsUsedIn, { name: oldName }).each(function(expressionField) {
                     expressionField.name = newName;
                 });
             });
 
             deferred.resolve(object);
-            deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for expressionsUsedIn for field " + field));
-            return deferred.promise
-        };
+            deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for expressionsUsedIn for field " + fieldName));
+            return deferred.promise;
+        }
 
         /*  
             Updates the expressionItems and expressions of func/ineq fields when the name of a
@@ -465,7 +454,8 @@ angular.module('clientApp')
                 3. fields of all type store array of functions/inequalities they are used in
         */
         function updateFieldNameInExpressions (oldName, newName, object) {
-              var deferred = $q.defer();
+              var deferred = $q.defer(),
+                    expressionFieldName;
 
               /* 
                 expressionsUsedIn will be 
@@ -481,6 +471,7 @@ angular.module('clientApp')
                 ]
               */
               _.each(object.data[oldName].expressionsUsedIn, function(expressionField) {
+                expressionFieldName = expressionField.name;
                 _.each(expressionField.locations, function(expressionItems) {
                     var expression = _.where(object.data[expressionField.name][expressionItems], { type: 'field', value: oldName }).each(function(item) {
                         item.value = newName;
@@ -495,15 +486,16 @@ angular.module('clientApp')
                     } else if(expressionItems === 'expressionItems') {
                         object.data[expressionField.name].expression = expression;
                     } else {
-                        throw Error("Error: unknown expressionItems for " + expressionField.name + " " + expressionItems);
+                        // throw Error("Error: unknown expressionItems for " + expressionField.name + " " + expressionItems);
+                        deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for fields used in expressions " + expressionField.name));
                     }
                 });
               });
                 
               deferred.resolve(object);
-              deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for fields used in expressions " + expressionField.name));
+              deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for fields used in expressions " + expressionFieldName));
               return deferred.promise;
-        };
+        }
 
 
         /*
@@ -534,7 +526,7 @@ angular.module('clientApp')
             deferred.resolve(objectData);
             deferred.reject(new Error("Error storing expression" + fieldName + " using in field data"));
             return deferred.promise;
-        };
+        }
 
         /*
           Stores the fields used by a func/ineq in an array of objects.
@@ -591,17 +583,7 @@ angular.module('clientApp')
             }
 
             return deferred.promise;
-        };
-
-        function fieldIsStored (fieldsUsed, item) {
-            _.each(fieldsUsed, function(field, index, list) {
-                if(field.name === item.value) {
-                    return true;
-                } else if(index === fieldsUsed.length-1) {
-                    return false;
-                }
-            });
-        };
+        }
 
         /*
             returns an object like this
@@ -622,9 +604,9 @@ angular.module('clientApp')
                 .
             }
         */
-        function pairItemsWithIndicesInExpressionItems (expressionItems, reduced) {
+        function pairItemsWithIndicesInExpressionItems (expressionItems, _reduced) {
             var deferred = $q.defer(),
-                reduced = reduced || {};
+                reduced = _reduced || {};
 
             _.each(expressionItems, function(item, index) {
                 var location = item.location;
@@ -651,7 +633,7 @@ angular.module('clientApp')
             deferred.resolve(reduced);
             deferred.reject(new Error("Error pairing field with indices in expression items"));
             return deferred.promise;
-        };
+        }
 
         /*
             Used when creating a new field
@@ -681,7 +663,7 @@ angular.module('clientApp')
             }
 
             get(assetType).then(function(result) {
-                console.log(result);
+                // console.log(result);
                 if(isValid(result.data)) {
                     if(result.data.length > 0) {
                         object = result.data[0];
@@ -698,17 +680,27 @@ angular.module('clientApp')
                                 type: data.type,
                             };
 
-                            if (data.type === 'function') formData[field].expression = data.expression;
-                            if (data.type === 'function') formData[field].expressionItems = data.expressionItems;
-                            if (data.type === 'inequality') formData[field].leftExpressionItems = data.leftExpressionItems;
-                            if (data.type === 'inequality') formData[field].rightExpressionItems = data.rightExpressionItems;
-                            if (data.type === 'inequality') formData[field].inequalitySignId = data.inequalitySignId;
-                            if (data.type === 'inequality') formData[field].leftExpression = data.leftExpression;
-                            if (data.type === 'inequality') formData[field].rightExpression = data.rightExpression;
-                            if (data.type === 'inequality') formData[field].inequalitySign = data.inequalitySign;
+                            if (data.type === 'function') {
+                                formData[field].expression = data.expression;
+                                formData[field].expressionItems = data.expressionItems;
+                            }
 
-                            if (data.type === 'number' || data.type === 'function') formData[field].expressionsUsedIn = data.expressionsUsedIn;
-                            if (data.type === 'inequality' || data.type === 'function') formData[field].fieldsUsed = data.fieldsUsed;
+                            if (data.type === 'inequality') {
+                                formData[field].leftExpressionItems = data.leftExpressionItems;
+                                formData[field].rightExpressionItems = data.rightExpressionItems;
+                                formData[field].inequalitySignId = data.inequalitySignId;
+                                formData[field].leftExpression = data.leftExpression;
+                                formData[field].rightExpression = data.rightExpression;
+                                formData[field].inequalitySign = data.inequalitySign;
+                            }
+
+                            if (data.type === 'number' || data.type === 'function') {
+                                formData[field].expressionsUsedIn = data.expressionsUsedIn;
+                            }
+
+                            if (data.type === 'inequality' || data.type === 'function') {
+                                formData[field].fieldsUsed = data.fieldsUsed;
+                            }
                         });
 
                         deferred.resolve({
@@ -740,5 +732,25 @@ angular.module('clientApp')
             
             // deferred.reject(new Error('Error initializing form data for ' + objectType));
             return deferred.promise;
+        }
+
+        return {
+            isValid: isValid,
+            simplify: simplify,
+            simplifyOne: simplifyOne,
+            getInequalitySign: getInequalitySign,
+            updateExpressionFieldsIfFieldNameChanged: updateExpressionFieldsIfFieldNameChanged,
+            updateExpressionNameInFields: updateExpressionNameInFields,
+            updateFieldNameInExpressions: updateFieldNameInExpressions,
+            storeFieldsUsed: storeFieldsUsed,
+            evaluateExpressionAndAppendValue: evaluateExpressionAndAppendValue,
+            evaluateExpressions: evaluateExpressions,
+            removeFieldFromExpressions: removeFieldFromExpressions,
+            buildDisplayExpression: buildDisplayExpression,
+            buildEvalExpression: buildEvalExpression,
+            updateDisplayExpressions: updateDisplayExpressions,
+            updateFieldValueAndExpressionValues: updateFieldValueAndExpressionValues,
+            updateDataIfFieldNameChanged: updateDataIfFieldNameChanged,
+            getFormDataAndReference: getFormDataAndReference,
         };
     });

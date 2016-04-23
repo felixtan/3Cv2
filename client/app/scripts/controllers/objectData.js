@@ -8,9 +8,10 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ObjectDataCtrl', function (objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $modal) {   
+  .controller('ObjectDataCtrl', function ($window, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $modal) {   
     
-    var ctrl = this;        // for testing;
+    var _ = $window._,
+        ctrl = this;        // for testing;
     // ctrl.assetType = { value: null };
     $scope.objectType = objectType;
     $scope.carIdentifier = null;
@@ -52,7 +53,7 @@ angular.module('clientApp')
         }
     };
 
-    ctrl.getObjects = function (assetType) {
+    ctrl.getObjects = function () {
         if($scope.objectType === 'car') {
             return carHelpers.get;
         } else if($scope.objectType === 'driver') {
@@ -66,7 +67,10 @@ angular.module('clientApp')
 
     ctrl.getObject()(objectId).then(function(result1) {
         // console.log(result1);
-        if(typeof result1 !== 'undefined') $scope.object = result1.data;
+        if(typeof result1 !== 'undefined') {
+            $scope.object = result1.data;
+        }
+
         ctrl.assetType = $scope.object.assetType;
         $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
@@ -219,7 +223,7 @@ angular.module('clientApp')
     };
 
     $scope.notStatus = function(field) {
-        return (field.toLowerCase() != "status");
+        return (field.toLowerCase() !== "status");
     };
 
     String.prototype.capitalizeIfStatus = function() {
@@ -227,7 +231,7 @@ angular.module('clientApp')
     };
 
     $scope.notNameOrStatus = function(field) {
-        return ((field != "First Name") && (field != "Last Name") && (field !== "Name") && (field.toLowerCase() != "status"));
+        return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name") && (field.toLowerCase() !== "status"));
     };
 
     // used in convert?
@@ -289,43 +293,6 @@ angular.module('clientApp')
         return deferred.promise;
     };
 
-    // used in convert?
-    ctrl.splitProspectData = function (driverData, prospectData, fieldsInCommon) {
-        var deferred = $q.defer();
-        var prospectDataMinusFieldsInCommon = {};
-        var prospectDataOnlyFieldsInCommon = {};
-        angular.copy(prospectData, prospectDataMinusFieldsInCommon);
-
-        var prospectFieldsToAddToAllDrivers = _.difference(Object.keys(prospectData), Object.keys(driverData));
-        // console.log(Object.keys(driverData));
-        // console.log(Object.keys(prospectData));
-        // console.log(prospectFieldsToAddToAllDrivers);
-
-        prospectFieldsToAddToAllDrivers = _.reject(prospectFieldsToAddToAllDrivers, function(field) {
-            return _.contains(Object.keys(driverData), field);
-        });
-
-        _.each(fieldsInCommon, function(field) {
-            delete prospectDataMinusFieldsInCommon[field];
-            prospectDataOnlyFieldsInCommon[field] = prospectData[field];
-            if(prospectHelpers.notName(field)) {
-                var renamedField = ctrl.getUniqueFieldName(Object.keys(driverData), field);
-                prospectFieldsToAddToAllDrivers.push(renamedField);
-                prospectDataOnlyFieldsInCommon[renamedField] = prospectDataOnlyFieldsInCommon[field];
-                delete prospectDataOnlyFieldsInCommon[field];
-            }
-        });
-
-        deferred.resolve({
-            prospectDataFieldsUnCommon: prospectDataFieldsUnCommon,
-            prospectDataFieldsInCommon: prospectDataFieldsInCommon,
-            prospectFieldsToAddToAllDrivers: _.without(prospectFieldsToAddToAllDrivers, "status")
-        });
-
-        deferred.reject(new Error('Error splitting prospect data via fields in common with driver data.'));
-        return deferred.promise;
-    };
-
     /*
         Changes the name of prospect fields if they conflict with names of driver fields
     */
@@ -359,15 +326,15 @@ angular.module('clientApp')
         var deferred = $q.defer(),
             fields = fieldsUniqueToProspect;
 
-        console.log(fields);
-        console.log(prospectData);
+        // console.log(fields);
+        // console.log(prospectData);
 
         driverHelpers.get().then(function(result) {
             var drivers = result.data;
             // console.log(drivers);
             if(typeof drivers !== 'undefined' && drivers !== null) {
                 if(drivers.length > 0) {
-                    _.each(drivers, function(driver, index, list) {
+                    _.each(drivers, function(driver, index) {
                         // console.log(driver);
                         // console.log(index);
                         // console.log(list);
@@ -388,8 +355,9 @@ angular.module('clientApp')
                                 rightExpression: prospectData[field].type === 'inequality' ? prospectData[field].rightExpression : undefined,
                             };
 
-                            if (driver.data.status) delete driver.data.status;
-                            // console.log(driver);
+                            if (driver.data.status) {
+                                delete driver.data.status;
+                            }
 
                             // Runs regardless of whether fieldsUniqueToProspect >= 0
                             driverHelpers.update(driver).then(function(result) {
@@ -438,25 +406,25 @@ angular.module('clientApp')
 
     $scope.convert = function() {
         objectHelpers.getFormDataAndReference('driver').then(function(result) {
-            console.log(result);
+            // console.log(result);
             ctrl.partitionFields($scope.object.data, result.referenceObject.data).then(function(partedFields) {
-                console.log(partedFields);
-                console.log($scope.object.data);
+                // console.log(partedFields);
+                // console.log($scope.object.data);
                 ctrl.resolveNameConflicts(partedFields, $scope.object.data).then(function(result) {
-                    console.log(result);
+                    // console.log(result);
                     ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNonConflictingFields) {    
-                    console.log(prospectDataWithNonConflictingFields);
+                    // console.log(prospectDataWithNonConflictingFields);
                         ctrl.buildNewDriverData(prospectDataWithNonConflictingFields, result.partedFields).then(function(newDriverData) {
-                            console.log(newDriverData);
+                            // console.log(newDriverData);
                             driverHelpers.createDriver(newDriverData).then(function(newDriver) {
-                                if(newDriver.data.status) delete newDriver.data.status;
-                                console.log(newDriver);
-                                // objectHelpers.evaluateExpressions(undefined, newDriver).then(function(newDriverWithEvaluatedExpressions) {
-                                    driverHelpers.saveDriver(newDriver).then(function() {
-                                        prospectHelpers.deleteProspect($scope.object.id);  
-                                        $state.go('dashboard.prospects');
-                                    });
-                                // });
+                                if(newDriver.data.status) {
+                                    delete newDriver.data.status;
+                                }
+                                // console.log(newDriver);
+                                driverHelpers.saveDriver(newDriver).then(function() {
+                                    prospectHelpers.deleteProspect($scope.object.id);  
+                                    $state.go('dashboard.prospects');
+                                });
                             });
                         });        
                     });

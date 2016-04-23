@@ -12,17 +12,16 @@ angular.module('clientApp')
     // Datepicker
 
     // error when using const and 'use strict'
-    var oneWeekInMs = 604800000;
-    var oneDayInMs = 86400000;
-    var dt = new Date();
-    var minDate = null;
-    var maxDate = new Date(dt.getFullYear()+1, dt.getMonth()+1);    // Allows for a year in advance
-    var status = { opened: false };
-    var formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    var format = formats[0];
-    var tomorrow = new Date(dt.getTime()+oneDayInMs);
-    var afterTomorrow = new Date(dt.getTime()+oneDayInMs*2);
-    var events = [
+    var ONE_DAY_IN_MS = 86400000,
+        dt = new Date(),
+        minDate = null,
+        maxDate = new Date(dt.getFullYear()+1, dt.getMonth()+1),    // Allows for a year in advance
+        status = { opened: false },
+        formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'],
+        format = formats[0],
+        tomorrow = new Date(dt.getTime()+ONE_DAY_IN_MS),
+        afterTomorrow = new Date(dt.getTime()+ONE_DAY_IN_MS*2),
+        events = [
           {
               date: tomorrow,
               status: 'full'
@@ -31,8 +30,8 @@ angular.module('clientApp')
               date: afterTomorrow,
               status: 'partially'
           }
-        ];
-    var dateOptions = {
+        ],
+        dateOptions = {
           formatYear: 'yy',
           startingDay: 0
         };
@@ -96,7 +95,7 @@ angular.module('clientApp')
     }
     // // toggleMin();
 
-    function open($event) {
+    function open(event) {
         status.opened = true;
     }
 

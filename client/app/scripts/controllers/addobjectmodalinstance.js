@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 /**
  * @ngdoc function
@@ -8,8 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddObjectModalInstanceCtrl', function ($timeout, getCars, getAssets, getProspects, getDrivers, objectType, $q, $modal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
+  .controller('AddObjectModalInstanceCtrl', function ($window, $timeout, getCars, getAssets, getProspects, getDrivers, objectType, $q, $modal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
     
+    var _ = $window._;
     var ctrl = this;
     $scope.formData = {};
     $scope.objects = [];
@@ -120,7 +121,7 @@ angular.module('clientApp')
                     $scope.fields = _.without($scope.fields, "assetType");
                     $scope.currentIdentifier.value = identifier;
                     angular.copy($scope.currentIdentifier, $scope.identifier);
-                    $scope.disableConditions = function(formData) { return true; };
+                    $scope.disableConditions = function() { return true; };
 
                     console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                 });
@@ -131,7 +132,7 @@ angular.module('clientApp')
         $scope.objects = getProspects.data;
         $scope.update = prospectHelpers.update;
         $scope.create = prospectHelpers.createProspect;
-        $scope.save = prospectHelpers.saveProspect;
+        $scope.save = prospectHelpers.save;
         ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
 
         ctrl.getFormDataAndReference('prospect').then(function(result1) {
@@ -148,7 +149,7 @@ angular.module('clientApp')
                     $scope.formData = result1.formData;
                     $scope.formData.assetType = { value: null };
 
-                    console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                    // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                 });
             });
         });
@@ -195,6 +196,7 @@ angular.module('clientApp')
         $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
             console.log(newObject);
             objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
+                newObject = objectWithExpressionValues;
                 // console.log(newObject);
                 if($scope.objectType === 'car') {
                     $scope.save(newObject).then(function(result) {
@@ -261,7 +263,7 @@ angular.module('clientApp')
                             _.each(assetsOfType, function(asset) {
                                 if(asset.id !== result.data.id) {
                                    asset.identifier = $scope.identifier.value;
-                                    $scope.update(obj);
+                                    $scope.update(asset);
                                 }
                             });
                         }
@@ -290,29 +292,6 @@ angular.module('clientApp')
         $modalInstance.dismiss('close');
     };
 
-    ctrl.updateModal = function (newField) {
-        var deferred = $q.defer();
-
-        if(newField.type !== 'function' && newField.type !== 'inequality') {
-            $scope.fields.push(newField.name);
-            $scope.formData[newField.name] = newField.data;  
-
-            deferred.resolve($scope.formData);
-            deferred.reject(new Error("Error updating add object modal after adding number/text/boolean field"));
-        } else {
-            $scope.fieldsToHide.push(newField.name);
-            $scope.expressions.push({
-                field: newField.name,
-                expression: expression,
-            });
-
-            deferred.resolve($scope.expressions);
-            deferred.reject(new Error("Error updating add object modal after adding function/inequality field"));
-        }
-
-        return deferred.promise;
-    };
-
     $scope.addField = function(assetType) {
 
         var modalInstance = $modal.open({
@@ -321,13 +300,13 @@ angular.module('clientApp')
             controller: 'AddFieldModalInstanceCtrl',
             size: 'md',
             resolve: {
-                getCars: function(dataService) {
+                getCars: function() {
                     return (objectType === 'car') ? $scope.objects : {};
                 },
-                getDrivers: function(dataService) {
+                getDrivers: function() {
                     return (objectType === 'driver' ? $scope.objects : {});
                 },
-                getProspects: function(dataService) {
+                getProspects: function() {
                     return (objectType === 'prospect' ? $scope.objects : {});  
                 },
                 getAssets: function () {

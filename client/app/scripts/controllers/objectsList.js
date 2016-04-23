@@ -8,9 +8,10 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ObjectListCtrl', function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $modal, $q, $scope) {
+  .controller('ObjectListCtrl', function ($window, objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $modal, $q, $scope) {
     
-    var ctrl = this;
+    var ctrl = this,
+        _ = $window._;
     $scope.objectType = objectType;
     $scope.order = [];
 
@@ -32,7 +33,9 @@ angular.module('clientApp')
                     ctrl.prospectStatuses = result.data; 
                     $scope.statuses = ctrl.prospectStatuses.statuses;
                     $scope.newIndex = { val: null };    // stores index changes
-                    for(var i = 0; i < $scope.statuses.length; i++) $scope.order[i] = i;
+                    for(var i = 0; i < $scope.statuses.length; i++) {
+                        $scope.order[i] = i;
+                    }
                 });
                  
                 return prospectHelpers.get;
@@ -44,7 +47,9 @@ angular.module('clientApp')
                     // console.log(result);
                     $scope.assetTypes = result.data;
                     $scope.types = $scope.assetTypes.types;
-                    for(var i = 0; i < $scope.types.length; i++) $scope.order[i] = i;    // populate order select
+                    for(var i = 0; i < $scope.types.length; i++) {
+                        $scope.order[i] = i;    // populate order select
+                    }
                 });
                 
                 // $scope.order = [];
@@ -120,12 +125,6 @@ angular.module('clientApp')
     //
     // Asset list stuff
     /////////////////////////////////////////////////////////////////////
-    $scope.thereAreAssetsOfType = function(type) {
-        var assets = _.filter($scope.assets, function(asset) {
-            return asset.assetTtype === type;
-        });
-    };
-
     $scope.addType = function() {
         var modalInstance = $modal.open({
             animation: true,
@@ -179,7 +178,9 @@ angular.module('clientApp')
     };
 
     $scope.saveType = function(data, oldIndex, oldName) {
-        if(oldIndex != $scope.newIndex.val) ctrl.updateOrder(oldIndex, $scope.newIndex.val)
+        if(parseInt(oldIndex) !== parseInt($scope.newIndex.val)) {
+            ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+        }
         assetHelpers.updateTypes($scope.assetTypes);
         $scope.updateTypeInAssets(oldName, data.name);
         $state.forceReload();
@@ -207,7 +208,9 @@ angular.module('clientApp')
     };
 
     $scope.saveStatus = function(data, oldIndex, oldName) {
-        if(oldIndex != $scope.newIndex.val) ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+        if(parseInt(oldIndex) !== parseInt($scope.newIndex.val)) {
+            ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+        }
         prospectHelpers.updateStatuses(ctrl.prospectStatuses);
         ctrl.updateStatusInProspects(oldName, data.name);
         $state.forceReload();
@@ -227,7 +230,7 @@ angular.module('clientApp')
                 prospectHelpers.update(prospect);
             }
         });
-    }
+    };
 
     // TODO add warning for user
     // Prospects with the deleted status are reassigned to Unassigned

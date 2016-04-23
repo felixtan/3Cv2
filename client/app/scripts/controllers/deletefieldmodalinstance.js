@@ -8,9 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('DeleteFieldModalInstanceCtrl', function (objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
+  .controller('DeleteFieldModalInstanceCtrl', function ($window, objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
     
-    // not used by view
+    var _ = $window._;
     var ctrl = this;
     ctrl.objects = [];
     ctrl.update = null;
@@ -44,7 +44,7 @@ angular.module('clientApp')
     ctrl.deleteExpressionsUsingField = function (object) {
         var deferred = $q.defer();
         // console.log(object);
-        _.each(object.data, function(data, field, list) {
+        _.each(object.data, function(data, field) {
             // console.log(data);
             // console.log(field);
             // console.log(list);
@@ -78,7 +78,7 @@ angular.module('clientApp')
     };
 
     $scope.submit = function () {  
-        console.log($scope.thing);
+        // console.log($scope.thing);
         // assumes car, driver, etc. have the same schema structure
         if($scope.confirmation.value === 'DELETE') {
             if(ctrl.objects !== undefined && ctrl.objects !== null) {
