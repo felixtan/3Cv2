@@ -11,10 +11,10 @@
     }
   },
   "staging": {
-    "username": "ft91",
-    "password": "steamisgay",
-    "database": "threec",
-    "host": "threec.cim3iuhrrxpw.us-east-1.rds.amazonaws.com",
+    "username": "nosekflmrrpdxl",
+    "password": "jmLF9NF8NvnyuJHn2SlA88wQ2L",
+    "database": "d761vinqg43cql",
+    "host": "ec2-54-235-64-239.compute-1.amazonaws.com",
     "port": "5432",
     "dialect": "postgres" 
   },
