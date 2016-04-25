@@ -1,0 +1,2330 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/services/objectHelpers.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/services/</a> objectHelpers.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">7.37% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/285</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/141</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/71</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">7.37% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>21/285</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc service
+ * @name clientApp.carHelpers
+ * @description
+ * # carHelpers
+ * Factory in the clientApp.
+ */
+angular.module('clientApp')
+    .factory('objectHelpers', <span class="fstat-no" title="function not covered" >function ($window, $rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {</span>
+<span class="cstat-no" title="statement not covered" >        var _ = $window._;</span>
+&nbsp;
+        /*
+            Used in a loop over objects and updates the field value
+            and relevant expression fields for a specified object
+        */
+<span class="fstat-no" title="function not covered" >        function updateFieldValueAndExpressionValues (value, field, object, id) {</span>
+            // console.log(value);
+            // console.log(field);
+            // console.log(object);
+            // console.log(id);
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                fieldData = object.data[field];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(object.id === id) {</span>
+<span class="cstat-no" title="statement not covered" >                if(fieldData.type === 'number' || fieldData.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >                    if (fieldData.type === 'number') {</span>
+<span class="cstat-no" title="statement not covered" >                        fieldData.value = value;</span>
+                    }
+                    
+<span class="cstat-no" title="statement not covered" >                    _.each(fieldData.expressionsUsedIn, <span class="fstat-no" title="function not covered" >function(data, expression) {</span></span>
+                        // console.log(data);
+                        // console.log(expression);
+<span class="cstat-no" title="statement not covered" >                        evaluateExpressionAndAppendValue(object.data, expression).then(<span class="fstat-no" title="function not covered" >function(objectData) {</span></span>
+                            // console.log(expression);
+                            // console.log(objectData);
+<span class="cstat-no" title="statement not covered" >                            object.data = objectData;</span>
+                        });
+                    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                    deferred.reject(new Error("Error updating field value and updating expressions"));</span>
+            
+                } else <span class="cstat-no" title="statement not covered" >if (fieldData.type === 'text' || fieldData.type === 'boolean') {</span>
+<span class="cstat-no" title="statement not covered" >                    fieldData.value = value;</span>
+<span class="cstat-no" title="statement not covered" >                    deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                    deferred.reject(new Error("Error updating field value and updating expressions"));</span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                    deferred.reject(new Error("Error updating field value and updating expressions"));</span>
+                }
+            } else {
+<span class="cstat-no" title="statement not covered" >                deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                deferred.reject(new Error("Error updating field value and updating expressions: irrelevant object id"));</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function updateDisplayExpressions (object) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();</span>
+            // console.log($scope.objects);
+<span class="cstat-no" title="statement not covered" >            _.each(object.data, <span class="fstat-no" title="function not covered" >function(data, field) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if(data.type === 'function') {</span>
+                    // console.log(field);
+<span class="cstat-no" title="statement not covered" >                    buildDisplayExpression(data.expressionItems).then(<span class="fstat-no" title="function not covered" >function(expression) {</span></span>
+                        // console.log('built expression', expression);
+<span class="cstat-no" title="statement not covered" >                        data.expression = expression;</span>
+                    });
+                } else <span class="cstat-no" title="statement not covered" >if(data.type === 'inequality') {</span>
+                    // console.log(field);
+<span class="cstat-no" title="statement not covered" >                    buildDisplayExpression(data.leftExpressionItems).then(<span class="fstat-no" title="function not covered" >function(leftExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        buildDisplayExpression(data.rightExpressionItems).then(<span class="fstat-no" title="function not covered" >function(rightExpression) {</span></span>
+                            // console.log(leftExpression);
+                            // console.log(rightExpression);
+<span class="cstat-no" title="statement not covered" >                            data.leftExpression = leftExpression;</span>
+<span class="cstat-no" title="statement not covered" >                            data.inequalitySign = getInequalitySign(data.inequalitySignId);</span>
+<span class="cstat-no" title="statement not covered" >                            data.rightExpression = rightExpression;</span>
+                        });
+                    });
+                }
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error building or storing expression'));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function buildDisplayExpression (expressionItems) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >            var expression = '';</span>
+            
+<span class="cstat-no" title="statement not covered" >            _.each(expressionItems, <span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                expression += item.value;</span>
+                // console.log(expression);
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(expression);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error building expression'));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function removeFieldFromExpressions (object, fieldName) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                fieldData = object.data[fieldName];
+            // console.log(object);
+            // console.log(fieldName);     // func/num field
+            // console.log(fieldData);
+<span class="cstat-no" title="statement not covered" >            if(typeof fieldData !== 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >                _.each(fieldData.expressionsUsedIn, <span class="fstat-no" title="function not covered" >function(locations, expressionField) {</span></span>
+                    // console.log(locations);
+                    // console.log(expressionField);
+<span class="cstat-no" title="statement not covered" >                    _.each(locations, <span class="fstat-no" title="function not covered" >function(location, locationField) {</span></span>
+                        // console.log(location);
+                        // console.log(locationField);
+<span class="cstat-no" title="statement not covered" >                        _.each(location, <span class="fstat-no" title="function not covered" >function(indices, expressionItems) {</span></span>
+                            // console.log(indices);
+                            // console.log(expressionItems);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            _.each(indices, <span class="fstat-no" title="function not covered" >function(indexOfItem, indexOfIndex) {</span></span>
+                                // console.log(indexOfItem);
+                                // console.log(indexOfIndex);
+&nbsp;
+                                // console.log(object.data[expressionField]);
+                                // console.log(object.data[expressionField][expressionItems]);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                                object.data[expressionField][expressionItems].splice(indexOfItem, 1); </span>                                  // remove item from expression items
+&nbsp;
+                                // console.log(object.data[expressionField]);
+                                // console.log(object.data[expressionField].fieldsUsed);
+<span class="cstat-no" title="statement not covered" >                                object.data[expressionField].fieldsUsed[fieldName].locations[expressionItems].splice(indexOfIndex, 1); </span>    // remove index of field from expressionField's memory
+                                // fieldData.expressionsUsedIn[expressionField].locations[expressionItems].splice(indexOfIndex, 1);            // no point in running this because field is getting deleted anyway
+                            });
+                        });
+                    });
+                });
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error removing " + fieldName + " from functions and inequalities"));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function isValid (value) {</span>
+<span class="cstat-no" title="statement not covered" >            return value !== null &amp;&amp; typeof value !== "undefined";</span>
+        }
+&nbsp;
+        /*
+            inputs
+                1. array of expression objects
+                    ex. [{ name: expr, expression: expression }, ...]
+                2. object that owns the expressions
+            outputs
+                1. object with evaluated expression values
+            assumptions
+                1. expression values evaluate to null if any one field used is null
+        */
+<span class="fstat-no" title="function not covered" >        function evaluateExpressions (expressions, object) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(typeof expressions === 'undefined') {</span>
+<span class="cstat-no" title="statement not covered" >                _.filter(object.data, <span class="fstat-no" title="function not covered" >function(data, field) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return data.type === 'function' || data.type === 'inequality';</span>
+                }).each(<span class="fstat-no" title="function not covered" >function(data, field) {</span>
+<span class="cstat-no" title="statement not covered" >                    evaluateExpressionAndAppendValue(object.data, field, object).then(<span class="fstat-no" title="function not covered" >function(objectDataWithUpdatedExpressions) {</span></span>
+                        // console.log(objectDataWithUpdatedExpressions);
+<span class="cstat-no" title="statement not covered" >                        object.data = objectDataWithUpdatedExpressions;</span>
+                    });
+                });
+            } else {
+<span class="cstat-no" title="statement not covered" >                _.each(expressions, <span class="fstat-no" title="function not covered" >function(expression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    var expressionFieldName = expression.field || expression.name;</span>
+                    // console.log(object);
+<span class="cstat-no" title="statement not covered" >                    evaluateExpressionAndAppendValue(object.data, expressionFieldName, object).then(<span class="fstat-no" title="function not covered" >function(objectDataWithUpdatedExpressions) {</span></span>
+                        // console.log(objectDataWithUpdatedExpressions);
+<span class="cstat-no" title="statement not covered" >                        object.data = objectDataWithUpdatedExpressions;</span>
+                    });
+                });
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error evaluating expressions"));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function simplify (objects) {</span>
+<span class="cstat-no" title="statement not covered" >            return _.map(objects, <span class="fstat-no" title="function not covered" >function(object) {</span></span>
+                // console.log(object.id);
+                // console.log(object.identifier);
+                // console.log(object.data);
+<span class="cstat-no" title="statement not covered" >                return {</span>
+                    id: object.id,
+                    identifier: object.identifier,
+                    identifierValue: object.data[object.identifier].value,
+                    assetType: (isValid(object.assetType) &amp;&amp; (typeof object.assetType === 'string')) ? object.assetType : null,
+                };
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function simplifyOne (object) {</span>
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                id: object.id,
+                identifier: object.identifier,
+                identifierValue: object.data[object.identifier].value,
+                assetType: (isValid(object.assetType) &amp;&amp; (typeof object.assetType === 'string')) ? object.assetType : null,
+            };
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function getInequalitySign (signId) {</span>
+<span class="cstat-no" title="statement not covered" >            switch(parseInt(signId)) {</span>
+                case 0:
+<span class="cstat-no" title="statement not covered" >                    return "&gt;";</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                    case 1:
+<span class="cstat-no" title="statement not covered" >                    return '&gt;=';</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                case 2:
+<span class="cstat-no" title="statement not covered" >                    return '&lt;';</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                case 3:
+<span class="cstat-no" title="statement not covered" >                    return '&lt;=';</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+                default:
+<span class="cstat-no" title="statement not covered" >                    return '?';</span>
+<span class="cstat-no" title="statement not covered" >                    break;</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function evaluateExpressionAndAppendValue (objectData, fieldName, object) {</span>
+<span class="cstat-no" title="statement not covered" >          var deferred = $q.defer(),</span>
+              // newFieldData = {},
+              inequalitySign = "";
+&nbsp;
+                                                        // this was the key to solving the problem where expression value
+          // angular.copy(object.data[field], newFieldData);       // for car 2 was being saved to both cars 2 and 3
+          // console.log(objectData);
+          // console.log(fieldName);
+<span class="cstat-no" title="statement not covered" >          if(objectData[fieldName].type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >            buildEvalExpression(objectData, objectData[fieldName].expressionItems).then(<span class="fstat-no" title="function not covered" >function(expression) {</span></span>
+              // console.log(expression);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >              objectData[fieldName].value = isValid(expression) ? $rootScope.$eval(expression) : null;</span>
+&nbsp;
+              // 2nd degree changes
+                // evaluateExpressions(objectData[fieldName].expressionsUsedIn, object);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >              deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >              deferred.reject(new Error('Error evaluating expression'));</span>
+            });
+          } else <span class="cstat-no" title="statement not covered" >if(objectData[fieldName].type === 'inequality') {</span>
+<span class="cstat-no" title="statement not covered" >            buildEvalExpression(objectData, objectData[fieldName].leftExpressionItems).then(<span class="fstat-no" title="function not covered" >function(leftExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >              buildEvalExpression(objectData, objectData[fieldName].rightExpressionItems).then(<span class="fstat-no" title="function not covered" >function(rightExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                inequalitySign = getInequalitySign(objectData[fieldName].inequalitySignId);                       </span>
+                
+                // console.log(leftExpression);
+                // console.log(rightExpression);
+                // console.log(inequalitySign);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                objectData[fieldName].value = (isValid(leftExpression) &amp;&amp; isValid(inequalitySign) &amp;&amp; isValid(rightExpression)) ? $rootScope.$eval(leftExpression + inequalitySign + rightExpression) : null;</span>
+&nbsp;
+                // 2nd degree changes
+                // evaluateExpressions(objectData[fieldName].expressionsUsedIn, object);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >                deferred.reject(new Error('Error evaluating expression'));</span>
+              });
+            });
+          } else {
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error evaluating expression'));</span>
+          }
+          
+<span class="cstat-no" title="statement not covered" >          return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function updateDataIfFieldNameChanged (oldName, newName, object) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();    </span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(oldName !== newName) {</span>
+<span class="cstat-no" title="statement not covered" >                object.data[newName] = object.data[oldName];</span>
+<span class="cstat-no" title="statement not covered" >                delete object.data[oldName];</span>
+            }
+            // console.log(object);
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error changing field name " + oldName + " to " + newName));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        // This is only used in editFieldModal.js as far as I can can tell so it's a waste puttin it here
+<span class="fstat-no" title="function not covered" >        function updateExpressionFieldsIfFieldNameChanged (oldName, newName, objectData, objectId) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if(oldName !== newName) {</span>
+<span class="cstat-no" title="statement not covered" >                replaceFieldNameInExpressions(oldName, newName, objectData).then(<span class="fstat-no" title="function not covered" >function(objectDataWithUpdatedExpressions) {</span></span>
+                    // console.log(objectDataWithUpdatedExpressions);
+<span class="cstat-no" title="statement not covered" >                    _.each(objectDataWithUpdatedExpressions, <span class="fstat-no" title="function not covered" >function(data, field, list) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        if(data.type === 'function') {</span>
+                            // console.log('list?', list);
+<span class="cstat-no" title="statement not covered" >                            buildEvalExpression(list, data.expressionItems, objectId).then(<span class="fstat-no" title="function not covered" >function(expression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                objectData[field].value = isValid(expression) ? $rootScope.$eval(expression) : null;</span>
+                            });
+                        } else <span class="cstat-no" title="statement not covered" >if(data.type === 'inequality') {</span>
+                            // console.log('list?', list);
+<span class="cstat-no" title="statement not covered" >                            buildEvalExpression(list, data.leftExpressionItems, objectId).then(<span class="fstat-no" title="function not covered" >function(leftExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                buildEvalExpression(list, data.rightExpressionItems, objectId).then(<span class="fstat-no" title="function not covered" >function(rightExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                    var inequalitySign = getInequalitySign(data.inequalitySignId);</span>
+<span class="cstat-no" title="statement not covered" >                                    objectData[field].value = (isValid(leftExpression) &amp;&amp; isValid(rightExpression) &amp;&amp; isValid(inequalitySign)) ? $rootScope.$eval(leftExpression+inequalitySign+rightExpression) : null;</span>
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error updating expressions"));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function replaceFieldNameInExpressions (oldName, newName, objectData) {</span>
+<span class="cstat-no" title="statement not covered" >          var deferred = $q.defer();</span>
+      
+          // console.log('field name changed, checking if expressions should be updated');
+<span class="cstat-no" title="statement not covered" >          _.each(objectData, <span class="fstat-no" title="function not covered" >function(data, field, list) {</span></span>
+            // console.log(data);
+            // console.log(field);
+            // console.log(list);
+<span class="cstat-no" title="statement not covered" >            if(data.type === 'function') {</span>
+              // console.log(data);
+              // console.log(field);
+              
+<span class="cstat-no" title="statement not covered" >              data.expression = _.each(data.expressionItems, <span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if(item.type === 'field' &amp;&amp; item.value === oldName) {</span>
+<span class="cstat-no" title="statement not covered" >                  item.value = newName;</span>
+<span class="cstat-no" title="statement not covered" >                  data.fieldsUsed[newName] = data.fieldsUsed[oldName];</span>
+<span class="cstat-no" title="statement not covered" >                  delete data.fieldsUsed[oldName];</span>
+                }
+              }).reduce(<span class="fstat-no" title="function not covered" >function(memo, item) {</span>
+<span class="cstat-no" title="statement not covered" >                return memo + item.value;</span>
+              }, "");
+&nbsp;
+              // console.log('expression:', data.expression);
+              // console.log('expressionItems:', data.expressionItems);
+            } else <span class="cstat-no" title="statement not covered" >if(data.type === 'inequality') {</span>
+              // console.log(data);
+              // console.log(field);
+              
+<span class="cstat-no" title="statement not covered" >              data.leftExpression = _.each(data.leftExpressionItems, <span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if(item.type === 'field' &amp;&amp; item.value === oldName) {</span>
+<span class="cstat-no" title="statement not covered" >                    item.value = newName;</span>
+                }
+              }).reduce(<span class="fstat-no" title="function not covered" >function(memo, item) {</span>
+<span class="cstat-no" title="statement not covered" >                return memo + item.value;</span>
+              }, "");
+&nbsp;
+<span class="cstat-no" title="statement not covered" >              data.rightExpression = _.each(data.rightExpressionItems, <span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if(item.type === 'field' &amp;&amp; item.value === oldName) {</span>
+<span class="cstat-no" title="statement not covered" >                    item.value = newName;</span>
+                }
+              }).reduce(<span class="fstat-no" title="function not covered" >function(memo, item) {</span>
+<span class="cstat-no" title="statement not covered" >                return memo + item.value;</span>
+              }, "");
+&nbsp;
+<span class="cstat-no" title="statement not covered" >              data.inequalitySign = getInequalitySign(data.inequalitySignId);</span>
+<span class="cstat-no" title="statement not covered" >              data.fieldsUsed[newName] = data.fieldsUsed[oldName];</span>
+<span class="cstat-no" title="statement not covered" >              delete data.fieldsUsed[oldName];</span>
+&nbsp;
+              // console.log('expression:', data.expression);
+              // console.log('leftExpressionItems:', data.leftExpressionItems);
+              // console.log('rightExpressionItems:', data.rightExpressionItems);
+            }
+          });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >          deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for expressions in " + $rootScope.objectType));</span>
+<span class="cstat-no" title="statement not covered" >          return deferred.promise;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function buildEvalExpression (objectData, expressionItems, objectId) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                expression = "";
+            // console.log(fieldData);
+            // console.log(expressionItems);
+<span class="cstat-no" title="statement not covered" >            _.each(expressionItems, <span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if(item.type === 'field') {</span>
+                // console.log(item);
+                // console.log(objectData);
+                // console.log(objectData[item.value]);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    if(isValid(objectData[item.value].value)) {</span>
+<span class="cstat-no" title="statement not covered" >                        expression += objectData[item.value].value;</span>
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        deferred.resolve(null);</span>
+                    }
+                } else {
+<span class="cstat-no" title="statement not covered" >                    expression += item.value;          </span>
+                }
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(expression);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('Error building evaluation expression'));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        /*
+            Updates the array in field's data containing the func/ineq fields that it is used in
+            when the name of function/ineq field changes.
+&nbsp;
+            input: old function/ineq field name, new function/ineq field name, object
+            output: object with updated field data
+            assumptions:
+                1. field name change has already taken effect
+                2. function and ineq fields store array of fields used in expressions
+        */
+<span class="fstat-no" title="function not covered" >        function updateExpressionNameInFields (oldName, newName, object) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                fieldName;
+&nbsp;
+            /*
+                fieldsUsed will be 
+                    1. an array of objects
+                    2. a property of func/ineq fields
+&nbsp;
+                ex.
+                [
+                    {
+                        name: fieldName,
+                        locations: subset of [expressionItems, leftExpressionItems, rightExpressionItems]
+                    }
+                ]
+            */
+<span class="cstat-no" title="statement not covered" >            _.each(object.data[oldName].fieldsUsed, <span class="fstat-no" title="function not covered" >function(field) {</span></span>
+<span class="cstat-no" title="statement not covered" >                fieldName = field;</span>
+<span class="cstat-no" title="statement not covered" >                _.where(object.data[field.name].expressionsUsedIn, { name: oldName }).each(<span class="fstat-no" title="function not covered" >function(expressionField) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    expressionField.name = newName;</span>
+                });
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for expressionsUsedIn for field " + fieldName));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        /*  
+            Updates the expressionItems and expressions of func/ineq fields when the name of a
+            field they use is changed. Use when name of field (any type) changes
+&nbsp;
+            input: old field name, new field name, object
+            output: object with updated expressions
+            assumptions: 
+                1. field name change has already taken effect
+                2. functions and inequalities store array of fields used
+                3. fields of all type store array of functions/inequalities they are used in
+        */
+<span class="fstat-no" title="function not covered" >        function updateFieldNameInExpressions (oldName, newName, object) {</span>
+<span class="cstat-no" title="statement not covered" >              var deferred = $q.defer(),</span>
+                    expressionFieldName;
+&nbsp;
+              /* 
+                expressionsUsedIn will be 
+                    1. an an array of objects
+                    2. a property of all number/func fields
+&nbsp;
+                ex.
+                [
+                    {
+                        name: fieldName,
+                        locations: subset of [expressionItems, leftExpressionItems, rightExpressionItems]
+                    }
+                ]
+              */
+<span class="cstat-no" title="statement not covered" >              _.each(object.data[oldName].expressionsUsedIn, <span class="fstat-no" title="function not covered" >function(expressionField) {</span></span>
+<span class="cstat-no" title="statement not covered" >                expressionFieldName = expressionField.name;</span>
+<span class="cstat-no" title="statement not covered" >                _.each(expressionField.locations, <span class="fstat-no" title="function not covered" >function(expressionItems) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    var expression = _.where(object.data[expressionField.name][expressionItems], { type: 'field', value: oldName }).each(<span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        item.value = newName;</span>
+                    }).reduce(<span class="fstat-no" title="function not covered" >function(memo, item) {</span>
+<span class="cstat-no" title="statement not covered" >                        return memo + item.value;</span>
+                    }, "");
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    if(expressionItems === 'leftExpressionItems') {</span>
+<span class="cstat-no" title="statement not covered" >                        object.data[expressionField.name].leftExpression = expression;</span>
+                    } else <span class="cstat-no" title="statement not covered" >if(expressionItems === 'rightExpressionItems') {</span>
+<span class="cstat-no" title="statement not covered" >                        object.data[expressionField.name].rightExpression = expression;</span>
+                    } else <span class="cstat-no" title="statement not covered" >if(expressionItems === 'expressionItems') {</span>
+<span class="cstat-no" title="statement not covered" >                        object.data[expressionField.name].expression = expression;</span>
+                    } else {
+                        // throw Error("Error: unknown expressionItems for " + expressionField.name + " " + expressionItems);
+<span class="cstat-no" title="statement not covered" >                        deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for fields used in expressions " + expressionField.name));</span>
+                    }
+                });
+              });
+                
+<span class="cstat-no" title="statement not covered" >              deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >              deferred.reject(new Error("Error replacing " + oldName + " with " + newName + " for fields used in expressions " + expressionFieldName));</span>
+<span class="cstat-no" title="statement not covered" >              return deferred.promise;</span>
+        }
+&nbsp;
+&nbsp;
+        /*
+            Stores the expression fields that use fieldName in an array of objects.
+            Use when creating or updating a func/ineq field.
+&nbsp;
+            inputs: 
+                1. object with created/updated func/ineq field
+                2. reduced; the output of function pairItemsWithIndicesInExpressionItems
+                3. field name of relevant func/ineq using the field
+            output: object with created/updated func/ineq field storing fields used
+        */
+<span class="fstat-no" title="function not covered" >        function storeExpressionsUsedIn (objectData, reduced, fieldName) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer();</span>
+            // console.log(fieldName);
+            // console.log(reduced);
+            // console.log(object);
+<span class="cstat-no" title="statement not covered" >            _.each(reduced, <span class="fstat-no" title="function not covered" >function(data, field) {</span></span>
+                // console.log(data);
+                // console.log(field);
+                // console.log(objectData);
+<span class="cstat-no" title="statement not covered" >                objectData[field].expressionsUsedIn[fieldName] = data;</span>
+                // console.log(objectData);
+                // objectData[field].expressionsUsedIn[fieldName].taint = "prevents json circular structure error";
+                // console.log(objectData);
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(objectData);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error storing expression" + fieldName + " using in field data"));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        /*
+          Stores the fields used by a func/ineq in an array of objects.
+          Use when creating or updating a func/ineq field.
+&nbsp;
+            inputs: 
+                1. object with created/updated func/ineq field
+                2. fieldname of relevant func/ineq field
+            output: object with created/updated func/ineq field storing fields used
+        */
+<span class="fstat-no" title="function not covered" >        function storeFieldsUsed (object, fieldName) {</span>
+            // console.log(object);
+            // console.log(fieldName);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                objectData = (isValid(object.id) &amp;&amp; isValid(object.organizationId)) ? object.data : object,
+                fieldData = objectData[fieldName];                      // ctrl.addProspectFieldsToExistingDrivers in objectData.js
+                                                                        // sends object data instead of object
+<span class="cstat-no" title="statement not covered" >            if(fieldData.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >                var expressionItems = fieldData.expressionItems;</span>
+&nbsp;
+                // console.log(object);
+                // console.log(fieldName);
+<span class="cstat-no" title="statement not covered" >                pairItemsWithIndicesInExpressionItems(expressionItems).then(<span class="fstat-no" title="function not covered" >function(reduced) {</span></span>
+                    // console.log(reduced);
+<span class="cstat-no" title="statement not covered" >                    fieldData.fieldsUsed = reduced;</span>
+<span class="cstat-no" title="statement not covered" >                    storeExpressionsUsedIn(objectData, reduced, fieldName).then(<span class="fstat-no" title="function not covered" >function(updatedObjectData) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        object.data = updatedObjectData;</span>
+<span class="cstat-no" title="statement not covered" >                        deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                        deferred.reject(new Error("Error storing fields used by " + fieldName));</span>
+                    });
+                });
+            } else <span class="cstat-no" title="statement not covered" >if(fieldData.type === 'inequality') {</span>
+<span class="cstat-no" title="statement not covered" >                var leftExpressionItems = fieldData.leftExpressionItems,</span>
+                    rightExpressionItems = fieldData.rightExpressionItems;
+&nbsp;
+                // console.log(object);
+                // console.log(fieldName);
+<span class="cstat-no" title="statement not covered" >                pairItemsWithIndicesInExpressionItems(leftExpressionItems).then(<span class="fstat-no" title="function not covered" >function(leftReduced) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    pairItemsWithIndicesInExpressionItems(rightExpressionItems, leftReduced).then(<span class="fstat-no" title="function not covered" >function(reduced) {</span></span>
+                        // console.log(reduced);
+<span class="cstat-no" title="statement not covered" >                        fieldData.fieldsUsed = reduced;</span>
+<span class="cstat-no" title="statement not covered" >                        storeExpressionsUsedIn(objectData, reduced, fieldName).then(<span class="fstat-no" title="function not covered" >function(updatedObjectData) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            object.data = updatedObjectData;</span>
+<span class="cstat-no" title="statement not covered" >                            deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                            deferred.reject(new Error("Error storing fields used by " + fieldName));</span>
+                        });
+                    });
+                });
+&nbsp;
+            } else {
+<span class="cstat-no" title="statement not covered" >                deferred.resolve(object);</span>
+<span class="cstat-no" title="statement not covered" >                deferred.reject(new Error("Error: " + fieldName + " has invalid type. This works only for function and inequality fields."));</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        /*
+            returns an object like this
+            {
+                field1: {
+                    locations: {
+                        expressionItems: [0, 2],
+                    }
+                },
+                field2: {
+                    locations: {
+                        leftExpressionItems: [3],
+                        rightExpressionItems: [1]
+                    }
+                }
+                .
+                .
+                .
+            }
+        */
+<span class="fstat-no" title="function not covered" >        function pairItemsWithIndicesInExpressionItems (expressionItems, _reduced) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                reduced = _reduced || {};
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            _.each(expressionItems, <span class="fstat-no" title="function not covered" >function(item, index) {</span></span>
+<span class="cstat-no" title="statement not covered" >                var location = item.location;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if(item.type === 'field' &amp;&amp; !_.has(reduced, item.value)) {</span>
+<span class="cstat-no" title="statement not covered" >                    if(_.isEmpty(reduced) || _.isEmpty(reduced[item.value])) {</span>
+<span class="cstat-no" title="statement not covered" >                        reduced[item.value] = { locations: {} };</span>
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    reduced[item.value].locations[location] = [];</span>
+<span class="cstat-no" title="statement not covered" >                    reduced[item.value].locations[location].push(index);</span>
+                    // console.log(item);
+&nbsp;
+                } else <span class="cstat-no" title="statement not covered" >if(item.type === 'field' &amp;&amp; _.has(reduced, item.value)) {</span>
+<span class="cstat-no" title="statement not covered" >                    if(_.isEmpty(reduced[item.value].locations[location])) {</span>
+<span class="cstat-no" title="statement not covered" >                        reduced[item.value].locations[location] = [];</span>
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    reduced[item.value].locations[location].push(index);</span>
+                    // console.log(item);
+                }
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            deferred.resolve(reduced);</span>
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error("Error pairing field with indices in expression items"));</span>
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+        /*
+            Used when creating a new field
+        */
+<span class="fstat-no" title="function not covered" >        function getFormDataAndReference (objectType, assetType) {</span>
+<span class="cstat-no" title="statement not covered" >            var deferred = $q.defer(),</span>
+                objectData,
+                formData = {},
+                get,
+                getDefaultObject,
+                object;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (objectType === 'car') {</span>
+<span class="cstat-no" title="statement not covered" >                get = carHelpers.get;</span>
+<span class="cstat-no" title="statement not covered" >                getDefaultObject = carHelpers.getDefaultCar;</span>
+            } else <span class="cstat-no" title="statement not covered" >if (objectType === 'driver') {</span>
+<span class="cstat-no" title="statement not covered" >                get = driverHelpers.get;</span>
+<span class="cstat-no" title="statement not covered" >                getDefaultObject = driverHelpers.getDefaultDriver;</span>
+            } else <span class="cstat-no" title="statement not covered" >if (objectType === 'prospect') {</span>
+<span class="cstat-no" title="statement not covered" >                get = prospectHelpers.get;</span>
+<span class="cstat-no" title="statement not covered" >                getDefaultObject = prospectHelpers.getDefaultProspect;</span>
+            } else <span class="cstat-no" title="statement not covered" >if (objectType === 'asset') {</span>
+<span class="cstat-no" title="statement not covered" >                get = assetHelpers.getByType;</span>
+<span class="cstat-no" title="statement not covered" >                getDefaultObject = assetHelpers.getDefaultAsset;</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                deferred.reject(undefined);</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            get(assetType).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+                // console.log(result);
+<span class="cstat-no" title="statement not covered" >                if(isValid(result.data)) {</span>
+<span class="cstat-no" title="statement not covered" >                    if(result.data.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                        object = result.data[0];</span>
+<span class="cstat-no" title="statement not covered" >                        objectData = object.data;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        _.each(objectData, <span class="fstat-no" title="function not covered" >function(data, field, list) {</span></span>
+                            // console.log(data);
+                            // console.log(field);
+                            // console.log(list);
+<span class="cstat-no" title="statement not covered" >                            formData[field] = {</span>
+                                value: (data.type === 'boolean') ? false : null,
+                                log: data.log,
+                                dataType: data.dataType,
+                                type: data.type,
+                            };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            if (data.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].expression = data.expression;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].expressionItems = data.expressionItems;</span>
+                            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            if (data.type === 'inequality') {</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].leftExpressionItems = data.leftExpressionItems;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].rightExpressionItems = data.rightExpressionItems;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].inequalitySignId = data.inequalitySignId;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].leftExpression = data.leftExpression;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].rightExpression = data.rightExpression;</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].inequalitySign = data.inequalitySign;</span>
+                            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            if (data.type === 'number' || data.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].expressionsUsedIn = data.expressionsUsedIn;</span>
+                            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            if (data.type === 'inequality' || data.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >                                formData[field].fieldsUsed = data.fieldsUsed;</span>
+                            }
+                        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        deferred.resolve({</span>
+                            formData: formData,
+                            referenceObject: object,
+                        });
+<span class="cstat-no" title="statement not covered" >                        deferred.reject(new Error('Error initializing form data for ' + objectType));</span>
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        getDefaultObject(assetType).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+                            // console.log(result);
+<span class="cstat-no" title="statement not covered" >                            deferred.resolve({</span>
+                                formData: result.data,
+                                referenceObject: result,
+                            });
+<span class="cstat-no" title="statement not covered" >                            deferred.reject(new Error('Error initializing form data for ' + objectType));</span>
+                        });   
+                    }
+                } else {
+<span class="cstat-no" title="statement not covered" >                    getDefaultObject(assetType).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+                        // console.log(result);
+<span class="cstat-no" title="statement not covered" >                        deferred.resolve({</span>
+                            formData: result.data,
+                            referenceObject: result,
+                        });
+<span class="cstat-no" title="statement not covered" >                        deferred.reject(new Error('Error initializing form data for ' + objectType));</span>
+                    });
+                }
+            });
+            
+            // deferred.reject(new Error('Error initializing form data for ' + objectType));
+<span class="cstat-no" title="statement not covered" >            return deferred.promise;</span>
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            isValid: isValid,
+            simplify: simplify,
+            simplifyOne: simplifyOne,
+            getInequalitySign: getInequalitySign,
+            updateExpressionFieldsIfFieldNameChanged: updateExpressionFieldsIfFieldNameChanged,
+            updateExpressionNameInFields: updateExpressionNameInFields,
+            updateFieldNameInExpressions: updateFieldNameInExpressions,
+            storeFieldsUsed: storeFieldsUsed,
+            evaluateExpressionAndAppendValue: evaluateExpressionAndAppendValue,
+            evaluateExpressions: evaluateExpressions,
+            removeFieldFromExpressions: removeFieldFromExpressions,
+            buildDisplayExpression: buildDisplayExpression,
+            buildEvalExpression: buildEvalExpression,
+            updateDisplayExpressions: updateDisplayExpressions,
+            updateFieldValueAndExpressionValues: updateFieldValueAndExpressionValues,
+            updateDataIfFieldNameChanged: updateDataIfFieldNameChanged,
+            getFormDataAndReference: getFormDataAndReference,
+        };
+    });</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Apr 22 2016 21:48:54 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

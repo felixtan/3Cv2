@@ -34,11 +34,21 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-protractor-webdriver');
 
+  // for making minification safe
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-ng-annotate');
+
+  // replaces grunt autoprefixer because it is being deprecated
+  grunt.loadNpmTasks('grunt-postcss');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
     // Project settings
     yeoman: appConfig,
+
+    pkg: grunt.file.readJSON('package.json'),
 
     ngconstant: {
       // options for all environments
@@ -69,7 +79,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'staging',
-            apiEndpoint: 'http://threec.herokuapp.com'
+            apiEndpoint: 'http://threec-staging.herokuapp.com'
           }
         }
       },
@@ -82,7 +92,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'http://threec.herokuapp.com'
+            apiEndpoint: 'http://threechauffeurs.herokuapp.com'
           }
         }
       }
@@ -107,7 +117,7 @@ module.exports = function (grunt) {
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer:server']
+        tasks: ['compass:server', 'postcss:server']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -210,14 +220,44 @@ module.exports = function (grunt) {
       server: '.tmp'
     },
 
-    // Add vendor prefixed styles
-    autoprefixer: {
+    // Add vendor prefixed styles -- DEPRECATED
+    // autoprefixer: {
+    //   options: {
+    //     browsers: ['last 1 version']
+    //   },
+    //   server: {
+    //     options: {
+    //       map: true,
+    //     },
+    //     files: [{
+    //       expand: true,
+    //       cwd: '.tmp/styles/',
+    //       src: '{,*/}*.css',
+    //       dest: '.tmp/styles/'
+    //     }]
+    //   },
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '.tmp/styles/',
+    //       src: '{,*/}*.css',
+    //       dest: '.tmp/styles/'
+    //     }]
+    //   }
+    // },
+
+    // Apply several post-processors to css
+    postcss: {
       options: {
-        browsers: ['last 1 version']
+        processors: [
+          require('pixrem')(), // add fallbacks for rem units
+          require('autoprefixer')({browsers: ['last 1 versions']}), // add vendor prefixes
+          require('cssnano')() // minify the result
+        ]
       },
       server: {
         options: {
-          map: true,
+          map: true, // inline sourcemaps
         },
         files: [{
           expand: true,
@@ -354,18 +394,23 @@ module.exports = function (grunt) {
     //     }
     //   }
     // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    uglify: {
+      dist: {
+        src: ['.tmp/min/app.js'],
+        dest: '.tmp/min/app.js'
+      }
+    },
+    concat: {
+      options: {
+        stripBanners: true,
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today("yyyy-mm-dd") %> */',
+      },
+      dist: {
+        src: ['.tmp/concat/scripts/*.js'],
+        dest: '.tmp/min/app.js',
+      }
+    },
 
     imagemin: {
       dist: {
@@ -468,7 +513,8 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'bower_components/font-awesome',
           src: ['fonts/*.*'],
-          dest: '<%= config.dist %>'
+          // dest: '<%= config.dist %>'
+          dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {
@@ -545,7 +591,7 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'autoprefixer:server',
+      'postcss:server',
       'ngconstant:development',
       'connect:livereload',
       'watch'
@@ -561,7 +607,7 @@ module.exports = function (grunt) {
     'clean:server',
     'wiredep',
     'concurrent:test',
-    'autoprefixer',
+    'postcss',
     'connect:test',
     'karma',
     'ngconstant:development'
@@ -572,10 +618,10 @@ module.exports = function (grunt) {
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
-    'autoprefixer',
+    'postcss',
     'ngtemplates',
-    'concat',
     'ngAnnotate',
+    'concat',
     'copy:dist',
     'cdnify',
     'cssmin',
@@ -588,7 +634,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
+    // 'test',
     'build'
   ]);
 
@@ -598,6 +644,4 @@ module.exports = function (grunt) {
     'watch:protractor',
     'protractor_webdriver:e2eStart',
   ]);
-
-  // grunt.registerTask('')
 };

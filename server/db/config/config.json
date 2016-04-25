@@ -5,10 +5,7 @@
     "database": "d334dcs34e9guk",
     "host": "ec2-23-21-42-29.compute-1.amazonaws.com",
     "port": "5432",
-    "dialect": "postgres",
-    "dialectOptions": {
-        "ssl": true
-    }
+    "dialect": "postgres"
   },
   "staging": {
     "username": "nosekflmrrpdxl",

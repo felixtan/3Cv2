@@ -21,7 +21,7 @@ angular
     'ui.bootstrap',
     'ui.router',
     'ngMessages',
-    // 'stormpath',
+    'stormpath',
     'stormpath.templates',
     'config',
     'frapontillo.bootstrap-switch',
@@ -38,11 +38,9 @@ angular
         return $delegate;
     });
 
-    var getsp = function() {
-        var authOn = { authenticate: true };
-        var authOff = {};
-        return authOff;
-    };
+    function getsp (ENV) {
+        return (ENV.name === 'production' || ENV.name === 'staging') ? { authenticate: true } : { authenticate: false };
+    }
 
     // $urlRouterProvider.otherwise('/login');
     $urlRouterProvider.otherwise('/dashboard/cars');
@@ -72,9 +70,10 @@ angular
         abstract: true,
         url: '/dashboard',
         template: '<ui-view/>',
-        sp: getsp()
+        sp: getsp(ENV),
     })
     .state('dashboard.cars', {
+        sp: getsp(ENV),
         url: '/cars',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
@@ -82,10 +81,10 @@ angular
           objectType: function() {
             return "car";
           }
-        },
-        // sp: getsp()
+        }
     })
     .state('dashboard.drivers', {
+        sp: getsp(ENV),
         url: '/drivers',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
@@ -96,72 +95,57 @@ angular
         }
     })
     .state('dashboard.prospects', {
+        sp: getsp(ENV),
         url: '/prospects',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
-            // getProspectStatuses: function(dataService) {
-            //     return dataService.getProspectStatuses();
-            // },
-            // getProspects: function(dataService) {
-            //     return dataService.getProspects();
-            // },
             objectType: function() {
                 return "prospect";
             }
         }
     })
     .state('dashboard.assets', {
+        sp: getsp(ENV),
         url: '/assets',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
-            // getAssetTypes: function(dataService) {
-            //     return dataService.getAssetTypes();
-            // },
-            // getAssets: function(dataService) {
-            //     return dataService.getAssets();
-            // },
             objectType: function() {
                 return "asset";
             }
         }
     })
     .state('logs', {
+        sp: getsp(ENV),
         abstract: true,
         url: '/logs',
         template: '<ui-view/>',
-        sp: getsp()
     })
     .state('logs.cars', {
+        sp: getsp(ENV),
         url: '/cars',
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
-            // getCars: function(dataService) {
-            //     return dataService.getCars();
-            // },
             objectType: function () {
                 return "car";
             }
         },
-        sp: getsp()
     })
     .state('logs.drivers', {
+        sp: getsp(ENV),
         url: '/drivers',
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
-            // getDrivers: function(dataService) {
-            //     return dataService.getDrivers();
-            // }
             objectType: function () {
                 return "driver";
             }
         },
-        sp: getsp()
     })
     .state('logs.assets', {  // logs for assets of a certain type
+        sp: getsp(ENV),
         url: '/assets',
         templateUrl: '/views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
@@ -170,13 +154,12 @@ angular
                 return "asset";
             }
         },
-        sp: getsp()
     })
     .state('carData', {
+        sp: getsp(ENV),
         url: '/cars/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "car";
@@ -187,10 +170,10 @@ angular
         }
     })
     .state('carLogs', {
+        sp: getsp(ENV),
         url: '/cars/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "car";
@@ -201,10 +184,10 @@ angular
         }
     })
     .state('driverData', {
+        sp: getsp(ENV),
         url: '/drivers/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "driver";
@@ -215,10 +198,10 @@ angular
         }
     })
     .state('driverLogs', {
+        sp: getsp(ENV),
         url: '/drivers/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "driver";
@@ -229,10 +212,10 @@ angular
         }
     })
     .state('prospectData', {
+        sp: getsp(ENV),
         url: '/prospects/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "prospect";
@@ -243,10 +226,10 @@ angular
         }
     })
     .state('assetData', {
+        sp: getsp(ENV),
         url: '/assets/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "asset";
@@ -257,10 +240,10 @@ angular
         }
     })
     .state('assetLogs', {
+        sp: getsp(ENV),
         url: '/assets/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "asset";
@@ -273,15 +256,19 @@ angular
   })
     // inject ENV when grunt-ng-constant is working
     // add when you want stormpath: , $stormpath
-  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
+  .run(function(ENV, editableOptions, $stormpath, $state, $stateParams, $rootScope) {
+    console.log("Running AngularJS in environment ", ENV);
+
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    // $stormpath.uiRouter({
-    //     loginState: 'login',
-    //     defaultPostLoginState: 'dashboard'
-    // });
+    if(ENV.name === 'production' || ENV.name === 'staging') {
+        $stormpath.uiRouter({
+            loginState: 'login',
+            defaultPostLoginState: 'dashboard.cars'
+        });
+    }
   });

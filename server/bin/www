@@ -8,8 +8,8 @@ var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
 var pg = require("pg");
-var config = require('../db/config/config.json')[process.env.NODE_ENV];
-var DATABASE_URL = config.dialect+"://"+config.username+":"+config.password+"@"+config.host+":"+config.port+"/"+config.database;
+// var config = require('../db/config/config.json')[process.env.NODE_ENV];
+// var DATABASE_URL = config.dialect+"://"+config.username+":"+config.password+"@"+config.host+":"+config.port+"/"+config.database;
 
 pg.defaults.ssl = true;
 
@@ -40,20 +40,28 @@ var opts = (process.env.NODE_ENV === 'development') ? { force: true } : {};
 //   if(err) throw err;
   // console.log(client);
   
-  models.sequelize.sync(opts).then(function() {
-    console.log("Connected to potsgres database.");  
-    if(process.env.NODE_ENV === 'development' || 'testing') {
-      console.log('Populating development test data.');
-      setupDevDB.populate(); 
-    }
+models.sequelize.sync(opts).then(function() {
+  console.log("Connected to potsgres database.");  
+  if(process.env.NODE_ENV === 'development') {
+    console.log('Populating development test data.');
+    setupDevDB.populate(); 
+  }
 
-    // app.on('stormpath.ready', function() {
-    // console.log('Stormpath initialized.')
+  if(process.env.NODE_ENV === 'development') {
     server.listen(port, function() {
       console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV.toUpperCase() + ' mode.');
     });
-  });
-// });
+  }
+
+  if(process.env.NODE_ENV === 'production') {
+    app.on('stormpath.ready', function() {
+      console.log('Stormpath initialized.')
+      server.listen(port, function() {
+        console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV.toUpperCase() + ' mode.');
+      });
+    });
+  }
+});
 
 server.on('error', onError);
 server.on('listening', onListening);

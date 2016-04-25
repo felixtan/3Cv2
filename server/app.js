@@ -19,26 +19,29 @@ app.use(cookieParser());
 
 // stormpath
 if(app.get('env') === 'production') {
-app.use(stormpath.init(app, {
-  debug: 'info, error',
-  website: true,
-  web: {
-    spaRoot: process.env.HOME + '/Development/3C/client/app/index.html'
-  },
-  postRegistrationHandler: function(account, res, req, next) {
-    var hrefArray = account.href.split('/');
+  app.use(stormpath.init(app, {
+    debug: 'info, error',
+    website: true,
+    web: {
+      spaRoot: __dirname + '/dist/index.html'
+    },
+    postRegistrationHandler: function(account, res, req, next) {
+      /*
+        saves a users stormpath id in their custom data so it can be access by this app
+      */
+      var hrefArray = account.href.split('/');
 
-    account.getCustomData(function(err, data) {
-      if(err) {
-        next(err);
-      } else {
-        data.organizationId = hrefArray[hrefArray.length-1];
-        data.save();
-        next();
-      }
-    });
-  }
-}));
+      account.getCustomData(function(err, data) {
+        if(err) {
+          next(err);
+        } else {
+          data.organizationId = hrefArray[hrefArray.length-1];
+          data.save();
+          next();
+        }
+      });
+    }
+  }));
 }
 
 // development error handler

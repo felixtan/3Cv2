@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
@@ -16,14 +18,7 @@
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    
     <!-- endbuild -->
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- Angular xeditable -->
-    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
     
   </head>
   <body ng-app="clientApp">
@@ -33,7 +28,7 @@
 
     <!-- Add your site or application content here -->
     <!-- if-user this nav -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" if-user>
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -101,7 +96,7 @@
     <div class="container-fluid">
       <div class="row">
         <!-- if-user this div -->
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar" if-user>
           <ul class="nav nav-sidebar">
             <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
             <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
@@ -122,16 +117,6 @@
           </ul>
         </div>
 
-        <!-- settings sidebar -->
-        <!-- if-user this div -->
-        <div class="col-sm-3 col-md-2 sidebar" ng-if="$state.includes('settings')">
-          <ul class="nav nav-sidebar">
-            <li>
-              <a ui-sref='settings.models.car' class='fa fa-user'>Cars</a>
-            </li>
-          </ul>
-        </div>
-
         <div ui-view></div>
         <!-- ngView -->
       </div>
@@ -149,10 +134,11 @@
        ga('send', 'pageview');
     </script>
 
+    <!-- build:js(.) scripts/vendor.js -->
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="scripts/ie10-viewport-bug-workaround.js"></script>
 
-    <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>

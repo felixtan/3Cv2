@@ -11,7 +11,7 @@ angular.module('clientApp')
   .factory('dataService', function ($state, $http, $q, ENV) {
 
     // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
-    var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
+    var params = (ENV.name === 'production' || ENV.name === 'staging') ? { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' } : {};
 
     // Learning
     // This results in false
