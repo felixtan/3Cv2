@@ -15,7 +15,9 @@ var assetTypes = require('./routes/assetTypes');
 module.exports = function (app) {
 
     // uncomment when you want stormpath
-    // app.use('/api', stormpath.loginRequired);
+    // if(app.get('env') === 'production') {
+    //     app.all('/', stormpath.loginRequired);
+    // }
 
     // Asset Types
     app.get('/api/asset-types', assetTypes.get);

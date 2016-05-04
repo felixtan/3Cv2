@@ -456,7 +456,7 @@ angular.module('clientApp')
 
     ctrl.evaluateInequalityValue = function(leftExpressionValue, rightExpressionValue) {
       if($scope.field.inequalitySignId === 0) {
-        console.log(leftExpressionValue + ' > ' + rightExpressionValue);
+        // console.log(leftExpressionValue + ' > ' + rightExpressionValue);
         return leftExpressionValue > rightExpressionValue;
       } else if ($scope.field.inequalitySignId === 1) {
         // console.log(leftExpressionValue + ' >= ' + rightExpressionValue);
@@ -516,10 +516,10 @@ angular.module('clientApp')
                   fieldDataObj.value = expressionValue;
                   var objectv2 = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
                   // console.log('object after appending field:', objectv2);
-                  objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
+                  // objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
                     // console.log(objectv3);
-                    ctrl.update(objectv3);
-                  });
+                    ctrl.update(objectv2);
+                  // });
               });
             });
           } else if($scope.field.type === 'inequality') {
@@ -530,10 +530,10 @@ angular.module('clientApp')
                   rightExpressionValue = parseFloat(rightExpressionValue);
                   fieldDataObj.value = ctrl.evaluateInequalityValue(leftExpressionValue, rightExpressionValue);
                   var objectv2 = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-                  objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
-                    // console.log(objectv3);
-                    ctrl.update(objectv3);
-                  });
+                  // objectHelpers.storeFieldsUsed(objectv2, $scope.field.name).then(function(objectv3) {
+                    // console.log('addField, obj w/ new inequality:', objectv3);
+                    ctrl.update(objectv2);
+                  // });
                 });
               });
             });

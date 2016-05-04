@@ -1,10 +1,9 @@
 @import "variables";
 // $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
+@import "font-awesome/scss/font-awesome.scss";
 @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
-// $fa-font-path: "/bower_components/font-awesome/fonts/";
-// @import "font-awesome/scss/font-awesome.scss";
 
 .browsehappy {
   margin: 0.2em 0;
@@ -291,3 +290,113 @@ body {
   color: #FF0000;
 }
 
+// tables
+.table-row-link:hover {
+    background-color: #f1f1f1;
+}
+
+// profiles
+.identifier {
+    font-size: 2.0em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: normal; 
+    /*font-weight: lighter; */
+}
+
+.delete-obj {
+    margin-top: 0.83em;
+    float: right;
+}
+
+// forms
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+// form errors
+.error-message {
+    border-radius: 4px !important;
+}
+
+// assetList
+.assetsOfType {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+// add field modal
+ul.fieldTypes {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li label {
+    margin-left: 1.5vw;
+}
+
+i.fa-question-circle {
+    margin-left: 1vw;
+}
+
+button.operator {
+    margin-right: 1.5vw;
+}
+
+h5.expression {
+    text-align: center;
+    /*display: inline;*/
+}
+
+div.undoAndClear {
+    float: right;
+}
+
+div.undoAndClear button.clear {
+    margin-left: 1.5vw;
+}
+
+// logs
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
+
+.date-picker {
+    max-width: 20vw;
+}
+
+#datepicker-instructions {
+    font-size: 0.80em;
+    font-style: italic;
+}
+
+.log {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.log-date {
+    margin-right: 1vw;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+// Top nav
+.top-nav-link {
+  color: #9d9d9d;
+}

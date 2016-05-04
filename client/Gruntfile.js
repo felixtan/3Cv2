@@ -116,7 +116,7 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'postcss:server']
       },
       gruntfile: {
@@ -128,6 +128,7 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
+          '.tmp/{,*/}*.css',
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -299,7 +300,7 @@ module.exports = function (grunt) {
           }
       },
       sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
     },
@@ -340,7 +341,8 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+          // '<%= yeoman.dist %>/styles/fonts/*',
+          '<%= yeoman.dist %>/public/assets/fonts/',
         ]
       }
     },
@@ -356,6 +358,7 @@ module.exports = function (grunt) {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
+              // js: ['concat'],
               css: ['cssmin']
             },
             post: {}
@@ -367,7 +370,24 @@ module.exports = function (grunt) {
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      // css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      css: {
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            filePath = filePath.replace('/.tmp/', '');
+            return '<link rel="stylesheet" href="' + filePath + '">';
+          },
+          starttag: '<!-- injector:css -->',
+          endtag: '<!-- endinjector -->'
+        },
+        files: {
+          '<%= yeoman.client %>/index.html': [
+            '<%= yeoman.client %>/{app,components}/**/*.css',
+            '!<%= yeoman.client %>/app/app.css'  //this is the line to be added to prevent app.css from being loaded twice  --
+          ]
+        }
+      },
       js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
       options: {
         assetsDirs: [
@@ -376,7 +396,10 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/styles'
         ],
         patterns: {
-          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+          js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']],
+          css: [[/(..\/fonts\/)/g, 'Fix webfonts path', function(match) {
+            return match.replace('../fonts/', '../assets/fonts/');
+          }]]
         }
       }
     },
@@ -394,23 +417,23 @@ module.exports = function (grunt) {
     //     }
     //   }
     // },
-    uglify: {
-      dist: {
-        src: ['.tmp/min/app.js'],
-        dest: '.tmp/min/app.js'
-      }
-    },
-    concat: {
-      options: {
-        stripBanners: true,
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %> */',
-      },
-      dist: {
-        src: ['.tmp/concat/scripts/*.js'],
-        dest: '.tmp/min/app.js',
-      }
-    },
+    // uglify: {
+    //   dist: {
+    //     src: ['.tmp/min/app.js'],
+    //     dest: '.tmp/min/app.js'
+    //   }
+    // },
+    // concat: {
+    //   options: {
+    //     stripBanners: true,
+    //     banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+    //     '<%= grunt.template.today("yyyy-mm-dd") %> */',
+    //   },
+    //   dist: {
+    //     src: ['.tmp/concat/scripts/*.js'],
+    //     dest: '.tmp/min/app.js',
+    //   }
+    // },
 
     imagemin: {
       dist: {
@@ -440,7 +463,12 @@ module.exports = function (grunt) {
           collapseWhitespace: true,
           conservativeCollapse: true,
           collapseBooleanAttributes: true,
-          removeCommentsFromCDATA: true
+          removeAttributeQuotes: true,
+          removeCommentsFromCDATA: true,
+          removeEmptyAttributes: true,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
         },
         files: [{
           expand: true,
@@ -456,7 +484,8 @@ module.exports = function (grunt) {
         options: {
           module: 'clientApp',
           htmlmin: '<%= htmlmin.dist.options %>',
-          usemin: 'scripts/scripts.js'
+          usemin: 'scripts/scripts.js',
+          // prefix: '/#'
         },
         cwd: '<%= yeoman.app %>',
         src: 'views/{,*/}*.html',
@@ -486,6 +515,15 @@ module.exports = function (grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      // serve: {
+      //   files: [{
+      //     expand: true,
+      //     dot: true,
+      //     cwd: 'bower_components/font-awesome',
+      //     src: ['fonts/*.*'],
+      //     dest: '<%= yeoman.dist %>/assets'
+      //   }]
+      // },
       dist: {
         files: [{
           expand: true,
@@ -506,15 +544,21 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          // cwd: '.',
+          cwd: 'bower_components/bootstrap/dist',
+          src: ['fonts/*.*'],
+          // src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= yeoman.dist %>'
-        }, {
+          // dest: '<%= yeoman.dist %>/public/assets'
+        }, 
+        {
           expand: true,
+          dot: true,
           cwd: 'bower_components/font-awesome',
           src: ['fonts/*.*'],
           // dest: '<%= config.dist %>'
           dest: '<%= yeoman.dist %>'
+          // dest: '<%= yeoman.dist %>/public/assets'
         }]
       },
       styles: {
@@ -614,14 +658,16 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'newer:jshint',
+    // 'test',
     'clean:dist',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
     'postcss',
     'ngtemplates',
-    'ngAnnotate',
     'concat',
+    'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
@@ -633,9 +679,22 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
-    // 'test',
     'build'
+  ]);
+
+  grunt.registerTask('build-nomin', [
+    'newer:jshint',
+    'clean:dist',
+    'wiredep',
+    'useminPrepare',
+    'concurrent:dist',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    'uglify',
+    'filerev',
+    'htmlmin',
+    'ngconstant:production'
   ]);
 
   grunt.registerTask('e2e', [

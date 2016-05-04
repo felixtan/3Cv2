@@ -9,7 +9,8 @@
  */
 angular.module('clientApp')
   .controller('ObjectListCtrl', function ($window, objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $modal, $q, $scope) {
-    
+    // console.log($scope.user);
+
     var ctrl = this,
         _ = $window._;
     $scope.objectType = objectType;
@@ -45,10 +46,13 @@ angular.module('clientApp')
                 
                 assetHelpers.getAssetTypes().then(function(result) {
                     // console.log(result);
-                    $scope.assetTypes = result.data;
-                    $scope.types = $scope.assetTypes.types;
-                    for(var i = 0; i < $scope.types.length; i++) {
-                        $scope.order[i] = i;    // populate order select
+                    if(objectHelpers.isValid(result.data)) {
+                        $scope.assetTypes = result.data;
+                        $scope.types = $scope.assetTypes.types;
+
+                        for(var i = 0; i < $scope.types.length; i++) {
+                            $scope.order[i] = i;    // populate order select
+                        }
                     }
                 });
                 

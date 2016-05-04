@@ -55,10 +55,10 @@ angular.module('clientApp')
     // only for assets
     $scope.renderForm = function() {};
 
-    ctrl.hideExpressions = function(referenceObject) {
+    ctrl.hideExpressions = function(referenceObjectData) {
         var deferred = $q.defer();
         // console.log($scope.objects);
-        deferred.resolve(_.each(referenceObject.data, function(data, field) {
+        deferred.resolve(_.each(referenceObjectData, function(data, field) {
             // console.log(data);
             if(data.type === 'function') {
                 $scope.fieldsToHide.push(field);
@@ -91,15 +91,12 @@ angular.module('clientApp')
 
         ctrl.getFormDataAndReference('driver').then(function(result) {
             ctrl.hideExpressions(result.referenceObject.data).then(function() {
-                // console.log('formData:', result.formData);
-                // $scope.fieldsToHide.push("Name");
+                // console.log(result.referenceObject.data);
+                // console.log($scope.expressions);
                 $scope.currentIdentifier.value = "Name";
                 angular.copy($scope.currentIdentifier, $scope.identifier);
                 $scope.formData = result.formData;
                 $scope.formData.assetType = { value: null };
-                // $scope.disableConditions = driverHelpers.namesNotNull;
-
-                console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
             });
         });
     } else if($scope.objectType === 'car') {
@@ -123,7 +120,7 @@ angular.module('clientApp')
                     angular.copy($scope.currentIdentifier, $scope.identifier);
                     $scope.disableConditions = function() { return true; };
 
-                    console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                    // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                 });
             });
         });
@@ -166,23 +163,23 @@ angular.module('clientApp')
             $scope.assetTypes = result.data.types;
 
             $scope.renderForm = function(assetType) {
-                console.log('rendering form for ' + assetType);
+                // console.log('rendering form for ' + assetType);
                 objectHelpers.getFormDataAndReference('asset', assetType).then(function(result) {
-                    console.log(result);
+                    // console.log(result);
                     $scope.currentIdentifier.value = result.referenceObject.identifier;
                     // assetHelpers.getIdentifier(assetType).then(function(identifier) {
-                        ctrl.hideExpressions(result.referenceObject).then(function() {
+                        ctrl.hideExpressions(result.referenceObject.data).then(function() {
                             $scope.fields = Object.keys(result.formData);
                             $scope.formData = result.formData;
 
-                            console.log($scope.formData);
+                            // console.log($scope.formData);
                             $scope.formData.assetType.value = assetType;
 
                             $scope.disableConditions = assetHelpers.invalidAssetType;
                             // $scope.currentIdentifier.value = identifier;
                             angular.copy($scope.currentIdentifier, $scope.identifier);
 
-                            console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                            // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                         });
                     // });
                 });
@@ -194,7 +191,7 @@ angular.module('clientApp')
 
     $scope.submit = function() {
         $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
-            console.log(newObject);
+            // console.log(newObject);
             objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
                 newObject = objectWithExpressionValues;
                 // console.log(newObject);
@@ -243,7 +240,7 @@ angular.module('clientApp')
                 } else if($scope.objectType === 'driver') {
                     // console.log(newObject);
                     $scope.save(newObject).then(function(result) {
-                        console.log(result);
+                        // console.log(result);
                         if($scope.identifierChanged()) {
                             _.each($scope.objects, function(obj) {
                                 if(obj.id !== result.data.id) {
@@ -335,7 +332,7 @@ angular.module('clientApp')
             }
         }, function() {
             $state.forceReload();
-            console.log('Modal dismissed at: ' + new Date());
+            // console.log('Modal dismissed at: ' + new Date());
         });
     };
   });

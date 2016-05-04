@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-sm-offset-3 col-xs-12 col-sm-4">
+    <h3>Register</h3>
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-offset-4 col-xs-12 col-sm-4">
+
+    <p class="alert alert-success" ng-show="created && !enabled">Your account has been created.  Please check your email for a verification link.</p>
+    <p ng-show="created && !enabled" class="pull-right">
+      <a href="/login">Back to Login</a>
+    </p>
+    <p class="alert alert-success" ng-show="created && enabled && !authenticating">Your account has been created.  <a href="/login">Login Now</a>.</p>
+  </div>
+
+  <div class="col-xs-12">
+    <!-- ng-show="!viewModel" -->
+    <!-- <div class="sp-loading" style='text-align:center;'>
+      Loading...
+    </div> -->
+    <!-- ng-hide= !viewModel ||  -->
+    <form class="form-horizontal" ng-hide="(created && !authenticating)" ng-submit="console.log({ organization: formModel.organization, email: formModel.email, password: formModel.password })">
+      
+      <!-- My custom fields -->
+
+      <!-- givenName -->
+      <!-- <div class="form-group">
+        <label for="sp-givenName" class="col-xs-12 col-sm-4 control-label">First Name</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="givenName" id="sp-givenName" type="text" ng-model="formModel[givenName]" placeholder="" ng-disabled="creating" ng-required="false">
+        </div>
+      </div> -->
+
+      <!-- surname -->
+      <!-- <div class="form-group">
+        <label for="sp-surname" class="col-xs-12 col-sm-4 control-label">Last Name</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="surname" id="sp-surname" type="text" ng-model="formModel[surname]" placeholder="" ng-disabled="creating" ng-required="false">
+        </div>
+      </div> -->
+
+      <!-- Organization -->
+      <div class="form-group">
+        <label for="sp-organization" class="col-xs-12 col-sm-4 control-label">Organization</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="organization" id="sp-organization" type="text" ng-model="formModel.organization" placeholder="" ng-disabled="creating" ng-required="false">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="sp-email" class="col-xs-12 col-sm-4 control-label">Email</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="email" id="sp-email" type="email" ng-model="formModel.email" placeholder="" ng-disabled="creating" ng-required="true">
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="sp-password" class="col-xs-12 col-sm-4 control-label">Password</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="password" id="sp-password" type="password" ng-model="formModel.password" placeholder="" ng-disabled="creating" ng-required="true">
+        </div>
+      </div>
+      <!-- End custom -->
+
+      <!-- <div class="form-group" ng-repeat="field in viewModel.form.fields">
+        <label for="sp-{{field.name}}" class="col-xs-12 col-sm-4 control-label">{{field.label}}</label>
+        <div class="col-xs-12 col-sm-4">
+          <input class="form-control" name="{{field.name}}" id="sp-{{field.name}}" type="{{field.type}}" ng-model="formModel[field.name]" placeholder="{{field.placeholder}}" ng-disabled="creating" ng-required="field.required">
+        </div>
+      </div> -->
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+          <p class="alert alert-danger" ng-show="error" ng-bind="error"></p>
+          <button type="submit" class="btn btn-primary" ng-disabled="creating" ng-click='register(formModel)'>Register</button>
+        </div>
+      </div>
+      <!-- <div class="form-group" ng-show="viewModel.accountStores.length">
+        <div class="col-sm-offset-4 col-sm-4">
+          <p>Or register with:</p>
+          <button ng-repeat="accountStore in viewModel.accountStores" type="button" class="btn btn-social btn-{{accountStore.provider.providerId}}" sp-social-login="{{accountStore.provider.providerId}}" sp-client-id="{{accountStore.provider.clientId}}" sp-scope="{{accountStore.provider.scope}}">
+            {{providerName}}
+          </button>
+        </div>
+      </div> -->
+    </form>
+  </div>
+</div>
+
+<div class='row'>
+  <div class="col-sm-offset-4 col-xs-12 col-sm-4">
+    <a ui-sref='login' ng-if='!registered.value'>Already have an account? Log in.</a>
+  </div>
+</div>

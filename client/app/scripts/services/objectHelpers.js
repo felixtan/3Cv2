@@ -234,8 +234,8 @@ angular.module('clientApp')
 
                                                         // this was the key to solving the problem where expression value
           // angular.copy(object.data[field], newFieldData);       // for car 2 was being saved to both cars 2 and 3
-          // console.log(objectData);
-          // console.log(fieldName);
+          // console.log('objHelpers, evaluateExpressionAndAppendValue, passoed objectData:', objectData);
+
           if(objectData[fieldName].type === 'function') {
             buildEvalExpression(objectData, objectData[fieldName].expressionItems).then(function(expression) {
               // console.log(expression);
@@ -259,8 +259,44 @@ angular.module('clientApp')
 
                 objectData[fieldName].value = (isValid(leftExpression) && isValid(inequalitySign) && isValid(rightExpression)) ? $rootScope.$eval(leftExpression + inequalitySign + rightExpression) : null;
 
-                // 2nd degree changes
-                // evaluateExpressions(objectData[fieldName].expressionsUsedIn, object);
+                // console.log('objHelpers, evaluateExpressionAndAppendValue, objectData after updating inequality:', objectData);
+
+                // (function() {
+                //     _.each(objectData[fieldName].fieldsUsed, function(locations, field) {
+                //         console.log(field);
+                //         console.log(locations);
+                //         _.each(locations, function(expressionItems_, locations) {
+                //             console.log(locations);
+                //             console.log(expressionItems_);
+                //             _.each(expressionItems_, function(indices, expressionItems) {
+                //                 console.log(expressionItems);
+                //                 if(expressionItems === 'undefined') {
+                //                     console.log('undefined location');
+                //                     _.each(objectData[fieldName].leftExpressionItems, function(item) {
+                //                         console.log(item);
+                //                         console.log('above item should be:', field);
+                //                         if(item.value === field) {
+                //                             item.location = 'leftExpressionItems';
+                //                             locations.leftExpressionItems = locations.location;
+                //                             delete locations.location;
+                //                         }
+                //                     });
+
+                //                     _.each(objectData[fieldName].rightExpressionItems, function(item) {
+                //                         console.log(item);
+                //                         if(item.value === field) {
+                //                             item.location = 'rightExpressionItems';
+                //                             locations.rightExpressionItems = locations.location;
+                //                             delete locations.location;
+                //                         }
+                //                     });
+                //                 }
+                //             });
+                //         });
+                //     });
+
+                //     console.log('after correction in evaluateExpressionAndAppendValue:', objectData);
+                // })();
 
                 deferred.resolve(objectData);
                 deferred.reject(new Error('Error evaluating expression'));
@@ -290,7 +326,7 @@ angular.module('clientApp')
         // This is only used in editFieldModal.js as far as I can can tell so it's a waste puttin it here
         function updateExpressionFieldsIfFieldNameChanged (oldName, newName, objectData, objectId) {
             var deferred = $q.defer();
-
+            console.log('objHelpers, updateExpressionFieldsIfFieldNameChanged, passed objectData:', objectData);
             if(oldName !== newName) {
                 replaceFieldNameInExpressions(oldName, newName, objectData).then(function(objectDataWithUpdatedExpressions) {
                     // console.log(objectDataWithUpdatedExpressions);
@@ -541,46 +577,76 @@ angular.module('clientApp')
             // console.log(object);
             // console.log(fieldName);
 
-            var deferred = $q.defer(),
-                objectData = (isValid(object.id) && isValid(object.organizationId)) ? object.data : object,
-                fieldData = objectData[fieldName];                      // ctrl.addProspectFieldsToExistingDrivers in objectData.js
-                                                                        // sends object data instead of object
-            if(fieldData.type === 'function') {
-                var expressionItems = fieldData.expressionItems;
+            var deferred = $q.defer();
+            //     objectData = (isValid(object.id) && isValid(object.organizationId)) ? object.data : object,
+            //     fieldData = objectData[fieldName];                      // ctrl.addProspectFieldsToExistingDrivers in objectData.js
+            //                                                             // sends object data instead of object
+            //     console.log('objHelpers, storeFieldsUsed, fieldData passed:', fieldData);
+            // if(fieldData.type === 'function') {
+            //     var expressionItems = fieldData.expressionItems;
 
-                // console.log(object);
-                // console.log(fieldName);
-                pairItemsWithIndicesInExpressionItems(expressionItems).then(function(reduced) {
-                    // console.log(reduced);
-                    fieldData.fieldsUsed = reduced;
-                    storeExpressionsUsedIn(objectData, reduced, fieldName).then(function(updatedObjectData) {
-                        object.data = updatedObjectData;
-                        deferred.resolve(object);
-                        deferred.reject(new Error("Error storing fields used by " + fieldName));
-                    });
-                });
-            } else if(fieldData.type === 'inequality') {
-                var leftExpressionItems = fieldData.leftExpressionItems,
-                    rightExpressionItems = fieldData.rightExpressionItems;
+            //     // console.log(object);
+            //     // console.log(fieldName);
+            //     pairItemsWithIndicesInExpressionItems(expressionItems).then(function(reduced) {
+            //         // console.log(reduced);
+            //         fieldData.fieldsUsed = reduced;
+            //         storeExpressionsUsedIn(objectData, reduced, fieldName).then(function(updatedObjectData) {
+            //             object.data = updatedObjectData;
+            //             deferred.resolve(object);
+            //             deferred.reject(new Error("Error storing fields used by " + fieldName));
+            //         });
+            //     });
+            // } else if(fieldData.type === 'inequality') {
+            //     var leftExpressionItems = fieldData.leftExpressionItems,
+            //         rightExpressionItems = fieldData.rightExpressionItems;
 
-                // console.log(object);
-                // console.log(fieldName);
-                pairItemsWithIndicesInExpressionItems(leftExpressionItems).then(function(leftReduced) {
-                    pairItemsWithIndicesInExpressionItems(rightExpressionItems, leftReduced).then(function(reduced) {
-                        // console.log(reduced);
-                        fieldData.fieldsUsed = reduced;
-                        storeExpressionsUsedIn(objectData, reduced, fieldName).then(function(updatedObjectData) {
-                            object.data = updatedObjectData;
-                            deferred.resolve(object);
-                            deferred.reject(new Error("Error storing fields used by " + fieldName));
-                        });
-                    });
-                });
+            //     console.log('objHelpers, storeFieldsUsed, leftExpressionItems:', leftExpressionItems);
+            //     console.log('objHelpers, storeFieldsUsed, rightExpressionItems:', rightExpressionItems);
 
-            } else {
+                /** 
+                *   Sanity check if location key is missing. This will happen when replacing a field used in
+                *   an expression with another one.
+                *   
+                *   If it's missing, then 
+                *       1. add the key (location) and set value to rightExpressionItems or leftExpressionItems
+                */
+                // (function() {
+                //         _.each(leftExpressionItems, function(item, index) {
+                //             if(!item.location) {
+                //                 if(!item.location.leftExpressionItems) {
+                //                     item.location = { leftExpressionItems: [] };
+                //                     _.each()
+                //                 }
+                //             }
+                //             item.location.leftExpressionItems.push(index);
+                //         });
+
+                //     if(!item.location) {
+                //         if(!item.location.rightExpressionItems) {
+                //             item.location = { rightExpressionItems: [] };
+                //         }
+
+                //         _.each(rightExpressionItems, function(item, index) {
+                //             item.location.rightExpressionItems.push(index);
+                //         });
+                //     }
+                // })();
+
+            //     pairItemsWithIndicesInExpressionItems(leftExpressionItems).then(function(leftReduced) {
+            //         pairItemsWithIndicesInExpressionItems(rightExpressionItems, leftReduced).then(function(reduced) {
+            //             console.log('objHelpers, reduced:', reduced);
+            //             fieldData.fieldsUsed = reduced;
+            //             storeExpressionsUsedIn(objectData, reduced, fieldName).then(function(updatedObjectData) {
+            //                 object.data = updatedObjectData;
+            //                 deferred.resolve(object);
+            //                 deferred.reject(new Error("Error storing fields used by " + fieldName));
+            //             });
+            //         });
+            //     });
+            // } else {
                 deferred.resolve(object);
                 deferred.reject(new Error("Error: " + fieldName + " has invalid type. This works only for function and inequality fields."));
-            }
+            // }
 
             return deferred.promise;
         }
@@ -607,24 +673,29 @@ angular.module('clientApp')
         function pairItemsWithIndicesInExpressionItems (expressionItems, _reduced) {
             var deferred = $q.defer(),
                 reduced = _reduced || {};
-
+            // console.log('objHelpers, pairItemsWithIndicesInExpressionItems, reduced passed:', reduced);
             _.each(expressionItems, function(item, index) {
                 var location = item.location;
-
+                // console.log('objHelpers, pairItemsWithIndicesInExpressionItems, location in expression:', item);
+                // if field is not used by the expression, then create new nested object
                 if(item.type === 'field' && !_.has(reduced, item.value)) {
                     if(_.isEmpty(reduced) || _.isEmpty(reduced[item.value])) {
                         reduced[item.value] = { locations: {} };
+                        // console.log('updating field used by ineq 0');
                     }
-
+                    // console.log('updating field used by ineq 1');
                     reduced[item.value].locations[location] = [];
                     reduced[item.value].locations[location].push(index);
                     // console.log(item);
 
+
+                // if field is already used by the expression, then update existing nested object
                 } else if(item.type === 'field' && _.has(reduced, item.value)) {
                     if(_.isEmpty(reduced[item.value].locations[location])) {
                         reduced[item.value].locations[location] = [];
+                        // console.log('updating field used by ineq 2');
                     }
-
+                    // console.log('updating field used by ineq 3');
                     reduced[item.value].locations[location].push(index);
                     // console.log(item);
                 }

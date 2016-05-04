@@ -11,30 +11,34 @@ angular.module('clientApp')
   .controller('ObjectsLogsCtrl', function ($window, $modal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state) {
 
     var ctrl = this,
-        _ = $window;
+        _ = $window._;
 
     $scope.objectType = objectType;
     $scope.datepicker = datepicker;
     $scope.dummyNum = { value: null };
+    $scope.dates = [];
 
     ctrl.getObjects = function () {
         if($scope.objectType === 'car') {
+            // console.log('cars logs');
             $scope.title = 'Car';
             $scope.state = { logs: 'carLogs({ id: object.id })' };
             ctrl.update = carHelpers.update;
             return carHelpers.get;
         } else if($scope.objectType === 'driver') {
+            // console.log('drivers logs');
             $scope.title = 'Driver';
             $scope.state = { logs: 'driverLogs({ id: object.id })' };
             ctrl.update = driverHelpers.update;
             return driverHelpers.get;
         } else if($scope.objectType === 'prospect') {
+            // console.log('prospects logs');
             $scope.title = 'Prospect';
             $scope.state = null;
             ctrl.update = prospectHelpers.update;
             return prospectHelpers.get;
         } else if($scope.objectType === 'asset') {
-            // $scope.title = 'Asset';
+            // console.log('assets logs');
             $scope.state = { logs: 'assetLogs({ id: object.id })' };
             ctrl.update = assetHelpers.update;
             return assetHelpers.getAssetTypes;
@@ -54,13 +58,16 @@ angular.module('clientApp')
     };
 
     ctrl.getAssetsOfTypeAndLogs = function (assetType) {
+        // console.log('getting assets of type');
         assetHelpers.getByType(assetType).then(function(result) {
+            // console.log('getting simplified assets');
             $scope.objects = objectHelpers.isValid(result.data) ? result.data : [];
             $scope.simpleObjects = objectHelpers.simplify($scope.objects);
             ctrl.identifier = $scope.objects[0].identifier;
         });
 
         ctrl.getLogDates()(assetType).then(function(dates) {
+            // console.log(dates);
             $scope.dates = dates;
             ctrl.getMostRecentLogDate();
         });
@@ -69,11 +76,23 @@ angular.module('clientApp')
     ctrl.getObjects()().then(function(result) {
         if ($scope.objectType !== 'asset') {
             $scope.objects = result.data;
+
+            if(objectHelpers.isValid($scope.objects)) {
+                if($scope.objects.length) {
+                    $scope.simpleObjects = objectHelpers.simplify($scope.objects);    
+                    ctrl.getLogDates()().then(function(dates) {
+                        // console.log(dates);
+                        $scope.dates = dates;
+                        ctrl.getMostRecentLogDate();
+                    });
+                }
+            }
         } else {
             $scope.assetTypes = result.data.types;
 
             $scope.tabs = [];
             $scope.assetType = null;
+
             if($scope.assetTypes.length) {
                 $scope.assetType = $scope.assetTypes[0].value;
 
@@ -176,22 +195,26 @@ angular.module('clientApp')
         var d = $scope.datepicker.dt,
             weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime(),
             promise = ctrl.newDataObj().then(function(blankDataObj) {
-                // console.log(blankDataObj);
-                _.each($scope.objects, function(object) {
-                    ctrl.createLogForObject(object, weekOf, blankDataObj).then(ctrl.update);
-                });
+                if(!(_.contains($scope.dates, weekOf))) {
+                    _.each($scope.objects, function(object) {
+                        ctrl.createLogForObject(object, weekOf, blankDataObj).then(ctrl.update);
+                    });
+                } else {
+                    $window.alert('Log for ' + d.toDateString() + ' already exists!');
+                }
             });
 
-        if(!(_.contains($scope.dates, weekOf))) {
-            $q.all([promise]).then(function(values) {
+        // console.log(weekOf);
+        // console.log($scope.dates);
+
+        $q.all([promise]).then(function() {
+            if(!(_.contains($scope.dates, weekOf))) {
                 ctrl.createNewRow(weekOf);
                 $state.forceReload();
-            }).catch(function(err) {
-                console.error(err);
-            });
-        } else {
-            alert('Log for ' + d.toDateString() + ' already exists!');
-        }
+            }
+        }).catch(function(err) {
+            console.error(err);
+        });
     };
 
     $scope.notExpressionField = function (field, object) {
@@ -223,21 +246,21 @@ angular.module('clientApp')
                 if ($scope.objectType !== 'asset') {
                     if (logDate === ctrl.mostRecentLogDate) {
                         // update object.data is new value isn't null
-                        mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
-                        for(var field in mostRecentLog.data) {
-                            if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
-                                object.data[field].value = mostRecentLog.data[field];
-                            }
-                        }
+                        // mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
+                        // for(var field in mostRecentLog.data) {
+                        //     if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
+                        //         object.data[field].value = mostRecentLog.data[field];
+                        //     }
+                        // }
                     }
                 } else {
                     if ($scope.assetType === $scope.objectType) {
                         if (logDate === ctrl.mostRecentLogDate) {
                             // update object.data is new value isn't null
                             mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
-                            for(var field in mostRecentLog.data) {
-                                if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
-                                    object.data[field].value = mostRecentLog.data[field];
+                            for(var _field_ in mostRecentLog.data) {
+                                if(mostRecentLog.data[_field_] !== null && typeof mostRecentLog.data[_field_] !== 'undefined') {
+                                    object.data[_field_].value = mostRecentLog.data[_field_];
                                 }
                             }
                         }

@@ -8,10 +8,10 @@
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('dataService', function ($state, $http, $q, ENV) {
+  .factory('dataService', function ($state, $http, $q, ENV, $rootScope) {
 
     // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
-    var params = (ENV.name === 'production' || ENV.name === 'staging') ? { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' } : {};
+    var params = (ENV.name === 'production' || ENV.name === 'staging') ? { organizationId: $rootScope.user.customData.organizationId } : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
 
     // Learning
     // This results in false
@@ -105,7 +105,7 @@ angular.module('clientApp')
           params: params,
           data: asset
         }).then(function(data) {
-          // $state.forceReload();
+          $state.forceReload();
           return data;
         }, function(err) {
           $state.forceReload();
@@ -147,7 +147,7 @@ angular.module('clientApp')
           params: params,
           data: statuses
         }).then(function(data) {
-          // $state.forceReload();
+          $state.forceReload();
           return data;
         }, function(err) {
           $state.forceReload();
@@ -303,6 +303,7 @@ angular.module('clientApp')
       },
 
       getCar: function (id) {
+        // console.log('called');
         return $http.get('/api/cars/' + id)
           .then(function(data) {
             return data;

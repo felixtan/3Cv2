@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var productionSetup = require('./db/scripts/productionSetup');
 
 var app = express();
 
@@ -20,11 +21,37 @@ app.use(cookieParser());
 // stormpath
 if(app.get('env') === 'production') {
   app.use(stormpath.init(app, {
-    debug: 'info, error',
+    debug: 'info',
     website: true,
-    web: {
-      spaRoot: __dirname + '/dist/index.html'
+    expand: {
+      customData: true,
+      groups: true,
     },
+    web: {
+      spaRoot: __dirname + '/dist/index.html',
+      register: {
+        uri: '/#/registration',
+        form: {
+          fields: {
+            givenName: {
+              enabled: false
+            },
+            surname: {
+              enabled: false
+            },
+            organization: {
+              enabled: true,
+              label: 'Organization',
+              name: 'organization',
+              required: true,
+              type: 'text',
+            }
+          },
+          fieldOrder: ['givenName', 'surname', 'organization', 'email', 'password']
+        }
+      }
+    },
+
     postRegistrationHandler: function(account, res, req, next) {
       /*
         saves a users stormpath id in their custom data so it can be access by this app
@@ -35,12 +62,33 @@ if(app.get('env') === 'production') {
         if(err) {
           next(err);
         } else {
-          data.organizationId = hrefArray[hrefArray.length-1];
+          var organizationId = hrefArray[hrefArray.length-1];
+          data.organizationId = organizationId;
           data.save();
+          productionSetup.createDefaultProspectStatuses(organizationId);
+          productionSetup.createAssetTypes(organizationId);
           next();
         }
       });
-    }
+    },
+
+    /* 
+      Stormpath doesn't delete cookies all cookies on logout
+      after logging out of the app, and logging in to another user, data from the previous user was still present 
+      https://stackoverflow.com/questions/35835491/stormpath-express-session-logout-not-deleting-session
+
+      postLogoutHandler was implemented in March 2016
+      https://docs.stormpath.com/nodejs/express/latest/logout.html
+    */
+    postLogoutHandler: function (account, req, res, next) {
+      console.log('logged out:', account);
+      console.log('req:', req);
+      console.log('res:', res);
+      // req.session = null;
+      // res.cookie('express.sid', "", { expires: new Date() });
+      next();
+    },
+
   }));
 }
 
@@ -77,6 +125,10 @@ if(app.get('env') === 'production') {
       error: {}
     });
   });
+
+  /*
+    Redirect user to login page if not logged in
+  */
 }
 
 // Includes all routes

@@ -1,5 +1,5 @@
-<link rel='stylesheet' href='styles/deletemodal.css' />
-
+<!-- <link rel='stylesheet' href='styles/deletemodal.scss' /> -->
+<div if-user>
 <div class="modal-header">
     <h3 class="modal-title">
         Delete {{ objectType }}
@@ -27,4 +27,5 @@
     <button id='delete-btn-final' class='btn btn-danger' type='button' ng-click='submit()' ng-disabled="input !== 'DELETE'">
         DELETE
     </button>
+</div>
 </div>

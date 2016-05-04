@@ -18,6 +18,7 @@
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="registration.css">
     <!-- endbuild -->
     
   </head>
@@ -41,14 +42,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            
-            <li class='top-nav-link dropdown'>
-              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
-                Tables
-                <i class='fa fa-caret-down'></i>
-              </a> 
-
-              <ul class='dropdown-menu'>
+            <li dropdown class="top-nav-link dropdown" dropdown-toggle>
+              <a>
+                Tables <i class="fa fa-caret-down"></i>
+              </a>
+              <ul class='dropdown-menu' dropdown-menu role='menu' aria-labelledby="btn-append-to-single-button">
                 <li>
                   <a ui-sref='dashboard.cars'>Cars</a>
                 </li>
@@ -61,16 +59,14 @@
                  <li>
                   <a ui-sref='dashboard.assets'>Assets</a>
                 </li>
-                </ul>
+              </ul>
             </li>
 
-            <li class='top-nav-link dropdown'>
-              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
-                Logs
-                <i class='fa fa-caret-down'></i>
-              </a>  
-
-              <ul class='dropdown-menu'>
+            <li dropdown dropdown-toggle class='top-nav-link dropdown btn-append-to-single-button'>
+              <a>
+                Logs <i class='fa fa-caret-down'></i>
+              </a>
+              <ul dropdown-menu role='menu' aria-labelledby="btn-append-to-single-button" class='dropdown-menu'>
                 <li>
                   <a ui-sref='logs.cars'>Cars</a>
                 </li>
@@ -82,6 +78,7 @@
                 </li>
               </ul>
             </li>
+
             <li>
               <a sp-logout ui-sref="login">Logout</a>
             </li>
@@ -111,7 +108,7 @@
               <!-- <ul class='dropdown-menu' role='menu'> -->
                 <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
                 <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
-                <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
+                <li><a ui-sref="logs.assets" class='fa fa-list-alt'> Asset Logs</a></li>
               <!-- </ul> -->
             <!-- </li> -->
           </ul>
@@ -191,6 +188,7 @@
         <script src="scripts/controllers/objectLogs.js"></script>
         <script src="scripts/controllers/objectsLogs.js"></script>
         <script src="scripts/services/logHelpers.js"></script>
+        <script src="scripts/controllers/registration.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->
@@ -227,8 +225,8 @@
           Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
           Based on this solution: https://jsfiddle.net/Frondor/sey4wsah/
         */ 
-        $(".top-nav-link").on("click", "a", function (e) {
-          if(!$(e.currentTarget).hasClass("dropdown-toggle")) $('.navbar-collapse.in').collapse('hide');
+        $("ul.dropdown-menu li a").click(function (e) {
+          $('.navbar-collapse.in').collapse('hide');
         });
       });
     </script>

@@ -38,25 +38,21 @@ angular
         return $delegate;
     });
 
-    function getsp (ENV) {
-        return (ENV.name === 'production' || ENV.name === 'staging') ? { authenticate: true } : { authenticate: false };
+    function inProduction (ENV) {
+        return (ENV.name === 'production' || ENV.name === 'staging');
     }
 
-    // $urlRouterProvider.otherwise('/login');
-    $urlRouterProvider.otherwise('/dashboard/cars');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
-    .state('wtf', {
-        url: '/',
-        templateUrl: '<div></div>'
-    })
     .state('login', {
         url: '/login',
         templateUrl: 'login.html'
     })
     .state('registration', {
         url: '/registration',
-        templateUrl: 'registration.html'
+        templateUrl: 'registrationCustom.html',
+        controller: 'RegistrationCtrl',
     })
     .state('forgot-password', {
         url: '/forgot-password',
@@ -66,15 +62,39 @@ angular
         url:'/reset?sptoken',
         templateUrl: 'resetpw.html'
     })
+    .state('api', {
+        url: '/api',
+        abstract: true,
+        sp: {
+            authorize: {
+                group: 'dev'
+            }
+        }
+    })
+    .state('404', {
+        url: '/404',
+        templateUrl: '404.html',
+    })
+    .state('403', {
+        url: '/403',
+        templateUrl: '404.html',
+    })
     .state('dashboard', {
         abstract: true,
-        url: '/dashboard',
+        url: '/',
         template: '<ui-view/>',
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+            waitForUser: inProduction(ENV),
+        }
     })
     .state('dashboard.cars', {
-        sp: getsp(ENV),
-        url: '/cars',
+        sp: {
+            authenticate: inProduction(ENV),
+            waitForUser: inProduction(ENV),
+        },
+        // url: '/cars',
+        url: 'dashboard/cars',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
@@ -84,8 +104,11 @@ angular
         }
     })
     .state('dashboard.drivers', {
-        sp: getsp(ENV),
-        url: '/drivers',
+        sp: {
+            authenticate: inProduction(ENV),
+        },
+        // url: '/drivers',
+        url: 'dashboard/drivers',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
@@ -95,8 +118,11 @@ angular
         }
     })
     .state('dashboard.prospects', {
-        sp: getsp(ENV),
-        url: '/prospects',
+        sp: {
+            authenticate: inProduction(ENV),
+        },
+        // url: '/prospects',
+        url: 'dashboard/prospects',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
@@ -106,8 +132,11 @@ angular
         }
     })
     .state('dashboard.assets', {
-        sp: getsp(ENV),
-        url: '/assets',
+        sp: {
+            authenticate: inProduction(ENV),
+        },
+        // url: '/assets',
+        url: 'dashboard/assets',
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
@@ -117,13 +146,17 @@ angular
         }
     })
     .state('logs', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         abstract: true,
         url: '/logs',
         template: '<ui-view/>',
     })
     .state('logs.cars', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/cars',
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
@@ -134,7 +167,9 @@ angular
         },
     })
     .state('logs.drivers', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/drivers',
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
@@ -145,9 +180,11 @@ angular
         },
     })
     .state('logs.assets', {  // logs for assets of a certain type
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/assets',
-        templateUrl: '/views/objectsLogs.html',
+        templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
             objectType: function () {
@@ -156,9 +193,11 @@ angular
         },
     })
     .state('carData', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/cars/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: 'views/objectData.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -170,9 +209,11 @@ angular
         }
     })
     .state('carLogs', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/cars/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: 'views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {
@@ -184,9 +225,11 @@ angular
         }
     })
     .state('driverData', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/drivers/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: 'views/objectData.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -198,9 +241,11 @@ angular
         }
     })
     .state('driverLogs', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/drivers/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: 'views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {
@@ -212,9 +257,11 @@ angular
         }
     })
     .state('prospectData', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/prospects/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: 'views/objectData.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -226,9 +273,11 @@ angular
         }
     })
     .state('assetData', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/assets/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: 'views/objectData.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -240,9 +289,11 @@ angular
         }
     })
     .state('assetLogs', {
-        sp: getsp(ENV),
+        sp: {
+            authenticate: inProduction(ENV),
+        },
         url: '/assets/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: 'views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {
@@ -256,9 +307,7 @@ angular
   })
     // inject ENV when grunt-ng-constant is working
     // add when you want stormpath: , $stormpath
-  .run(function(ENV, editableOptions, $stormpath, $state, $stateParams, $rootScope) {
-    console.log("Running AngularJS in environment ", ENV);
-
+  .run(function(ENV, editableOptions, $window, $user, $stormpath, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
@@ -268,7 +317,33 @@ angular
     if(ENV.name === 'production' || ENV.name === 'staging') {
         $stormpath.uiRouter({
             loginState: 'login',
-            defaultPostLoginState: 'dashboard.cars'
+            defaultPostLoginState: 'dashboard.cars',
+            autoRedirect: true,
+            forbiddenState: '403'
+        });
+
+        $rootScope.$on('$sessionEnd',function (event) {
+            $state.go('login');
+        });
+
+        $rootScope.$on('$stateChangeUnauthenticated', function (e, toState, toParams){
+          // Your custom logic for deciding how the user should login, and
+          // if you want to redirect them to the desired state afterwards
+          $state.go('login');
+        });
+
+        $rootScope.$on('$stateChangeUnauthorized', function (e,toState,toParams){
+          // Your custom logic for deciding how the user should be
+          // notified that they are forbidden from this state
+          console.log('state change unauthorized');
+        });
+
+        $rootScope.$on('$notLoggedIn',function(){
+            $state.go('login');
+        });
+
+        $rootScope.$on('$authenticated', function (event) {
+            $window.location.reload();
         });
     }
   });

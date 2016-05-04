@@ -44,7 +44,7 @@ angular.module('clientApp')
     }
 
     function getOrganizationId () {
-      return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
+      return (ENV.name === 'production' || ENV.name === 'staging') ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
     }
 
     function getLogDates (assetType) {

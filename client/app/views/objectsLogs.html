@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="styles/partials/logs.css">
-
+<!-- <link rel="stylesheet" href="styles/partials/logs.scss"> -->
+<div if-user>
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
     <div class='sub-header'>
         <!-- class='page-header' -->
@@ -89,10 +89,11 @@
                     <td ng-repeat='object in objects | orderBy:"id"' ng-if='ifAssetIsOfType(object)'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
+                                <span ng-if='notExpressionField(field, object)' ng-show='logform.$visible'>{{ ::field }}:</span>
                                 <span ng-if='notExpressionField(field, object)' editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform' onbeforesave='validate($data, value, field, log, object)'>
                                     {{ ::field }}: {{ value }}
                                 </span>
-                                <span ng-if='!notExpressionField(field, object)'>
+                                <span ng-if='!notExpressionField(field, object)' ng-hide='logform.$visible'>
                                     {{ ::field }}: {{ ::value }}
                                 </span>
                             </li>
@@ -104,4 +105,5 @@
         <!-- {{ invalidEntries }} -->
         <!-- {{ objects }} -->
     </div>
+</div>
 </div>

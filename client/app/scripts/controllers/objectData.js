@@ -82,6 +82,7 @@ angular.module('clientApp')
         ctrl.getObjects()($scope.object.assetType).then(function(result2) {
             // console.log(result2);
             ctrl.objects = result2.data;
+            // console.log(ctrl.objects);
         });
     });
 

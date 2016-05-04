@@ -171,10 +171,6 @@ angular.module('clientApp')
       $scope.objects = [];
       $scope.objectType = objectType;
 
-      // console.log($scope.object.status);
-      // console.log(field);
-      // console.log($scope.objectType);
-      // console.log($scope.isProspectStatus(field));
       $scope.field = {
           name: field,
           type: $scope.object.data[field].type,
@@ -365,7 +361,7 @@ angular.module('clientApp')
 
     ctrl.buildAndAppendDisplayExpression = function(object) {
       var deferred = $q.defer();
-
+      console.log('editField, buildAndAppendDisplayExpression, passed object:', object);
       if(typeof object.data[$scope.field.name] !== 'undefined') {
         if($scope.field.type === 'function') {
           buildDisplayExpression($scope.field.expressionItems).then(function(expression) {
@@ -398,7 +394,7 @@ angular.module('clientApp')
         // console.log(object.data[$scope.field.name]);
         // console.log($scope.object);
         if($scope.field.log) {
-          console.log('log value changed to true');
+          // console.log('log value changed to true');
           _.each(object.logs, function(log) {
             log.data[$scope.field.name] = null;
             /*
@@ -434,7 +430,7 @@ angular.module('clientApp')
         $scope.object.data[$scope.field.name].value = $scope.field.value.value;
         $scope.update($scope.object);
       } else {
-        console.log($scope.field);
+        // console.log($scope.field);
         _.each($scope.objects, function(object) {
           objectHelpers.updateDataIfFieldNameChanged(field, $scope.field.name, object).then(function(withNewFieldName) {
             // console.log('0 object: ', withNewFieldName);
@@ -464,9 +460,9 @@ angular.module('clientApp')
                           // if driver/prospect Last Name and/or First Name was changed, then update Name
                           if($scope.object.id === objectToSave.id && ($scope.objectType === 'prospect' || $scope.objectType === 'driver') && ($scope.field.name === "First Name" || $scope.field.name === "Last Name")) {
                             if($scope.field.name === "First Name") {
-                              objectToSave.data["Name"].value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
+                              objectToSave.data.Name.value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
                             } else if($scope.field.name === "Last Name") {
-                              objectToSave.data["Name"].value = objectToSave.data["First Name"].value + " " + $scope.field.value;
+                              objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + $scope.field.value;
                             }
                           }
 
@@ -581,7 +577,7 @@ angular.module('clientApp')
 
     // when status name changes
     $scope.updateStatus = function(prospect) {
-        console.log(prospect);
+        // console.log(prospect);
         var deferred = $q.defer();
         prospect.status.value = $scope.status;
         prospect.data.status.value = $scope.status;
