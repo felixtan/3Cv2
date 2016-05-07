@@ -8,7 +8,7 @@ var getUserId = helpers.getUserId;
 var getKeys = helpers.getKeys;
 var getOrgId = helpers.getOrgId;
 var _ = helpers._;
-var Promise = require('Bluebird');
+var Promise = require('bluebird');
 
 module.exports = {
 
