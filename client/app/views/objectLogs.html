@@ -1,0 +1,64 @@
+<!-- <link rel="stylesheet" href="styles/partials/logs.scss"> -->
+<div if-user>
+<div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
+    <!-- {{ state }}  -->
+     <div class='sub-header'>
+        <h3 id='identifier'>{{ ::identifierValue }}</h3>
+        <!-- <button class='btn btn-danger btn-xs delete-obj' ng-controller='DeleteObjModalCtrl' ng-click='open(lg, car.id)'>Delete</button> -->
+    </div>
+    
+    <tabset>
+        <tab ng-repeat='tab in tabs' heading='{{ ::tab.title }}' active='tab.active' ui-sref='{{ ::tab.state }}'>
+        </tab>
+    </tabset>
+
+    <br>
+    <!-- {{ logDataArray }}
+    {{ dates }} -->
+    <div class="table-responsive" ng-model='object' ng-init="tabs[0].active = true">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td><strong>Week \ Fields</strong></td>
+                    <td ng-repeat="field in fields | orderBy:'$index'">
+                        {{ ::field }}
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat='log in object.logs | orderBy:"-weekOf"'>
+                    <td>
+                        <span class='log-date'>
+                            {{ ::log.weekOf | date:'longDate' }}
+                        </span>
+                        <button class='btn btn-warning btn-xs btn-edit' ng-click='logform.$show()' ng-show='!logform.$visible'>
+                            Edit
+                        </button>
+                        <div class='btn-toolbar' role='toolbar'>
+                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
+                                <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs btn-group" role='group'>
+                                    Save
+                                </button>
+                                <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs btn-group" role='group'>
+                                    Cancel
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                    <!-- logDataArray(log) -->
+                    <!-- <td>{{ getLogDataByDate(log.weekOf)[0].value }}</td> -->
+                    <td ng-repeat='logData in getLogDataByDate(log.weekOf)'>
+                        <!-- <p ng-show='logform.$visible'></p> -->
+                        <span editable-text='log.data.{{ ::logData.field }}' e-name='{{ ::logData.field }}' data-fieldEntry='{{ ::logData.field }}' e-form='logform' e-required ng-if="notExpressionField(logData.type)">
+                            {{ ::logData.value }}
+                        </span>
+                        <span ng-if='!notExpressionField(logData.type)' data-fieldEntry='{{ ::logData.field }}'>
+                            {{ ::logData.value }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>

@@ -1,0 +1,27 @@
+<div if-user>
+<div class="modal-header">
+    <h3 class="modal-title">Add asset type</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+
+<div class="modal-body">
+    <form novalidate role='form' name='form' ng-submit='submit()'>
+        <div class='form-group'>
+            <label for='type'>Type</label>
+            <input name='type' type='text' class='form-control' ng-model='newType.value' ng-required='true' placeholder='e.g. Gas Cards' >
+        </div>
+    </form>
+
+    <!-- <div>
+        {{ newStatus.value }}
+    </div> -->
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!validForm()'>Submit</button>
+    <button class='btn btn-danger' type='button' ng-click='reset()'>Reset</button>
+    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>
+</div>

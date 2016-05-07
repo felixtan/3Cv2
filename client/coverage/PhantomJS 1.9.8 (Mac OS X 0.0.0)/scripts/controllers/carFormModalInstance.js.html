@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/carFormModalInstance.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> carFormModalInstance.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">81.43% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>57/70</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">65.38% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>17/26</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">59.09% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>13/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">82.61% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>57/69</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">49×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:CarformmodalinstanceCtrl
+ * @description
+ * # CarformmodalinstanceCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('CarFormModalInstanceCtrl', function (carHelpers, $q, ENV, getCars, $state, dataService, $scope, $modalInstance, $modal) {
+    
+    $scope.newFieldsThisSession = [];   // store new fields created this session
+    $scope.cars = getCars.data;
+    $scope.currentIdentifier = { name: $scope.cars[0].identifier || null };
+    $scope.identifier = { name: $scope.cars[0].identifier || null }; // apprently, mg-model only works with objects
+&nbsp;
+    // if there are cars, render fields in the car form
+    // else only add field caperbilities
+    $scope.thereAreCars = function() {
+      return (typeof $scope.cars[0] !== 'undefined');
+    };
+&nbsp;
+    // get $scope.fields (old fields)
+    $scope.getFields = function () {
+      $scope.fields = [];
+      <span class="missing-if-branch" title="else path not taken" >E</span>if($scope.thereAreCars()) {
+        var car = $scope.cars[0];
+        $scope.fields = Object.keys(car.data);
+      }
+    };
+    $scope.getFields();
+&nbsp;
+    $scope.initializeForm = function() {
+      $scope.formData = {};
+      
+      <span class="missing-if-branch" title="else path not taken" >E</span>if($scope.cars.length &gt; 0) {
+        var car = $scope.cars[0];
+        $scope.fields = Object.keys(car.data);
+        _.each($scope.fields, function(field) {
+          $scope.formData[field] = {
+            value: null,
+            log: car.data[field].log
+          }
+        });
+      }
+    };
+    $scope.initializeForm();
+&nbsp;
+    $scope.setNewField = function() {
+      $scope.newField = {
+        name: null,
+        type: null
+      };  
+    };
+    $scope.setNewField();
+&nbsp;
+    $scope.addField = function() {
+      var newField = $scope.newField.name;
+      $scope.newFieldsThisSession.push(newField);
+&nbsp;
+      $scope.formData[newField] = {
+        value: null,
+        log: false
+      }
+&nbsp;
+      $scope.setNewField();
+&nbsp;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if($scope.thereAreCars()) {
+        // add field to other cars
+        var cars = $scope.cars;
+&nbsp;
+        _.each(cars, function(car) {
+          if(!(_.has(car.data, newField))) {
+            // since log is set to false here, 
+            // IMPORTANT to make sure it's updated 
+            // for each car when carForm is submitted
+            car.data[newField] = {
+              log: false,
+              value: null
+            }
+&nbsp;
+            dataService.updateCar(car);
+          }
+        });
+      }
+    };
+&nbsp;
+    // pass in $scope.formData
+    $scope.newCar = function(formData) {
+      var deferred = $q.defer();
+      var car = {
+        identifier: $scope.identifier.name,
+        data: formData,
+        logs: [],
+        driversAssigned: [],
+        organizationId: (ENV.name === ('production' || <span class="branch-1 cbranch-no" title="branch not covered" >'staging')</span>) ? <span class="branch-0 cbranch-no" title="branch not covered" >$scope.user.customData.organizationId </span>: '3Qnv2pMAxLZqVdp7n8RZ0x'
+      };
+&nbsp;
+      deferred.resolve(car);
+      deferred.reject(new Error('Error creating new car object'));
+      return deferred.promise;
+    };
+&nbsp;
+    $scope.submit = function () {
+      var promise = $scope.newCar($scope.formData).then(carHelpers.populateLogs);
+      promise.then(<span class="fstat-no" title="function not covered" >function(car) {</span>
+<span class="cstat-no" title="statement not covered" >        dataService.createCar(car).then(<span class="fstat-no" title="function not covered" >function(newCar) {</span></span>
+<span class="cstat-no" title="statement not covered" >          $scope.cars.push(newCar.data);</span>
+<span class="cstat-no" title="statement not covered" >          console.log(newCar.data);</span>
+<span class="cstat-no" title="statement not covered" >          carHelpers.updateIdentifier(newCar.data.identifier);</span>
+        });
+      });
+&nbsp;
+      // check if log for any of the new fields was changed to true
+      // if so, then update all other cars
+      if($scope.newFieldsThisSession.length &gt; 0) {
+        _.each($scope.newFieldsThisSession, function(field) {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if(($scope.formData[field].log === true) &amp;&amp; (typeof $scope.formData[field] !== 'undefined')) {
+            var cars = $scope.cars;
+            
+            _.each(cars, function(car) {
+              
+              <span class="missing-if-branch" title="else path not taken" >E</span>if(typeof car.data[field] !== 'undefined') {
+                car.data[field].log = true;
+              } 
+&nbsp;
+              dataService.updateCar(car);
+            });
+          }
+        });
+      }
+&nbsp;
+      $scope.reset();
+    };
+&nbsp;
+    $scope.reset = function () {
+      $scope.initializeForm();
+    };
+&nbsp;
+    $scope.close = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >      $modalInstance.dismiss('cancel');</span>
+    };
+&nbsp;
+    $scope.openDeleteFieldModal = <span class="fstat-no" title="function not covered" >function (size, thing) {</span>
+<span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
+            animation: true,
+            templateUrl: 'views/deletefieldmodal.html',
+            controller: 'DeleteFieldModalInstanceCtrl',
+            size: size,
+            resolve: {
+                thing: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return thing; </span>  // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                },
+                getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return dataService.getCars();</span>
+                },
+                getDrivers: <span class="fstat-no" title="function not covered" >function() {</span> <span class="cstat-no" title="statement not covered" >return {}; </span>}
+            }
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (field) {</span></span>
+<span class="cstat-no" title="statement not covered" >            if(typeof field !== 'undefined') <span class="cstat-no" title="statement not covered" >delete $scope.formData[field];</span></span>
+        }, <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
+        });
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Dec 31 2015 09:09:38 GMT-0500 (EST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

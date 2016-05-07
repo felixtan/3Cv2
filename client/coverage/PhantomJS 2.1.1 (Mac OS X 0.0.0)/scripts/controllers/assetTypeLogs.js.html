@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/assetTypeLogs.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> assetTypeLogs.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.74% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/135</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.75% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/134</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:AssetTypeLogsCtrl
+ * @description
+ * # AssetTypeLogsCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('AssetTypeLogsCtrl', <span class="fstat-no" title="function not covered" >function (assetHelpers, $q, $scope, getAssets, getAssetTypes, $state) {</span>
+    
+<span class="cstat-no" title="statement not covered" >    $scope.tabs = [];</span>
+<span class="cstat-no" title="statement not covered" >    $scope.assetTypes = getAssetTypes.data.types;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.assetType = null;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    _.each($scope.assetTypes, <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var tab = { title: assetType.value, active: false };</span>
+<span class="cstat-no" title="statement not covered" >        $scope.tabs.push(tab);</span>
+    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.invalidAssetType = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        return (($scope.assetType === null) || (typeof $scope.assetType === 'undefined'));</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.renderLogs = <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+        // console.log(assetType);
+<span class="cstat-no" title="statement not covered" >        $scope.assetType = assetType;</span>
+        // console.log($scope.assetType);
+<span class="cstat-no" title="statement not covered" >        $scope.getAssets(assetType).then(<span class="fstat-no" title="function not covered" >function(assetsOfType) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log(assetsOfType);</span>
+<span class="cstat-no" title="statement not covered" >            $scope.assets = assetsOfType;</span>
+<span class="cstat-no" title="statement not covered" >            $scope.simpleAssets = assetHelpers.mapObject(assetsOfType);</span>
+<span class="cstat-no" title="statement not covered" >            $scope.getLogDates(assetsOfType).then(<span class="fstat-no" title="function not covered" >function(logDates) {</span></span>
+<span class="cstat-no" title="statement not covered" >                console.log(logDates);</span>
+<span class="cstat-no" title="statement not covered" >                $scope.dates = logDates;</span>
+<span class="cstat-no" title="statement not covered" >                $scope.getMostRecentLogDate();        </span>
+            });
+        });
+        // console.log($scope.assetType);
+        // $state.forceReload();
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getAssets = <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(_.filter(getAssets.data, <span class="fstat-no" title="function not covered" >function(asset) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return asset.assetType === assetType;</span>
+        }));
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error getting ' + assetType + 's'));</span>
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+        // console.log($scope.assets);
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getLogDates = <span class="fstat-no" title="function not covered" >function(assets) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        var assetType = (assets.length) ? assets[0].assetType : '(There are no assets)';</span>
+<span class="cstat-no" title="statement not covered" >        var arr = [];</span>
+<span class="cstat-no" title="statement not covered" >        _.each(assets, <span class="fstat-no" title="function not covered" >function(asset, index) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _.each(asset.logs, <span class="fstat-no" title="function not covered" >function(log, index) {</span></span>
+<span class="cstat-no" title="statement not covered" >                arr.push(log.weekOf);</span>
+            });
+        });
+        
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(_.uniq(arr.sort(), true).reverse());</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error getting log dates for ' + assetType));</span>
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+        // console.log($scope.dates);
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getMostRecentLogDate = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.mostRecentLogDate = $scope.dates[0];</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.createNewRow = <span class="fstat-no" title="function not covered" >function(date) {</span></span>
+        // add new date to array of log dates
+<span class="cstat-no" title="statement not covered" >        $scope.dates.push(date);</span>
+<span class="cstat-no" title="statement not covered" >        $scope.getMostRecentLogDate();</span>
+        // $state.forceReload();
+<span class="cstat-no" title="statement not covered" >        $scope.renderLogs($scope.assetType);</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.newDataObj = <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        var data = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if($scope.assets.length &gt; 0) {</span>
+            // first asset is taken because fields in asset.data are assumed to be uniform for all assets
+<span class="cstat-no" title="statement not covered" >            assetHelpers.getFieldsToBeLogged(assetType).then(<span class="fstat-no" title="function not covered" >function(fields) {</span></span>
+                // Turn this into modal?
+<span class="cstat-no" title="statement not covered" >                console.log(fields);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if(fields.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    deferred.resolve({});</span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                     _.each(fields, <span class="fstat-no" title="function not covered" >function(field) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        data[field] = null;</span>
+                    });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    deferred.resolve(data);</span>
+                }
+            });    
+        } else {
+<span class="cstat-no" title="statement not covered" >            deferred.reject(new Error('There are no assets for logging!'));</span>
+        }
+        
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.createLogForAsset = <span class="fstat-no" title="function not covered" >function(asset, date, data) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        asset.logs.push({</span>
+            createdAt: (new Date()),
+            weekOf: date,
+            data: data
+        });
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(asset);</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error creating log for asset ' + asset.id));</span>
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.newLog = <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var d = $scope.dt;</span>
+<span class="cstat-no" title="statement not covered" >        var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();</span>
+<span class="cstat-no" title="statement not covered" >        console.log(assetType);</span>
+<span class="cstat-no" title="statement not covered" >        var promise = $scope.newDataObj(assetType).then(<span class="fstat-no" title="function not covered" >function(blankDataObj) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log(blankDataObj);</span>
+<span class="cstat-no" title="statement not covered" >            _.each($scope.assets, <span class="fstat-no" title="function not covered" >function(asset) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $scope.createLogForAsset(asset, weekOf, blankDataObj).then(assetHelpers.updateAsset);</span>
+            });
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if(!(_.contains($scope.dates, weekOf))) {</span>
+<span class="cstat-no" title="statement not covered" >            $q.all([promise]).then(<span class="fstat-no" title="function not covered" >function(values) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $scope.createNewRow(weekOf);</span>
+            }).catch(<span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >                console.error(err);</span>
+            });
+        } else {
+<span class="cstat-no" title="statement not covered" >            alert('Log for ' + d.toDateString() + ' already exists!');</span>
+        }
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getMostRecentLog = <span class="fstat-no" title="function not covered" >function(assetLogs, logDate) {</span></span>
+<span class="cstat-no" title="statement not covered" >        var deferred = $q.defer();</span>
+<span class="cstat-no" title="statement not covered" >        var mostRecentLog = _.find(assetLogs, <span class="fstat-no" title="function not covered" >function(log) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return log.weekOf === logDate;</span>
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        deferred.resolve(mostRecentLog);</span>
+<span class="cstat-no" title="statement not covered" >        deferred.reject(new Error('Error getting most revent log for asset'));</span>
+<span class="cstat-no" title="statement not covered" >        return deferred.promise;</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.save = <span class="fstat-no" title="function not covered" >function(logDate) {</span></span>
+<span class="cstat-no" title="statement not covered" >        _.each($scope.assets, <span class="fstat-no" title="function not covered" >function(asset) {</span></span>
+<span class="cstat-no" title="statement not covered" >            $scope.getMostRecentLog(asset.logs, logDate).then(<span class="fstat-no" title="function not covered" >function(mostRecentLog) {</span></span>
+<span class="cstat-no" title="statement not covered" >                for(var field in mostRecentLog.data) {</span>
+<span class="cstat-no" title="statement not covered" >                    if((mostRecentLog.data[field] !== null) &amp;&amp; (typeof mostRecentLog.data[field] !== 'undefined')) {</span>
+<span class="cstat-no" title="statement not covered" >                        asset.data[field].value = mostRecentLog.data[field];</span>
+<span class="cstat-no" title="statement not covered" >                        assetHelpers.updateAsset(asset);</span>
+<span class="cstat-no" title="statement not covered" >                        $scope.simpleAssets = assetHelpers.mapObject($scope.assets);</span>
+                    }
+                }
+            });
+        });
+    };
+&nbsp;
+    // Datepicker
+    // error when using const and 'use strict'
+<span class="cstat-no" title="statement not covered" >    var oneWeekInMs = 604800000;</span>
+<span class="cstat-no" title="statement not covered" >    var oneDayInMs = 86400000;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.dateOptions = {</span>
+        formatYear: 'yy',
+        startingDay: 0
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getStartingDayNum = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        return $scope.dateOptions.startingDay;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getStartingDayWord = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        switch($scope.getStartingDayNum()) {</span>
+            case 0:
+<span class="cstat-no" title="statement not covered" >                return 'Sunday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 1:
+<span class="cstat-no" title="statement not covered" >                return 'Monday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            default:
+<span class="cstat-no" title="statement not covered" >                return 'Invalid day';</span>
+        }
+    }
+&nbsp;
+    // @param day is of type int from 0-1 (Sunday/Monday)
+<span class="cstat-no" title="statement not covered" >    $scope.setStartingDay = <span class="fstat-no" title="function not covered" >function(day) {</span></span>
+<span class="cstat-no" title="statement not covered" >        if((day &lt; 0) || (day &gt; 1)) <span class="cstat-no" title="statement not covered" >alert('Invalid day');</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.dateOptions.startingDay = day;</span>
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.today = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.dt = new Date();</span>
+    };
+<span class="cstat-no" title="statement not covered" >    $scope.today();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.clear = <span class="fstat-no" title="function not covered" >function () {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.dt = null;</span>
+    };
+&nbsp;
+    // Disable weekend selection
+<span class="cstat-no" title="statement not covered" >    $scope.disabled = <span class="fstat-no" title="function not covered" >function(date, mode) {</span></span>
+<span class="cstat-no" title="statement not covered" >        return ( mode === 'day' &amp;&amp; ( date.getDay() === 0 || date.getDay() === 6 ) );</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.toggleMin = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.minDate = $scope.minDate ? null : new Date();</span>
+    };
+<span class="cstat-no" title="statement not covered" >    $scope.toggleMin();</span>
+&nbsp;
+    // Allows for a year in advance
+<span class="cstat-no" title="statement not covered" >    $scope.maxDate = new Date($scope.dt.getFullYear()+1, $scope.dt.getMonth()+1);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.open = <span class="fstat-no" title="function not covered" >function($event) {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.status.opened = true;</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.setDate = <span class="fstat-no" title="function not covered" >function(year, month, day) {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.dt = new Date(year, month, day);</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];</span>
+<span class="cstat-no" title="statement not covered" >    $scope.format = $scope.formats[0];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.status = {</span>
+        opened: false
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    var tomorrow = new Date();</span>
+<span class="cstat-no" title="statement not covered" >    tomorrow.setDate(tomorrow.getDate() + 1);</span>
+<span class="cstat-no" title="statement not covered" >    var afterTomorrow = new Date();</span>
+<span class="cstat-no" title="statement not covered" >    afterTomorrow.setDate(tomorrow.getDate() + 2);</span>
+  
+<span class="cstat-no" title="statement not covered" >    $scope.events = </span>
+    [
+            {
+                date: tomorrow,
+                status: 'full'
+            },
+        {
+            date: afterTomorrow,
+            status: 'partially'
+        }
+    ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.getDayClass = <span class="fstat-no" title="function not covered" >function(date, mode) {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (mode === 'day') {</span>
+<span class="cstat-no" title="statement not covered" >            var dayToCheck = new Date(date).setHours(0,0,0,0);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            for (var i=0;i&lt;$scope.events.length;i++){</span>
+<span class="cstat-no" title="statement not covered" >                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if (dayToCheck === currentDay) {</span>
+<span class="cstat-no" title="statement not covered" >                    return $scope.events[i].status;</span>
+                }
+            }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return '';</span>
+    };
+    // End datepicker stuff
+&nbsp;
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 27 2016 20:33:42 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

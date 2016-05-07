@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "nosekflmrrpdxl",
+    "password": "jmLF9NF8NvnyuJHn2SlA88wQ2L",
+    "database": "d761vinqg43cql",
+    "host": "ec2-54-235-64-239.compute-1.amazonaws.com",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "staging": {
+    "username": "nosekflmrrpdxl",
+    "password": "jmLF9NF8NvnyuJHn2SlA88wQ2L",
+    "database": "d761vinqg43cql",
+    "host": "ec2-54-235-64-239.compute-1.amazonaws.com",
+    "port": "5432",
+    "dialect": "postgres" 
+  },
+  "production": {
+    "username": "wlipwxqumdpbhl",
+    "password": "SCbwFSp9QTY2WXvrX5wcbw8xfv",
+    "database": "d7tg431f2ouqk",
+    "host": "ec2-184-73-159-60.compute-1.amazonaws.com",
+    "port": "5432",
+    "dialect": "postgres" 
+  }
+}

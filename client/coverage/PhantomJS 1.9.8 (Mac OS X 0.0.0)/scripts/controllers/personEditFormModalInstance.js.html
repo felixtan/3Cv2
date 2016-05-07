@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/personEditFormModalInstance.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> personEditFormModalInstance.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">2.38% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/42</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">3.03% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/33</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:PersoneditformmodalinstanceCtrl
+ * @description
+ * # PersoneditformmodalinstanceCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('PersonEditFormModalInstanceCtrl', <span class="fstat-no" title="function not covered" >function ($http, $scope, $modalInstance, getPerson, getGasCards, getEzPasses, getCars, $state) {</span>
+<span class="cstat-no" title="statement not covered" >    $scope.formData = getPerson.data;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.typeOfPerson = getPerson.type;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.gasCards = getGasCards.data;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.ezPasses = getEzPasses.data;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.cars = getCars.data;</span>
+<span class="cstat-no" title="statement not covered" >    $scope.prospectStatuses = ['Callers', 'Interviewed', 'Waiting List', 'Rejected'];</span>
+&nbsp;
+    // parsing address
+    // var address = $scope.formData.address.replace(/,/g , "").split(' ');
+    // $scope.formData.zip = address.splice(address.length-1, 1);
+    // $scope.formData.state = address.splice(address.length-1, 1);
+    // console.log(address);
+    // $scope.formData.addressLine1 = address[0] + ' ' + address[1] + ' ' + address[2];
+    // $scope.formData.addressLine2 = address[1] + address[2];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.submit = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        var type = $scope.typeOfPerson.toLowerCase(); </span>  // driver or prospect
+<span class="cstat-no" title="statement not covered" >        var id = $scope.formData.id;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if($scope.formData.middleInitial) { <span class="cstat-no" title="statement not covered" >$scope.formData.middleInitial = $scope.formData.middleInitial.toUpperCase(); </span>}</span>
+<span class="cstat-no" title="statement not covered" >        if($scope.formData.givenName) { <span class="cstat-no" title="statement not covered" >$scope.formData.givenName = $scope.formData.givenName.charAt(0).toUpperCase() + $scope.formData.givenName.substr(1).toLowerCase(); </span>} </span>
+<span class="cstat-no" title="statement not covered" >        if($scope.formData.surName) { <span class="cstat-no" title="statement not covered" >$scope.formData.surName = $scope.formData.surName.charAt(0).toUpperCase() + $scope.formData.surName.substr(1).toLowerCase(); </span>}</span>
+&nbsp;
+        // building the request body
+<span class="cstat-no" title="statement not covered" >        var requestBody = {</span>
+            // fields in common
+            givenName: $scope.formData.givenName,
+            middleInitial: $scope.formData.middleInitial,
+            surName: $scope.formData.surName,
+            driversLicenseNum: $scope.formData.driversLicenseNum,
+            phoneNumber: $scope.formData.phoneNumber,
+            email: $scope.formData.email,
+            address: $scope.formData.address,
+            tlc: $scope.formData.tlc,
+            dmv: $scope.formData.dmv,
+            points: $scope.formData.points,
+            accidents: $scope.formData.accidents,
+            shift: $scope.formData.shift,
+            paperwork: $scope.formData.paperwork,
+            description: $scope.formData.description
+        };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if(type === 'driver') {</span>
+<span class="cstat-no" title="statement not covered" >            if($scope.formData.payRate) { <span class="cstat-no" title="statement not covered" >requestBody.payRate = $scope.formData.payRate.toString(); </span>}</span>
+<span class="cstat-no" title="statement not covered" >            if($scope.formData.ezPassId) { <span class="cstat-no" title="statement not covered" >requestBody.ezPassId = $scope.formData.ezPass.id; </span>}</span>
+<span class="cstat-no" title="statement not covered" >            if($scope.formData.gasCardId) { <span class="cstat-no" title="statement not covered" >requestBody.gasCardId = $scope.formData.gasCard.id; </span>}</span>
+<span class="cstat-no" title="statement not covered" >            if($scope.formData.carId) { <span class="cstat-no" title="statement not covered" >requestBody.carId = $scope.formData.car.id; </span>}</span>
+        } else <span class="cstat-no" title="statement not covered" >if (type === 'prospect') {</span>
+<span class="cstat-no" title="statement not covered" >            if($scope.formData.status) { <span class="cstat-no" title="statement not covered" >requestBody.status = $scope.formData.status.toLowerCase(); </span>}</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >            console.error('What type of person is this?!');</span>
+        }
+&nbsp;
+        // Fire the update request
+<span class="cstat-no" title="statement not covered" >        $http.put('/api/' + type + 's/' + id, requestBody).then(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >            $scope.close();</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="fstat-no" title="function not covered" >function() {</span> <span class="cstat-no" title="statement not covered" >$state.forceReload(); </span>}, 1000);</span>
+        }, <span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >            console.error(err);</span>
+        });
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.reset = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        $scope.formData = getPerson.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.personEditForm.$setPristine();</span>
+<span class="cstat-no" title="statement not covered" >        $scope.personEditForm.$setUntouched();</span>
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    $scope.close = <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >        $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >        $modalInstance.dismiss('cancel');</span>
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 29 2015 19:42:52 GMT-0500 (EST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/services/datepicker.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/services/</a> datepicker.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.26% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>13/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/21</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">9.09% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.26% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>13/46</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc service
+ * @name clientApp.datePicker
+ * @description
+ * # datePicker
+ * Factory in the clientApp.
+ */
+angular.module('clientApp')
+  .factory('datepicker', function () {
+    // Datepicker
+&nbsp;
+    // error when using const and 'use strict'
+    var ONE_DAY_IN_MS = 86400000,
+        dt = new Date(),
+        minDate = null,
+        maxDate = new Date(dt.getFullYear()+1, dt.getMonth()+1),    // Allows for a year in advance
+        status = { opened: false },
+        formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'],
+        format = formats[0],
+        tomorrow = new Date(dt.getTime()+ONE_DAY_IN_MS),
+        afterTomorrow = new Date(dt.getTime()+ONE_DAY_IN_MS*2),
+        events = [
+          {
+              date: tomorrow,
+              status: 'full'
+          },
+          {
+              date: afterTomorrow,
+              status: 'partially'
+          }
+        ],
+        dateOptions = {
+          formatYear: 'yy',
+          startingDay: 0
+        };
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getStartingDayNum() {</span>
+<span class="cstat-no" title="statement not covered" >        return dateOptions.startingDay;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setStartingDay(n) {</span>
+<span class="cstat-no" title="statement not covered" >      if(n &gt;= 0 &amp;&amp; n &lt;= 6) {</span>
+<span class="cstat-no" title="statement not covered" >        dateOptions.startingDay = n;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        throw (new Error('Invalid starting day'));</span>
+      }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getStartingDay() {</span>
+<span class="cstat-no" title="statement not covered" >        switch(getStartingDayNum()) {</span>
+            case 0:
+<span class="cstat-no" title="statement not covered" >                return 'Sunday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 1:
+<span class="cstat-no" title="statement not covered" >                return 'Monday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 2:
+<span class="cstat-no" title="statement not covered" >                return 'Tuesday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 3:
+<span class="cstat-no" title="statement not covered" >                return 'Wednesday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 4:
+<span class="cstat-no" title="statement not covered" >                return 'Thursday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 5:
+<span class="cstat-no" title="statement not covered" >                return 'Friday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 6:
+<span class="cstat-no" title="statement not covered" >                return 'Saturday';</span>
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            default:
+<span class="cstat-no" title="statement not covered" >                return 'Invalid day';</span>
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function today() {</span>
+<span class="cstat-no" title="statement not covered" >        dt = new Date();</span>
+    }
+    // today();
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function clear() {</span>
+<span class="cstat-no" title="statement not covered" >        dt = null;</span>
+    }
+&nbsp;
+    // // Disable weekend selection
+<span class="fstat-no" title="function not covered" >    function disabled(date, mode) {</span>
+<span class="cstat-no" title="statement not covered" >        return ( mode === 'day' &amp;&amp; ( date.getDay() === 0 || date.getDay() === 6 ) );</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function toggleMin() {</span>
+<span class="cstat-no" title="statement not covered" >        minDate = minDate ? null : new Date();</span>
+    }
+    // // toggleMin();
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function open(event) {</span>
+<span class="cstat-no" title="statement not covered" >        status.opened = true;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function setDate(year, month, day) {</span>
+<span class="cstat-no" title="statement not covered" >        dt = new Date(year, month, day);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function getDayClass(date, mode) {</span>
+<span class="cstat-no" title="statement not covered" >        if (mode === 'day') {</span>
+<span class="cstat-no" title="statement not covered" >            var dayToCheck = new Date(date).setHours(0,0,0,0);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            for(var i=0;i&lt;events.length;i++){</span>
+<span class="cstat-no" title="statement not covered" >                var currentDay = new Date(events[i].date).setHours(0,0,0,0);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                if (dayToCheck === currentDay) {</span>
+<span class="cstat-no" title="statement not covered" >                    return events[i].status;</span>
+                }
+            }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return '';</span>
+    }
+    // End datepicker stuff
+&nbsp;
+    // Public API here
+    return {
+      // methods
+      getStartingDay: getStartingDay,
+      getStartingDayNum: getStartingDayNum,
+      setStartingDay: setStartingDay,
+      today: today,
+      clear: clear,
+      disabled: disabled,
+      toggleMin: toggleMin,
+      open: open,
+      setDate: setDate,
+      getDayClass: getDayClass,
+&nbsp;
+      // variables
+      dt: dt,
+      minDate: minDate,
+      maxDate: maxDate,
+      status: status,
+      format: format,
+      tomorrow: tomorrow,
+      afterTomorrow: afterTomorrow,
+      events: events,
+      dateOptions: dateOptions
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Apr 22 2016 21:48:54 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

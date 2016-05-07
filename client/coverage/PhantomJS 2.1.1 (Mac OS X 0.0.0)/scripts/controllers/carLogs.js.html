@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/carLogs.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> carLogs.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">89.47% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>34/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>9/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">66.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">88.89% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>32/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">60×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:CarlogCtrl
+ * @description
+ * # CarlogCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('CarLogsCtrl', function (carHelpers, $state, dataService, $q, $scope, getCar) {
+    $scope.car = getCar.data;
+    $scope.dates = [];
+    $scope.mostRecentLogDate = null;
+    $scope.fields = [];
+    $scope.tabs = [
+        { title: 'Data', active: false, state: 'carProfile.data({ id: car.id })' },
+        { title: 'Logs', active: true, state: 'carProfile.logs({ id: car.id })' }
+    ];
+&nbsp;
+    carHelpers.getLogDates().then(<span class="fstat-no" title="function not covered" >function(logDates) {</span>
+<span class="cstat-no" title="statement not covered" >        $scope.dates = logDates;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.mostRecentLogDate = $scope.getMostRecentLogDate();</span>
+    });
+&nbsp;
+    $scope.getMostRecentLogDate = function() {
+        // assuming sorted from recent to past
+        return $scope.dates[0];     
+    }
+&nbsp;
+    $scope.getFieldsToBeLogged = function(car) {
+        var deffered = $q.defer();
+        var fields = [];
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(car) {
+            for(var field in car.data) {
+                if(car.data[field].log === true) fields.push(field);
+            }
+        }
+&nbsp;
+        deffered.resolve(fields);
+        deffered.reject(new Error('Error getting fields to be logged'));
+&nbsp;
+        return deffered.promise;
+    }
+&nbsp;
+    $scope.getFieldsToBeLogged($scope.car).then(<span class="fstat-no" title="function not covered" >function(fields) {</span>
+<span class="cstat-no" title="statement not covered" >        $scope.fields = fields;</span>
+    });
+&nbsp;
+    $scope.updateMostRecentData = function() {
+        var deferred = $q.defer();
+        var mostRecentLog = _.find($scope.car.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate });
+     
+        for(var field in mostRecentLog.data) {
+            if(mostRecentLog.data[field] !== null &amp;&amp; typeof mostRecentLog.data[field] !== 'undefined') 
+                $scope.car.data[field].value = mostRecentLog.data[field];
+        }
+&nbsp;
+        deferred.resolve($scope.car);
+        deferred.reject(new Error('Errror updating most recent log'));
+        return deferred.promise;
+    }
+&nbsp;
+    // need to make this more efficient
+    $scope.save = function(logDate) {
+        if(logDate === $scope.mostRecentLogDate) {
+            // update car.data is new value isn't null
+            // update data if most recent log was changed
+            $scope.updateMostRecentData().then(<span class="fstat-no" title="function not covered" >function(carWithUpdatedData) {</span>
+<span class="cstat-no" title="statement not covered" >                dataService.updateCar(carWithUpdatedData);</span>
+            });
+        }
+&nbsp;
+        dataService.updateCar($scope.car);
+    }
+  });</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 27 2016 20:33:42 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
