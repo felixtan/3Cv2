@@ -1,0 +1,22 @@
+ul.log {
+    list-style-type: none; 
+    padding-left: 0;
+}
+
+.edit-btn {
+    float: right;
+}
+
+.form-buttons {
+    float: right;
+}
+
+.btn-primary {
+    background-color: #3e7cb4;
+    border-color: #3e7cb4;
+}
+/* Overrides xeditable css */
+
+/*button.calculate {
+    float: right;
+}*/

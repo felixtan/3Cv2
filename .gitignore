@@ -1,0 +1,10 @@
+#client
+client/node_modules
+client/.tmp
+client/.sass-cache
+client/bower_components
+client/coverage
+client/test
+
+#server
+server/node_modules

@@ -1,0 +1,33 @@
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
+
+.date-picker {
+    max-width: 20vw;
+}
+
+#datepicker-instructions {
+    font-size: 0.80em;
+    font-style: italic;
+}
+
+.log {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.log-date {
+    margin-right: 1vw;
+}
+
+.underline {
+    text-decoration: underline;
+}

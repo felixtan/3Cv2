@@ -1,0 +1,113 @@
+<link rel="stylesheet" href='styles/forms.scss'>
+
+<div class="modal-header">
+    <h3 class="modal-title">Add {{ objectType }}</h3>
+    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+<!-- {{ assetType }} -->
+<!-- {{ identifier }} -->
+<div class="modal-body">
+
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+            <!-- opens add field modal -->
+            <button class='btn btn-info' type='button' ng-click='addField(identifier.value)' ng-disabled='disableAddField()' name='addFieldBtn'>
+                + Field
+            </button>
+        </div>
+    </div>
+    <!-- add field disabled: {{ disableAddField() }} -->
+    <br ng-show='disableAddField()'>
+
+    <div class="alert alert-danger" role="alert" ng-show='objectType === "asset" && disableAddField()'>
+        Please add an asset type before adding fields.
+    </div>
+    
+    <br ng-show='!disableAddField()'>
+
+    <form novalidate role='form' id='newObjectForm' name='form' ng-submit='submit($data)'>
+
+        <div class='form-group' ng-if='objectType === "asset"'>
+            <label>Type</label>
+
+            <select ng-model='formData.assetType.value' class='form-control' ng-change='renderForm(formData.assetType.value)'>
+                <option ng-repeat='type in assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
+            </select>
+        </div>
+
+        <h4 id='fields-header' ng-show="expressions.length">Fields</h4>
+        <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
+            <label>Organize {{  assetType.value || objectType }}<span ng-if='!formData.assetType'></span> with this identifier</label>
+
+            <select ng-model='identifier.value' class='form-control' ng-options='field for field in fields' ng-if='field !== "assetType"'>
+            </select>
+        </div>
+
+        <div class='form-group' ng-if='objectType === "prospect"'>
+            <label>Status</label>
+
+            <select ng-model='status.value' class='form-control'>
+                <option ng-repeat='status in statuses' value='{{ ::status.value }}' ng-if='!status.special'>{{ ::status.value }}</option>
+            </select>
+        </div>
+
+        <div class='form-group' ng-repeat='(field, data) in formData' ng-if='!hide(field)'>
+            <label for="{{ ::field }}" class='field-name-label'>{{ ::field }}</label>
+
+            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "text"' >
+
+            <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
+
+            <br ng-if='data.type === "boolean"'>
+            <input bs-switch 
+                ng-model="formData[field].value" 
+                type="checkbox" 
+                switch-on-text="Yes"
+                switch-off-text="No" 
+                switch-label="" 
+                switch-inverse='true' 
+                switch-off-color='primary'  
+                ng-if='data.type === "boolean"' 
+                class='boolean-field-switch' 
+                id='{{ ::field }}' 
+                name='{{ ::field }}' 
+                data-dataType='{{ ::data.dataType }}' 
+                data-fieldType='{{ ::data.type }}' >
+                <!-- {{ formData[field].value }} -->
+        </div>
+
+        <!-- Error messages -->
+        <div id='add-object-error-msg' ng-messages="form.numberField.$error" ng-show='form.numberField.$dirty && form.numberField.$invalid' class="alert alert-danger" role="alert">
+            <p>
+                Error: Non-number entered into number field.
+            </p>
+        </div>
+    </form>
+    <!-- {{ formData }} -->
+    <!-- Show expressions -->
+    <div ng-show='expressions.length > 0'>
+        <h4 id='expression-header'>Expressions</h4>
+        <div ng-repeat='expression in expressions'>
+            <h5>
+                <span><strong>{{ ::expression.field }}:</strong></span> 
+                <span>{{ ::expression.expression }}</span>
+            </h5>
+        </div>
+    </div>
+
+    <!-- <div>
+        {{ formData }}
+    </div>  -->
+</div>
+
+<div class="modal-footer">
+  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button> 
+  {{ !disableConditions(formData) }}<!-- 
+  {{ invalidIdentifier(identifier) }}
+  {{ form.$invalid }} -->
+  <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
+  <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+</div>
+
