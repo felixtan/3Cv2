@@ -9,28 +9,45 @@
    * Factory in the clientApp.
    */
   angular.module('clientApp')
-      .factory('objectHelpers', ['$rootScope', '$q', '$state', '_', 'ENV', 'dataService', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      .factory('objectHelpers', ['$rootScope', 'ENV', '$q', 'dataService', '$state', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '_',
       function($rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers, _) {
 
           return {
-              isValid: isValid,
-              simplify: simplify,
-              simplifyOne: simplifyOne,
-              getInequalitySign: getInequalitySign,
-              updateExpressionFieldsIfFieldNameChanged: updateExpressionFieldsIfFieldNameChanged,
-              updateExpressionNameInFields: updateExpressionNameInFields,
-              updateFieldNameInExpressions: updateFieldNameInExpressions,
-              storeFieldsUsed: storeFieldsUsed,
-              evaluateExpressionAndAppendValue: evaluateExpressionAndAppendValue,
-              evaluateExpressions: evaluateExpressions,
-              removeFieldFromExpressions: removeFieldFromExpressions,
-              buildDisplayExpression: buildDisplayExpression,
-              buildEvalExpression: buildEvalExpression,
-              updateDisplayExpressions: updateDisplayExpressions,
-              updateFieldValueAndExpressionValues: updateFieldValueAndExpressionValues,
-              updateDataIfFieldNameChanged: updateDataIfFieldNameChanged,
-              getFormDataAndReference: getFormDataAndReference,
+              isValid,
+              simplify,
+              simplifyOne,
+              getInequalitySign,
+              updateExpressionFieldsIfFieldNameChanged,
+              updateExpressionNameInFields,
+              updateFieldNameInExpressions,
+              storeFieldsUsed,
+              evaluateExpressionAndAppendValue,
+              evaluateExpressions,
+              removeFieldFromExpressions,
+              buildDisplayExpression,
+              buildEvalExpression,
+              updateDisplayExpressions,
+              updateFieldValueAndExpressionValues,
+              updateDataIfFieldNameChanged,
+              getFormDataAndReference,
+              getIdentifierValue,
+              getStateRef,
           };
+
+          /**
+           * view is a String; either 'Data' or 'Logs'
+           */
+          function getStateRef(objectType, objectId, view) {
+            // function getLogsStateName(objectType) {
+            //   return ($scope.objectType === 'car' || $scope.objectType === 'driver' || $scope.objectType === 'asset') ? `${objectType}` : null
+            // }
+            return `${objectType}${view}({id:${objectId}})`
+          }
+
+          function getIdentifierValue(object) {
+            const identifier = object.identifier
+            return object.data[identifier].value
+          }
 
           /*
               Used in a loop over objects and updates the field value
@@ -175,36 +192,33 @@
               assumptions
                   1. expression values evaluate to null if any one field used is null
           */
-          function evaluateExpressions (expressions, object) {
-              var deferred = $q.defer();
+          function evaluateExpressions (_object) {
+            let deferred = $q.defer();
+            let object = _object
 
-              if(typeof expressions === 'undefined') {
-                  _.filter(object.data, function(data, field) {
-                      return data.type === 'function' || data.type === 'inequality';
-                  }).each(function(data, field) {
-                      evaluateExpressionAndAppendValue(object.data, field, object).then(function(objectDataWithUpdatedExpressions) {
-                          // console.log(objectDataWithUpdatedExpressions);
-                          object.data = objectDataWithUpdatedExpressions;
-                      });
-                  });
-              } else {
-                  _.each(expressions, function(expression) {
-                      var expressionFieldName = expression.field || expression.name;
-                      // console.log(object);
-                      evaluateExpressionAndAppendValue(object.data, expressionFieldName, object).then(function(objectDataWithUpdatedExpressions) {
-                          // console.log(objectDataWithUpdatedExpressions);
-                          object.data = objectDataWithUpdatedExpressions;
-                      });
-                  });
-              }
+            const expressionFields = _.filter(object.data, (data, field) => {
+              return data.type === 'function' || data.type === 'inequality';
+            })
 
-              deferred.resolve(object);
-              deferred.reject(new Error("Error evaluating expressions"));
-              return deferred.promise;
+            if (expressionFields.length > 0) {
+              expressionFields.each((data, field) => {
+                // console.log(field)
+                evaluateExpressionAndAppendValue(object.data, field, object).then(function(objectDataWithUpdatedExpressions) {
+                    // console.log(objectDataWithUpdatedExpressions);
+                    object.data = objectDataWithUpdatedExpressions;
+                });
+              });
+            }
+
+            deferred.resolve(object);
+            deferred.reject(new Error("Error evaluating expressions"));
+            return deferred.promise;
           }
 
           function simplify (objects) {
-              return _.map(objects, function(object) {
+              // console.log(_)
+              return _.map(objects, object => {
+                  // console.log(object)
                   // console.log(object.id);
                   // console.log(object.identifier);
                   // console.log(object.data);
@@ -309,8 +323,7 @@
               return deferred.promise;
           }
 
-          // This is only used in editFieldModal.js as far as I can can tell so it's a waste puttin it here
-          function updateExpressionFieldsIfFieldNameChanged (oldName, newName, objectData, objectId) {
+          function updateExpressionFieldsIfFieldNameChanged(oldName, newName, objectData, objectId) {
               var deferred = $q.defer();
 
               if(oldName !== newName) {
@@ -689,7 +702,6 @@
               }
 
               get(assetType).then(function(result) {
-                  console.log(result);
                   if(isValid(result.data)) {
                       if(result.data.length > 0) {
                           object = result.data[0];

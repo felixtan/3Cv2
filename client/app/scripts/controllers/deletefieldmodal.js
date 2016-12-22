@@ -9,11 +9,11 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('DeleteFieldModalCtrl', ['dataService', '$scope', '$modal', '$state',
-      function (dataService, $scope, $modal, $state) {
+    .controller('DeleteFieldModalCtrl', ['dataService', '$scope', '$uibModal', '$state',
+      function (dataService, $scope, $uibModal, $state) {
 
       $scope.open = function (size, thing) {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/deletefieldmodal.html',
               controller: 'DeleteFieldModalInstanceCtrl',

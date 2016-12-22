@@ -9,11 +9,12 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('DeleteObjModalCtrl', ['$scope', '$modal',
-      function ($scope, $modal) {
+    .controller('DeleteObjModalCtrl', ['$scope', '$uibModal',
+      function ($scope, $uibModal) {
 
       $scope.open = function (id) {
-          var modalInstance = $modal.open({
+        console.log(id)
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/deleteobjmodal.html',
               controller: 'DeleteObjModalInstanceCtrl',

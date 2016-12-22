@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('EditFieldModalCtrl', ['$window', '_', 'objectHelpers', '$modal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$modalInstance', '$state', '$scope', 'field', '_object', 'objectType', '$q', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
-      function ($window, _, objectHelpers, $modal, dataService, getDrivers, getAssets, getProspects, getCars, $modalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+    .controller('EditFieldModalCtrl', ['$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', '$q', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      function ($window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
       var ctrl = this,
           buildEvalExpression = objectHelpers.buildEvalExpression,
@@ -522,16 +522,16 @@
 
       $scope.ok = function() {
         // $state.forceReload();
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.close = function () {
           // $state.forceReload();
-          $modalInstance.dismiss('cancel');
+          $uibModalInstance.dismiss('cancel');
       };
 
       $scope.delete = function () {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/deletefieldmodal.html',
               controller: 'DeleteFieldModalInstanceCtrl',

@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ProspectStatusModalCtrl', ['dataService', '$scope', 'getProspectStatuses', '$state', '$modalInstance',
-      function (dataService, $scope, getProspectStatuses, $state, $modalInstance) {
+    .controller('ProspectStatusModalCtrl', ['dataService', '$scope', 'getProspectStatuses', '$state', '$uibModalInstance',
+      function (dataService, $scope, getProspectStatuses, $state, $uibModalInstance) {
 
       $scope.statuses = getProspectStatuses.data;
       $scope.newStatus = { value: null };
@@ -31,7 +31,7 @@
 
       $scope.close = function () {
           $state.forceReload();
-          $modalInstance.dismiss('cancel');
+          $uibModalInstance.dismiss('cancel');
       };
     }]);
 })();

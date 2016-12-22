@@ -9,7 +9,7 @@
    * Factory in the clientApp.
    */
   angular.module('clientApp')
-    .factory('prospectHelpers', ['$rootScope', '$q', 'dataService', '_', 'ENV', function (ENV, $q, dataService, $rootScope, _) {
+    .factory('prospectHelpers', ['$rootScope', '$q', 'dataService', '_', 'ENV', function ($rootScope, $q, dataService, _, ENV) {
 
       //////////////////////////
       //  Data CRUD and Forms //
@@ -207,29 +207,26 @@
       };
 
       return {
-
-        // Data
-        getOrganizationId: getOrganizationId,
-        get: get,
-        getById: getById,
-        getStatuses: getStatuses,
-        saveProspect: saveProspect,
-        update: update,
-        updateStatuses: updateStatuses,
-        createProspect: createProspect,
-        deleteProspect: deleteProspect,
-        thereAreProspects: thereAreProspects,
-        _getFields: _getFields,
-        getFields: getFields,
-        notName: notName,
-        namesNotNull: namesNotNull,
-        getFullName: getFullName,
-        updateFullName: updateFullName,
-        getDefaultProspect: getDefaultProspect,
-        getFormDataAndRepresentative: getFormDataAndRepresentative,
-        getDefaultStatus: getDefaultStatus,
-        belongsToStatus: belongsToStatus
-
+        getOrganizationId,
+        get,
+        getById,
+        getStatuses,
+        saveProspect,
+        update,
+        updateStatuses,
+        createProspect,
+        deleteProspect,
+        thereAreProspects,
+        _getFields,
+        getFields,
+        notName,
+        namesNotNull,
+        getFullName,
+        updateFullName,
+        getDefaultProspect,
+        getFormDataAndRepresentative,
+        getDefaultStatus,
+        belongsToStatus,
       };
     }]);
 })();

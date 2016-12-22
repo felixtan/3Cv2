@@ -9,14 +9,15 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectListCtrl', ['objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$modal', '$q', '$scope', '_',
-      function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $modal, $q, $scope, _) {
+    .controller('ObjectListCtrl', ['objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$q', '$scope', '_',
+      function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $q, $scope, _) {
 
       var ctrl = this;
       $scope.objectType = objectType;
       $scope.order = [];
 
       ctrl.getObjects = function () {
+          // console.log($scope.objectType)
           switch($scope.objectType) {
               case "car":
                   $scope.title = { value: "Car" };
@@ -44,7 +45,7 @@
                   $scope.title = { value: "Asset" };
                   $scope.profile = { state: 'assetData({ id: object.id })' };
 
-                  assetHelpers.getAssetTypes().then(function(result) {
+                  assetHelpers.getTypes().then(function(result) {
                       // console.log(result);
                       $scope.assetTypes = result.data;
                       $scope.types = $scope.assetTypes.types;
@@ -88,7 +89,7 @@
       };
 
       $scope.addObject = function() {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/addobjectmodal.html',
               controller: 'AddObjectModalInstanceCtrl',
@@ -133,14 +134,14 @@
       };
 
       $scope.addType = function() {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/assetTypeModal.html',
               controller: 'AssetTypeModalCtrl',
               size: 'md',
               resolve: {
-                  getAssetTypes: function() {
-                      return assetHelpers.getAssetTypes();
+                  getTypes: function() {
+                      return assetHelpers.getTypes();
                   }
               }
           });
@@ -247,7 +248,7 @@
       };
 
       $scope.addStatus = function() {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/prospectstatusmodal.html',
               controller: 'ProspectStatusModalCtrl',

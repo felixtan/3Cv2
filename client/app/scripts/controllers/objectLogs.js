@@ -9,79 +9,65 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$q', '$state',
-      function (_, objectType, objectId, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $q, $scope) {
+    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$q', '$scope',
+      function (_, objectType, objectId, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $q, $scope) {
 
       var ctrl = this;
-      ctrl.objectType = objectType;
-      ctrl.logDataObj = {};
+      $scope.identifierValue = null
+      $scope.objectType = objectType;
+      $scope.logDataObj = {};
 
-      ctrl.getObject = function () {
-          if(ctrl.objectType === 'car') {
-              ctrl.update = carHelpers.update;
-              $scope.state = {
-                  data: 'carData({ id: object.id })',
-                  logs: 'carLogs({ id: object.id })',
-              };
+      $scope.getObject = function () {
+          if($scope.objectType === 'car') {
+              $scope.update = carHelpers.update;
               return carHelpers.getById;
-          } else if(ctrl.objectType === 'driver') {
-              ctrl.update = driverHelpers.update;
-              $scope.state = {
-                  data: 'driverData({ id: object.id })',
-                  logs: 'driverLogs({ id: object.id })',
-              };
+          } else if($scope.objectType === 'driver') {
+              $scope.update = driverHelpers.update;
               return driverHelpers.getById;
-          } else if(ctrl.objectType === 'prospect') {
-              ctrl.update = prospectHelpers.update;
-              $scope.state = {
-                  data: 'prospectData({ id: object.id })',
-                  logs: null,
-              };
+          } else if($scope.objectType === 'prospect') {
+              $scope.update = prospectHelpers.update;
               return prospectHelpers.getById;
-          } else if(ctrl.objectType === 'asset') {
-              ctrl.update = assetHelpers.update;
-              $scope.state = {
-                  data: 'assetData({ id: object.id })',
-                  logs: 'assetLogs({ id: object.id })',
-              };
+          } else if($scope.objectType === 'asset') {
+              $scope.update = assetHelpers.update;
               return assetHelpers.getById;
           }
       };
 
-      ctrl.getLogDates = function () {
-          if(ctrl.objectType === 'car') {
+      $scope.getLogDates = function () {
+          if($scope.objectType === 'car') {
               return carHelpers.getLogDates;
-          } else if(ctrl.objectType === 'driver') {
+          } else if($scope.objectType === 'driver') {
               return driverHelpers.getLogDates;
-          } else if(ctrl.objectType === 'prospect') {
+          } else if($scope.objectType === 'prospect') {
               return function () {};
-          } else if(ctrl.objectType === 'asset') {
+          } else if($scope.objectType === 'asset') {
               return assetHelpers.getLogDates;
           }
       };
 
-      ctrl.getObject()(objectId).then(function(result) {
+      $scope.getObject()(objectId).then(function(result) {
           $scope.object = result.data;
-          $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
+          $scope.logs = $scope.object.logs
+          $scope.identifierValue = objectHelpers.getIdentifierValue(result.data);
           $scope.assetType = $scope.object.assetType || null;
           $scope.tabs = [
-              { title: 'Data', active: false, state: $scope.state.data },
-              { title: 'Logs', active: true, state: $scope.state.logs }
+              { title: 'Data', active: false, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
+              { title: 'Logs', active: true, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
           ];
 
-          ctrl.getLogDates()($scope.assetType).then(function(dates) {
-              ctrl.dates = dates;
-              ctrl.mostRecentLogDate = ctrl.getMostRecentLogDate();
-              ctrl.getFieldsToBeLogged($scope.object).then(function(fields) {
+          $scope.getLogDates()($scope.assetType).then(function(dates) {
+              $scope.dates = dates;
+              $scope.mostRecentLogDate = $scope.getMostRecentLogDate();
+              $scope.getFieldsToBeLogged($scope.object).then(function(fields) {
                   $scope.fields = fields;
-                  ctrl.logDataToArray();
+                  $scope.logDataToArray();
               });
           });
       });
 
       $scope.getLogDataByDate = function (date) {
           // console.log(date);
-          return ctrl.logDataObj[date];
+          return $scope.logDataObj[date];
       };
 
       $scope.notExpressionField = function (type) {
@@ -90,8 +76,8 @@
           return type !== "function" && type !== 'inequality';
       };
 
-      ctrl.logDataToArray = function () {
-          _.each(ctrl.dates, function(date) {
+      $scope.logDataToArray = function () {
+          _.each($scope.dates, function(date) {
               // console.log(date);
               var log = _.findWhere($scope.object.logs, { weekOf: date });
               // console.log(log);
@@ -106,9 +92,9 @@
                   });
               });
               // console.log(a);
-              // console.log(ctrl.logDataObj);
-              ctrl.logDataObj[date] = a;
-              // console.log(ctrl.logDataObj);
+              // console.log($scope.logDataObj);
+              $scope.logDataObj[date] = a;
+              // console.log($scope.logDataObj);
           });
 
           // deferred.resolve(b);
@@ -116,13 +102,13 @@
           // return deferred.promise;
       };
 
-      ctrl.getMostRecentLogDate = function() {
+      $scope.getMostRecentLogDate = function() {
           // assuming sorted from recent to past
-          return ctrl.dates[0];
+          return $scope.dates[0];
       };
 
-      ctrl.getFieldsToBeLogged = function(object) {
-          var deffered = $q.defer();
+      $scope.getFieldsToBeLogged = function(object) {
+          var deferred = $q.defer();
           var fields = [];
 
           if(object) {
@@ -131,15 +117,15 @@
               }
           }
 
-          deffered.resolve(fields);
-          deffered.reject(new Error('Error getting fields to be logged'));
+          deferred.resolve(fields);
+          deferred.reject(new Error('Error getting fields to be logged'));
 
-          return deffered.promise;
+          return deferred.promise;
       };
 
-      ctrl.updateMostRecentData = function() {
+      $scope.updateMostRecentData = function() {
           var deferred = $q.defer();
-          var mostRecentLog = _.find($scope.object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
+          var mostRecentLog = _.find($scope.object.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate; });
 
           for(var field in mostRecentLog.data) {
               if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
@@ -154,16 +140,16 @@
 
       // need to make this more efficient
       $scope.save = function(logDate) {
-          if(logDate === ctrl.mostRecentLogDate) {
+          if(logDate === $scope.mostRecentLogDate) {
               console.log('most recent updated');
               // update object.data is new value isn't null
               // update data if most recent log was changed
-              ctrl.updateMostRecentData().then(function(objectWithUpdatedData) {
-                  ctrl.update(objectWithUpdatedData);
+              $scope.updateMostRecentData().then(function(objectWithUpdatedData) {
+                  $scope.update(objectWithUpdatedData);
               });
           }
 
-          ctrl.update($scope.object);
+          $scope.update($scope.object);
       };
     }]);
 })();

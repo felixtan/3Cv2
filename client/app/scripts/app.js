@@ -118,8 +118,8 @@ angular
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
-            // getAssetTypes: function(dataService) {
-            //     return dataService.getAssetTypes();
+            // getTypes: function(dataService) {
+            //     return dataService.getTypes();
             // },
             // getAssets: function(dataService) {
             //     return dataService.getAssets();

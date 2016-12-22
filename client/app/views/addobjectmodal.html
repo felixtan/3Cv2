@@ -24,7 +24,7 @@
     <div class="alert alert-danger" role="alert" ng-show='objectType === "asset" && disableAddField()'>
         Please add an asset type before adding fields.
     </div>
-    
+
     <br ng-show='!disableAddField()'>
 
     <form novalidate role='form' id='newObjectForm' name='form' ng-submit='submit($data)'>
@@ -61,19 +61,19 @@
             <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
 
             <br ng-if='data.type === "boolean"'>
-            <input bs-switch 
-                ng-model="formData[field].value" 
-                type="checkbox" 
+            <input bs-switch
+                ng-model="formData[field].value"
+                type="checkbox"
                 switch-on-text="Yes"
-                switch-off-text="No" 
-                switch-label="" 
-                switch-inverse='true' 
-                switch-off-color='primary'  
-                ng-if='data.type === "boolean"' 
-                class='boolean-field-switch' 
-                id='{{ ::field }}' 
-                name='{{ ::field }}' 
-                data-dataType='{{ ::data.dataType }}' 
+                switch-off-text="No"
+                switch-label=""
+                switch-inverse='true'
+                switch-off-color='primary'
+                ng-if='data.type === "boolean"'
+                class='boolean-field-switch'
+                id='{{ ::field }}'
+                name='{{ ::field }}'
+                data-dataType='{{ ::data.dataType }}'
                 data-fieldType='{{ ::data.type }}' >
                 <!-- {{ formData[field].value }} -->
         </div>
@@ -91,7 +91,7 @@
         <h4 id='expression-header'>Expressions</h4>
         <div ng-repeat='expression in expressions'>
             <h5>
-                <span><strong>{{ ::expression.field }}:</strong></span> 
+                <span><strong>{{ ::expression.field }}:</strong></span>
                 <span>{{ ::expression.expression }}</span>
             </h5>
         </div>
@@ -103,11 +103,10 @@
 </div>
 
 <div class="modal-footer">
-  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button> 
-  {{ !disableConditions(formData) }}<!-- 
+  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button>
+  <!-- {{ !disableConditions(formData) }}
   {{ invalidIdentifier(identifier) }}
   {{ form.$invalid }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
-

@@ -9,9 +9,9 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AssetTypeModalCtrl', ['dataService', '$scope', 'getAssetTypes', '$state', '$modalInstance',
-    function (dataService, $scope, getAssetTypes, $state, $modalInstance) {
-      $scope.assetTypes = getAssetTypes.data;
+    .controller('AssetTypeModalCtrl', ['dataService', '$scope', 'getTypes', '$state', '$uibModalInstance',
+    function (dataService, $scope, getTypes, $state, $uibModalInstance) {
+      $scope.assetTypes = getTypes.data;
       $scope.newType = { value: null };
 
       $scope.validForm = function() {
@@ -30,7 +30,7 @@
 
       $scope.close = function () {
           $state.forceReload();
-          $modalInstance.dismiss('cancel');
+          $uibModalInstance.dismiss('cancel');
       };
     }]);
 })();

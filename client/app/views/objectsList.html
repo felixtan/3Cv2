@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="styles/assetList.css">
 
-<div class='col-md-offset-2 table-responsive' id='object-list'> 
+<div class='col-md-offset-2 table-responsive' id='object-list'>
 
   <h2 class='page-header' ng-if='objectType === "car"'>{{ title.value }}s</h2>
   <h2 class='page-header' ng-if='objectType === "driver"'>{{ title.value }}s</h2>
@@ -8,7 +8,7 @@
   <h2 class='page-header' ng-if='objectType === "asset"'>{{ title.value }}s</h2>
 
   <br>
-  
+
   <div ng-if='objectType === "car" || objectType === "driver"'>
     <table class='table table-striped'>
       <thead>
@@ -18,7 +18,7 @@
           </button>
         </td>
         <td>
-          <h4 ng-if='thereAreObjects()'>{{ ::objects[0].identifier }}</h4>
+          <h4 ng-if='thereAreObjects()'>{{ ::simpleObjects[0].identifier }}</h4>
         </td>
       </thead>
       <tbody>
@@ -110,7 +110,7 @@
 
   <!-- Assets List -->
   <div ng-if='objectType === "asset"'>
-    
+
     <div>
       <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
           + Asset

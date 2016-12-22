@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('DeleteFieldModalInstanceCtrl', ['_', 'objectHelpers', '$q', 'getAssets', 'getProspects', 'getDrivers', 'getCars', 'objectType', 'thing', 'dataService', '$scope', '$modalInstance', '$state',
-      function(_, objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $modalInstance, $state) {
+    .controller('DeleteFieldModalInstanceCtrl', ['_', 'objectHelpers', '$q', 'getAssets', 'getProspects', 'getDrivers', 'getCars', 'objectType', 'thing', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function(_, objectHelpers, $q, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $uibModalInstance, $state) {
 
       // not used by view
       var ctrl = this;
@@ -47,9 +47,6 @@
           var deferred = $q.defer();
           // console.log(object);
           _.each(object.data, function(data, field, list) {
-              // console.log(data);
-              // console.log(field);
-              // console.log(list);
               if(data.type === 'function') {
                   _.each(data.expressionItems, function(item) {
                       if(item.value === $scope.thing.fieldName) {
@@ -80,7 +77,7 @@
       };
 
       $scope.submit = function () {
-          console.log($scope.thing);
+          // console.log($scope.thing);
           // assumes car, driver, etc. have the same schema structure
           if($scope.confirmation.value === 'DELETE') {
               if(ctrl.objects !== undefined && ctrl.objects !== null) {
@@ -119,12 +116,12 @@
 
       $scope.ok = function() {
           $state.forceReload();
-          $modalInstance.close();
+          $uibModalInstance.close();
       };
 
       $scope.close = function () {
           $state.forceReload();
-          $modalInstance.dismiss('cancel');
+          $uibModalInstance.dismiss('cancel');
       };
     }]);
 })();

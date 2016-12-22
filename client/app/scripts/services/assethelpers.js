@@ -9,7 +9,7 @@
    * Factory in the clientApp.
    */
   angular.module('clientApp')
-    .factory('assetHelpers', ['$rootScope', '$q', '$state', 'dataService', '_', 'ENV', function ($rootScope, ENV, $q, dataService, $state, _) {
+    .factory('assetHelpers', ['$rootScope', '$q', '$state', 'dataService', '_', 'ENV', function ($rootScope, $q, $state, dataService, _, ENV) {
 
       //////////////////////////
       //  Data CRUD and Forms //
@@ -20,14 +20,14 @@
       var saveAsset = dataService.createAsset;
       var update = dataService.updateAsset;
       var deleteAsset = dataService.deleteAsset;
-      var getAssetTypes = dataService.getAssetTypes;
+      var getTypes = dataService.getTypes;
 
       return {
 
         // Data
         getOrganizationId: getOrganizationId,
         get: get,
-        getAssetTypes: getAssetTypes,
+        getTypes: getTypes,
         getByType: getByType,
         getById: getById,
         saveAsset: saveAsset,

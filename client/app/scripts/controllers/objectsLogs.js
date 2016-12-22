@@ -9,35 +9,35 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectsLogsCtrl', ['$modal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$q', '$scope', '$state', '_', '$window',
-      function ($modal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state, _, $window) {
+    .controller('ObjectsLogsCtrl', ['$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$q', '$scope', '$state', '_', '$window',
+      function ($uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state, _, $window) {
 
       var ctrl = this;
       $scope.objectType = objectType;
       $scope.datepicker = datepicker;
       $scope.dummyNum = { value: null };
 
+      // Helpers
+      $scope.getIdentifierValue = objectHelpers.getIdentifierValue
+      $scope.getStateRef = objectHelpers.getStateRef
+
       ctrl.getObjects = function () {
           if($scope.objectType === 'car') {
               $scope.title = 'Car';
-              $scope.state = { logs: 'carLogs({ id: object.id })' };
               ctrl.update = carHelpers.update;
               return carHelpers.get;
           } else if($scope.objectType === 'driver') {
               $scope.title = 'Driver';
-              $scope.state = { logs: 'driverLogs({ id: object.id })' };
               ctrl.update = driverHelpers.update;
               return driverHelpers.get;
           } else if($scope.objectType === 'prospect') {
               $scope.title = 'Prospect';
-              $scope.state = null;
               ctrl.update = prospectHelpers.update;
               return prospectHelpers.get;
           } else if($scope.objectType === 'asset') {
               // $scope.title = 'Asset';
-              $scope.state = { logs: 'assetLogs({ id: object.id })' };
               ctrl.update = assetHelpers.update;
-              return assetHelpers.getAssetTypes;
+              return assetHelpers.getTypes;
           }
       };
 
@@ -55,9 +55,6 @@
 
       ctrl.getAssetsOfTypeAndLogs = function (assetType) {
           assetHelpers.getByType(assetType).then(function(result) {
-              $scope.objects = objectHelpers.isValid(result.data) ? result.data : [];
-              $scope.simpleObjects = objectHelpers.simplify($scope.objects);
-              ctrl.identifier = $scope.objects[0].identifier;
           });
 
           ctrl.getLogDates()(assetType).then(function(dates) {
@@ -68,7 +65,13 @@
 
       ctrl.getObjects()().then(function(result) {
           if ($scope.objectType !== 'asset') {
+
               $scope.objects = result.data;
+
+              ctrl.getLogDates()().then(dates => {
+                $scope.dates = dates
+                ctrl.getMostRecentLogDate()
+              })
           } else {
               $scope.assetTypes = result.data.types;
               $scope.assetType = $scope.assetTypes[0].value;
@@ -286,7 +289,7 @@
       };
 
       $scope.open = function (size, thing) {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/deletefieldmodal.html',
               controller: 'DeleteFieldModalInstanceCtrl',

@@ -17,10 +17,11 @@
             </select>
         </div>
 
+        <!-- Assigning non assets -->
         <div class='form-group' ng-if='objectType !== "asset"'>
-            Select <span ng-if='objIdentifier !== "Name"'>{{ ::objIdentifier }}</span><span ng-if='objIdentifier === "Name"'>Driver</span>
+            Select <span ng-if='objIdentifier !== "Name"'>{{ objIdentifier }}</span><span ng-if='objIdentifier === "Name"'>Driver</span>
             <select class='form-control' ng-model='formData.objId'>
-                <option ng-repeat='object in simpleObjects | orderBy:"id"' 
+                <option ng-repeat='object in simpleObjects | orderBy:"id"'
                 value='{{ object.id }}'>
                     <!-- Do not show inactive cars -->
                     {{ ::object.identifierValue }}
@@ -28,10 +29,11 @@
             </select>
         </div>
 
+        <!-- Assigning assets -->
         <div class='form-group' ng-if='objectType === "asset"'>
             Select
             <select class='form-control' ng-model='formData.objId'>
-                <option ng-repeat='object in simpleObjects | orderBy:"id"' 
+                <option ng-repeat='object in simpleObjects | orderBy:"id"'
                 value='{{ object.id }}' ng-if='object.assetType === formData.assetType'>
                     <!-- Do not show inactive cars -->
                     {{ ::object.identifierValue }}
@@ -43,20 +45,20 @@
             Date Assigned/Started
             <div class='btn-group' role='group'>
                <div class="input-group date-picker">
-                    <input type="text" 
-                        class="form-control" 
-                        datepicker-popup="{{format}}" 
-                        ng-model="dt" 
-                        is-open="status.opened" 
-                        max-date="maxDate" 
-                        datepicker-options="dateOptions"  
-                        ng-required="true" 
-                        close-text="Close" /> 
+                    <input type="text"
+                        class="form-control"
+                        datepicker-popup="{{ datepicker.format }}"
+                        ng-model="datepicker.dt"
+                        is-open="datepicker.status.opened"
+                        max-date="datepicker.maxDate"
+                        datepicker-options="datepicker.dateOptions"
+                        ng-required="true"
+                        close-text="Close" />
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-primary" ng-click="open($event)">
+                        <button type="button" class="btn btn-primary" ng-click="datepicker.open($event)">
                             <i class="fa fa-calendar"></i>
                         </button>
-                    </div>   
+                    </div>
                 </div>
             </div>
         </div>

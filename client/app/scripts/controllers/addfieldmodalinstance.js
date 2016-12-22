@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddFieldModalInstanceCtrl', ['$scope', '$q', '$state', 'getAssets', 'getCars', 'getProspects', 'getDrivers', '$modalInstance', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
-    function(_, objectHelpers, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
+    .controller('AddFieldModalInstanceCtrl', ['$scope', '$q', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
+    function($scope, $q, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
 
       var isValid = objectHelpers.isValid,
           buildEvalExpression = objectHelpers.buildEvalExpression;
@@ -363,20 +363,20 @@
       if(objectType === 'car') {
         // console.log("add field modal called from carProfile");
         ctrl.update = dataService.updateCar;
-        if(typeof getCars !== 'undefined' && getCars.length > 0) { ctrl.objects = getCars; }
+        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
       } else if(objectType === 'driver') {
         // console.log("add field modal called from driverProfile");
         ctrl.update = dataService.updateDriver;
-        if(typeof getDrivers !== 'undefined' && getDrivers.length > 0) { ctrl.objects = getDrivers; }
+        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
       } else if(objectType === 'prospect') {
         // console.log("add field modal called from prospectProfile");
         ctrl.update = dataService.updateProspect;
-        if(typeof getProspects !== 'undefined' && getProspects.length > 0) { ctrl.objects = getProspects; }
+        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
       } else if(objectType === 'asset') {
         // console.log("add field modal called from assetProfile");
         ctrl.update = dataService.updateAsset;
 
-        var assetsOfType = _.filter(getAssets, function(asset) {
+        var assetsOfType = _.filter(getObjects, function(asset) {
           // console.log(asset.assetType);
           // console.log(ctrl.assetType);
           return asset.assetType === ctrl.assetType;
@@ -551,7 +551,7 @@
 
       $scope.ok = function(newFieldObject, newFieldName) {
         $state.forceReload();
-        $modalInstance.close({
+        $uibModalInstance.close({
           name: newFieldName,
           data: newFieldObject,
         });
@@ -559,7 +559,7 @@
 
       $scope.close = function () {
           $state.forceReload();
-          $modalInstance.dismiss('cancel');
+          $uibModalInstance.dismiss('cancel');
       };
 
       // evaluate expression

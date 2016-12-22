@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddObjectModalInstanceCtrl', ['_', 'getCars', 'getAssets', 'getProspects', 'getDrivers', 'objectType', '$q', '$modal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$modalInstance', '$state',
-      function(_, getCars, getAssets, getProspects, getDrivers, objectType, $q, $modal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
+    .controller('AddObjectModalInstanceCtrl', ['_', 'getCars', 'getAssets', 'getProspects', 'getDrivers', 'objectType', '$q', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function(_, getCars, getAssets, getProspects, getDrivers, objectType, $q, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
 
       var ctrl = this;
       $scope.formData = {};
@@ -116,7 +116,7 @@
                   ctrl.hideExpressions(result.referenceObject.data).then(function() {
                       // console.log('car form data:', result.formData);
                       $scope.formData = result.formData;
-                      // $scope.fieldsToHide.push('assetType');
+                      // $scope.fieldsToHide.concat(['fn', 'ineq']);
                       $scope.formData.assetType = { value: null };
                       $scope.fields = Object.keys(result.formData);
                       $scope.fields = _.without($scope.fields, "assetType");
@@ -124,7 +124,7 @@
                       angular.copy($scope.currentIdentifier, $scope.identifier);
                       $scope.disableConditions = function(formData) { return true; };
 
-                      console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                      // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                   });
               });
           });
@@ -150,7 +150,7 @@
                       $scope.formData = result1.formData;
                       $scope.formData.assetType = { value: null };
 
-                      console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                      // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
                   });
               });
           });
@@ -163,7 +163,7 @@
           $scope.fieldsToHide.push("assetType");
           ctrl.getFormDataAndReference = assetHelpers.getFormDataAndRepresentative;
 
-          assetHelpers.getAssetTypes().then(function(result){
+          assetHelpers.getTypes().then(function(result){
               $scope.assetTypes = result.data.types;
 
               $scope.renderForm = function(assetType) {
@@ -194,8 +194,9 @@
       }
 
       $scope.submit = function() {
+          console.log($scope.formData.assetType.value)
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
-              console.log(newObject);
+              // console.log(newObject);
               objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
                   // console.log(newObject);
                   if($scope.objectType === 'car') {
@@ -284,12 +285,12 @@
 
       $scope.ok = function(object) {
           $state.forceReload();
-          $modalInstance.close(object);
+          $uibModalInstance.close(object);
       };
 
       $scope.close = function () {
           $state.forceReload();
-          $modalInstance.dismiss('close');
+          $uibModalInstance.dismiss('close');
       };
 
       ctrl.updateModal = function (newField) {
@@ -317,7 +318,7 @@
 
       $scope.addField = function(assetType) {
 
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/addfieldmodal.html',
               controller: 'AddFieldModalInstanceCtrl',

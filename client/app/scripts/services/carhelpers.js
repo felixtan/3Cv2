@@ -9,7 +9,7 @@
    * Factory in the clientApp.
    */
   angular.module('clientApp')
-    .factory('carHelpers', ['$rootScope', '$q', '$state', 'dataService', '_', 'ENV', function ($rootScope, ENV, $q, dataService, $state, _) {
+    .factory('carHelpers', ['$rootScope', '$q', '$state', 'dataService', '_', 'ENV', function ($rootScope, $q, $state, dataService, _, ENV) {
 
     //////////////////////////
     //  Data CRUD and Forms //

@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectDataCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'driverHelpers', 'carHelpers', '$q', '$state', '$scope', '$modal',
-      function(_, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $modal) {
+    .controller('ObjectDataCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'driverHelpers', 'carHelpers', '$q', '$state', '$scope', '$uibModal',
+      function(_, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $uibModal) {
 
       var ctrl = this;        // for testing;
       // ctrl.assetType = { value: null };
@@ -23,33 +23,17 @@
 
       ctrl.getObject = function () {
           if($scope.objectType === 'car') {
-              $scope.state = {
-                  data: 'carData({ id: object.id })',
-                  logs: 'carLogs({ id: object.id })',
-              };
               return carHelpers.getById;
           } else if($scope.objectType === 'driver') {
-              $scope.state = {
-                  data: 'driverData({ id: object.id })',
-                  logs: 'driverLogs({ id: object.id })',
-              };
-              // console.log($scope.state);
+              // console.log($scope.stateRef);
               carHelpers.getIdentifier().then(function(identifier) {
                   $scope.carIdentifier = identifier;
               });
 
               return driverHelpers.getById;
           } else if($scope.objectType === 'prospect') {
-              $scope.state = {
-                  data: 'prospectData({ id: object.id })',
-                  logs: null,
-              };
               return prospectHelpers.getById;
           } else if($scope.objectType === 'asset') {
-              $scope.state = {
-                  data: 'assetData({ id: object.id })',
-                  logs: 'assetLogs({ id: object.id })',
-              };
               return assetHelpers.getById;
           }
       };
@@ -73,8 +57,8 @@
           $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
           $scope.tabs = [
-              { title: 'Data', active: true, state: $scope.state.data },
-              { title: 'Logs', active: false, state: $scope.state.logs }
+              { title: 'Data', active: false, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
+              { title: 'Logs', active: true, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
           ];
 
           ctrl.getObjects()($scope.object.assetType).then(function(result2) {
@@ -85,23 +69,14 @@
 
       // Add field
       $scope.addField = function() {
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/addfieldmodal.html',
               controller: 'AddFieldModalInstanceCtrl',
               size: 'md',
               resolve: {
-                  getCars: function() {
-                      return $scope.objectType === 'car' ? ctrl.objects : {};
-                  },
-                  getDrivers: function() {
-                      return $scope.objectType === 'driver' ? ctrl.objects : {};
-                  },
-                  getProspects: function() {
-                      return $scope.objectType === 'prospect' ? ctrl.objects : {};
-                  },
-                  getAssets: function() {
-                      return $scope.objectType === 'asset' ? ctrl.objects : {};
+                  getObjects: function() {
+                      return ctrl.objects
                   },
                   assetType: function() {
                       return $scope.objectType === 'asset' ? ctrl.assetType : null;
@@ -124,9 +99,9 @@
       // Driver Assignment UI /////
       /////////////////////////////
 
-      $scope.assign = function (thing) {
-
-          var modalInstance = $modal.open({
+      $scope.assign = function(thing) {
+          // console.log(`Assign ${thing} to ${$scope.objectType}`)
+          const modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/assignmentmodal.html',
               controller: 'AssignmentModalCtrl',
@@ -136,13 +111,10 @@
                       return $scope.objectType === 'car' ? driverHelpers.get : null;
                   },
                   getCars: function() {
-                      return $scope.objectType === 'driver' ? carHelpers.get : null;
+                      return ($scope.objectType === 'driver' && thing === 'car') ? carHelpers.get : null;
                   },
-                  driver: function() {
-                      return $scope.objectType === 'driver' ? $scope.object : null;
-                  },
-                  car: function() {
-                      return $scope.objectType === 'car' ? $scope.object : null;
+                  subject: function() {
+                      return $scope.object
                   },
                   subjectType: function() {
                       return $scope.objectType;
@@ -150,11 +122,11 @@
                   objectType: function() {
                       return thing;
                   },
-                  getAssetTypes: function() {
-                      return $scope.objectType === 'driver' ? assetHelpers.getAssetTypes : null;
+                  getTypes: function() {
+                      return ($scope.objectType === 'driver' && thing === 'asset') ? assetHelpers.getTypes : { data: null };
                   },
                   getAssets: function() {
-                      return $scope.objectType === 'driver' ? assetHelpers.getAssets : null;
+                      return ($scope.objectType === 'driver' && thing === 'asset') ? assetHelpers.get : null;
                   },
                   asset: function() {
                       return $scope.objectType === 'asset' ? driverHelpers.get : null;
@@ -172,7 +144,7 @@
       $scope.editField = function(object, field) {
           // console.log(object);
           // console.log(field);
-          var modalInstance = $modal.open({
+          var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/editFieldModal.html',
               controller: 'EditFieldModalCtrl',
@@ -232,63 +204,23 @@
           return ((field != "First Name") && (field != "Last Name") && (field !== "Name") && (field.toLowerCase() != "status"));
       };
 
-      // used in convert?
+      // If field exists in fields, then append "~" to front of field until the conflict is resolved.
       ctrl.getUniqueFieldName = function(fields, field) {
           return (_.contains(fields, field)) ? ctrl.getUniqueFieldName(fields, "~" + field) : field;
       };
 
-      ctrl.getFieldsInCommon = function (prospectData, driverData) {
-          var deferred = $q.defer(),
-              p = Object.keys(prospectData).length,
-              d = Object.keys(driverData).length,
-              fieldsInCommon = [];
+      ctrl.partitionFields = function(prospectData, driverData) {
+          const prospectFields = Object.keys(prospectData)
+          const driverFields = Object.keys(driverData)
+          const inCommon = _.intersection(prospectFields, driverFields)
+          const uniqueToProspect = _.difference(prospectFields, driverFields.concat('status'))      // We do not want drivers to have prospect's "status" field
+          const uniqueToDriver = _.difference(driverFields, prospectFields)
 
-              // console.log(p);
-              // console.log(d);
-          if(p <= d) {
-              _.each(prospectData, function(data, field) {
-                  if(typeof driverData[field] !== 'undefined') {
-                      if(driverData[field].type === data.type) {
-                          fieldsInCommon.push(field);
-                      }
-                  }
-              });
-          } else {
-              _.each(driverData, function(data, field) {
-                  if(typeof prospectData[field] !== 'undefined') {
-                      if(prospectData[field].type === data.type) {
-                          fieldsInCommon.push(field);
-                      }
-                  }
-              });
+          return {
+            inCommon,
+            uniqueToDriver,
+            uniqueToProspect
           }
-
-          deferred.resolve(fieldsInCommon);   // array of fields in common checked by name and type
-          deferred.reject(new Error("Error getting fields in common between driver and prospect"));
-          return deferred.promise;
-      };
-
-      ctrl.partitionFields = function (prospectData, driverData) {
-          var deferred = $q.defer();
-
-          ctrl.getFieldsInCommon(prospectData, driverData).then(function(fieldsInCommon) {
-              var pFields = Object.keys(prospectData),
-                  dFields = Object.keys(driverData),
-                  uniqueToP = [],
-                  uniqueToD = [];
-
-              uniqueToP = _.difference(pFields, fieldsInCommon);
-              uniqueToD = _.difference(dFields, fieldsInCommon);
-
-              deferred.resolve({
-                  uniqueToProspect: _.without(uniqueToP, 'status'),
-                  uniqueToDriver: uniqueToD,
-                  inCommon: fieldsInCommon,
-              });
-              deferred.reject(new Error("Error partitioning driver and prospect fields"));
-          });
-
-          return deferred.promise;
       };
 
       // used in convert?
@@ -331,8 +263,10 @@
       /*
           Changes the name of prospect fields if they conflict with names of driver fields
       */
-      ctrl.resolveNameConflicts = function (partedFields, prospectData) {
-          var deferred = $q.defer();
+      ctrl.resolveNameConflicts = function (_partedFields, _prospectData) {
+          let deferred = $q.defer()
+          let partedFields = _partedFields
+          let prospectData = _prospectData
 
           _.each(partedFields.uniqueToProspect, function(field) {
               var temp = ctrl.getUniqueFieldName(partedFields.uniqueToDriver, field);
@@ -361,20 +295,17 @@
           var deferred = $q.defer(),
               fields = fieldsUniqueToProspect;
 
-          console.log(fields);
-          console.log(prospectData);
-
-          driverHelpers.get().then(function(result) {
+          driverHelpers.get().then(result => {
               var drivers = result.data;
               // console.log(drivers);
               if(typeof drivers !== 'undefined' && drivers !== null) {
                   if(drivers.length > 0) {
-                      _.each(drivers, function(driver, index, list) {
+                      _.each(drivers, (driver, index, list) => {
                           // console.log(driver);
                           // console.log(index);
                           // console.log(list);
 
-                          _.each(fields, function(field) {
+                          _.each(fields, field => {
                               driver.data[field] = {
                                   value: null,
                                   log: false,
@@ -405,21 +336,23 @@
                       });
                   } else {
                       deferred.resolve(prospectData);
-                      deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
+                      deferred.reject(new Error("Error getting updated driver data after adding prospect fields: there are no drivers"));
                   }
               } else {
                   deferred.resolve(prospectData);
-                  deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
+                  deferred.reject(new Error("Error getting updated driver data after adding prospect fields: drivers is undefined or null"));
               }
           });
 
           return deferred.promise;
       };
 
-      ctrl.buildNewDriverData = function(prospectData, partedFields) {
-          var deferred = $q.defer();
-          // console.log(driverData);
-          _.each(prospectData, function(data, field) {
+      ctrl.buildNewDriverData = function(_prospectData, _partedFields) {
+          // var deferred = $q.defer();
+          let prospectData = _prospectData
+          let partedFields = _partedFields
+
+          _.each(prospectData, (data, field) => {
               // var temp = field.replace(/~/g, "");
               // console.log(temp);
 
@@ -433,38 +366,55 @@
               }
           });
 
-          deferred.resolve(prospectData);
-          deferred.reject(new Error("Error creating new driver from prospect"));
-          return deferred.promise;
+          return prospectData
+
+          // deferred.resolve(prospectData);
+          // deferred.reject(new Error("Error creating new driver from prospect"));
+          // return deferred.promise;
       };
 
       $scope.convert = function() {
-          objectHelpers.getFormDataAndReference('driver').then(function(result) {
-              // console.log(result);
-              ctrl.partitionFields($scope.object.data, result.referenceObject.data).then(function(partedFields) {
-                  // console.log(partedFields);
-                  // console.log($scope.object.data);
-                  ctrl.resolveNameConflicts(partedFields, $scope.object.data).then(function(result) {
-                      // console.log(result);
-                      ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNonConflictingFields) {
-                      // console.log(prospectDataWithNonConflictingFields);
-                          ctrl.buildNewDriverData(prospectDataWithNonConflictingFields, result.partedFields).then(function(newDriverData) {
-                              // console.log(newDriverData);
-                              driverHelpers.createDriver(newDriverData).then(function(newDriver) {
-                                  if(newDriver.data.status) { delete newDriver.data.status; }
-                                  // console.log(newDriver);
-                                  // objectHelpers.evaluateExpressions(undefined, newDriver).then(function(newDriverWithEvaluatedExpressions) {
-                                      driverHelpers.saveDriver(newDriver).then(function() {
-                                          prospectHelpers.deleteProspect($scope.object.id);
-                                          $state.go('dashboard.prospects');
-                                      });
-                                  // });
-                              });
-                          });
-                      });
+        objectHelpers.getFormDataAndReference('driver').then(function(result) {
+          // console.log(result);
+          const fields = ctrl.partitionFields($scope.object.data, result.referenceObject.data)
+          // console.log(fields);
+          // console.log($scope.object.data);
+          ctrl.resolveNameConflicts(fields, $scope.object.data).then(function(result) {
+            // console.log(result);
+            ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
+              // console.log(prospectDataWithNoConflictingFields);
+              const newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
+              // console.log(newDriverData);
+              driverHelpers.createDriver(newDriverData).then(newDriver => {
+                if(newDriver.data.status) { delete newDriver.data.status; }
+                // console.log(newDriver);
+                objectHelpers.evaluateExpressions(newDriver).then(newDriverWithEvaluatedExpressions => {
+                // console.log(newDriverWithEvaluatedExpressions)
+                  driverHelpers.saveDriver(newDriver).then(() => {
+                    prospectHelpers.deleteProspect($scope.object.id);
+                    $state.go('dashboard.prospects');
                   });
+                })
               });
+            });
           });
+        });
+      };
+
+      // Delete modal
+      $scope.openDeleteModal = function() {
+        // console.log(objectId)
+        const modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/deleteobjmodal.html',
+          controller: 'DeleteObjModalInstanceCtrl',
+          size: 'md',
+          resolve: {
+            id: function() {
+              return objectId;
+            }
+          }
+        });
       };
     }]);
 })();

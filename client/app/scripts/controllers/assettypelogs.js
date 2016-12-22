@@ -9,11 +9,11 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AssetTypeLogsCtrl', ['$window', '_', 'assetHelpers', '$q', '$scope', 'getAssets', 'getAssetTypes', '$state',
-      function($window, _, assetHelpers, $q, $scope, getAssets, getAssetTypes, $state) {
+    .controller('AssetTypeLogsCtrl', ['$window', '_', 'assetHelpers', '$q', '$scope', 'getAssets', 'getTypes', '$state',
+      function($window, _, assetHelpers, $q, $scope, getAssets, getTypes, $state) {
 
       $scope.tabs = [];
-      $scope.assetTypes = getAssetTypes.data.types;
+      $scope.assetTypes = getTypes.data.types;
       $scope.assetType = null;
 
       _.each($scope.assetTypes, function(assetType) {

@@ -43,23 +43,21 @@
 
       function appendDataToUrl(method, resource, data, url) {
         // console.log(method, resource, data, url)
-        if (data !== undefined && data !== null) {
-          if (method === 'GET' && resource === 'assets' ||
-              method === 'GET' && resource === 'prospects' ||
-              method === 'GET' && resource === 'drivers' ||
-              method === 'GET' && resource === 'cars') {
-            return (url + '/' + data)
-          } else if (method === 'PUT' && resource === 'assets' ||
-                     method === 'DELETE' && resource === 'assets' ||
-                     method === 'PUT' && resource === 'prospects' ||
-                     method === 'DELETE' && resource === 'prospects' ||
-                     method === 'PUT' && resource === 'drivers' ||
-                     method === 'DELETE' && resource === 'drivers' ||
-                     method === 'PUT' && resource === 'cars' ||
-                     method === 'DELETE' && resource === 'cars') {
-            return (url + '/' + data.id)
+        if (method !== 'POST' && data !== undefined && data !== null) {
+          if (method === 'GET') {
+            // console.log('here1')
+            return `${url}/${data}`
+          } else if (method === 'PUT' || method === 'DELETE') {
+            if (resource === 'prospects') {
+              // console.log('here2')
+              return `${url}/${data}`
+            } else {
+              // console.log('here3')
+              return `${url}/${data.id}`
+            }
           }
         } else {
+          // console.log('here4')
           return url
         }
       }
@@ -81,13 +79,20 @@
 
       function req(method, resource) {
         return function(data) {
-          const url = apiHost + resource;
+          // console.log(method)
+          // console.log(resource)
+          // console.log(data)
+          const url = appendDataToUrl(method, resource, data, (apiHost + resource));
+          data = sendData(method, resource) ? data : null;
+          // console.log(url)
+          // console.log(data)
           return $http({
             method: method,
-            url: appendDataToUrl(method, resource, data, url),
+            url: url,
             params: params,
-            data: sendData(method, resource) ? data : null,
+            data: data
           }).then(result => {
+            // console.log(result)
             forceReload(method, resource)
             return result;
           }, err => {
@@ -103,7 +108,7 @@
         ////////////////
         //// Assets ////
         ////////////////
-        getAssetTypes: req('GET', 'asset-types'),
+        getTypes: req('GET', 'asset-types'),
         updateAssetTypes: req('PUT', 'asset-types'),
         getAssets: req('GET', 'assets'),
         getAssetsOfType: req('GET', 'assets'),
