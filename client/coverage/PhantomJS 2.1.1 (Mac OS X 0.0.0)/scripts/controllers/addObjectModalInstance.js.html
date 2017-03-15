@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/addObjectModalInstance.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> addObjectModalInstance.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.1% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>74/205</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">26.56% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>17/64</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">21.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>13/60</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.45% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>74/203</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:AddObjectModalInstanceCtrl
+ * @description
+ * # AddObjectModalInstanceCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('AddObjectModalInstanceCtrl', function (getCars, getAssets, getProspects, getDrivers, objectType, $q, $modal, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $modalInstance, $state) {
+    
+    var ctrl = this;
+    $scope.formData = {};
+    $scope.objects = [];
+    // $scope.representativeObject = {};
+    $scope.identifier = { value: null };
+    $scope.currentIdentifier = { value: null };
+    $scope.fields = [];
+    $scope.fieldsToHide = []
+    $scope.fieldsToNotLog = [];
+    $scope.statuses = [];
+    $scope.status = {};
+    $scope.assetTypes = [];
+    $scope.assetType = { value: null };
+    $scope.expressions = [];
+    $scope.objectType = objectType;
+&nbsp;
+    $scope.getNewFieldsToLog = function(formData) {
+        return _.filter(Object.keys(formData), function(field) {
+            return formData[field].log;
+        });
+    };
+    
+    $scope.getFormDataAndRepresentative = <span class="fstat-no" title="function not covered" >function() {</span>};
+&nbsp;
+    $scope.create = <span class="fstat-no" title="function not covered" >function() {</span>};
+&nbsp;
+    $scope.update = <span class="fstat-no" title="function not covered" >function() {</span>};
+&nbsp;
+    $scope.save = <span class="fstat-no" title="function not covered" >function() {</span>};
+&nbsp;
+    $scope.disableConditions = <span class="fstat-no" title="function not covered" >function() {</span> <span class="cstat-no" title="statement not covered" >return true; </span>};
+&nbsp;
+    $scope.hide = function(field) {
+        return _.contains($scope.fieldsToHide, field);
+    };
+&nbsp;
+    $scope.dontLog = function(field) {
+        return _.contains($scope.fieldsToNotLog, field);
+    };
+&nbsp;
+    $scope.invalidIdentifier = function(identifier) {
+        return ((identifier.value === null) || (typeof identifier.value === 'undefined')) ? true : false;
+    };
+&nbsp;
+    $scope.identifierChanged = function() {
+        return ($scope.identifier.value !== $scope.currentIdentifier.value);
+    };
+&nbsp;
+    $scope.disableAddField = function() {
+        return (($scope.objectType === "asset") &amp;&amp; ((<span class="branch-1 cbranch-no" title="branch not covered" >$scope.formData.assetType === null)</span> || (<span class="branch-2 cbranch-no" title="branch not covered" >typeof $scope.formData.assetType === 'undefined')</span>));
+    };
+&nbsp;
+    // only for assets
+    $scope.renderForm = <span class="fstat-no" title="function not covered" >function() {</span>};
+&nbsp;
+    ctrl.buildExpression = function(expressionItems) {
+        var deferred = $q.defer();
+        var expression = '';
+        
+        _.each(expressionItems, function(item) {
+            expression = expression + item.value;
+            // console.log(expression);
+        });
+&nbsp;
+        deferred.resolve(expression);
+        deferred.reject(new Error('Error building expression'));
+        return deferred.promise;
+    };
+&nbsp;
+    ctrl.getInequalitySign = function(signId) {
+        switch(parseInt(signId)) {
+            case 0:
+                return "&gt;";
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 1:
+                return '≥';
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 2:
+                return '&lt;';
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            case 3:
+                return '≤';
+<span class="cstat-no" title="statement not covered" >                break;</span>
+            default:
+                return '?';
+<span class="cstat-no" title="statement not covered" >                break;</span>
+        }
+    };
+&nbsp;
+    ctrl.hideExpressions = function(dataOfRepresentativeObject) {
+        var deferred = $q.defer();
+        // console.log($scope.objects);
+        deferred.resolve(_.each(dataOfRepresentativeObject, function(data, field) {
+            // console.log(data);
+            if(data.type === 'function') {
+                $scope.fieldsToHide.push(field);
+                ctrl.buildExpression(data.expressionItems).then(<span class="fstat-no" title="function not covered" >function(expression) {</span>
+                    // console.log('built expression', expression);
+<span class="cstat-no" title="statement not covered" >                    $scope.expressions.push({</span>
+                        field: field,
+                        expression: expression
+                    });
+                });
+            } else if(data.type === 'inequality') {
+                $scope.fieldsToHide.push(field);
+                ctrl.buildExpression(data.leftExpressionItems).then(<span class="fstat-no" title="function not covered" >function(leftExpression) {</span>
+<span class="cstat-no" title="statement not covered" >                    ctrl.buildExpression(data.rightExpressionItems).then(<span class="fstat-no" title="function not covered" >function(rightExpression) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        var inequalitySign = ctrl.getInequalitySign(data.inequalitySignId);</span>
+<span class="cstat-no" title="statement not covered" >                        $scope.expressions.push({</span>
+                            field: field,
+                            expression: leftExpression + " " + inequalitySign + " " + rightExpression
+                        });
+                    });
+                });
+            } else {
+                // do nothing
+            }
+        }));
+        deferred.reject(new Error('Error building or storing expression'));
+        return deferred.promise;
+    };
+ 
+    // determine the state or ui calling this modal
+    <span class="missing-if-branch" title="if path not taken" >I</span>if($scope.objectType === 'driver') {
+        // console.log('called from drivers ui');
+<span class="cstat-no" title="statement not covered" >        $scope.objects = getDrivers.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.update = driverHelpers.updateDriver;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.create = driverHelpers.createDriver;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.save = driverHelpers.saveDriver;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.getFormDataAndRepresentative = driverHelpers.getFormDataAndRepresentative;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        $scope.getFormDataAndRepresentative().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >            ctrl.hideExpressions(result.representativeData).then(<span class="fstat-no" title="function not covered" >function() {</span></span>
+                // console.log('formData:', result.formData);
+<span class="cstat-no" title="statement not covered" >                $scope.fieldsToHide.push("Name");</span>
+                // $scope.fieldsToNotLog.push("First Name");
+                // $scope.fieldsToNotLog.push("Last Name");
+<span class="cstat-no" title="statement not covered" >                $scope.currentIdentifier.value = "Name";</span>
+<span class="cstat-no" title="statement not covered" >                angular.copy($scope.currentIdentifier, $scope.identifier);</span>
+<span class="cstat-no" title="statement not covered" >                $scope.formData = result.formData;</span>
+<span class="cstat-no" title="statement not covered" >                $scope.fieldsToHide.push('assetType');</span>
+<span class="cstat-no" title="statement not covered" >                $scope.formData.assetType = { value: null };</span>
+                // $scope.disableConditions = driverHelpers.namesNotNull;
+            });
+        });
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if($scope.objectType === 'car') {
+        // console.log('called from cars ui');
+<span class="cstat-no" title="statement not covered" >        $scope.objects = getCars.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.update = carHelpers.updateCar;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.create = carHelpers.createCar;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.save = carHelpers.saveCar;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.getFormDataAndRepresentative = carHelpers.getFormDataAndRepresentative;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        $scope.getFormDataAndRepresentative().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >            carHelpers.getIdentifier().then(<span class="fstat-no" title="function not covered" >function(identifier) {</span></span>
+<span class="cstat-no" title="statement not covered" >                ctrl.hideExpressions(result.representativeData).then(<span class="fstat-no" title="function not covered" >function() {</span></span>
+                    // console.log('car form data:', result.formData);
+<span class="cstat-no" title="statement not covered" >                    $scope.formData = result.formData;</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToHide.push('assetType');</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.formData.assetType = { value: null };</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fields = Object.keys(result.formData);</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.currentIdentifier.value = identifier;</span>
+<span class="cstat-no" title="statement not covered" >                    angular.copy($scope.currentIdentifier, $scope.identifier);</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.disableConditions = <span class="fstat-no" title="function not covered" >function(formData) {</span> <span class="cstat-no" title="statement not covered" >return true; </span>};</span>
+                });
+            });
+        });
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if($scope.objectType === 'prospect') {
+        // console.log('called from prospects ui');
+        $scope.objects = getProspects.data;
+        $scope.update = prospectHelpers.updateProspect;
+        $scope.create = prospectHelpers.createProspect;
+        $scope.save = prospectHelpers.saveProspect;
+        $scope.getFormDataAndRepresentative = prospectHelpers.getFormDataAndRepresentative;
+&nbsp;
+        $scope.getFormDataAndRepresentative().then(<span class="fstat-no" title="function not covered" >function(result) {</span>
+<span class="cstat-no" title="statement not covered" >            prospectHelpers.getProspectStatuses().then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                ctrl.hideExpressions(result.representativeData).then(<span class="fstat-no" title="function not covered" >function() {</span></span>
+                    // console.log('prospect form data:', result.formData);
+                    // console.log(statuses);
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToHide.push("Name");</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToHide.push("status");</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToNotLog.push("First Name");</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToNotLog.push("Last Name");</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.currentIdentifier.value = "Name";</span>
+<span class="cstat-no" title="statement not covered" >                    angular.copy($scope.currentIdentifier, $scope.identifier);</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.formData = result.formData;</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.fieldsToHide.push('assetType');</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.formData.assetType = { value: null };</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.statuses = result.data.statuses;</span>
+<span class="cstat-no" title="statement not covered" >                    $scope.disableConditions = prospectHelpers.namesNotNull;</span>
+                });
+            });
+        });
+    } else <span class="cstat-no" title="statement not covered" >if($scope.objectType === 'asset') {</span>
+        // console.log('called from assets ui');
+<span class="cstat-no" title="statement not covered" >        $scope.objects = getAssets.data;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.update = assetHelpers.updateAsset;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.create = assetHelpers.createAsset;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.save = assetHelpers.saveAsset;</span>
+<span class="cstat-no" title="statement not covered" >        $scope.fieldsToHide.push("assetType");</span>
+<span class="cstat-no" title="statement not covered" >        $scope.fieldsToNotLog.push("assetType");</span>
+<span class="cstat-no" title="statement not covered" >        $scope.getFormDataAndRepresentative = assetHelpers.getFormDataAndRepresentative;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        assetHelpers.getAssetTypes().then(<span class="fstat-no" title="function not covered" >function(result){</span></span>
+<span class="cstat-no" title="statement not covered" >            $scope.assetTypes = result.data.types;</span>
+<span class="cstat-no" title="statement not covered" >            $scope.renderForm = <span class="fstat-no" title="function not covered" >function(assetType) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $scope.getFormDataAndRepresentative(assetType).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+                    // console.log(result.formData);
+<span class="cstat-no" title="statement not covered" >                    assetHelpers.getIdentifier(assetType).then(<span class="fstat-no" title="function not covered" >function(identifier) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        ctrl.hideExpressions(result.representativeData).then(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >                            $scope.fields = Object.keys(result.formData);</span>
+<span class="cstat-no" title="statement not covered" >                            $scope.formData = result.formData;</span>
+<span class="cstat-no" title="statement not covered" >                            $scope.disableConditions = assetHelpers.invalidAssetType;</span>
+<span class="cstat-no" title="statement not covered" >                            $scope.currentIdentifier.value = identifier;</span>
+<span class="cstat-no" title="statement not covered" >                            angular.copy($scope.currentIdentifier, $scope.identifier);</span>
+                        });
+                    });
+                });
+            };
+        });
+    } else {
+<span class="cstat-no" title="statement not covered" >        $state.go("dashboard.cars");</span>
+    }
+&nbsp;
+    $scope.submit = <span class="fstat-no" title="function not covered" >function() {</span>
+        // console.log($scope.identifier);
+        // console.log($scope.formData.assetType);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(<span class="fstat-no" title="function not covered" >function(object) {</span></span>
+            // console.log('saving:', object);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if($scope.objectType === 'car') {</span>
+<span class="cstat-no" title="statement not covered" >                $scope.save(object).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    if($scope.identifierChanged()) {</span>
+<span class="cstat-no" title="statement not covered" >                        _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(obj) {</span></span>
+                            // console.log(obj.id);
+                            // console.log(result.data.id);
+<span class="cstat-no" title="statement not covered" >                            if(obj.id !== result.data.id) {</span>
+<span class="cstat-no" title="statement not covered" >                                obj.identifier = $scope.identifier.value;</span>
+<span class="cstat-no" title="statement not covered" >                                $scope.update(obj);</span>
+                            }
+                        });
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    $scope.close(object);</span>
+                });
+            } else <span class="cstat-no" title="statement not covered" >if($scope.objectType === 'prospect') {</span>
+<span class="cstat-no" title="statement not covered" >                prospectHelpers.getDefaultStatus().then(<span class="fstat-no" title="function not covered" >function(defaultStatus) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    object.status = { value: ($scope.status.value || defaultStatus.value) };</span>
+<span class="cstat-no" title="statement not covered" >                    object.data.status = { value: ($scope.status.value || defaultStatus.value), log: false };</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    $scope.save(object).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                        if($scope.identifierChanged()) {</span>
+<span class="cstat-no" title="statement not covered" >                            _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(obj) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                if(obj.id !== result.data.id) {</span>
+<span class="cstat-no" title="statement not covered" >                                    obj.identifier = $scope.identifier.value;</span>
+<span class="cstat-no" title="statement not covered" >                                    $scope.update(obj);</span>
+                                }
+                            });
+                        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        $scope.close(object);</span>
+                    });
+                });
+            } else <span class="cstat-no" title="statement not covered" >if($scope.objectType === 'driver') {</span>
+                // console.log(object);
+<span class="cstat-no" title="statement not covered" >                $scope.save(object).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    if($scope.identifierChanged()) {</span>
+<span class="cstat-no" title="statement not covered" >                        _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(obj) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            if(obj.id !== result.data.id) {</span>
+<span class="cstat-no" title="statement not covered" >                                obj.identifier = $scope.identifier.value;</span>
+<span class="cstat-no" title="statement not covered" >                                $scope.update(obj);</span>
+                            }
+                        });
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    $scope.close(object);</span>
+                });
+            } else <span class="cstat-no" title="statement not covered" >if($scope.objectType === 'asset') {</span>
+                // console.log(object);
+<span class="cstat-no" title="statement not covered" >                $scope.save(object).then(<span class="fstat-no" title="function not covered" >function(result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    if($scope.identifierChanged()) {</span>
+<span class="cstat-no" title="statement not covered" >                        assetHelpers.filterAssets($scope.objects, result.data.assetType).then(<span class="fstat-no" title="function not covered" >function(assetsOfType) {</span></span>
+<span class="cstat-no" title="statement not covered" >                            _.each(assetsOfType, <span class="fstat-no" title="function not covered" >function(asset) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                if(asset.id !== result.data.id) {</span>
+<span class="cstat-no" title="statement not covered" >                                   asset.identifier = $scope.identifier.value;</span>
+<span class="cstat-no" title="statement not covered" >                                    $scope.update(obj);</span>
+                                }
+                            })
+                        });
+                    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    $scope.close(object);</span>
+                });
+            }
+        });
+    };
+&nbsp;
+    $scope.reset = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >      $scope.formData = {};</span>
+<span class="cstat-no" title="statement not covered" >      $scope.form.$setPristine();</span>
+<span class="cstat-no" title="statement not covered" >      $scope.form.$setUntouched();</span>
+<span class="cstat-no" title="statement not covered" >      $state.forceReload();</span>
+    };
+&nbsp;
+    $scope.ok = <span class="fstat-no" title="function not covered" >function(object) {</span>
+<span class="cstat-no" title="statement not covered" >        $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >        $modalInstance.close(object);</span>
+    };
+&nbsp;
+    $scope.close = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >        $modalInstance.dismiss('close');</span>
+    };
+&nbsp;
+    $scope.addField = <span class="fstat-no" title="function not covered" >function(assetType) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var modalInstance = $modal.open({</span>
+            animation: true,
+            templateUrl: 'views/addfieldmodal.html',
+            controller: 'AddFieldModalInstanceCtrl',
+            size: 'md',
+            resolve: {
+                getCars: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'car') ? $scope.objects : {};</span>
+                },
+                getDrivers: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'driver' ? $scope.objects : {});</span>
+                },
+                getProspects: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (objectType === 'prospect' ? $scope.objects : {});  </span>
+                },
+                getAssets: <span class="fstat-no" title="function not covered" >function(dataService) {</span>
+<span class="cstat-no" title="statement not covered" >                    return {</span>
+                        data: (objectType === 'asset' ? $scope.objects : {}),
+                        type: assetType || null
+                    };
+                },
+                objectType: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return objectType;</span>
+                },
+                assetType: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                    return objectType === 'asset' ? assetType : null;</span>
+                }
+            }
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (newField) {</span></span>
+<span class="cstat-no" title="statement not covered" >            console.log(newField);</span>
+<span class="cstat-no" title="statement not covered" >            $scope.fields.push(newField.name);</span>
+<span class="cstat-no" title="statement not covered" >            $scope.formData[newField.name] = newField.data;</span>
+<span class="cstat-no" title="statement not covered" >            $state.forceReload();</span>
+        }, <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >            $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >            console.log('Modal dismissed at: ' + new Date());</span>
+        });
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 27 2016 20:33:42 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

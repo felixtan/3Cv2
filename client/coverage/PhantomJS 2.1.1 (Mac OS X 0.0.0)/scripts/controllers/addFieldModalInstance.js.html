@@ -1,0 +1,1790 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/controllers/addFieldModalInstance.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">scripts/controllers/</a> addFieldModalInstance.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">87.72% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>250/285</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.19% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>115/135</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.26% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>36/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">88.93% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>249/280</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">75×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">59×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc function
+ * @name clientApp.controller:AddfieldmodalinstanceCtrl
+ * @description
+ * # AddfieldmodalinstanceCtrl
+ * Controller of the clientApp
+ */
+angular.module('clientApp')
+  .controller('AddFieldModalInstanceCtrl', function ($window, assetType, objectType, $q, $state, getAssets, getCars, getDrivers, getProspects, $scope, $modalInstance, dataService) {
+&nbsp;
+    var _ = $window._;
+    var ctrl = this;
+    $scope.formData = {};
+    $scope.objects = [];
+    $scope.update = null;
+    $scope.fields = [];
+    $scope.expressionFieldSelect = { value: null };
+    $scope.expressionConstantInput = { value: null };
+    $scope.objectType = objectType;
+    $scope.assetType = null;
+&nbsp;
+    // Inequalities
+    $scope.rightSide = false;
+&nbsp;
+    ctrl.testExpressionItems = [];
+    $scope.validExpression = true;      // this will depend on results from mexp
+    ctrl.testExpression = "";       // passed into mexp for validation, fields will be replaced with 1
+    $scope.expressionErrorMessage = null;
+    ctrl.rightTestExpressionItems = [];
+    ctrl.leftTestExpressionItems = [];
+    $scope.validFieldsForExpressions = [];
+&nbsp;
+    ctrl.setValidFieldsForExpressions = <span class="fstat-no" title="function not covered" >function(objectData) {</span>
+        // only numbers
+        // neglect the field in questions or else shit gets recursive
+        // console.log(objectData);
+<span class="cstat-no" title="statement not covered" >        var keys = Object.keys(objectData);</span>
+<span class="cstat-no" title="statement not covered" >        $scope.validFieldsForExpressions = _.filter(keys, <span class="fstat-no" title="function not covered" >function(key) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return ((objectData[key].dataType === 'number'));</span>
+        });
+    };
+&nbsp;
+    /*
+      Type of field     Data type 
+      -------------     ---------
+      text              text
+      number            number
+      boolean           boolean
+      function          number
+      inequality        boolean
+    */
+&nbsp;
+    $scope.field = {  // when this value changes, the UI dynamically changes
+      name: null,
+      type: null,
+      dataType: null,
+      expressionItems: [],
+      expression: '',
+      inequalitySign: '',             // for displaying the inequality to client
+      inequalitySignId: null,
+      leftExpressionItems: [],
+      leftExpression: '',
+      rightExpressionItems: [],
+      rightExpression: ''
+    };
+&nbsp;
+    $scope.setInequalitySign = function(signId) {
+      switch(parseInt(signId)) {
+        case 0:
+          // $scope.field.inequalitySign = '&gt;';      // might want to use html codes instead
+          $scope.field.inequalitySign = "&gt;";
+          $scope.field.inequalitySignId = 0;
+          break;
+        case 1:
+          $scope.field.inequalitySign = '≥';
+          $scope.field.inequalitySignId = 1;
+          break;
+        case 2:
+          $scope.field.inequalitySign = '&lt;';
+          $scope.field.inequalitySignId = 2;
+          break;
+        case 3:
+          $scope.field.inequalitySign = '≤';
+          $scope.field.inequalitySignId = 3;
+          break;
+        default:
+          $scope.field.inequalitySign = undefined;
+          break;
+      }
+    };
+&nbsp;
+    $scope.setDataType = function(field) {
+      $scope.clearExpression();
+      // setTimeout(function() {
+      switch(field) {
+        case "text":
+          $scope.field.dataType = "text";
+          break;
+        case "number":
+          $scope.field.dataType = "number";
+          break;
+        case "boolean":
+          $scope.field.dataType = "boolean";
+          break;
+        case "function":
+          $scope.field.dataType = "number";
+          break;
+        case "inequality":
+          $scope.field.dataType = "boolean";
+          break;
+        default:
+          $scope.field.dataType = undefined;
+          break;
+      }
+      // }, 1000);
+    };
+&nbsp;
+    $scope.invalidFieldType = function() {
+      return (($scope.field.type === null) || (typeof $scope.field.type === 'undefined') || ($scope.field.dataType === null) || (typeof $scope.field.dataType === 'undefined'));
+    };
+&nbsp;
+    /*
+      Type of items     Additonal actions 
+      -------------     -----------------
+      operator          ?
+      constant          none
+      field             replace with 1 for testExpression
+    */
+    $scope.appendItemToFunction = function(item, typeOfItem) {
+      var _testExpressionItems_ = [];
+&nbsp;
+      if($scope.field.type === 'function') {
+        $scope.field.expressionItems.push({ type: typeOfItem, value: item });
+        _testExpressionItems_ = ctrl.testExpressionItems;
+        // console.log(_testExpressionItems_);
+      } else {
+        if($scope.rightSide) {
+          $scope.field.rightExpressionItems.push({ type: typeOfItem, value: item });
+          _testExpressionItems_ = ctrl.rightTestExpressionItems;
+        } else {
+          $scope.field.leftExpressionItems.push({ type: typeOfItem, value: item });
+          _testExpressionItems_ = ctrl.leftTestExpressionItems;
+        }
+      }
+&nbsp;
+      // validation
+      ctrl.validate(_testExpressionItems_, typeOfItem, item);
+&nbsp;
+      // console.log(ctrl.testExpression);
+      // console.log(testExpressionItems);
+      
+      // resetting
+      $scope.expressionFieldSelect.value = null;
+      $scope.expressionConstantInput.value = null;
+    };
+&nbsp;
+    // see if can work with only _testExpressionItems_
+    ctrl.validate = function(_testExpressionItems_, typeOfNewItem, newItem) {
+      // console.log(_testExpressionItems_);
+      // console.log(typeOfItem);
+      // console.log(item);
+      ctrl.firstStageValidation(_testExpressionItems_, typeOfNewItem, newItem).then(function(result1) {
+        // console.log(result1);
+        ctrl.displayExpression().then(function() {
+          ctrl.buildTestExpression(result1._testExpressionItems_).then(function() {
+            // console.log(mockTestExpression);
+            if(result1.valid) {
+              // call second stage
+                // console.log(result1.valid);
+                // console.log('testExpression:', ctrl.testExpression);
+                $scope.validExpression = true;  
+                ctrl.validateExpression();
+            } else {  
+              // don't call second stage
+            }
+          });
+        });
+      });
+    };
+&nbsp;
+    ctrl.firstStageValidation = function(_testExpressionItems_, typeOfItem, item) {
+      var deferred = $q.defer();
+      $scope.validExpression = true;
+&nbsp;
+      if(_testExpressionItems_.length) {
+        // validate before pushing
+        if(typeOfItem === 'field' || typeOfItem === 'constant') {
+          if(_testExpressionItems_[_testExpressionItems_.length-1].type !== 'operator') {
+            // should fix 2mileage problem; not the first item and last item isnt an operator -&gt; invalid
+            _testExpressionItems_.push({ type: typeOfItem, value: item });    // this should render the expression invalid according to first stage validation
+            $scope.validExpression = false;
+            $scope.expressionErrorMessage = "Missing operator before " + typeOfItem + " " + item;
+          } else {
+            // not the first item and last item is an operator -&gt; ok
+            if(typeOfItem === 'field') {
+              _testExpressionItems_.push({ type: typeOfItem, value: '1' });  
+            } else {
+              // it's a constant
+              _testExpressionItems_.push({ type: typeOfItem, value: item });  
+            }
+          }
+        } else {
+          // it's an operator -&gt; ok
+          _testExpressionItems_.push({ type: typeOfItem, value: item });
+        }
+      } else {
+        if(typeOfItem === 'field') {
+          _testExpressionItems_.push({ type: typeOfItem, value: '1' });  
+        } else {
+          _testExpressionItems_.push({ type: typeOfItem, value: item });  
+        }
+      }
+&nbsp;
+      deferred.resolve({ _testExpressionItems_: _testExpressionItems_, valid: $scope.validExpression });
+      deferred.reject(new Error('Error in first stage validation of expression'));
+      return deferred.promise;
+    };
+&nbsp;
+    ctrl.validateExpression = function() {
+      $scope.expressionErrorMessage = undefined;
+      // console.log('blank?', $scope.$eval(""));
+      try {
+        $scope.$eval(ctrl.testExpression);
+      } catch(e){
+        // console.error(e);
+        $scope.validExpression = false;
+        $scope.expressionErrorMessage = e.message;
+      }
+    };
+&nbsp;
+    ctrl.buildTestExpression = function(_testExpressionItems_) {
+      var deferred = $q.defer();
+      ctrl.testExpression = "";
+      _.each(_testExpressionItems_, function(item) {
+        // console.log(item.value);
+        ctrl.testExpression = ctrl.testExpression + item.value;
+      });
+      deferred.resolve(ctrl.testExpression);
+      deferred.reject(new Error('Error building test expression'));
+      return deferred.promise;
+    };
+&nbsp;
+    ctrl.displayExpression = function() {
+      var deferred = $q.defer();
+&nbsp;
+      if($scope.field.type === 'function') {
+        $scope.field.expression = "";
+        deferred.resolve(_.each($scope.field.expressionItems, function(item) {
+          $scope.field.expression = $scope.field.expression + item.value;
+        }));
+      } else {
+        if($scope.rightSide) {
+          $scope.field.rightExpression = "";
+          deferred.resolve(_.each($scope.field.rightExpressionItems, function(item) {
+            $scope.field.rightExpression += item.value;
+          }));
+        } else {
+          $scope.field.leftExpression = "";
+          deferred.resolve(_.each($scope.field.leftExpressionItems, function(item) {
+            $scope.field.leftExpression += item.value;
+          }));
+        }
+      }
+&nbsp;
+      deferred.reject(new Error('Error getting display expression'));
+      return deferred.promise;
+    };
+&nbsp;
+    $scope.undoExpression = function() {
+      var item = {};
+      var _testExpressionItems_ = [];
+&nbsp;
+      if($scope.field.type === 'function') {
+        _testExpressionItems_ = ctrl.testExpressionItems;
+        item = $scope.field.expressionItems.pop();
+      } else {
+        if($scope.rightSide) {
+          _testExpressionItems_ = ctrl.rightTestExpressionItems;
+          item = $scope.field.rightExpressionItems.pop();
+        } else {
+          _testExpressionItems_ = ctrl.leftTestExpressionItems;
+          item = $scope.field.leftExpressionItems.pop();
+        }
+      }
+&nbsp;
+      _testExpressionItems_.pop();
+      // console.log('removed:', item);
+      
+      ctrl.firstStageValidate_Undo().then(function(validExpression) {
+        ctrl.displayExpression().then(function() {
+          ctrl.buildTestExpression(_testExpressionItems_).then(function() {
+            // console.log(mockTestExpression);
+            <span class="missing-if-branch" title="else path not taken" >E</span>if(validExpression) {
+              // call second stage
+                // console.log('testExpression:', ctrl.testExpression);
+                $scope.validExpression = true;  
+                ctrl.validateExpression();
+            } else {  
+              // don't call second stage
+            }
+          });
+        });
+      });
+    };
+&nbsp;
+    ctrl.firstStageValidate_Undo = function() {
+      var deferred = $q.defer();
+      var lastItem; 
+      var _testExpressionItems_ = [];
+&nbsp;
+      if($scope.field.type === 'function') {
+          _testExpressionItems_ = ctrl.testExpressionItems;        
+      } else {
+        if($scope.rightSide) {
+          _testExpressionItems_ = ctrl.rightTestExpressionItems;
+        } else {
+          _testExpressionItems_ = ctrl.leftTestExpressionItems;
+        }
+      }
+       
+      $scope.validExpression = true;
+      if(_testExpressionItems_.length &gt; 1) {
+        lastItem = _testExpressionItems_[_testExpressionItems_.length-1]; 
+        if(lastItem.type === 'field' || lastItem.type === 'constant') {
+          var previousItem = _testExpressionItems_[_testExpressionItems_.length-2];
+          if(previousItem.type !== 'operator') {
+            $scope.validExpression = false;
+            $scope.expressionErrorMessage = "Missing operator before " + previousItem.type + " " + previousItem.value;
+          }
+        }  
+      }
+&nbsp;
+      deferred.resolve($scope.validExpression);
+      deferred.reject(new Error('Error during first stage validation after undo'));
+      return deferred.promise;
+    };
+&nbsp;
+    $scope.clearExpression = function() {
+      ctrl.testExpression = "";
+      $scope.field.expression = "";
+      $scope.field.expressionItems = [];
+      ctrl.testExpressionItems = [];
+      $scope.field.leftExpressionItems = [];
+      $scope.field.leftExpression = "";
+      $scope.field.rightExpressionItems = [];
+      $scope.field.rightExpression = "";
+      $scope.field.inequalitySign = "";
+      $scope.field.inequalitySignId = null;
+      $scope.validExpression = true;
+      $scope.expressionErrorMessage = undefined;
+      ctrl.rightTestExpressionItems = [];
+      ctrl.leftTestExpressionItems = [];
+    };
+&nbsp;
+    if(objectType === 'car') {
+      // console.log("add field modal called from carProfile");
+      $scope.update = dataService.updateCar;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if(typeof getCars !== 'undefined' &amp;&amp; getCars.length &gt; 0) <span class="cstat-no" title="statement not covered" >$scope.objects = getCars;</span>
+    } else if(objectType === 'driver') {
+      // console.log("add field modal called from driverProfile");
+      $scope.update = dataService.updateDriver;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if(typeof getDrivers !== 'undefined' &amp;&amp; getDrivers.length &gt; 0) <span class="cstat-no" title="statement not covered" >$scope.objects = getDrivers;</span>
+    } else if(objectType === 'prospect') {
+      // console.log("add field modal called from prospectProfile");
+      $scope.update = dataService.updateProspect;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if(typeof getProspects !== 'undefined' &amp;&amp; getProspects.length &gt; 0) <span class="cstat-no" title="statement not covered" >$scope.objects = getProspects;</span>
+    } else if(objectType === 'asset') {
+      // console.log("add field modal called from assetProfile");
+      $scope.update = dataService.updateAsset;
+      $scope.assetType = getAssets.type;
+      var assetsOfType = _.filter(getAssets, function(asset) { return asset.assetType === $scope.assetType; });
+      <span class="missing-if-branch" title="if path not taken" >I</span>if(assetsOfType !== 'undefined' &amp;&amp; assetsOfType.length &gt; 0) <span class="cstat-no" title="statement not covered" >$scope.objects = assetsOfType;</span>
+    } else {
+      $state.go('dashboard.cars');
+    }
+&nbsp;
+    //
+    // General post-processing regardless of object
+    ////////////////////////////////////////////////
+    <span class="missing-if-branch" title="if path not taken" >I</span>if($scope.objects.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >      $scope.fields = Object.keys($scope.objects[0].data);</span>
+<span class="cstat-no" title="statement not covered" >      ctrl.setValidFieldsForExpressions($scope.objects[0].data); </span>
+      // console.log('setting fields', $scope.validFieldsForExpressions);
+    }
+    ////////////////////////////////////////////
+&nbsp;
+    ctrl.createNewFieldData = function(field) {
+      var deferred = $q.defer();
+&nbsp;
+      if(field.type === 'function') {
+        deferred.resolve({
+          value: null,
+          log: $scope.formData.log || false,
+          dataType: field.dataType,
+          type: field.type,
+          expressionItems: field.expressionItems
+        });
+      } else if(field.type === 'inequality') {
+        deferred.resolve({
+          value: null,
+          log: $scope.formData.log || false,
+          dataType: field.dataType,
+          type: field.type,
+          leftExpressionItems: field.leftExpressionItems,
+          rightExpressionItems: field.rightExpressionItems,
+          inequalitySignId: field.inequalitySignId
+        });
+      } else {
+        deferred.resolve({
+          value: null,
+          log: $scope.formData.log || false,
+          dataType: field.dataType,
+          type: field.type
+        });
+      }
+      
+      deferred.reject(new Error('Error creating new field data'));
+      return deferred.promise;
+    };
+&nbsp;
+    ctrl.appendNewFieldToObject = function(fieldName, fieldDataObj, object) {
+      object.data[fieldName] = fieldDataObj;
+      return object;
+    };
+&nbsp;
+    ctrl.evaluateInequalityValue = function(leftExpressionValue, rightExpressionValue) {
+      var value = null;
+&nbsp;
+      if($scope.field.inequalitySignId === 0) {
+        // console.log(leftExpressionValue + ' &gt; ' + rightExpressionValue);
+        value = (leftExpressionValue &gt; rightExpressionValue) ? <span class="branch-0 cbranch-no" title="branch not covered" >true </span>: false;
+      } else if ($scope.field.inequalitySignId === 1) {
+        // console.log(leftExpressionValue + ' &gt;= ' + rightExpressionValue);
+        value = (leftExpressionValue &gt;= rightExpressionValue) ? true : <span class="branch-1 cbranch-no" title="branch not covered" >false;</span>
+      } else if ($scope.field.inequalitySignId === 2) {
+        // console.log(leftExpressionValue + ' &lt; ' + rightExpressionValue);
+        value = (leftExpressionValue &lt; rightExpressionValue) ? <span class="branch-0 cbranch-no" title="branch not covered" >true </span>: false;
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>if ($scope.field.inequalitySignId === 3) {
+        // console.log(leftExpressionValue + ' &lt;= ' + rightExpressionValue);
+        value = (leftExpressionValue &lt;= rightExpressionValue) ? true : <span class="branch-1 cbranch-no" title="branch not covered" >false;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        value = undefined;</span>
+<span class="cstat-no" title="statement not covered" >        throw "Error: Invalid inequality sign id";</span>
+      }
+&nbsp;
+      return value;
+    };
+&nbsp;
+    $scope.inequalityIsComplete = function() {
+      /* conditions 
+        1. rightExpressionItems.length &gt; 1  
+        2. rightExpression is valid
+        3. leftExpressionItems.length &gt; 1  
+        4. leftExpression is valid
+        5. inequalitySign is not null or undefined
+      */
+&nbsp;
+      // 2 and 3 are handled during expression creation so here
+      // we just handle 1, 4, 5
+      if($scope.field.type === 'inequality') {
+        return (($scope.field.rightExpressionItems.length &gt; 0) &amp;&amp; ($scope.field.leftExpressionItems.length &gt; 0) &amp;&amp; ($scope.field.inequalitySignId !== null) &amp;&amp; (typeof $scope.field.inequalitySignId !== 'undefined'));  
+      } else {
+        return true;
+      }      
+    };
+&nbsp;
+    $scope.emptyExpression = function() {
+      if($scope.field.type === 'function') {
+        return ($scope.field.expressionItems.length &gt; 0) ? false : true;
+      } else if($scope.field.type === 'inequality') {
+        return (($scope.field.leftExpressionItems.length &gt; 0) &amp;&amp; ($scope.field.rightExpressionItems.length &gt; 0) &amp;&amp; (<span class="branch-2 cbranch-no" title="branch not covered" >$scope.field.inequalitySignId !== null)</span> &amp;&amp; (<span class="branch-3 cbranch-no" title="branch not covered" >typeof $scope.field.inequalitySignId !== 'undefined')</span>) ? <span class="branch-0 cbranch-no" title="branch not covered" >false </span>: true;
+      } else {
+        return false;
+      }
+    };
+&nbsp;
+    $scope.submit = function() {
+      // ctrl.updateObjects().then(function() {
+        // console.log(updatedObjects);
+        // $scope.ok($scope.field);
+      // });
+&nbsp;
+      ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if($scope.objects.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >          if($scope.field.type === 'function') {</span>
+<span class="cstat-no" title="statement not covered" >            _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(object) {</span></span>
+<span class="cstat-no" title="statement not covered" >              ctrl.evaluateExpression(object, $scope.field.expressionItems).then(<span class="fstat-no" title="function not covered" >function(expressionValue) {</span></span>
+                // console.log(expressionValue);
+<span class="cstat-no" title="statement not covered" >                  fieldDataObj.value = expressionValue;</span>
+<span class="cstat-no" title="statement not covered" >                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);</span>
+                  // console.log('object to update:', objectToUpdate);
+<span class="cstat-no" title="statement not covered" >                  $scope.update(objectToUpdate);</span>
+              });
+            });
+          } else <span class="cstat-no" title="statement not covered" >if($scope.field.type === 'inequality') {</span>
+<span class="cstat-no" title="statement not covered" >            _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(object) {</span></span>
+<span class="cstat-no" title="statement not covered" >              ctrl.evaluateExpression(object, $scope.field.leftExpressionItems).then(<span class="fstat-no" title="function not covered" >function(leftExpressionValue) {</span></span>
+<span class="cstat-no" title="statement not covered" >                ctrl.evaluateExpression(object, $scope.field.rightExpressionItems).then(<span class="fstat-no" title="function not covered" >function(rightExpressionValue) {</span></span>
+<span class="cstat-no" title="statement not covered" >                  leftExpressionValue = parseFloat(leftExpressionValue);</span>
+<span class="cstat-no" title="statement not covered" >                  rightExpressionValue = parseFloat(rightExpressionValue);</span>
+<span class="cstat-no" title="statement not covered" >                  fieldDataObj.value = ctrl.evaluateInequalityValue(leftExpressionValue, rightExpressionValue);</span>
+<span class="cstat-no" title="statement not covered" >                  var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);</span>
+<span class="cstat-no" title="statement not covered" >                  $scope.update(objectToUpdate);</span>
+                });
+              });
+            });
+          } else {
+<span class="cstat-no" title="statement not covered" >            _.each($scope.objects, <span class="fstat-no" title="function not covered" >function(object) {</span></span>
+<span class="cstat-no" title="statement not covered" >              var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);</span>
+<span class="cstat-no" title="statement not covered" >              $scope.update(objectToUpdate);</span>
+            });
+          }
+        }
+&nbsp;
+        $scope.ok(fieldDataObj, $scope.field.name);
+      });
+    };
+&nbsp;
+    $scope.reset = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >      $scope.formData = {};</span>
+<span class="cstat-no" title="statement not covered" >      $scope.form.$setPristine();</span>
+<span class="cstat-no" title="statement not covered" >      $scope.form.$setUntouched();</span>
+<span class="cstat-no" title="statement not covered" >      $state.forceReload();</span>
+    };
+&nbsp;
+    $scope.ok = function(newFieldObject, newFieldName) {
+      $state.forceReload();
+      $modalInstance.close({ 
+        name: newFieldName,
+        obj: newFieldObject
+      });
+    };
+&nbsp;
+    $scope.close = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        $state.forceReload();</span>
+<span class="cstat-no" title="statement not covered" >        $modalInstance.dismiss('cancel');</span>
+    };
+&nbsp;
+    // build expression
+    ctrl.buildExpression = function(object, expressionItems) {
+        var deferred = $q.defer();
+        var expression = "";
+&nbsp;
+        _.each(expressionItems, function(item) {
+            if(item.type === 'field') {
+                expression += object.data[item.value].value;
+            } else {
+                expression += item.value;
+            }
+        });
+&nbsp;
+        deferred.resolve(expression);
+        deferred.reject(new Error('Error building expression'));
+        return deferred.promise;
+    };
+&nbsp;
+    // evaluate expression
+    ctrl.evaluateExpression = function(object, expressionItems) {
+      var deferred = $q.defer();
+      ctrl.buildExpression(object, expressionItems).then(function(expression) {
+          // console.log(expression);
+          // console.log($scope.$eval(expression));
+          // return ((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : null);
+          // result = ((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : null);
+          deferred.resolve(((typeof parseFloat($scope.$eval(expression)) === 'number') ? $scope.$eval(expression) : <span class="branch-1 cbranch-no" title="branch not covered" >null)</span>);
+          deferred.reject(new Error('Error evaluating expression'));
+      });
+&nbsp;
+      // deferred.resolve(result);
+      // deferred.reject(new Error('Error evaluating expression'));
+      return deferred.promise;
+    };
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 27 2016 20:33:42 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

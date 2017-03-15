@@ -149,7 +149,7 @@
     </script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="scripts/ie10-viewport-bug-workaround.js"></script>
+    <script src="ie10-viewport-bug-workaround.js"></script>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -176,35 +176,39 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src='bower_components/angular-xeditable/dist/js/xeditable.min.js'></script>
-        <script src="scripts/app.js"></script>
-        <script src="scripts/services/dataservice.js"></script>
-        <script src="scripts/controllers/addfieldmodalinstance.js"></script>
-        <script src="scripts/services/carhelpers.js"></script>
-        <script src="scripts/services/underscore.js"></script>
-        <script src="scripts/services/driverhelpers.js"></script>
-        <script src="scripts/controllers/deleteobjmodal.js"></script>
-        <script src="scripts/controllers/deleteobjmodalinstance.js"></script>
-        <script src="scripts/controllers/deleteFieldModal.js"></script>
-        <script src="scripts/controllers/deleteFieldModalInstance.js"></script>
-        <script src="scripts/controllers/assignmentmodal.js"></script>
-        <script src="scripts/services/prospecthelpers.js"></script>
-        <script src="scripts/controllers/prospectstatusmodal.js"></script>
-        <script src="scripts/controllers/addobjectmodal.js"></script>
-        <script src="scripts/controllers/addobjectmodalinstance.js"></script>
-        <script src="scripts/controllers/assettypelogs.js"></script>
-        <script src="scripts/services/assethelpers.js"></script>
-        <script src="scripts/controllers/assettypemodal.js"></script>
-        <script src="scripts/controllers/editFieldModal.js"></script>
-        <script src="scripts/services/datepicker.js"></script>
-        <script src="scripts/controllers/objectsList.js"></script>
-        <script src="scripts/services/objectHelpers.js"></script>
-        <script src="scripts/controllers/objectData.js"></script>
-        <script src="scripts/controllers/objectLogs.js"></script>
-        <script src="scripts/controllers/objectsLogs.js"></script>
+        <script src="app.js"></script>
+        <script src="services/dataservice.js"></script>
+        <script src="services/underscore.js"></script>
+        <script src="services/datepicker.js"></script>
+
+        <script src="fields/addfieldmodalinstance.js"></script>
+        <script src="fields/deleteFieldModal.js"></script>
+        <script src="fields/deleteFieldModalInstance.js"></script>
+        <script src="fields/editFieldModal.js"></script>
+
+        <script src="objects/carhelpers.js"></script>
+        <script src="objects/driverhelpers.js"></script>
+        <script src="objects/deleteobjmodal.js"></script>
+        <script src="objects/deleteobjmodalinstance.js"></script>
+        <script src="objects/prospecthelpers.js"></script>
+        <script src="objects/prospectstatusmodal.js"></script>
+        <script src="objects/addobjectmodal.js"></script>
+        <script src="objects/addobjectmodalinstance.js"></script>
+        <script src="objects/assethelpers.js"></script>
+        <script src="objects/assettypemodal.js"></script>
+        <script src="objects/objectsList.js"></script>
+        <script src="objects/objectHelpers.js"></script>
+        <script src="objects/objectData.js"></script>
+        <script src="objects/objectLogs.js"></script>
+        <script src="objects/objectsLogs.js"></script>
+
+        <script src="assignment/assignmentmodal.js"></script>
+
+        <script src="logs/assettypelogs.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->
-        <script src='/scripts/config.js'></script>
+        <script src='config.js'></script>
 
     <!-- math expression parser -->
     <!-- <script src="bower_components/math-expression-evaluator/dist/math-expression-evaluator.min.js"></script> -->
