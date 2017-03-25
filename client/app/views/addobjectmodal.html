@@ -37,7 +37,7 @@
             </select>
         </div>
 
-        <h4 id='fields-header' ng-show="expressions.length">Fields</h4>
+        <!-- <h4 id='fields-header' ng-show="expressions.length">Fields</h4> -->
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
             <label>Organize {{  assetType.value || objectType }}<span ng-if='!formData.assetType'></span> with this identifier</label>
 
@@ -85,21 +85,6 @@
             </p>
         </div>
     </form>
-    <!-- {{ formData }} -->
-    <!-- Show expressions -->
-    <div ng-show='expressions.length > 0'>
-        <h4 id='expression-header'>Expressions</h4>
-        <div ng-repeat='expression in expressions'>
-            <h5>
-                <span><strong>{{ ::expression.field }}:</strong></span>
-                <span>{{ ::expression.expression }}</span>
-            </h5>
-        </div>
-    </div>
-
-    <!-- <div>
-        {{ formData }}
-    </div>  -->
 </div>
 
 <div class="modal-footer">

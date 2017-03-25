@@ -46,18 +46,18 @@
         <div class='form-group' ng-if='field.type === "boolean"'>
             <label for='fieldValue'>Value</label>
             <br>
-            <input bs-switch 
+            <input bs-switch
                 ng-model='field.value'
-                type="checkbox" 
+                type="checkbox"
                 switch-on-text="Yes"
-                switch-off-text="No" 
-                switch-label="" 
-                switch-inverse='true' 
-                switch-off-color='primary'  
-                class='boolean-field-switch' 
-                id='{{ ::field.name }}' 
-                name='booleanField' 
-                data-dataType='{{ ::field.dataType }}' 
+                switch-off-text="No"
+                switch-label=""
+                switch-inverse='true'
+                switch-off-color='primary'
+                class='boolean-field-switch'
+                id='{{ ::field.name }}'
+                name='booleanField'
+                data-dataType='{{ ::field.dataType }}'
                 data-fieldType='{{ ::field.type }}' >
                 <!-- {{ formData[field].value }} -->
         </div>
@@ -65,119 +65,40 @@
         <div class='form-group' ng-if='loggable(field.name)'>
             <label for='logValue'>Log?</label>
             <br>
-            <input bs-switch 
+            <input bs-switch
                 ng-model='field.log'
-                type="checkbox" 
+                type="checkbox"
                 switch-on-text="Yes"
-                switch-off-text="No" 
-                switch-label="" 
-                switch-inverse='true' 
-                switch-off-color='primary'  
-                class='boolean-field-switch' 
-                id='{{ ::field.name }}' 
-                name='logValue' 
-                data-dataType='{{ ::field.dataType }}' 
-                data-fieldType='{{ ::field.type }}' 
-                switch-active='{{ validExpression.value }}' 
+                switch-off-text="No"
+                switch-label=""
+                switch-inverse='true'
+                switch-off-color='primary'
+                class='boolean-field-switch'
+                id='{{ ::field.name }}'
+                name='logValue'
+                data-dataType='{{ ::field.dataType }}'
+                data-fieldType='{{ ::field.type }}'
+                switch-active='{{ validExpression.value }}'
                 ng-change="logValueChanged.value = !logValueChanged.value" >
         </div>
 
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
             <label>Identify {{  object.assetType.value || objectType }}<span ng-if='!object.assetType.value'>s</span> with this field</label>
             <br>
-            <input bs-switch 
+            <input bs-switch
                 ng-model='field.identifier'
-                type="checkbox" 
+                type="checkbox"
                 switch-on-text="Yes"
-                switch-off-text="No" 
-                switch-label="" 
-                switch-inverse='true' 
-                switch-off-color='primary'  
-                class='boolean-field-switch' 
-                id='{{ ::field.name }}' 
-                name='identifierValue' 
-                data-dataType='{{ ::field.dataType }}' 
-                data-fieldType='{{ ::field.type }}' 
+                switch-off-text="No"
+                switch-label=""
+                switch-inverse='true'
+                switch-off-color='primary'
+                class='boolean-field-switch'
+                id='{{ ::field.name }}'
+                name='identifierValue'
+                data-dataType='{{ ::field.dataType }}'
+                data-fieldType='{{ ::field.type }}'
                 switch-active='{{ !field.identifier }}' >
-        </div>
-
-        <div class='form-group' ng-if='field.type === "function" || field.type === "inequality"'>
-            <div class='well'>
-                <h4 ng-if='field.type === "function"'>Function</h4>
-                <h4 ng-if='field.type === "inequality"'>Inequality</h4><br>
-
-                <h5 class='expression' ng-if='field.type === "function"'>{{ field.expression }}</h5>
-                <h5 class='expression' ng-if='field.type === "inequality"'>{{ field.leftExpression }} {{ displayInequalitySign(field.inequalitySignId) }} {{ field.rightExpression }}</h5>
-                <br>
-
-                <div class='input-group' ng-if='field.type === "inequality"'>
-                    <input bs-switch 
-                        ng-model="rightSide.value" 
-                        type="checkbox" 
-                        switch-on-text="Right"
-                        switch-off-text="Left" 
-                        switch-label="Side" 
-                        switch-inverse='true' 
-                        switch-off-color='primary'
-                        switch-active='{{ validExpression.value }}' 
-                        id='inequality-side-switch' 
-                        ng-change='buildAndValidateExpression()' >
-                </div><br>
-
-                <div class='btn-toolbar' role='toolbar'>
-
-                    <button id='add-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("+", "operator")'>+</button>
-
-                    <button id='sub-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("-", "operator")'>-</button>
-                    
-                    <button id='mult-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("*", "operator")'>*</button>
-
-                    <button id='div-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("/", "operator")'>/</button>
-
-                    <button id='open-parens-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction("(", "operator")'>(</button>
-
-                    <button id='close-parens-operator' class='btn btn-warning operator' type='button' ng-click='appendItemToFunction(")", "operator")'>)</button>
-
-                    <div class='undoAndClear'>
-                        <button class='btn btn-primary undo' type='button' ng-click='undoExpression()'>Undo</button>
-                        <button class='btn btn-danger clear' type='button' ng-click='clearExpression()'>Clear</button>
-                    </div>
-                </div><br>
-
-                <div ng-if='field.type === "inequality"'>
-                    <label>
-                        Sign
-                    </label>
-                    <select class='form-control' ng-model='field.inequalitySignId' ng-change='setInequalitySign()'>
-                        <option class='inequality-sign-opt' value='0'>&gt; Greater Than</option>
-                        <option class='inequality-sign-opt' value='1'>&ge; Greater Than or Equal To</option>
-                        <option class='inequality-sign-opt' value='2'>&lt; Less Than</option>
-                        <option class='inequality-sign-opt' value='3'>&le; Less Than or Equal To</option>
-                    </select><br>
-                </div>
-
-                <label>
-                    Constant
-                    <i class="fa fa-question-circle" tooltip='Add a constant number to the function'></i>
-                </label>
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button id='add-const' class="btn" type="button" ng-click='appendItemToFunction(expressionConstantInput.value, "constant")' ng-disabled='form.functionConst.$dirty && form.functionConst.$invalid'>+</button>
-                    </span>
-                    <input name='functionConst' type="text" class="form-control" ng-model='expressionConstantInput.value' ng-pattern="/^[0-9]\d*(\.\d+)?$/">
-                    <!-- regex patterns for constant -->
-                    <!-- ^[1-9]\d*(\.\d+)?$ -->
-                    <!-- /^[0-9]*$/ -->
-                </div><br><!-- /input-group -->
-
-                <label>
-                    Fields
-                    <i class="fa fa-question-circle" tooltip='Add an existing field to the function'></i>
-                </label>
-                <select class='form-control' ng-model='expressionFieldSelect.value' ng-change='appendItemToFunction(expressionFieldSelect.value, "field")'>
-                    <option ng-repeat='field in validFieldsForExpressions' value='{{ ::field }}'>{{ ::field }}</option>
-                </select>
-            </div>
         </div>
 
         <div ng-messages="form.fieldName.$error" ng-show='form.fieldName.$invalid' class="alert alert-danger" role="alert">
@@ -187,34 +108,6 @@
                     <li>be alphanumeric</li>
                     <li>contain no special characters except _</li>
                     <li>contain no spaces</li>
-                </ul>
-            </div>
-        </div>
-
-        <div ng-messages="form.functionConst.$error" ng-show='form.functionConst.$dirty && form.functionConst.$invalid' class="alert alert-danger" role="alert">
-            <div>
-                Constant must
-                <ul>
-                    <li>be a number</li>
-                    <li>include at least one digit following a decimal point</li>
-                </ul>
-            </div>
-        </div>
-        <!-- {{ validExpression }} -->
-        <div ng-if='!validExpression.value' class="alert alert-danger" role="alert">
-            <div id='expression-error-message' ng-if='expressionErrorMessage'>
-                <h4>Function error(s):</h4>
-                <ul>
-                    <li>{{ expressionErrorMessage }}</li>
-                </ul>
-            </div>
-            <br>
-            <div id='general-expression-rules'>
-                <h4>Function must</h4>
-                <ul>
-                    <li>not end or begin with a mathematical operator</li>
-                    <li>contain a mathematical operator between any two values</li>
-                    <li>not contain unclosed parentheses</li>
                 </ul>
             </div>
         </div>
@@ -236,17 +129,13 @@
 
 <div class="modal-footer" popover="Please change the identifier if you want to delete this field." popover-enable='field.identifier' popover-trigger='mouseenter' popover-placement='bottom-left'>
     <button class='btn btn-danger' type='button' ng-click='delete()' style='float: left;' ng-disabled='field.identifier'>DELETE</button>
-  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.fieldName.$invalid || form.numberField.$invalid || form.functionConst.$invalid || !validExpression.value || invalidFieldType() || !inequalityIsComplete() || emptyExpression() || fieldNameAlreadyExists()'>Submit</button>
+  <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.fieldName.$invalid || form.numberField.$invalid || invalidFieldType() || fieldNameAlreadyExists()'>Submit</button>
     <!-- {{ form.fieldName.$invalid }}
     {{ form.numberField.$invalid }}
-    {{ form.functionConst.$invalid }}
     {{ !validExpression.value }}
     {{ invalidFieldType() }}
-    {{ !inequalityIsComplete() }}
     {{ emptyExpression() }}
     {{ fieldNameAlreadyExists() }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>
-
-
