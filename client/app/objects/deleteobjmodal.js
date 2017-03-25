@@ -13,7 +13,7 @@
       function ($scope, $uibModal) {
 
       $scope.open = function (id) {
-        console.log(id)
+        // console.log(id);
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/deleteobjmodal.html',

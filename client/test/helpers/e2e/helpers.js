@@ -1,21 +1,21 @@
 "use strict";
 
 module.exports = {
-    getCarProfileLinks,
-    randomCarIndex,
-    getRandomCarProfileLink,
-    getFieldTypeRadios,
-    getEditBtnByField,
-    randomFieldEdit,
-    getFieldColText,
-    getValueColText,
-    getLogColValue,
-    getIdColValue,
-    getFieldLabel,
-    getFieldInput,
+    getCarProfileLinks        : getCarProfileLinks,
+    randomCarIndex            : randomCarIndex,
+    getRandomCarProfileLink   : getRandomCarProfileLink,
+    getFieldTypeRadios        : getFieldTypeRadios,
+    getEditBtnByField         : getEditBtnByField,
+    randomFieldEdit           : randomFieldEdit,
+    getFieldColText           : getFieldColText,
+    getValueColText           : getValueColText,
+    getLogColValue            : getLogColValue,
+    getIdColValue             : getIdColValue,
+    getFieldLabel             : getFieldLabel,
+    getFieldInput             : getFieldInput,
 };
 
-let elems = require("./elems.js");
+var elems = require("./elems.js");
 
 // add object modal
 function getFieldLabel (fieldName) {
@@ -43,7 +43,7 @@ function getCarProfileLinks () {
 };
 
 function randomCarIndex () {
-    let cars = element.all(by.repeater("car in simpleCars"));
+    var cars = element.all(by.repeater("car in simpleCars"));
     return cars.count().then(function(numberOfCars) {
             return Math.floor(Math.random() * numberOfCars);
     });
@@ -70,7 +70,7 @@ function getEditBtnByField (fieldName) {
 }
 
 function randomFieldEdit () {
-    let editBtns = element.all(by.buttonText("Edit"));
+    var editBtns = element.all(by.buttonText("Edit"));
     return editBtns.count().then(function(numberOfFields) {
         return Math.floor(Math.random() * numberOfFields);
     });

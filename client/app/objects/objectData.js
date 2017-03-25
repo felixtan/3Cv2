@@ -1,18 +1,11 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc function
-   * @name clientApp.controller:CardataCtrl
-   * @description
-   * # CardataCtrl
-   * Controller of the clientApp
-   */
   angular.module('clientApp')
     .controller('ObjectDataCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'driverHelpers', 'carHelpers', '$q', '$state', '$scope', '$uibModal',
       function(_, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $uibModal) {
 
-      var ctrl = this;        // for testing;
+      var ctrl = this;
       // ctrl.assetType = { value: null };
       $scope.objectType = objectType;
       $scope.carIdentifier = null;
@@ -21,7 +14,7 @@
           return thing !== null && typeof thing !== "undefined";
       };
 
-      ctrl.getObject = function () {
+      ctrl.getObjectById = function () {
           if($scope.objectType === 'car') {
               return carHelpers.getById;
           } else if($scope.objectType === 'driver') {
@@ -50,7 +43,7 @@
           }
       };
 
-      ctrl.getObject()(objectId).then(function(result1) {
+      ctrl.getObjectById()(objectId).then(function(result1) {
           // console.log(result1);
           if(typeof result1 !== 'undefined') { $scope.object = result1.data; }
           ctrl.assetType = $scope.object.assetType;
@@ -193,7 +186,7 @@
       };
 
       $scope.notStatus = function(field) {
-          return (field.toLowerCase() != "status");
+          return (field.toLowerCase() !== "status");
       };
 
       String.prototype.capitalizeIfStatus = function() {
@@ -201,7 +194,7 @@
       };
 
       $scope.notNameOrStatus = function(field) {
-          return ((field != "First Name") && (field != "Last Name") && (field !== "Name") && (field.toLowerCase() != "status"));
+          return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name") && (field.toLowerCase() !== "status"));
       };
 
       // If field exists in fields, then append "~" to front of field until the conflict is resolved.
@@ -217,9 +210,9 @@
           var uniqueToDriver = _.difference(driverFields, prospectFields)
 
           return {
-            inCommon,
-            uniqueToDriver,
-            uniqueToProspect
+            inCommon          : inCommon,
+            uniqueToDriver    : uniqueToDriver,
+            uniqueToProspect  : uniqueToProspect
           }
       };
 
@@ -295,17 +288,17 @@
           var deferred = $q.defer(),
               fields = fieldsUniqueToProspect;
 
-          driverHelpers.get().then(result => {
+          driverHelpers.get().then(function(result) {
               var drivers = result.data;
               // console.log(drivers);
               if(typeof drivers !== 'undefined' && drivers !== null) {
                   if(drivers.length > 0) {
-                      _.each(drivers, (driver, index, list) => {
+                      _.each(drivers, function(driver, index, list) {
                           // console.log(driver);
                           // console.log(index);
                           // console.log(list);
 
-                          _.each(fields, field => {
+                          _.each(fields, function(field) {
                               driver.data[field] = {
                                   value: null,
                                   log: false,
@@ -352,7 +345,7 @@
           var prospectData = _prospectData
           var partedFields = _partedFields
 
-          _.each(prospectData, (data, field) => {
+          _.each(prospectData, function(data, field) {
               // var temp = field.replace(/~/g, "");
               // console.log(temp);
 
@@ -385,12 +378,12 @@
               // console.log(prospectDataWithNoConflictingFields);
               var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
               // console.log(newDriverData);
-              driverHelpers.createDriver(newDriverData).then(newDriver => {
+              driverHelpers.createDriver(newDriverData).then(function(newDriver) {
                 if(newDriver.data.status) { delete newDriver.data.status; }
                 // console.log(newDriver);
-                objectHelpers.evaluateExpressions(newDriver).then(newDriverWithEvaluatedExpressions => {
+                objectHelpers.evaluateExpressions(newDriver).then(function(newDriverWithEvaluatedExpressions) {
                 // console.log(newDriverWithEvaluatedExpressions)
-                  driverHelpers.saveDriver(newDriver).then(() => {
+                  driverHelpers.saveDriver(newDriver).then(function() {
                     prospectHelpers.deleteProspect($scope.object.id);
                     $state.go('dashboard.prospects');
                   });

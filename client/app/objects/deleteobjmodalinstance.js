@@ -1,21 +1,15 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc function
-   * @name clientApp.controller:DeleteobjmodalinstanceCtrl
-   * @description
-   * # DeleteobjmodalinstanceCtrl
-   * Controller of the clientApp
-   */
   angular.module('clientApp')
     .controller('DeleteObjModalInstanceCtrl', ['id', 'dataService', '$scope', '$uibModalInstance', '$state',
       function (id, dataService, $scope, $uibModalInstance, $state) {
+
       $scope.input = null;
       $scope.objectType = null;
-      $scope.delete = function(id) { return; };
       $scope.postDeleteState = null;
-      console.log(id)
+      $scope.delete = null;
+
       // determine the state or ui calling this modal
       if(_.includes($state.current.name, 'driver')) {
           // console.log('called from driver ui');

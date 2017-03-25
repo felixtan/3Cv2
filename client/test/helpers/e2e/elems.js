@@ -1,6 +1,6 @@
 "use strict";
 
-let errorMsg,
+var errorMsg,
     existingFieldMsg,
     name,
     value,
@@ -30,7 +30,7 @@ let errorMsg,
     fieldRows,
     delBtn,
     delBtnFinal,
-    delInput, 
+    delInput,
     addDriver,
 
     // add object modal
@@ -72,7 +72,7 @@ assignDriver = element(by.buttonText("+ Driver"));
 submitField = element(by.id("submit-field"));
 submitObject = element(by.id("submit-object"));
 EC = protractor.ExpectedConditions;
-tabs = element.all(by.tagName("a")).filter(function(el, i) { 
+tabs = element.all(by.tagName("a")).filter(function(el, i) {
     return el.getAttribute("ng-click").then(function(value) {
         return value === "select()";
     });
@@ -88,40 +88,40 @@ delBtnFinal = element(by.id("delete-btn-final"));
 delInput = element(by.id("delete-confirmation"));
 
 module.exports = {
-    errorMsg,
-    existingFieldMsg,
-    name,
-    value,
-    log,
-    identifier,
-    constant,
-    addConst,
-    sign,
-    inequalitySignOpts,
-    gt,
-    ge,
-    lt,
-    le,
-    undo,
-    deleteField,
-    reset,
-    close,
-    plus,
-    switches,
-    submitField,
-    submitObject,
-    EC,
-    tabs,
-    addField,
-    assignDriver,
-    header,
-    fieldRows,
-    delBtn,
-    delInput,
-    delBtnFinal,
-    addDriver,
+    errorMsg            : errorMsg,
+    existingFieldMsg    : existingFieldMsg,
+    name                : name,
+    value               : value,
+    log                 : log,
+    identifier          : identifier,
+    constant            : constant,
+    addConst            : addConst,
+    sign                : sign,
+    inequalitySignOpts  :inequalitySignOpts,
+    gt                  : gt,
+    ge                  : ge,
+    lt                  : lt,
+    le                  : le,
+    undo                : undo,
+    deleteField         : deleteField,
+    reset               : reset,
+    close               : close,
+    plus                : plus,
+    switches            : switches,
+    submitField         : submitField,
+    submitObject        : submitObject,
+    EC                  : EC,
+    tabs                : tabs,
+    addField            : addField,
+    assignDriver        : assignDriver,
+    header              : header,
+    fieldRows           : fieldRows,
+    delBtn              : delBtn,
+    delInput            : delInput,
+    delBtnFinal         : delBtnFinal,
+    addDriver           : addDriver,
 
     // add object modal
-    fieldLabels,
-    fieldInputs,
+    fieldLabels         : fieldLabels,
+    fieldInputs         : fieldInputs,
  }

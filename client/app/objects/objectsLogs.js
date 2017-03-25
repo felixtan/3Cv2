@@ -1,13 +1,6 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc function
-   * @name clientApp.controller:CarstatuslogsCtrl
-   * @description
-   * # CarstatuslogsCtrl
-   * Controller of the clientApp
-   */
   angular.module('clientApp')
     .controller('ObjectsLogsCtrl', ['$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$q', '$scope', '$state', '_', '$window',
       function ($uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state, _, $window) {
@@ -68,7 +61,7 @@
 
               $scope.objects = result.data;
 
-              ctrl.getLogDates()().then(dates => {
+              ctrl.getLogDates()().then(function(dates) {
                 $scope.dates = dates
                 ctrl.getMostRecentLogDate()
               })
@@ -216,7 +209,7 @@
       // need to make this more efficient
       $scope.save = function(logDate) {
           // if($scope.invalidEntries.length === 0) {
-              let mostRecentLog = null;
+              var mostRecentLog = null;
               _.each($scope.objects, function(object) {
                   if ($scope.objectType !== 'asset') {
                       if (logDate === ctrl.mostRecentLogDate) {

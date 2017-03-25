@@ -5,19 +5,24 @@ describe('Controller: AddObjectModalCtrl', function () {
   // load the controller's module
   beforeEach(module('clientApp'));
 
-  var AddObjectModalCtrl,
-    scope;
+  var ctrl,
+      dataService,
+      $scope,
+      $state,
+      $uibModalMock;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    AddObjectModalCtrl = $controller('AddObjectModalCtrl', {
-      $scope: scope
-      // place here mocked dependencies
+  beforeEach(inject(function ($controller, $rootScope, _dataService_, _$state_) {
+    $scope = $rootScope.$new();
+
+    ctrl = $controller('AddObjectModalCtrl', {
+      $scope: $scope,
+      $state: _$state_,
+      dataService: _dataService_,
     });
   }));
 
-  xit('should attach a list of awesomeThings to the scope', function () {
-    expect(AddObjectModalCtrl.awesomeThings.length).toBe(3);
+  it('should have an open modal function', function () {
+    expect($scope.open).not.toBeNull();
   });
 });

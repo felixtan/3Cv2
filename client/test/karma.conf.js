@@ -43,9 +43,12 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/jasmine-expect/dist/jasmine-matchers.js',
       // endbower
-      "app/scripts/**/*.js",
+      "app/*.js",
+      "app/objects/*.js",
+      "app/scripts/*.js",
+      "app/services/*.js",
       // "test/mock/**/*.js",
-      "test/helpers/*.js",
+      "test/helpers/unit/*.js",
       "test/spec/**/*.js"
     ],
 
@@ -65,18 +68,18 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      "PhantomJS2"
+      "PhantomJS"
     ],
 
     phantomjsLauncher: {
-      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom) 
+      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
       exitOnResourceError: true
     },
 
     reporters: ['progress', 'coverage'],
 
     preprocessors: {
-      'app/scripts/**/*.js': ['coverage', 'jshint']
+      'app/scripts/**/*.js': ['jshint', 'coverage']
     },
 
     coverageReporter: {
@@ -86,7 +89,8 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
-      "karma-phantomjs2-launcher",
+      "karma-phantomjs-launcher",
+      // "karma-browserify",
       "karma-jasmine",
       'karma-coverage',
       "karma-eslint",

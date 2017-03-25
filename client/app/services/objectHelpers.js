@@ -13,25 +13,25 @@
       function($rootScope, ENV, $q, dataService, $state, carHelpers, driverHelpers, prospectHelpers, assetHelpers, _) {
 
           return {
-              isValid,
-              simplify,
-              simplifyOne,
-              getInequalitySign,
-              updateExpressionFieldsIfFieldNameChanged,
-              updateExpressionNameInFields,
-              updateFieldNameInExpressions,
-              storeFieldsUsed,
-              evaluateExpressionAndAppendValue,
-              evaluateExpressions,
-              removeFieldFromExpressions,
-              buildDisplayExpression,
-              buildEvalExpression,
-              updateDisplayExpressions,
-              updateFieldValueAndExpressionValues,
-              updateDataIfFieldNameChanged,
-              getFormDataAndReference,
-              getIdentifierValue,
-              getStateRef
+              isValid                                   : isValid,
+              simplify                                  : simplify,
+              simplifyOne                               : simplifyOne,
+              getInequalitySign                         : getInequalitySign,
+              updateExpressionFieldsIfFieldNameChanged  : updateExpressionFieldsIfFieldNameChanged,
+              updateExpressionNameInFields              : updateExpressionNameInFields,
+              updateFieldNameInExpressions              : updateFieldNameInExpressions,
+              storeFieldsUsed                           : storeFieldsUsed,
+              evaluateExpressionAndAppendValue          : evaluateExpressionAndAppendValue,
+              evaluateExpressions                       : evaluateExpressions,
+              removeFieldFromExpressions                : removeFieldFromExpressions,
+              buildDisplayExpression                    : buildDisplayExpression,
+              buildEvalExpression                       : buildEvalExpression,
+              updateDisplayExpressions                  : updateDisplayExpressions,
+              updateFieldValueAndExpressionValues       : updateFieldValueAndExpressionValues,
+              updateDataIfFieldNameChanged              : updateDataIfFieldNameChanged,
+              getFormDataAndReference                   : getFormDataAndReference,
+              getIdentifierValue                        : getIdentifierValue,
+              getStateRef                               : getStateRef
           };
 
           /**
@@ -41,7 +41,8 @@
             // function getLogsStateName(objectType) {
             //   return ($scope.objectType === 'car' || $scope.objectType === 'driver' || $scope.objectType === 'asset') ? `${objectType}` : null
             // }
-            return `${objectType}${view}({id:${objectId}})`
+            // return `${objectType}${view}({id:${objectId}})`
+            return objectType + view + "({id:" + objectId + "})"
           }
 
           function getIdentifierValue(object) {
@@ -67,7 +68,7 @@
 
                       _.each(fieldData.expressionsUsedIn, function(data, expression) {
                           // console.log(data);
-                          console.log(expression);
+                          // console.log(expression);
                           evaluateExpressionAndAppendValue(object.data, expression).then(function(objectData) {
                               // console.log(expression);
                               // console.log(objectData);
@@ -196,12 +197,12 @@
             var deferred = $q.defer();
             var object = _object
 
-            var expressionFields = _.filter(object.data, (data, field) => {
+            var expressionFields = _.filter(object.data, function(data, field) {
               return data.type === 'function' || data.type === 'inequality';
             })
 
             if (expressionFields.length > 0) {
-              expressionFields.each((data, field) => {
+              expressionFields.each(function(data, field) {
                 // console.log(field)
                 evaluateExpressionAndAppendValue(object.data, field, object).then(function(objectDataWithUpdatedExpressions) {
                     // console.log(objectDataWithUpdatedExpressions);
@@ -217,7 +218,7 @@
 
           function simplify (objects) {
               // console.log(_)
-              return _.map(objects, object => {
+              return _.map(objects, function(object) {
                   // console.log(object)
                   // console.log(object.id);
                   // console.log(object.identifier);
@@ -644,8 +645,9 @@
                   .
               }
           */
-          function pairItemsWithIndicesInExpressionItems (expressionItems, reduced = {}) {
+          function pairItemsWithIndicesInExpressionItems(expressionItems, reduced) {
               var deferred = $q.defer();
+              if (!reduced) reduced = {}
 
               _.each(expressionItems, function(item, index) {
                   var location = item.location;

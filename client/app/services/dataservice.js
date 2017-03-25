@@ -45,19 +45,15 @@
         // console.log(method, resource, data, url)
         if (method !== 'POST' && data !== undefined && data !== null) {
           if (method === 'GET') {
-            // console.log('here1')
-            return `${url}/${data}`
+            return url + "/" + data
           } else if (method === 'PUT' || method === 'DELETE') {
             if (resource === 'prospects') {
-              // console.log('here2')
-              return `${url}/${data}`
+              return url + "/" + data
             } else {
-              // console.log('here3')
-              return `${url}/${data.id}`
+              return url + "/" + data.id
             }
           }
         } else {
-          // console.log('here4')
           return url
         }
       }
@@ -82,7 +78,7 @@
           // console.log(method)
           // console.log(resource)
           // console.log(data)
-          const url = appendDataToUrl(method, resource, data, (apiHost + resource));
+          var url = appendDataToUrl(method, resource, data, (apiHost + resource));
           data = sendData(method, resource) ? data : null;
           // console.log(url)
           // console.log(data)
@@ -92,13 +88,13 @@
             url: url,
             params: params,
             data: data
-          }).then(result => {
+          }).then(function(result) {
             // console.log(result)
             forceReload(method, resource)
             return result;
-          }, err => {
+          }, function(err) {
             forceReload(method, resource)
-            console.error(err);
+            // console.error(err);
           });
         };
       }

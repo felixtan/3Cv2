@@ -13,19 +13,19 @@
       function(_, getCars, getAssets, getProspects, getDrivers, objectType, $q, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
 
       var ctrl = this;
-      $scope.formData = {};
-      $scope.objects = [];
-      // $scope.representativeObject = {};
-      $scope.identifier = { value: null };
-      $scope.currentIdentifier = { value: null };
-      $scope.fields = [];
-      $scope.fieldsToHide = ["Name", "assetType", 'status'];
-      $scope.statuses = [];
-      $scope.status = {};
-      $scope.assetTypes = [];
-      $scope.assetType = { value: null };
-      $scope.expressions = [];
-      $scope.objectType = objectType;
+
+      $scope.formData = {};                                     // Stores the addObjectModal form data
+      $scope.objects = [];                                      // Existing objects of type objectType
+      $scope.identifier = { value: null };                      // Potentially new identifier of objectType
+      $scope.currentIdentifier = { value: null };               // Identifier of objectType
+      $scope.fields = [];                                       // Properties of objects of type objectType
+      $scope.fieldsToHide = ["Name", "assetType", 'status'];    // Properties of objects of type objectType to hide from addObjectModal form
+      $scope.statuses = [];                                     // List of statuses for prospects. "status" is a property specific to prospects.
+      $scope.status = {};                                       // status of a prospect ot be added.
+      $scope.assetTypes = [];                                   // List of assetTypes for assets. "assetType" is a a property specific to assets.
+      $scope.assetType = { value: null };                       // assetType of an asset to be added.
+      $scope.expressions = [];                                  // List of expression names for objects of type objectType.
+      $scope.objectType = objectType;                           // Attach objectType to $scope for testing.
 
       ctrl.getFormDataAndReference = function() {};
 
@@ -50,7 +50,7 @@
       };
 
       $scope.disableAddField = function() {
-          return (($scope.objectType === "asset") && (($scope.formData.assetType === null) || (typeof $scope.formData.assetType === 'undefined')));
+          return ((objectType === "asset") && (($scope.formData.assetType === null) || (typeof $scope.formData.assetType === 'undefined')));
       };
 
       // only for assets
@@ -82,7 +82,7 @@
       };
 
       // determine the state or ui calling this modal
-      if($scope.objectType === 'driver') {
+      if(objectType === 'driver') {
           // console.log('called from drivers ui');
           $scope.objects = getDrivers.data;
           $scope.update = driverHelpers.updateDriver;
@@ -103,7 +103,7 @@
                   console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
               });
           });
-      } else if($scope.objectType === 'car') {
+      } else if(objectType === 'car') {
           // console.log('called from cars ui');
           $scope.objects = getCars.data;
           $scope.update = carHelpers.updateCar;
@@ -124,11 +124,13 @@
                       angular.copy($scope.currentIdentifier, $scope.identifier);
                       $scope.disableConditions = function(formData) { return true; };
 
-                      // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
+                      // console.
+                      //
+                      // (objectType + ' fields to hide:', $scope.fieldsToHide);
                   });
               });
           });
-      } else if($scope.objectType === 'prospect') {
+      } else if(objectType === 'prospect') {
           // console.log('called from prospects ui');
           $scope.objects = getProspects.data;
           $scope.update = prospectHelpers.update;
@@ -154,7 +156,7 @@
                   });
               });
           });
-      } else if($scope.objectType === 'asset') {
+      } else if(objectType === 'asset') {
           // console.log('called from assets ui');
           $scope.objects = getAssets.data;
           $scope.update = assetHelpers.updateAsset;
@@ -199,7 +201,7 @@
               // console.log(newObject);
               objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
                   // console.log(newObject);
-                  if($scope.objectType === 'car') {
+                  if(objectType === 'car') {
                       $scope.save(newObject).then(function(result) {
                           if($scope.identifierChanged()) {
                               _.each($scope.objects, function(obj) {
@@ -214,7 +216,7 @@
 
                           $scope.ok(newObject);
                       });
-                  } else if($scope.objectType === 'prospect') {
+                  } else if(objectType === 'prospect') {
                       prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
 
                           newObject.status = {
@@ -241,7 +243,7 @@
                               $scope.ok(newObject);
                           });
                       });
-                  } else if($scope.objectType === 'driver') {
+                  } else if(objectType === 'driver') {
                       // console.log(newObject);
                       $scope.save(newObject).then(function(result) {
                           console.log(result);
@@ -256,7 +258,7 @@
 
                           $scope.ok(newObject);
                       });
-                  } else if($scope.objectType === 'asset') {
+                  } else if(objectType === 'asset') {
                       $scope.save(newObject).then(function(result) {
                           // console.log(result);
                           if($scope.identifierChanged()) {
