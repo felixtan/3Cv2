@@ -49,10 +49,7 @@
                     <!-- logDataArray(log) -->
                     <!-- <td>{{ getLogDataByDate(log.weekOf)[0].value }}</td> -->
                     <td ng-repeat='logData in getLogDataByDate(log.weekOf)'>
-                        <span editable-text='log.data.{{ ::logData.field }}' e-name='{{ ::logData.field }}' data-fieldEntry='{{ ::logData.field }}' e-form='logform' e-required ng-if="notExpressionField(logData.type)">
-                            {{ ::logData.value }}
-                        </span>
-                        <span ng-if='!notExpressionField(logData.type)' data-fieldEntry='{{ ::logData.field }}'>
+                        <span editable-text='log.data.{{ ::logData.field }}' e-name='{{ ::logData.field }}' data-fieldEntry='{{ ::logData.field }}' e-form='logform' e-required>
                             {{ ::logData.value }}
                         </span>
                     </td>

@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('EditFieldModalCtrl', ['$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', '$q', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
-      function ($window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, $q, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+    .controller('EditFieldModalCtrl', ['$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      function ($window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
       var ctrl = this,
           notName = driverHelpers.notName;
@@ -93,24 +93,14 @@
         return data;
       };
 
-      ctrl.updateLogStuff = function (object) {
-        var deferred = $q.defer();
-
+      ctrl.updateLogStuff = function(object) {
         if($scope.logValueChanged.value) {
           object.data[field].log = $scope.field.log;
           object.data[$scope.field.name].log = $scope.field.log;
-          // console.log(object.data[field]);
-          // console.log(object.data[$scope.field.name]);
-          // console.log($scope.object);
+
           if($scope.field.log) {
-            console.log('log value changed to true');
             _.each(object.logs, function(log) {
               log.data[$scope.field.name] = null;
-              /*
-                TODO:
-                  Implement functions and inequalities for logs
-                  1. It calculates value only if all requisite fields are also logged and have a value for a given log
-              */
             });
           }
         } else {
@@ -127,9 +117,7 @@
           }
         }
 
-        deferred.resolve(object);
-        deferred.reject(new Error("Error updating logs for field " + $scope.field.name));
-        return deferred.promise;
+        return object;
       };
 
       $scope.submit = function() {
@@ -143,36 +131,35 @@
             var withUpdatedFieldName = objectHelpers.updateDataIfFieldNameChanged(field, $scope.field.name, object);
 
             /* If field name changed, all objects' logs must be updated */
-            ctrl.updateLogStuff(withUpdatedFieldName).then(function(objectToSave) {
-                // console.log('1 object:', objectToSave);
-                ctrl.pruneFieldData(objectToSave.data[$scope.field.name]);
+            var objectToSave = ctrl.updateLogStuff(withUpdatedFieldName);
 
-                // identifier changed?
-                if($scope.field.identifier) {
-                  objectToSave.identifier = $scope.field.name;
+            ctrl.pruneFieldData(objectToSave.data[$scope.field.name]);
+
+            // identifier changed?
+            if($scope.field.identifier) {
+              objectToSave.identifier = $scope.field.name;
+            }
+
+            // Update the field's value
+            if($scope.object.id === objectToSave.id) {
+
+              // if driver/prospect Last Name and/or First Name was changed, then update Name
+              if ($scope.objectType === 'prospect' || $scope.objectType === 'driver') {
+
+                if($scope.field.name === "First Name") {
+                  objectToSave.data.Name.value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
+                } else if($scope.field.name === "Last Name") {
+                  objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + $scope.field.value;
+                } else {
+                  objectToSave.data[$scope.field.name].value = $scope.field.value;
                 }
 
-                // Update the field's value
-                if($scope.object.id === objectToSave.id) {
+              } else {
+                objectToSave.data[$scope.field.name].value = $scope.field.value;
+              }
+            }
 
-                  // if driver/prospect Last Name and/or First Name was changed, then update Name
-                  if ($scope.objectType === 'prospect' || $scope.objectType === 'driver') {
-
-                    if($scope.field.name === "First Name") {
-                      objectToSave.data.Name.value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
-                    } else if($scope.field.name === "Last Name") {
-                      objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + $scope.field.value;
-                    } else {
-                      objectToSave.data[$scope.field.name].value = $scope.field.value;
-                    }
-
-                  } else {
-                    objectToSave.data[$scope.field.name].value = $scope.field.value;
-                  }
-                }
-
-                $scope.update(objectToSave);
-            });
+            $scope.update(objectToSave);
           });
         }
 
@@ -185,7 +172,6 @@
 
       $scope.reset = function () {
           ctrl.initialize();
-
           $scope.form.$setPristine();
           $scope.form.$setUntouched();
           $state.forceReload();
@@ -240,7 +226,6 @@
           });
       };
 
-      //
       // Prospect edit field stuff
       ////////////////////////////////////////////////////////////
 
@@ -253,17 +238,6 @@
               $scope.statusChanged = true;
               $scope.status = statusName;
           }
-      };
-
-      // when status name changes
-      $scope.updateStatus = function(prospect) {
-          console.log(prospect);
-          var deferred = $q.defer();
-          prospect.status.value = $scope.status;
-          prospect.data.status.value = $scope.status;
-          deferred.resolve(prospect);
-          deferred.reject(new Error("Error updating status of prospect" + prospect.id));
-          return deferred.promise;
       };
 
     }]);

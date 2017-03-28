@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('ObjectsLogsCtrl', ['$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$q', '$scope', '$state', '_', '$window',
-      function ($uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $q, $scope, $state, _, $window) {
+    .controller('ObjectsLogsCtrl', ['$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$scope', '$state', '_', '$window',
+      function ($uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $scope, $state, _, $window) {
 
       var ctrl = this;
       $scope.objectType = objectType;
@@ -110,39 +110,33 @@
       };
 
       ctrl.getFieldsToBeLogged = function(object) {
-          var deferred = $q.defer();
           var fields = [];
-          for(var field in object.data) {
-              if(object.data[field].log === true) { fields.push(field); }
+
+          for (var field in object.data) {
+              if (object.data[field].log) {
+                fields.push(field);
+              }
           }
 
-          deferred.resolve(fields);
-          deferred.reject(new Error('Error getting fields to be logged'));
-          return deferred.promise;
+          return fields;
       };
 
       // returns an object to be object.logs[i].data with keys (feilds) to be logged
       ctrl.newDataObj = function() {
-          var deferred = $q.defer(),
-              data = {},
+          var data = {},
               objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType);
 
-          // console.log(objects);
           // first object is taken because fields in object.data are assumed to be uniform for all objects
-          ctrl.getFieldsToBeLogged(objects[0]).then(function(fields) {
-              _.each(fields, function(field) {
-                  data[field] = null;
-              });
+          var fields = ctrl.getFieldsToBeLogged(objects[0]);
+
+          _.each(fields, function(field) {
+              data[field] = null;
           });
 
-          deferred.resolve(data);
-          deferred.reject(new Error('Error creating log.data'));
-          return deferred.promise;
+          return data;
       };
 
       ctrl.createLogForObject = function(object, date, data) {
-          var deferred = $q.defer();
-
           if (!_.includes($scope.dates, date)) {
               object.logs.push({
                   createdAt: (new Date()),
@@ -151,9 +145,7 @@
               });
           }
 
-          deferred.resolve(object);
-          deferred.reject(new Error('Error creating log for object ' + object.id));
-          return deferred.promise;
+          return object;
       };
 
       $scope.newLog = function() {
@@ -168,7 +160,8 @@
               promise = ctrl.newDataObj().then(function(blankDataObj) {
                   // console.log(blankDataObj);
                   _.each($scope.objects, function(object) {
-                      ctrl.createLogForObject(object, weekOf, blankDataObj).then(ctrl.update);
+                      var objectToUpdate = ctrl.createLogForObject(object, weekOf, blankDataObj);
+                      ctrl.update(objectToUpdate);
                   });
               });
 
@@ -182,27 +175,6 @@
           } else {
               // TODO: make this into a nice modal
               $window.alert('Log for ' + d.toDateString() + ' already exists!');
-          }
-      };
-
-      $scope.notExpressionField = function (field, object) {
-          var type, assets;
-
-          if ($scope.objectType === 'asset') {
-              if (object.assetType === $scope.assetType) {
-                  // console.log($scope.assetType);
-                  assets = assetHelpers.filterAssetsByType($scope.objects, $scope.assetType);
-                  // console.log(assets);
-                  // console.log(field);
-                  type = assets[0].data[field].type;
-                  // console.log(type);
-                  return type !== "function" && type !== 'inequality';
-              } else {
-                  return false;
-              }
-          } else if ($scope.objectType !== 'asset') {
-              type = $scope.objects[0].data[field].type;
-              return type !== "function" && type !== 'inequality';
           }
       };
 

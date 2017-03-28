@@ -216,9 +216,8 @@
           }
       };
 
-      // used in convert?
+      // used in convert
       ctrl.splitProspectData = function (driverData, prospectData, fieldsInCommon) {
-          var deferred = $q.defer();
           var prospectDataMinusFieldsInCommon = {};
           var prospectDataOnlyFieldsInCommon = {};
           angular.copy(prospectData, prospectDataMinusFieldsInCommon);
@@ -243,24 +242,15 @@
               }
           });
 
-          deferred.resolve({
-              // prospectDataFieldsUnCommon: prospectDataFieldsUnCommon,
-              // prospectDataFieldsInCommon: prospectDataFieldsInCommon,
-              prospectFieldsToAddToAllDrivers: _.without(prospectFieldsToAddToAllDrivers, "status")
-          });
-
-          deferred.reject(new Error('Error splitting prospect data via fields in common with driver data.'));
-          return deferred.promise;
+          // prospectDataFieldsUnCommon: prospectDataFieldsUnCommon,
+          // prospectDataFieldsInCommon: prospectDataFieldsInCommon,
+          return _.without(prospectFieldsToAddToAllDrivers, "status");
       };
 
       /*
           Changes the name of prospect fields if they conflict with names of driver fields
       */
-      ctrl.resolveNameConflicts = function (_partedFields, _prospectData) {
-          var deferred = $q.defer()
-          var partedFields = _partedFields
-          var prospectData = _prospectData
-
+      ctrl.resolveNameConflicts = function (partedFields, prospectData) {
           _.each(partedFields.uniqueToProspect, function(field) {
               var temp = ctrl.getUniqueFieldName(partedFields.uniqueToDriver, field);
 
@@ -268,18 +258,13 @@
                   partedFields.uniqueToProspect[_.indexOf(partedFields.uniqueToProspect, field)] = temp;
                   prospectData[temp] = prospectData[field];
                   delete prospectData[field];
-                  objectHelpers.updateExpressionFieldsIfFieldNameChanged(field, temp, prospectData).then(function(prospectDataWithUpdatedExpressions) {
-                      prospectData = prospectDataWithUpdatedExpressions;
-                  });
               }
           });
 
-          deferred.resolve({
+          return {
               partedFields: partedFields,
               prospectData: prospectData,
-          });
-          deferred.reject(new Error("Error changing prospect field names"));
-          return deferred.promise;
+          };
       };
 
       // Adds unique prospect fields to all drivers, renaming if necessary
@@ -303,15 +288,7 @@
                                   value: null,
                                   log: false,
                                   type: prospectData[field].type,
-                                  dataType: prospectData[field].dataType,
-                                  expression: (prospectData[field].type === 'function') ? prospectData[field].expression : undefined,
-                                  expressionItems: prospectData[field].type === 'function' ? prospectData[field].expressionItems : undefined,
-                                  leftExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].leftExpressionItems : undefined,
-                                  rightExpressionItems: prospectData[field].type === 'inequality' ? prospectData[field].rightExpressionItems : undefined,
-                                  inequalitySignId: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySignId : undefined,
-                                  inequalitySign: prospectData[field].type === 'inequality' ? prospectData[field].inequalitySign : undefined,
-                                  leftExpression: prospectData[field].type === 'inequality' ? prospectData[field].leftExpression : undefined,
-                                  rightExpression: prospectData[field].type === 'inequality' ? prospectData[field].rightExpression : undefined,
+                                  dataType: prospectData[field].dataType
                               };
 
                               if (driver.data.status) { delete driver.data.status; }
@@ -341,29 +318,19 @@
       };
 
       ctrl.buildNewDriverData = function(_prospectData, _partedFields) {
-          // var deferred = $q.defer();
           var prospectData = _prospectData
           var partedFields = _partedFields
 
           _.each(prospectData, function(data, field) {
               // var temp = field.replace(/~/g, "");
-              // console.log(temp);
-
               if(_.includes(partedFields.inCommon, field) || _.includes(partedFields.uniqueToProspect, field)) {
                   prospectData[field] = $scope.object.data[field];
-                  // console.log(field);
-                  // console.log($scope.object.data[field].value);
-                  // console.log(data);
               } else {
                   prospectData[field].value = null;
               }
           });
 
           return prospectData
-
-          // deferred.resolve(prospectData);
-          // deferred.reject(new Error("Error creating new driver from prospect"));
-          // return deferred.promise;
       };
 
       $scope.convert = function() {
@@ -372,22 +339,21 @@
           var fields = ctrl.partitionFields($scope.object.data, result.referenceObject.data)
           // console.log(fields);
           // console.log($scope.object.data);
-          ctrl.resolveNameConflicts(fields, $scope.object.data).then(function(result) {
-            // console.log(result);
-            ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
-              // console.log(prospectDataWithNoConflictingFields);
-              var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
-              // console.log(newDriverData);
-              driverHelpers.createDriver(newDriverData).then(function(newDriver) {
-                if(newDriver.data.status) { delete newDriver.data.status; }
-                // console.log(newDriver);
-                objectHelpers.evaluateExpressions(newDriver).then(function(newDriverWithEvaluatedExpressions) {
-                // console.log(newDriverWithEvaluatedExpressions)
-                  driverHelpers.saveDriver(newDriver).then(function() {
-                    prospectHelpers.deleteProspect($scope.object.id);
-                    $state.go('dashboard.prospects');
-                  });
-                })
+          var result = ctrl.resolveNameConflicts(fields, $scope.object.data);
+          // console.log(result);
+          ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
+            // console.log(prospectDataWithNoConflictingFields);
+            var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
+            // console.log(newDriverData);
+            driverHelpers.createDriver(newDriverData).then(function(newDriver) {
+
+              if(newDriver.data.status) {
+                delete newDriver.data.status;
+              }
+
+              driverHelpers.saveDriver(newDriver).then(function() {
+                prospectHelpers.deleteProspect($scope.object.id);
+                $state.go('dashboard.prospects');
               });
             });
           });

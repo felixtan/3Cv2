@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddFieldModalInstanceCtrl', ['$scope', '$q', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
-    function($scope, $q, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
+    .controller('AddFieldModalInstanceCtrl', ['$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
+    function($scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
 
       var isValid = objectHelpers.isValid;
 
@@ -100,17 +100,12 @@
       };
 
       ctrl.createNewFieldData = function(field) {
-        var deferred = $q.defer();
-
-          deferred.resolve({
-            value: null,
-            log: $scope.formData.log || false,
-            dataType: field.dataType,
-            type: field.type,
-          });
-
-        deferred.reject(new Error('Error creating new field data'));
-        return deferred.promise;
+        return {
+          value: null,
+          log: $scope.formData.log || false,
+          dataType: field.dataType,
+          type: field.type,
+        };
       };
 
       ctrl.appendNewFieldToObject = function(fieldName, fieldDataObj, object) {
@@ -119,21 +114,16 @@
       };
 
       $scope.submit = function() {
-        // ctrl.updateObjects().then(function() {
-          // console.log(updatedObjects);
-          // $scope.ok($scope.field);
-        // });
+        var fieldDataObj = ctrl.createNewFieldData($scope.field);
 
-        ctrl.createNewFieldData($scope.field).then(function(fieldDataObj) {
-          if(ctrl.objects.length > 0) {
-            _.each(ctrl.objects, function(object) {
-              var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-              ctrl.update(objectToUpdate);
-            });
-          }
+        if(ctrl.objects.length > 0) {
+          _.each(ctrl.objects, function(object) {
+            var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+            ctrl.update(objectToUpdate);
+          });
+        }
 
-          $scope.ok(fieldDataObj, $scope.field.name);
-        });
+        $scope.ok(fieldDataObj, $scope.field.name);
       };
 
       $scope.reset = function () {

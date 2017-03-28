@@ -26,47 +26,32 @@
       };
 
       $scope.renderLogs = function(assetType) {
-          // console.log(assetType);
           $scope.assetType = assetType;
-          // console.log($scope.assetType);
-          $scope.getAssets(assetType).then(function(assetsOfType) {
-              // console.log(assetsOfType);
-              $scope.assets = assetsOfType;
-              $scope.simpleAssets = assetHelpers.mapObject(assetsOfType);
-              $scope.getLogDates(assetsOfType).then(function(logDates) {
-                  console.log(logDates);
-                  $scope.dates = logDates;
-                  $scope.getMostRecentLogDate();
-              });
-          });
-          // console.log($scope.assetType);
-          // $state.forceReload();
+          $scope.assets = ctrl.getAssetsByType(assetType);
+          $scope.simpleAssets = assetHelpers.mapObject(assetsOfType);
+
+          var logDates = ctrl.getLogDates(assetsOfType);
+          $scope.dates = logDates;
+          $scope.getMostRecentLogDate();
       };
 
-      $scope.getAssets = function(assetType) {
-          var deferred = $q.defer();
-          deferred.resolve(_.filter(getAssets.data, function(asset) {
+      ctrl.getAssetsByType = function(assetType) {
+          return _.filter(getAssets.data, function(asset) {
               return asset.assetType === assetType;
-          }));
-          deferred.reject(new Error('Error getting ' + assetType + 's'));
-          return deferred.promise;
-          // console.log($scope.assets);
+          });
       };
 
-      $scope.getLogDates = function(assets) {
-          var deferred = $q.defer();
+      ctrl.getLogDates = function(assets) {
           var assetType = (assets.length) ? assets[0].assetType : '(There are no assets)';
           var arr = [];
+
           _.each(assets, function(asset, index) {
               _.each(asset.logs, function(log, index) {
                   arr.push(log.weekOf);
               });
           });
 
-          deferred.resolve(_.uniq(arr.sort(), true).reverse());
-          deferred.reject(new Error('Error getting log dates for ' + assetType));
-          return deferred.promise;
-          // console.log($scope.dates);
+          return _.uniq(arr.sort(), true).reverse();
       };
 
       $scope.getMostRecentLogDate = function() {
@@ -89,7 +74,6 @@
               // first asset is taken because fields in asset.data are assumed to be uniform for all assets
               assetHelpers.getFieldsToBeLogged(assetType).then(function(fields) {
                   // Turn this into modal?
-                  console.log(fields);
 
                   if(fields.length === 0) {
                       deferred.resolve({});
@@ -108,16 +92,14 @@
           return deferred.promise;
       };
 
-      $scope.createLogForAsset = function(asset, date, data) {
-          var deferred = $q.defer();
+      ctrl.createLogForAsset = function(asset, date, data) {
           asset.logs.push({
               createdAt: (new Date()),
               weekOf: date,
               data: data
           });
-          deferred.resolve(asset);
-          deferred.reject(new Error('Error creating log for asset ' + asset.id));
-          return deferred.promise;
+
+          return asset;
       };
 
       $scope.newLog = function(assetType) {
@@ -127,7 +109,7 @@
           var promise = $scope.newDataObj(assetType).then(function(blankDataObj) {
               console.log(blankDataObj);
               _.each($scope.assets, function(asset) {
-                  $scope.createLogForAsset(asset, weekOf, blankDataObj).then(assetHelpers.updateAsset);
+                  assetHelpers.updateAsset(ctrl.createLogForAsset(asset, weekOf, blankDataObj));
               });
           });
 
@@ -142,28 +124,23 @@
           }
       };
 
-      $scope.getMostRecentLog = function(assetLogs, logDate) {
-          var deferred = $q.defer();
-          var mostRecentLog = _.find(assetLogs, function(log) {
+      ctrl.getMostRecentLog = function(assetLogs, logDate) {
+          return _.find(assetLogs, function(log) {
               return log.weekOf === logDate;
           });
-
-          deferred.resolve(mostRecentLog);
-          deferred.reject(new Error('Error getting most revent log for asset'));
-          return deferred.promise;
       };
 
       $scope.save = function(logDate) {
           _.each($scope.assets, function(asset) {
-              $scope.getMostRecentLog(asset.logs, logDate).then(function(mostRecentLog) {
-                  for(var field in mostRecentLog.data) {
-                      if((mostRecentLog.data[field] !== null) && (typeof mostRecentLog.data[field] !== 'undefined')) {
-                          asset.data[field].value = mostRecentLog.data[field];
-                          assetHelpers.updateAsset(asset);
-                          $scope.simpleAssets = assetHelpers.mapObject($scope.assets);
-                      }
+              var mostRecentLog = ctrl.getMostRecentLog(asset.logs, logDate);
+
+              for(var field in mostRecentLog.data) {
+                  if((mostRecentLog.data[field] !== null) && (typeof mostRecentLog.data[field] !== 'undefined')) {
+                      asset.data[field].value = mostRecentLog.data[field];
+                      assetHelpers.updateAsset(asset);
+                      $scope.simpleAssets = assetHelpers.mapObject($scope.assets);
                   }
-              });
+              }
           });
       };
 

@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectListCtrl', ['objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$q', '$scope', '_',
-      function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $q, $scope, _) {
+    .controller('ObjectListCtrl', ['objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$scope', '_',
+      function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $scope, _) {
 
       var ctrl = this;
       $scope.objectType = objectType;

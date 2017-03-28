@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$q', '$scope',
-      function (_, objectType, objectId, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $q, $scope) {
+    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$scope',
+      function (_, objectType, objectId, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $scope) {
 
       var ctrl = this;
       $scope.identifierValue = null
@@ -58,7 +58,7 @@
           $scope.getLogDates()($scope.assetType).then(function(dates) {
               $scope.dates = dates;
               $scope.mostRecentLogDate = $scope.getMostRecentLogDate();
-              $scope.getFieldsToBeLogged($scope.object).then(function(fields) {
+              ctrl.getFieldsToBeLogged($scope.object).then(function(fields) {
                   $scope.fields = fields;
                   $scope.logDataToArray();
               });
@@ -70,17 +70,9 @@
           return $scope.logDataObj[date];
       };
 
-      $scope.notExpressionField = function (type) {
-          // console.log(type);
-          // console.log(type !== "function" && type !== 'inequality');
-          return type !== "function" && type !== 'inequality';
-      };
-
       $scope.logDataToArray = function () {
           _.each($scope.dates, function(date) {
-              // console.log(date);
               var log = _.findWhere($scope.object.logs, { weekOf: date });
-              // console.log(log);
               var a = [];
 
               _.each($scope.fields, function(loggedField) {
@@ -91,15 +83,9 @@
                       type: $scope.object.data[loggedField].type
                   });
               });
-              // console.log(a);
-              // console.log($scope.logDataObj);
-              $scope.logDataObj[date] = a;
-              // console.log($scope.logDataObj);
-          });
 
-          // deferred.resolve(b);
-          // deferred.reject(new Error("Error converting log data to array"));
-          // return deferred.promise;
+              $scope.logDataObj[date] = a;
+          });
       };
 
       $scope.getMostRecentLogDate = function() {
@@ -107,25 +93,24 @@
           return $scope.dates[0];
       };
 
-      $scope.getFieldsToBeLogged = function(object) {
-          var deferred = $q.defer();
+      ctrl.getFieldsToBeLogged = function(object) {
           var fields = [];
 
-          if(object) {
-              for(var field in object.data) {
-                  if(object.data[field].log === true) { fields.push(field); }
+          if (object) {
+              for (var field in object.data) {
+                  if(object.data[field].log) {
+                    fields.push(field);
+                  }
               }
           }
 
-          deferred.resolve(fields);
-          deferred.reject(new Error('Error getting fields to be logged'));
-
-          return deferred.promise;
+          return fields;
       };
 
-      $scope.updateMostRecentData = function() {
-          var deferred = $q.defer();
-          var mostRecentLog = _.find($scope.object.logs, function(log) { return log.weekOf === $scope.mostRecentLogDate; });
+      ctrl.updateMostRecentData = function() {
+          var mostRecentLog = _.find($scope.object.logs, function(log) {
+            return log.weekOf === $scope.mostRecentLogDate;
+          });
 
           for(var field in mostRecentLog.data) {
               if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
@@ -133,21 +118,18 @@
               }
           }
 
-          deferred.resolve($scope.object);
-          deferred.reject(new Error('Errror updating most recent log'));
-          return deferred.promise;
+          return $scope.object;
       };
 
       // need to make this more efficient
       $scope.save = function(logDate) {
-          if(logDate === $scope.mostRecentLogDate) {
-              console.log('most recent updated');
-              // update object.data is new value isn't null
-              // update data if most recent log was changed
-              $scope.updateMostRecentData().then(function(objectWithUpdatedData) {
-                  $scope.update(objectWithUpdatedData);
-              });
-          }
+          // if(logDate === $scope.mostRecentLogDate) {
+          //     // update object.data is new value isn't null
+          //     // update data if most recent log was changed
+          //     ctrl.updateMostRecentData().then(function(objectWithUpdatedData) {
+          //         $scope.update(objectWithUpdatedData);
+          //     });
+          // }
 
           $scope.update($scope.object);
       };

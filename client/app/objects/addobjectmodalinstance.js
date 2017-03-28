@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddObjectModalInstanceCtrl', ['_', 'getCars', 'getAssets', 'getProspects', 'getDrivers', 'objectType', '$q', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function(_, getCars, getAssets, getProspects, getDrivers, objectType, $q, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
+    .controller('AddObjectModalInstanceCtrl', ['_', 'getCars', 'getAssets', 'getProspects', 'getDrivers', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function(_, getCars, getAssets, getProspects, getDrivers, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
 
       var ctrl = this;
 
@@ -246,16 +246,11 @@
           $uibModalInstance.dismiss('close');
       };
 
-      ctrl.updateModal = function (newField) {
-          var deferred = $q.defer();
-
+      ctrl.updateModal = function(newField) {
           $scope.fields.push(newField.name);
           $scope.formData[newField.name] = newField.data;
 
-          deferred.resolve($scope.formData);
-          deferred.reject(new Error("Error updating add object modal after adding number/text/boolean field"));
-
-          return deferred.promise;
+          return $scope.formData;
       };
 
       $scope.addField = function(assetType) {

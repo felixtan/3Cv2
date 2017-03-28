@@ -89,11 +89,8 @@
                     <td ng-repeat='object in objects | orderBy:"id"' ng-if='ifAssetIsOfType(object)'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span ng-if='notExpressionField(field, object)' editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform' onbeforesave='validate($data, value, field, log, object)'>
+                                <span editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform' onbeforesave='validate($data, value, field, log, object)'>
                                     {{ ::field }}: {{ value }}
-                                </span>
-                                <span ng-if='!notExpressionField(field, object)'>
-                                    {{ ::field }}: {{ ::value }}
                                 </span>
                             </li>
                         </ul>
