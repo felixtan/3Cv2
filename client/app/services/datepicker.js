@@ -1,13 +1,6 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc service
-   * @name clientApp.datePicker
-   * @description
-   * # datePicker
-   * Factory in the clientApp.
-   */
   angular.module('clientApp')
     .factory('datepicker', function () {
       // Datepicker
@@ -24,21 +17,21 @@
       var tomorrow = new Date(dt.getTime()+oneDayInMs);
       var afterTomorrow = new Date(dt.getTime()+oneDayInMs*2);
       var events = [
-            {
-                date: tomorrow,
-                status: 'full'
-            },
-            {
-                date: afterTomorrow,
-                status: 'partially'
-            }
-          ];
+        {
+            date: tomorrow,
+            status: 'full'
+        },
+        {
+            date: afterTomorrow,
+            status: 'partially'
+        }
+      ];
       var dateOptions = {
-            formatYear: 'yy',
-            startingDay: 0
-          };
+        formatYear: 'yy',
+        startingDay: 1
+      };
 
-      // Public API here
+      // API
       return {
         // methods
         getStartingDay: getStartingDay,

@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('ObjectsLogsCtrl', ['$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$scope', '$state', '_', '$window',
-      function ($uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $scope, $state, _, $window) {
+    .controller('ObjectsLogsCtrl', ['$q', '$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$scope', '$state', '_', '$window',
+      function ($q, $uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $scope, $state, _, $window) {
 
       var ctrl = this;
       $scope.objectType = objectType;
@@ -48,6 +48,8 @@
 
       ctrl.getAssetsOfTypeAndLogs = function (assetType) {
           assetHelpers.getByType(assetType).then(function(result) {
+            console.log(result);
+            // $scope.
           });
 
           ctrl.getLogDates()(assetType).then(function(dates) {
@@ -60,11 +62,10 @@
           if ($scope.objectType !== 'asset') {
 
               $scope.objects = result.data;
-
               ctrl.getLogDates()().then(function(dates) {
                 $scope.dates = dates
                 ctrl.getMostRecentLogDate()
-              })
+              });
           } else {
               $scope.assetTypes = result.data.types;
               $scope.assetType = $scope.assetTypes[0].value;
@@ -157,16 +158,16 @@
 
           var d = $scope.datepicker.dt,
               weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime(),
-              promise = ctrl.newDataObj().then(function(blankDataObj) {
-                  // console.log(blankDataObj);
-                  _.each($scope.objects, function(object) {
-                      var objectToUpdate = ctrl.createLogForObject(object, weekOf, blankDataObj);
-                      ctrl.update(objectToUpdate);
-                  });
-              });
+              blankDataObj = ctrl.newDataObj(),
+              promises = [];
 
-          if(!(_.includes($scope.dates, weekOf))) {
-              $q.all([promise]).then(function(values) {
+          _.each($scope.objects, function(object) {
+              var objectToUpdate = ctrl.createLogForObject(object, weekOf, blankDataObj);
+              promises.push(ctrl.update(objectToUpdate));
+          });
+
+          if(!_.includes($scope.dates, weekOf)) {
+              $q.all(promises).then(function(values) {
                   ctrl.createNewRow(weekOf);
                   $state.forceReload();
               }).catch(function(err) {
@@ -217,32 +218,15 @@
       $scope.invalidEntries = [];
       $scope.validValue = true;
       $scope.validate = function (newValue, oldValue, fieldName, _log_, _object_) {
-          // console.log(newValue);
-          // console.log(oldValue);
-          // console.log(fieldName);
-          // console.log(_log_);
-          // console.log(_object_);
           var objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType),
               object = _.find(objects, function(object) { return object.id === _object_.id; }),
               fieldData = object.data[fieldName],
               log = _.find(object.logs, function(log) { return log.weekOf === _log_.weekOf; }),
               logData = log.data[fieldName];
+
           if (fieldData.type === 'number') {
               logData = isNaN(newValue) ? oldValue : newValue;
               $scope.validValue = isNaN(newValue);
-
-              // $scope.validValue = !
-
-              // if (isNaN(newValue)) {
-
-              // } else {
-              //     $scope.invalid_.find
-              // }
-              // $scope.invalidEntries.push({
-              //     identifierValue: object.data[object.identifier].value,
-              //     fieldName: fieldName,
-              //     logDate: log.weekOf,
-              // });
           } else {
               $scope.validValue = true;
           }
@@ -250,7 +234,9 @@
 
       ctrl.createNewRow = function(date) {
           // add new date to array of log dates
-          if (!_.includes($scope.dates, date)) { $scope.dates.push(date); }
+          if (!_.includes($scope.dates, date)) {
+            $scope.dates.push(date);
+          }
       };
 
       $scope.open = function (size, thing) {

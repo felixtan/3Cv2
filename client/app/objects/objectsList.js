@@ -33,12 +33,12 @@
 
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
-                      console.log(ctrl.prospectStatuses)
+                      // console.log(ctrl.prospectStatuses)
                       $scope.statuses = ctrl.prospectStatuses.statuses;
                       $scope.newIndex = { val: null };    // stores index changes
-                      for(var i = 0; i < $scope.statuses.length; i++) {
+                      _.each($scope.statuses, function(status, i) {
                           $scope.order[i] = i;
-                      }
+                      });
                   });
 
                   return prospectHelpers.get;
@@ -50,9 +50,9 @@
                       // console.log(result);
                       $scope.assetTypes = result.data;
                       $scope.types = $scope.assetTypes.types;
-                      for(var i = 0; i < $scope.types.length; i++) {
-                          $scope.order[i] = i;    // populate order select
-                      }
+                      _.each($scope.types, function(type, i) {
+                          $scope.order[i] = i;
+                      });
                   });
 
                   // $scope.order = [];

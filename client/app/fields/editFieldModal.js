@@ -98,9 +98,12 @@
           object.data[field].log = $scope.field.log;
           object.data[$scope.field.name].log = $scope.field.log;
 
+          // Only if the field isn't already being logged
           if($scope.field.log) {
             _.each(object.logs, function(log) {
-              log.data[$scope.field.name] = null;
+              if (!log.data[$scope.field.name]) {
+                  log.data[$scope.field.name] = null;
+              }
             });
           }
         } else {
