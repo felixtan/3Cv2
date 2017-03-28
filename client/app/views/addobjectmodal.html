@@ -13,6 +13,8 @@
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
             <!-- opens add field modal -->
+            {{identifier.value}}
+            {{disableAddField()}}
             <button class='btn btn-info' type='button' ng-click='addField(identifier.value)' ng-disabled='disableAddField()' name='addFieldBtn'>
                 + Field
             </button>

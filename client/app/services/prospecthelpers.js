@@ -23,109 +23,128 @@
       var getStatuses = dataService.getProspectStatuses;
       var updateStatuses = dataService.updateProspectStatuses;
 
-      function isValid (value) {
+      return {
+        getOrganizationId             : getOrganizationId,
+        get                           : get,
+        getById                       : getById,
+        getStatuses                   : getStatuses,
+        saveProspect                  : saveProspect,
+        update                        : update,
+        updateStatuses                : updateStatuses,
+        createProspect                : createProspect,
+        deleteProspect                : deleteProspect,
+        thereAreProspects             : thereAreProspects,
+        _getFields                    : _getFields,
+        getFields                     : getFields,
+        notName                       : notName,
+        namesNotNull                  : namesNotNull,
+        getFullName                   : getFullName,
+        updateFullName                : updateFullName,
+        getDefaultProspect            : getDefaultProspect,
+        getFormDataAndRepresentative  : getFormDataAndRepresentative,
+        getDefaultStatus              : getDefaultStatus,
+        belongsToStatus               :  belongsToStatus,
+      }
+
+      function isValid(value) {
           return value !== null && typeof value !== "undefined";
       }
 
-      var getOrganizationId = function() {
+      function getOrganizationId() {
         return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
-      };
+      }
 
-      var getFullName = function(prospectData) {
+      function getFullName(prospectData) {
         return prospectData["First Name"].value + " " + prospectData["Last Name"].value;
-      };
+      }
 
-      var thereAreProspects = function() {
+      function thereAreProspects() {
         var deferred = $q.defer();
         get().then(function(result) {
           deferred.resolve((typeof result.data[0] !== 'undefined'));
           deferred.reject(new Error('Error determining if there are prospects.'));
         });
         return deferred.promise;
-      };
+      }
 
-      var _getFields = function() {
+      function _getFields() {
         var deferred = $q.defer();
         get().then(function(result) {
           deferred.resolve(Object.keys(result.data[0].data));
           deferred.reject(new Error('Failed to get fields'));
         });
         return deferred.promise;
-      };
+      }
 
-      var getFields = function(prospect) {
+      function getFields(prospect) {
         return Object.keys(prospect.data);
-      };
+      }
 
-      var notName = function(field) {
+      function notName(field) {
         return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name"));
-      };
+      }
 
-      var namesNotNull = function(prospectData) {
+      function namesNotNull(prospectData) {
         // console.log(prospectData);
         return ((prospectData["First Name"].value !== null) && (prospectData["Last Name"].value !== null));
-      };
+      }
 
-      var updateFullName = function(prospectData) {
-        var deferred = $q.defer();
-
+      function updateFullName(prospectData) {
         prospectData.Name = {
           value: getFullName(prospectData),
           log: false,
           dataType: 'text',
           type: 'text'
+        }
+
+        return prospectData;
+      }
+
+      function createProspect(prospectData) {
+        if(prospectData.assetType) {
+          delete prospectData.assetType;
+        }
+
+        var data = updateFullName(prospectData);
+
+        return {
+          identifier: "Name",
+          status: data.status.value,
+          data: data,
+          organizationId: getOrganizationId(),
         };
+      }
 
-        deferred.resolve(prospectData);
-        deferred.reject(new Error('Failed to inject full name'));
-        return deferred.promise;
-      };
-
-      var createProspect = function(prospectData) {
+      function getDefaultStatus() {
         var deferred = $q.defer();
-        if(prospectData.assetType) { delete prospectData.assetType; }
-        updateFullName(prospectData).then(function(prospectDataWithFullName) {
-          deferred.resolve({
-            identifier: "Name",
-            status: prospectDataWithFullName.status.value,
-            data: prospectDataWithFullName,
-            organizationId: getOrganizationId()
-          });
-
-          deferred.reject(new Error('Error creating prospect'));
-        });
-
-        return deferred.promise;
-      };
-
-      var getDefaultStatus = function() {
-        var deferred = $q.defer(),
-            statuses,
-            defaultStatus;
 
         getStatuses().then(function(result) {
           if(isValid(result.data)) {
+
             if(result.data.statuses.length > 0) {
-              statuses = result.data.statuses,
-              defaultStatus = _.find(statuses, function(status) { return status.special; });
+
+              var statuses = result.data.statuses;
+
+              var defaultStatus = _.find(statuses, function(status) {
+                return status.special;
+              });
 
               deferred.resolve(defaultStatus);
               deferred.reject(new Error('Error getting default prospect status'));
+
             } else {
-              // deferred.resolve(undefined);
               deferred.reject(new Error('Error getting default prospect status: no statuses'));
             }
 
           } else {
-            // deferred.resolve(undefined);
             deferred.reject(new Error('Error getting default prospect status: return from getStatuses undefined'));
           }
         });
 
         return deferred.promise;
-      };
+      }
 
-      var getDefaultProspect = function() {
+      function getDefaultProspect() {
         return getDefaultStatus().then(function(defaultStatus) {
           // console.log(defaultStatus);
           return {
@@ -158,13 +177,13 @@
                 },
               },
               organizationId: getOrganizationId(),
-            };
+            }
         });
-      };
+      }
 
-      var getFormDataAndRepresentative = function() {
+      function getFormDataAndRepresentative() {
         var deferred = $q.defer();
-        var formData = {};
+        var formData = {}
 
         thereAreProspects().then(function(ans) {
           if(ans) {
@@ -179,7 +198,7 @@
                   log: prospectData[field].log,
                   dataType: prospectData[field].dataType,
                   type: prospectData[field].type
-                };
+                }
               });
               deferred.resolve({
                 formData: formData,
@@ -200,33 +219,10 @@
         });
 
         return deferred.promise;
-      };
+      }
 
-      var belongsToStatus = function(prospect, status) {
+      function belongsToStatus(prospect, status) {
           return prospect.status.value === status.value;
-      };
-
-      return {
-        getOrganizationId             : getOrganizationId,
-        get                           : get,
-        getById                       : getById,
-        getStatuses                   : getStatuses,
-        saveProspect                  : saveProspect,
-        update                        : update,
-        updateStatuses                : updateStatuses,
-        createProspect                : createProspect,
-        deleteProspect                : deleteProspect,
-        thereAreProspects             : thereAreProspects,
-        _getFields                    : _getFields,
-        getFields                     : getFields,
-        notName                       : notName,
-        namesNotNull                  : namesNotNull,
-        getFullName                   : getFullName,
-        updateFullName                : updateFullName,
-        getDefaultProspect            : getDefaultProspect,
-        getFormDataAndRepresentative  : getFormDataAndRepresentative,
-        getDefaultStatus              : getDefaultStatus,
-        belongsToStatus               :  belongsToStatus,
-      };
+      }
     }]);
 })();

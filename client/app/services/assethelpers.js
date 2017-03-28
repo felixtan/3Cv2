@@ -131,7 +131,6 @@
       }
 
       function createLogs(logDates, blankLogData) {
-        var deferred = $q.defer();
         var logs = [];
 
         _.each(logDates, function(logDate) {
@@ -142,9 +141,7 @@
           });
         });
 
-        deferred.resolve(logs);
-        deferred.reject(new Error('Error creating logs for asset'));
-        return deferred.promise;
+        return logs;
       }
 
       function createLogData(assetType) {
@@ -152,11 +149,11 @@
         var logData = {};
 
         getFieldsToBeLogged(assetType).then(function(fields) {
-          console.log(fields);
+          // console.log(fields);
           _.each(fields, function(field) {
             logData[field] = null;
           });
-          console.log(logData);
+          // console.log(logData);
           deferred.resolve(logData);
           deferred.reject(new Error('Error creating log data for assets ' + assetType));
         });
@@ -174,20 +171,18 @@
           // console.log(logData);
           getLogDates(assetType).then(function(logDates) {
             // console.log(logDates);
-            createLogs(logDates, logData).then(function(logs) {
-              // console.log(logs);
+            var logs = createLogs(logDates, logData);
 
-              deferred.resolve({
-                identifier: identifier,
-                assetType: assetType,
-                data: assetData,
-                logs: logs,
-                driversAssigned: [],
-                organizationId: getOrganizationId()
-              });
-
-              deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
+            deferred.resolve({
+              identifier: identifier,
+              assetType: assetType,
+              data: assetData,
+              logs: logs,
+              driversAssigned: [],
+              organizationId: getOrganizationId()
             });
+
+            deferred.reject(new Error('Error creating asset of type ' + assetData.assetType.value));
           });
         });
 
@@ -196,6 +191,10 @@
         return deferred.promise;
       }
 
+      /**
+       * This is promisified because of how objectHelpers calls getDefaultObject
+       * in getFormDataAndReference.
+       * */
       function getDefaultAsset(assetType) {
         var deferred = $q.defer();
 
@@ -245,8 +244,6 @@
       }
 
       function belongsToType(asset, type) {
-        // console.log(asset);
-        // console.log(type);
         return asset.assetType === type;
       }
 
@@ -261,23 +258,21 @@
         get().then(function(result) {
           // filterAssetsByType(result.data, assetType).then(function(assetsOfType) {
             // console.log(assetType);
-            var assetsOfType = filterAssetsByType(result.data, assetType);
-            console.log(assetsOfType);
-            // console.log(assetsOfType.length);
-            // console.log(Object.keys(assetsOfType[0].data));
-            if(assetsOfType.length > 0) {
-              fields = _.filter(Object.keys(assetsOfType[0].data), function(field) {
-                console.log(assetsOfType[0].data[field]);
-                return assetsOfType[0].data[field].log;
-              });
-              console.log(fields);
-              deferred.resolve(fields);
-              deferred.reject(new Error('Error getting fields to be logged'));
-            } else {
-              // console.log(fields);
-              deferred.resolve(fields);
-              deferred.reject(new Error('Error getting fields to be logged'));
-            }
+          var assetsOfType = filterAssetsByType(result.data, assetType);
+
+          if(assetsOfType.length > 0) {
+            fields = _.filter(Object.keys(assetsOfType[0].data), function(field) {
+              // console.log(assetsOfType[0].data[field]);
+              return assetsOfType[0].data[field].log;
+            });
+            // console.log(fields);
+            deferred.resolve(fields);
+            deferred.reject(new Error('Error getting fields to be logged'));
+          } else {
+            // console.log(fields);
+            deferred.resolve(fields);
+            deferred.reject(new Error('Error getting fields to be logged'));
+          }
           // });
         });
 

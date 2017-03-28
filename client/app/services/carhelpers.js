@@ -95,7 +95,7 @@
         // console.log(logData);
         getLogDates().then(function(logDates) {
           // console.log(logDates);
-          createLogs(logDates, logData).then(function(logs) {
+          var logs = createLogs(logDates, logData);
             // console.log(logs);
 
             deferred.resolve({
@@ -107,13 +107,16 @@
             });
 
             deferred.reject(new Error('Error creating car'));
-          });
         });
       });
 
       return deferred.promise;
     }
 
+    /**
+     * This is promisified because of how objectHelpers calls getDefaultObject
+     * in getFormDataAndReference.
+     * */
     function getDefaultCar() {
       var deferred = $q.defer();
 
@@ -144,14 +147,6 @@
                 log: data.log,
                 dataType: data.dataType,
                 type: data.type,
-                expression: (data.type === 'function') ? data.expression : undefined,
-                expressionItems: (data.type === 'function') ? data.expressionItems : undefined,
-                leftExpressionItems: (data.type === 'inequality') ? data.leftExpressionItems : undefined,
-                rightExpressionItems: (data.type === 'inequality') ? data.rightExpressionItems : undefined,
-                inequalitySignId: (data.type === 'inequality') ? data.inequalitySignId : undefined,
-                leftExpression: (data.type === 'inequality') ? data.leftExpression : undefined,
-                rightExpression: (data.type === 'inequality') ? data.rightExpression : undefined,
-                inequalitySign: (data.type === 'inequality') ? data.inequalitySign : undefined,
               };
             });
             // console.log(fromData);
@@ -232,19 +227,14 @@
     }
 
     function createLog(data, weekOf) {
-      return $q(function(resolve, reject) {
-        var log = {};
-        log.data = data;
-        log.createdAt = (new Date());
-        log.weekOf = weekOf;
-
-        resolve(log);
-        reject(new Error('Error creating blank log object'));
-      });
+      return {
+        data: data,
+        weekOf: weekOf,
+        createdAt: new Date(),
+      };
     }
 
     function createLogs(logDates, blankLogData) {
-      var deferred = $q.defer();
       var logs = [];
 
       _.each(logDates, function(logDate) {
@@ -255,9 +245,7 @@
         });
       });
 
-      deferred.resolve(logs);
-      deferred.reject(new Error("Error creating logs"));
-      return deferred.promise;
+      return logs;
     }
 
     function getFieldsToBeLogged() {
@@ -302,17 +290,17 @@
       // 3. 1,2 -> createLogs (_.each combine with createLog)
 
       var deferred = $q.defer();
-      var errcb = function(err) { console.error(err); };
       var promise1 = getFieldsToBeLogged(car).then(createLogData, errcb);
       var promise2 = get().then(getLogDates, errcb);
 
       $q.all([promise1, promise2]).then(function(values) {
-        createLogs(values[1], values[0]).then(function(logs) {
-          car.logs = logs;
-          deferred.resolve(car);
-          deferred.reject(new Error('Failed to populate logs for car ' + car.id));
-        }, errcb);
-      }, errcb);
+        var logs = createLogs(values[1], values[0]);
+        car.logs = logs;
+        deferred.resolve(car);
+        deferred.reject(new Error('Failed to populate logs for car ' + car.id));
+      }, function(err) {
+        console.error(err);
+      });
 
       return deferred.promise;
     }

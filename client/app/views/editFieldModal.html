@@ -78,7 +78,6 @@
                 name='logValue'
                 data-dataType='{{ ::field.dataType }}'
                 data-fieldType='{{ ::field.type }}'
-                switch-active='{{ validExpression.value }}'
                 ng-change="logValueChanged.value = !logValueChanged.value" >
         </div>
 
@@ -132,9 +131,7 @@
   <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.fieldName.$invalid || form.numberField.$invalid || invalidFieldType() || fieldNameAlreadyExists()'>Submit</button>
     <!-- {{ form.fieldName.$invalid }}
     {{ form.numberField.$invalid }}
-    {{ !validExpression.value }}
     {{ invalidFieldType() }}
-    {{ emptyExpression() }}
     {{ fieldNameAlreadyExists() }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>

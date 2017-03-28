@@ -24,7 +24,6 @@
       $scope.status = {};                                       // status of a prospect ot be added.
       $scope.assetTypes = [];                                   // List of assetTypes for assets. "assetType" is a a property specific to assets.
       $scope.assetType = { value: null };                       // assetType of an asset to be added.
-      $scope.expressions = [];                                  // List of expression names for objects of type objectType.
       $scope.objectType = objectType;                           // Attach objectType to $scope for testing.
 
       ctrl.getFormDataAndReference = function() {};
@@ -56,31 +55,6 @@
       // only for assets
       $scope.renderForm = function() {};
 
-      ctrl.hideExpressions = function(referenceObject) {
-          var deferred = $q.defer();
-          // console.log($scope.objects);
-          deferred.resolve(_.each(referenceObject.data, function(data, field) {
-              // console.log(data);
-              if(data.type === 'function') {
-                  $scope.fieldsToHide.push(field);
-                  $scope.expressions.push({
-                      field: field,
-                      expression: data.expression
-                  });
-              } else if(data.type === 'inequality') {
-                  $scope.fieldsToHide.push(field);
-                  $scope.expressions.push({
-                      field: field,
-                      expression: data.leftExpression + " " + data.inequalitySign + " " + data.rightExpression
-                  });
-              } else {
-                   //
-              }
-          }));
-          deferred.reject(new Error('Error building or storing expression'));
-          return deferred.promise;
-      };
-
       // determine the state or ui calling this modal
       if(objectType === 'driver') {
           // console.log('called from drivers ui');
@@ -91,17 +65,13 @@
           ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
 
           ctrl.getFormDataAndReference('driver').then(function(result) {
-              ctrl.hideExpressions(result.referenceObject.data).then(function() {
-                  // console.log('formData:', result.formData);
-                  // $scope.fieldsToHide.push("Name");
-                  $scope.currentIdentifier.value = "Name";
-                  angular.copy($scope.currentIdentifier, $scope.identifier);
-                  $scope.formData = result.formData;
-                  $scope.formData.assetType = { value: null };
-                  // $scope.disableConditions = driverHelpers.namesNotNull;
-
-                  console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
-              });
+            // console.log('formData:', result.formData);
+            // $scope.fieldsToHide.push("Name");
+            // $scope.disableConditions = driverHelpers.namesNotNull;
+            $scope.currentIdentifier.value = "Name";
+            angular.copy($scope.currentIdentifier, $scope.identifier);
+            $scope.formData = result.formData;
+            $scope.formData.assetType = { value: null };
           });
       } else if(objectType === 'car') {
           // console.log('called from cars ui');
@@ -113,21 +83,15 @@
 
           ctrl.getFormDataAndReference('car').then(function(result) {
               carHelpers.getIdentifier().then(function(identifier) {
-                  ctrl.hideExpressions(result.referenceObject.data).then(function() {
-                      // console.log('car form data:', result.formData);
-                      $scope.formData = result.formData;
-                      // $scope.fieldsToHide.concat(['fn', 'ineq']);
-                      $scope.formData.assetType = { value: null };
-                      $scope.fields = Object.keys(result.formData);
-                      $scope.fields = _.without($scope.fields, "assetType");
-                      $scope.currentIdentifier.value = identifier;
-                      angular.copy($scope.currentIdentifier, $scope.identifier);
-                      $scope.disableConditions = function(formData) { return true; };
-
-                      // console.
-                      //
-                      // (objectType + ' fields to hide:', $scope.fieldsToHide);
-                  });
+                  // console.log('car form data:', result.formData);
+                  $scope.formData = result.formData;
+                  // $scope.fieldsToHide.concat(['fn', 'ineq']);
+                  $scope.formData.assetType = { value: null };
+                  $scope.fields = Object.keys(result.formData);
+                  $scope.fields = _.without($scope.fields, "assetType");
+                  $scope.currentIdentifier.value = identifier;
+                  angular.copy($scope.currentIdentifier, $scope.identifier);
+                  $scope.disableConditions = function(formData) { return true; };
               });
           });
       } else if(objectType === 'prospect') {
@@ -142,18 +106,16 @@
               // console.log('result1:', result1);
               prospectHelpers.getStatuses().then(function(result2) {
                   // console.log('result2:', result2);
-                  ctrl.hideExpressions(result1.referenceObject.data).then(function() {
-                      // console.log(statuses);
-                      $scope.currentIdentifier.value = "Name";
-                      angular.copy($scope.currentIdentifier, $scope.identifier);
-                      $scope.statuses = result2.data.statuses;
-                      // $scope.disableConditions = prospectHelpers.namesNotNull;
+                  // console.log(statuses);
+                  $scope.currentIdentifier.value = "Name";
+                  angular.copy($scope.currentIdentifier, $scope.identifier);
+                  $scope.statuses = result2.data.statuses;
+                  // $scope.disableConditions = prospectHelpers.namesNotNull;
 
-                      $scope.formData = result1.formData;
-                      $scope.formData.assetType = { value: null };
+                  $scope.formData = result1.formData;
+                  $scope.formData.assetType = { value: null };
 
-                      // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
-                  });
+                  // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
               });
           });
       } else if(objectType === 'asset') {
@@ -169,24 +131,16 @@
               $scope.assetTypes = result.data.types;
 
               $scope.renderForm = function(assetType) {
-                  console.log('rendering form for ' + assetType);
+                  // console.log('rendering form for ' + assetType);
                   objectHelpers.getFormDataAndReference('asset', assetType).then(function(result) {
-                      console.log(result);
+                      // console.log(result);
                       $scope.currentIdentifier.value = result.referenceObject.identifier;
                       // assetHelpers.getIdentifier(assetType).then(function(identifier) {
-                          ctrl.hideExpressions(result.referenceObject).then(function() {
-                              $scope.fields = Object.keys(result.formData);
-                              $scope.formData = result.formData;
-
-                              console.log($scope.formData);
-                              $scope.formData.assetType.value = assetType;
-
-                              $scope.disableConditions = assetHelpers.invalidAssetType;
-                              // $scope.currentIdentifier.value = identifier;
-                              angular.copy($scope.currentIdentifier, $scope.identifier);
-
-                              console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
-                          });
+                          $scope.fields = Object.keys(result.formData);
+                          $scope.formData = result.formData;
+                          $scope.formData.assetType.value = assetType;
+                          $scope.disableConditions = assetHelpers.invalidAssetType;
+                          angular.copy($scope.currentIdentifier, $scope.identifier);
                       // });
                   });
               };
@@ -196,57 +150,39 @@
       }
 
       $scope.submit = function() {
-          console.log($scope.formData.assetType.value)
+          // console.log($scope.formData.assetType.value)
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
               // console.log(newObject);
-              objectHelpers.evaluateExpressions($scope.expressions, newObject).then(function(objectWithExpressionValues) {
-                  // console.log(newObject);
-                  if(objectType === 'car') {
-                      $scope.save(newObject).then(function(result) {
-                          if($scope.identifierChanged()) {
-                              _.each($scope.objects, function(obj) {
-                                  // console.log(obj.id);
-                                  // console.log(result.data.id);
-                                  if(obj.id !== result.data.id) {
-                                      obj.identifier = $scope.identifier.value;
-                                      $scope.update(obj);
-                                  }
-                              });
-                          }
-
-                          $scope.ok(newObject);
-                      });
-                  } else if(objectType === 'prospect') {
-                      prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
-
-                          newObject.status = {
-                              value: ($scope.status.value || defaultStatus.value)
-                          };
-
-                          newObject.data.status = {
-                              value: ($scope.status.value || defaultStatus.value),
-                              log: false,
-                              type: 'text',
-                              dataType: 'text'
-                          };
-
-                          $scope.save(newObject).then(function(result) {
-                              if($scope.identifierChanged()) {
-                                  _.each($scope.objects, function(obj) {
-                                      if(obj.id !== result.data.id) {
-                                          obj.identifier = $scope.identifier.value;
-                                          $scope.update(obj);
-                                      }
-                                  });
+              if(objectType === 'car') {
+                  $scope.save(newObject).then(function(result) {
+                      if($scope.identifierChanged()) {
+                          _.each($scope.objects, function(obj) {
+                              // console.log(obj.id);
+                              // console.log(result.data.id);
+                              if(obj.id !== result.data.id) {
+                                  obj.identifier = $scope.identifier.value;
+                                  $scope.update(obj);
                               }
-
-                              $scope.ok(newObject);
                           });
-                      });
-                  } else if(objectType === 'driver') {
-                      // console.log(newObject);
+                      }
+
+                      $scope.ok(newObject);
+                  });
+              } else if(objectType === 'prospect') {
+                  prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
+
+                      newObject.status = {
+                          value: ($scope.status.value || defaultStatus.value)
+                      };
+
+                      newObject.data.status = {
+                          value: ($scope.status.value || defaultStatus.value),
+                          log: false,
+                          type: 'text',
+                          dataType: 'text'
+                      };
+
                       $scope.save(newObject).then(function(result) {
-                          console.log(result);
                           if($scope.identifierChanged()) {
                               _.each($scope.objects, function(obj) {
                                   if(obj.id !== result.data.id) {
@@ -258,23 +194,38 @@
 
                           $scope.ok(newObject);
                       });
-                  } else if(objectType === 'asset') {
-                      $scope.save(newObject).then(function(result) {
-                          // console.log(result);
-                          if($scope.identifierChanged()) {
-                              var assetsOfType = assetHelpers.filterAssetsByType($scope.objects, result.data.assetType);
-                              _.each(assetsOfType, function(asset) {
-                                  if(asset.id !== result.data.id) {
-                                     asset.identifier = $scope.identifier.value;
-                                      $scope.update(asset);
-                                  }
-                              });
-                          }
+                  });
+              } else if(objectType === 'driver') {
+                  // console.log(newObject);
+                  $scope.save(newObject).then(function(result) {
+                      console.log(result);
+                      if($scope.identifierChanged()) {
+                          _.each($scope.objects, function(obj) {
+                              if(obj.id !== result.data.id) {
+                                  obj.identifier = $scope.identifier.value;
+                                  $scope.update(obj);
+                              }
+                          });
+                      }
 
-                          $scope.ok(newObject);
-                      });
-                  }
-              });
+                      $scope.ok(newObject);
+                  });
+              } else if(objectType === 'asset') {
+                  $scope.save(newObject).then(function(result) {
+                      // console.log(result);
+                      if($scope.identifierChanged()) {
+                          var assetsOfType = assetHelpers.filterAssetsByType($scope.objects, result.data.assetType);
+                          _.each(assetsOfType, function(asset) {
+                              if(asset.id !== result.data.id) {
+                                 asset.identifier = $scope.identifier.value;
+                                  $scope.update(asset);
+                              }
+                          });
+                      }
+
+                      $scope.ok(newObject);
+                  });
+              }
           });
       };
 
@@ -298,22 +249,11 @@
       ctrl.updateModal = function (newField) {
           var deferred = $q.defer();
 
-          if(newField.type !== 'function' && newField.type !== 'inequality') {
-              $scope.fields.push(newField.name);
-              $scope.formData[newField.name] = newField.data;
+          $scope.fields.push(newField.name);
+          $scope.formData[newField.name] = newField.data;
 
-              deferred.resolve($scope.formData);
-              deferred.reject(new Error("Error updating add object modal after adding number/text/boolean field"));
-          } else {
-              $scope.fieldsToHide.push(newField.name);
-              $scope.expressions.push({
-                  field: newField.name,
-                  expression: newField.data.expression,
-              });
-
-              deferred.resolve($scope.expressions);
-              deferred.reject(new Error("Error updating add object modal after adding function/inequality field"));
-          }
+          deferred.resolve($scope.formData);
+          deferred.reject(new Error("Error updating add object modal after adding number/text/boolean field"));
 
           return deferred.promise;
       };
@@ -349,16 +289,8 @@
 
           modalInstance.result.then(function (newField) {
               // console.log(newField);
-              if(newField.data.type !== 'function' && newField.data.type !== 'inequality') {
-                  $scope.fields.push(newField.name);
-                  $scope.formData[newField.name] = newField.data;
-              } else {
-                  $scope.fieldsToHide.push(newField.name);
-                  $scope.expressions.push({
-                      field: newField.name,
-                      expression: newField.data.expression,
-                  });
-              }
+              $scope.fields.push(newField.name);
+              $scope.formData[newField.name] = newField.data;
           }, function() {
               $state.forceReload();
               console.log('Modal dismissed at: ' + new Date());

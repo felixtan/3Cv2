@@ -80,13 +80,11 @@
       }
 
       function namesNotNull(driverData) {
-        console.log(driverData);
+        // console.log(driverData);
         return ((driverData["First Name"].value !== null) && (driverData["Last Name"].value !== null));
       }
 
       function updateFullName(driverData) {
-        var deferred = $q.defer();
-
         driverData.Name = {
           value: getFullName(driverData),
           log: false,
@@ -94,42 +92,45 @@
           type: 'text'
         };
 
-        deferred.resolve(driverData);
-        deferred.reject(new Error('Failed to inject full name'));
-        return deferred.promise;
+        return driverData;
       }
 
       function createDriver(driverData, identifier) {
         var deferred = $q.defer();
-        if(driverData.assetType) { delete driverData.assetType; }
-        updateFullName(driverData).then(function(driverDataWithFullName) {
-          // console.log(driverDataWithFullName);
-          createLogData().then(function(logData) {
-            // console.log(logData);
-            getLogDates().then(function(logDates) {
-              // console.log(logDates);
-              createLogs(logDates, logData).then(function(logs) {
-                // console.log(logs);
-                // console.log(driverData);
 
-                deferred.resolve({
-                  identifier: "Name",
-                  data: driverData,
-                  logs: logs,
-                  carsAssigned: [],
-                  assetsAssigned: [],
-                  organizationId: getOrganizationId()
-                });
+        if(driverData.assetType) {
+          delete driverData.assetType;
+        }
 
-                deferred.reject(new Error('Error creating driver'));
-              });
+        var data = updateFullName(driverData);
+
+        createLogData().then(function(logData) {
+          // console.log(logData);
+          getLogDates().then(function(logDates) {
+            // console.log(logDates);
+            var logs = createLogs(logDates, logData);
+            // console.log(logs);
+            // console.log(driverData);
+            deferred.resolve({
+              identifier: "Name",
+              data: data,
+              logs: logs,
+              carsAssigned: [],
+              assetsAssigned: [],
+              organizationId: getOrganizationId()
             });
+
+            deferred.reject(new Error('Error creating driver'));
           });
         });
 
         return deferred.promise;
       }
 
+      /**
+       * This is promisified because of how objectHelpers calls getDefaultObject
+       * in getFormDataAndReference.
+       */
       function getDefaultDriver() {
         var deferred = $q.defer();
 
@@ -217,7 +218,6 @@
         // } else if(existingDrivers.constructor === Array) {
         //   drivers = existingDrivers;
         // } else {
-        //   // idk wtf it is
         //   reject(new Error('Invalid existingDrivers data type:', existingDrivers));
         // }
 
@@ -240,19 +240,14 @@
       }
 
       function createLog(data, weekOf) {
-        return $q(function(resolve, reject) {
-          var log = {};
-          log.data = data;
-          log.createdAt = (new Date());
-          log.weekOf = weekOf;
-
-          resolve(log);
-          reject(new Error('Error creating blank log object'));
-        });
+        return {
+          data: data,
+          weekOf: weekOf,
+          createdAt: new Date(),
+        };
       }
 
       function createLogs(logDates, blankLogData) {
-        var deferred = $q.defer();
         var logs = [];
 
         _.each(logDates, function(logDate) {
@@ -263,9 +258,7 @@
           });
         });
 
-        deferred.resolve(logs);
-        deferred.reject(new Error("Error creating blank logs array"));
-        return deferred.promise;
+        return logs;
       }
 
       function getFieldsToBeLogged() {
@@ -311,17 +304,17 @@
         // 3. 1,2 -> createLogs (_.each combine with createLog)
 
         var deferred = $q.defer();
-        var errcb = function(err) { console.error(err); };
         var promise1 = getFieldsToBeLogged(driver).then(createLogData, errcb);
         var promise2 = get().then(getLogDates, errcb);
 
         $q.all([promise1, promise2]).then(function(values) {
-          createLogs(values[1], values[0]).then(function(logs) {
-            driver.logs = logs;
-            deferred.resolve(driver);
-            deferred.reject(new Error('Failed to populate logs for driver ' + driver.id));
-          }, errcb);
-        }, errcb);
+          var logs = createLogs(values[1], values[0]);
+          driver.logs = logs;
+          deferred.resolve(driver);
+          deferred.reject(new Error('Failed to populate logs for driver ' + driver.id));
+        }, function(err) {
+          console.error(err);
+        });
 
         return deferred.promise;
       }

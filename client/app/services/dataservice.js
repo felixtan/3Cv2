@@ -1,26 +1,12 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc service
-   * @name clientApp.dataService
-   * @description
-   * # dataService
-   * Factory in the clientApp.
-   */
   angular.module('clientApp')
     .factory('dataService', ['$state', '$http', '$q', 'ENV', function ($state, $http, $q, ENV) {
 
       // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
       var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
       var apiHost = (ENV.name === ('production' || 'staging')) ? 'http://www.fleetly-herokuapp.com/api/' : 'http://localhost:3000/api/';
-
-      // Learning
-      // This results in false
-      // console.log(ENV.name === ('production' || 'staging'));
-      //
-      // This results in 'staging'
-      // console.log(ENV.name === 'production' || 'staging');
 
       function forceReload(method, resource) {
         if (method === 'PUT' && resource === 'asset-types' ||
@@ -75,14 +61,10 @@
 
       function req(method, resource) {
         return function(data) {
-          // console.log(method)
-          // console.log(resource)
-          // console.log(data)
           var url = appendDataToUrl(method, resource, data, (apiHost + resource));
+
           data = sendData(method, resource) ? data : null;
-          // console.log(url)
-          // console.log(data)
-          // console.log(method)
+
           return $http({
             method: method,
             url: url,
@@ -99,7 +81,7 @@
         };
       }
 
-      // Public API here
+      // API
       return {
 
         ////////////////
