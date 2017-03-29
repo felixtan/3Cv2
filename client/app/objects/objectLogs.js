@@ -81,8 +81,7 @@
       ctrl.logDataToArray = function() {
         _.each($scope.dates, function(date) {
             var logData = [];
-            var datesInChronologicalOrder = $scope.dates.reverse();
-            var index = datesInChronologicalOrder.indexOf(date);
+            var index = $scope.dates.indexOf(date);
             var log = $scope.object.logs[index];
 
             _.each($scope.fields, function(loggedField) {
@@ -131,7 +130,7 @@
           return $scope.object;
       };
 
-      $scope.save = function(logDate) {
+      $scope.save = function() {
           // if(logDate === $scope.mostRecentLogDate) {
           //     // update object.data is new value isn't null
           //     // update data if most recent log was changed
@@ -139,7 +138,6 @@
           //         $scope.update(objectWithUpdatedData);
           //     });
           // }
-
           $scope.update($scope.object);
       };
     }]);
