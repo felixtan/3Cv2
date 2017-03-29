@@ -16,6 +16,7 @@
       $scope.identifierValue = null
       $scope.objectType = objectType;
       $scope.logDataObj = {};
+      $scope.tabs = [];
 
       $scope.getObject = function () {
           if($scope.objectType === 'car') {

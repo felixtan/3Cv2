@@ -253,31 +253,21 @@
           return $scope.formData;
       };
 
-      $scope.addField = function(assetType) {
-
+      $scope.addField = function(identifier) {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'views/addfieldmodal.html',
               controller: 'AddFieldModalInstanceCtrl',
               size: 'md',
               resolve: {
-                  getCars: function(dataService) {
-                      return (objectType === 'car') ? $scope.objects : {};
-                  },
-                  getDrivers: function(dataService) {
-                      return (objectType === 'driver' ? $scope.objects : {});
-                  },
-                  getProspects: function(dataService) {
-                      return (objectType === 'prospect' ? $scope.objects : {});
-                  },
-                  getAssets: function () {
-                      return (objectType === 'asset' ? $scope.objects : {});
+                  getObjects: function() {
+                      return $scope.objects;
                   },
                   objectType: function() {
                       return objectType;
                   },
                   assetType: function() {
-                      return objectType === 'asset' ? assetType : null;
+                      return objectType === 'asset' ? identifier : null;
                   }
               }
           });
