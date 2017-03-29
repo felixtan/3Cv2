@@ -47,13 +47,16 @@
       };
 
       $scope.getObject()(objectId).then(function(result) {
-          $scope.object = result.data;
+          if (result) {
+            $scope.object = result.data;
+          }
+
           $scope.logs = $scope.object.logs
           $scope.identifierValue = objectHelpers.getIdentifierValue(result.data);
           $scope.assetType = $scope.object.assetType || null;
           $scope.tabs = [
-              { title: 'Data', active: false, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
-              { title: 'Logs', active: true, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
+              { title: 'Data', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
+              { title: 'Logs', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
           ];
 
           $scope.getLogDates()($scope.assetType).then(function(dates) {
@@ -92,6 +95,7 @@
 
             $scope.logDataObj[date] = logData;
         });
+        // console.log($scope.logDataObj);
       };
 
       $scope.getMostRecentLogDate = function() {

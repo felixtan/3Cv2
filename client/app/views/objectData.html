@@ -6,8 +6,8 @@
         <!-- <button class='btn btn-danger btn-xs delete-obj' ng-controller='DeleteObjModalCtrl' ng-click='open(lg, car.id)'>Delete</button> -->
     </div>
     <!-- {{ state }}  -->
-    <uib-tabset ng-if="objectType !== 'prospect'">
-        <uib-tab ng-repeat='tab in tabs' data-tabName='{{ ::tab.title }}' heading='{{ ::tab.title }}' active='tab.active' ui-sref='{{ ::tab.stateRef }}'>
+    <uib-tabset active='0' ng-if="objectType !== 'prospect'">
+        <uib-tab ng-repeat='tab in tabs' index='$index' data-tabName='{{ tab.title ? tab.title : false }}' heading='{{ tab.title ? tab.title : false }}' ui-sref='{{ tab.stateRef ? tab.stateRef : false }}'>
         </uib-tab>
     </uib-tabset>
 

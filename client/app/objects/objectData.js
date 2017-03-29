@@ -54,12 +54,11 @@
           $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
           $scope.tabs = [
-              { title: 'Data', active: false, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
-              { title: 'Logs', active: true, stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
+              { title: 'Data', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
+              { title: 'Logs', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
           ];
 
           ctrl.getObjects()($scope.object.assetType).then(function(result2) {
-              // console.log(result2);
               ctrl.objects = result2.data;
           });
       });
