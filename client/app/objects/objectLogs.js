@@ -58,34 +58,39 @@
           $scope.getLogDates()($scope.assetType).then(function(dates) {
               $scope.dates = dates;
               $scope.mostRecentLogDate = $scope.getMostRecentLogDate();
-              ctrl.getFieldsToBeLogged($scope.object).then(function(fields) {
-                  $scope.fields = fields;
-                  $scope.logDataToArray();
-              });
+              $scope.fields = ctrl.getFieldsToBeLogged($scope.object);
+              ctrl.logDataToArray();
           });
       });
 
-      $scope.getLogDataByDate = function (date) {
-          // console.log(date);
+      /**
+       * Used by view to tabulate log data
+       * */
+      $scope.getLogDataByDate = function(date) {
           return $scope.logDataObj[date];
       };
 
-      $scope.logDataToArray = function () {
-          _.each($scope.dates, function(date) {
-              var log = _.findWhere($scope.object.logs, { weekOf: date });
-              var a = [];
+      /**
+       * Create object with log dates as keys and log data as values.
+       * The object will be used by the template.
+       * */
+      ctrl.logDataToArray = function() {
+        _.each($scope.dates, function(date) {
+            var logData = [];
+            var datesInChronologicalOrder = $scope.dates.reverse();
+            var index = datesInChronologicalOrder.indexOf(date);
+            var log = $scope.object.logs[index];
 
-              _.each($scope.fields, function(loggedField) {
-                  // console.log(loggedField);
-                  a.push({
-                      field: loggedField,
-                      value: log.data[loggedField],
-                      type: $scope.object.data[loggedField].type
-                  });
-              });
+            _.each($scope.fields, function(loggedField) {
+                logData.push({
+                    field: loggedField,
+                    value: log.data[loggedField],
+                    type: $scope.object.data[loggedField].type
+                });
+            });
 
-              $scope.logDataObj[date] = a;
-          });
+            $scope.logDataObj[date] = logData;
+        });
       };
 
       $scope.getMostRecentLogDate = function() {
@@ -121,7 +126,6 @@
           return $scope.object;
       };
 
-      // need to make this more efficient
       $scope.save = function(logDate) {
           // if(logDate === $scope.mostRecentLogDate) {
           //     // update object.data is new value isn't null

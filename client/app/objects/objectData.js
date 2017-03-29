@@ -9,6 +9,7 @@
       // ctrl.assetType = { value: null };
       $scope.objectType = objectType;
       $scope.carIdentifier = null;
+      $scope.tabs = [];
 
       $scope.valid = function (thing) {
           return thing !== null && typeof thing !== "undefined";
@@ -45,7 +46,10 @@
 
       ctrl.getObjectById()(objectId).then(function(result1) {
           // console.log(result1);
-          if(typeof result1 !== 'undefined') { $scope.object = result1.data; }
+          if(result1) {
+            $scope.object = result1.data;
+          }
+
           ctrl.assetType = $scope.object.assetType;
           $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
 
