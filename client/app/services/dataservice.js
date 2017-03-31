@@ -5,7 +5,7 @@
     .factory('dataService', ['$state', '$http', '$q', 'ENV', function ($state, $http, $q, ENV) {
 
       var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
-      var apiHost = (ENV.name === ('production' || 'staging')) ? 'http://www.fleetly-herokuapp.com/api/' : 'http://localhost:3000/api/';
+      var apiHost = (ENV.name === ('production' || 'staging')) ? 'http://www.fleetly.herokuapp.com/api/' : 'http://localhost:3000/api/';
 
       function forceReload(method, resource) {
         if (method === 'PUT' && resource === 'asset-types' ||

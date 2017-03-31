@@ -11,11 +11,11 @@
     "angular-route": "^1.6.3",
     "angular-sanitize": "^1.6.3",
     "angular-touch": "^1.6.3",
-    "angular-ui-router": "~0.2.15",
+    "angular-ui-router": "0.2.18",
     "angular-xeditable": "~0.1.9",
     "normalize.css": "~3.0.3",
     "font-awesome": "~4.4.0",
-    "stormpath-sdk-angularjs": "~0.8.2",
+    "stormpath-sdk-angularjs": "^2.0.0",
     "angular-bootstrap-switch": "~0.4.1",
     "bootstrap": "~3.3.6",
     "lodash": "^4.17.3"

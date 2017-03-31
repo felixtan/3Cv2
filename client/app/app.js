@@ -18,14 +18,16 @@ angular
     'ngTouch',
     'xeditable',
     'ui.bootstrap',
-    'ui.router',
     'ngMessages',
     // 'stormpath',
-    'stormpath.templates',
+    // 'stormpath.templates',
+    'ui.router',
     'config',
     'frapontillo.bootstrap-switch',
   ])
   .config(function (ENV, $stateProvider, $urlRouterProvider, $provide, $qProvider) {
+
+    // STORMPATH_CONFIG.ENDPOINT_PREFIX = 'http://localhost:9000'
 
     $qProvider.errorOnUnhandledRejections(false);
 
@@ -50,26 +52,26 @@ angular
     $urlRouterProvider.otherwise('/dashboard/cars');
 
     $stateProvider
-    .state('wtf', {
+    .state('root', {
         url: '/',
         templateUrl: '<div></div>'
     })
-    .state('login', {
-        url: '/login',
-        templateUrl: 'login.html'
-    })
-    .state('registration', {
-        url: '/registration',
-        templateUrl: 'registration.html'
-    })
-    .state('forgot-password', {
-        url: '/forgot-password',
-        templateUrl: 'forgotpw.html'
-    })
-    .state('reset-password', {
-        url:'/reset?sptoken',
-        templateUrl: 'resetpw.html'
-    })
+    // .state('login', {
+    //     url: '/login',
+    //     templateUrl: 'login.html'
+    // })
+    // .state('registration', {
+    //     url: '/registration',
+    //     templateUrl: 'registration.html'
+    // })
+    // .state('forgot-password', {
+    //     url: '/forgot-password',
+    //     templateUrl: 'forgotpw.html'
+    // })
+    // .state('reset-password', {
+    //     url:'/reset?sptoken',
+    //     templateUrl: 'resetpw.html'
+    // })
     .state('dashboard', {
         abstract: true,
         url: '/dashboard',
@@ -85,7 +87,6 @@ angular
             return "car";
           }
         },
-        // sp: getsp()
     })
     .state('dashboard.drivers', {
         url: '/drivers',
@@ -102,12 +103,6 @@ angular
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
-            // getProspectStatuses: function(dataService) {
-            //     return dataService.getProspectStatuses();
-            // },
-            // getProspects: function(dataService) {
-            //     return dataService.getProspects();
-            // },
             objectType: function() {
                 return "prospect";
             }
@@ -118,12 +113,6 @@ angular
         templateUrl: 'views/objectsList.html',
         controller: 'ObjectListCtrl',
         resolve: {
-            // getTypes: function(dataService) {
-            //     return dataService.getTypes();
-            // },
-            // getAssets: function(dataService) {
-            //     return dataService.getAssets();
-            // },
             objectType: function() {
                 return "asset";
             }
@@ -140,9 +129,6 @@ angular
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
-            // getCars: function(dataService) {
-            //     return dataService.getCars();
-            // },
             objectType: function () {
                 return "car";
             }
@@ -154,9 +140,6 @@ angular
         templateUrl: 'views/objectsLogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
-            // getDrivers: function(dataService) {
-            //     return dataService.getDrivers();
-            // }
             objectType: function () {
                 return "driver";
             }
@@ -273,8 +256,8 @@ angular
         }
     });
   })
-    // inject ENV when grunt-ng-constant is working
-    // add when you want stormpath: , $stormpath
+
+  // add when you want stormpath: , $stormpath
   .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
 

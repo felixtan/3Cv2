@@ -1,4 +1,3 @@
-// Generated on 2015-07-24 using generator-angular 0.12.1
 'use strict';
 
 // # Globbing
@@ -69,7 +68,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'staging',
-            apiEndpoint: 'http://threec.herokuapp.com'
+            apiEndpoint: 'http://fleetly.herokuapp.com'
           }
         }
       },
@@ -82,7 +81,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'http://threec.herokuapp.com'
+            apiEndpoint: 'http://fleetly.herokuapp.com'
           }
         }
       }
