@@ -4,7 +4,6 @@
   angular.module('clientApp')
     .factory('dataService', ['$state', '$http', '$q', 'ENV', function ($state, $http, $q, ENV) {
 
-      // testing with account with organizatinId 3Qnv2pMAxLZqVdp7n8RZ0x
       var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
       var apiHost = (ENV.name === ('production' || 'staging')) ? 'http://www.fleetly-herokuapp.com/api/' : 'http://localhost:3000/api/';
 
