@@ -297,7 +297,7 @@
         var logs = createLogs(values[1], values[0]);
         car.logs = logs;
         deferred.resolve(car);
-        deferred.reject(new Error('Failed to populate logs for car ' + car.id));
+        deferred.reject(new Error('Error populating logs for car ' + car.id));
       }, function(err) {
         console.error(err);
       });

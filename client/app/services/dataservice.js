@@ -33,7 +33,13 @@
             return url + "/" + data
           } else if (method === 'PUT' || method === 'DELETE') {
             if (resource === 'prospects') {
-              return url + "/" + data
+              if (typeof data === 'object') {
+                return url + "/" + data.id
+              } else {
+                return url + "/" + data
+              }
+            } else if (resource === 'prospect-statuses') {
+              return url
             } else {
               return url + "/" + data.id
             }
@@ -44,31 +50,18 @@
       }
 
       function sendData(method, resource) {
-        // return (resource === 'asset-types' && method === 'PUT' ||
-        //         resource === 'assets' && method === 'POST' ||
-        //         resource === 'assets' && method === 'PUT' ||
-        //         resource === 'prospect-statuses' && method === 'PUT' ||
-        //         resource === 'prospects' && method === 'POST' ||
-        //         resource === 'prospects' && method === 'PUT' ||
-        //         resource === 'drivers' && method === 'POST' ||
-        //         resource === 'drivers' && method === 'PUT' ||
-        //         resource === 'cars' && method === 'POST' ||
-        //         resource === 'cars' && method === 'PUT')
-
         return method === 'POST' || method === 'PUT'
       }
 
       function req(method, resource) {
         return function(data) {
           var url = appendDataToUrl(method, resource, data, (apiHost + resource));
-
-          data = sendData(method, resource) ? data : null;
-
+          // console.log(url, method, resource, data)
           return $http({
             method: method,
             url: url,
             params: params,
-            data: data
+            data: (sendData(method, resource) ? data : null),
           }).then(function(result) {
             // console.log(result)
             forceReload(method, resource)

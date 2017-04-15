@@ -105,12 +105,9 @@
         var data = updateFullName(driverData);
 
         createLogData().then(function(logData) {
-          // console.log(logData);
           getLogDates().then(function(logDates) {
-            // console.log(logDates);
             var logs = createLogs(logDates, logData);
-            // console.log(logs);
-            // console.log(driverData);
+
             deferred.resolve({
               identifier: "Name",
               data: data,

@@ -101,18 +101,21 @@
       }
 
       function createProspect(prospectData) {
+        var deferred = $q.defer();
+
         if(prospectData.assetType) {
           delete prospectData.assetType;
         }
 
         var data = updateFullName(prospectData);
 
-        return {
+        deferred.resolve({
           identifier: "Name",
           status: data.status.value,
           data: data,
           organizationId: getOrganizationId(),
-        };
+        });
+        return deferred.promise;
       }
 
       function getDefaultStatus() {

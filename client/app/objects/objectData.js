@@ -278,39 +278,33 @@
 
           driverHelpers.get().then(function(result) {
               var drivers = result.data;
-              // console.log(drivers);
-              if(typeof drivers !== 'undefined' && drivers !== null) {
-                  if(drivers.length > 0) {
-                      _.each(drivers, function(driver, index, list) {
-                          // console.log(driver);
-                          // console.log(index);
-                          // console.log(list);
+              if(typeof drivers !== 'undefined' && drivers !== null && drivers.length) {
+                if(fields.length) {
+                  _.each(drivers, function(driver, index, list) {
+                      _.each(fields, function(field) {
+                          driver.data[field] = {
+                              value: null,
+                              log: false,
+                              type: prospectData[field].type,
+                              dataType: prospectData[field].dataType
+                          };
 
-                          _.each(fields, function(field) {
-                              driver.data[field] = {
-                                  value: null,
-                                  log: false,
-                                  type: prospectData[field].type,
-                                  dataType: prospectData[field].dataType
-                              };
+                          if (driver.data.status) {
+                            delete driver.data.status;
+                          }
 
-                              if (driver.data.status) { delete driver.data.status; }
-                              // console.log(driver);
-
-                              // Runs regardless of whether fieldsUniqueToProspect >= 0
-                              driverHelpers.update(driver).then(function(result) {
-                                  if(index === 0) {
-                                      // console.log(result.config.data.data);
-                                      deferred.resolve(result.config.data.data);
-                                      deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
-                                  }
-                              });
+                          // Runs regardless of whether fieldsUniqueToProspect >= 0
+                          driverHelpers.update(driver).then(function(result) {
+                              if(index === 0) {
+                                  deferred.resolve(result.config.data.data);
+                                  deferred.reject(new Error("Error getting updated driver data after adding prospect fields"));
+                              }
                           });
                       });
-                  } else {
-                      deferred.resolve(prospectData);
-                      deferred.reject(new Error("Error getting updated driver data after adding prospect fields: there are no drivers"));
-                  }
+                  });
+                } else {
+                  deferred.resolve(prospectData);
+                }
               } else {
                   deferred.resolve(prospectData);
                   deferred.reject(new Error("Error getting updated driver data after adding prospect fields: drivers is undefined or null"));
@@ -337,17 +331,16 @@
       };
 
       $scope.convert = function() {
-        objectHelpers.getFormDataAndReference('driver').then(function(result) {
-          // console.log(result);
-          var fields = ctrl.partitionFields($scope.object.data, result.referenceObject.data)
+        objectHelpers.getFormDataAndReference('driver').then(function(driver) {
+          // console.log(driver);
+          var fields = ctrl.partitionFields($scope.object.data, driver.referenceObject.data)
           // console.log(fields);
           // console.log($scope.object.data);
           var result = ctrl.resolveNameConflicts(fields, $scope.object.data);
           // console.log(result);
           ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
-            // console.log(prospectDataWithNoConflictingFields);
             var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
-            // console.log(newDriverData);
+
             driverHelpers.createDriver(newDriverData).then(function(newDriver) {
 
               if(newDriver.data.status) {

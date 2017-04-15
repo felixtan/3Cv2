@@ -114,8 +114,6 @@
 
                   $scope.formData = result1.formData;
                   $scope.formData.assetType = { value: null };
-
-                  // console.log(objectType + ' fields to hide:', $scope.fieldsToHide);
               });
           });
       } else if(objectType === 'asset') {
@@ -150,7 +148,8 @@
       }
 
       $scope.submit = function() {
-          // console.log($scope.formData.assetType.value)
+          console.log($scope.formData)
+          console.log($scope.identifier)
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
               // console.log(newObject);
               if(objectType === 'car') {
@@ -198,7 +197,7 @@
               } else if(objectType === 'driver') {
                   // console.log(newObject);
                   $scope.save(newObject).then(function(result) {
-                      console.log(result);
+                      // console.log(result);
                       if($scope.identifierChanged()) {
                           _.each($scope.objects, function(obj) {
                               if(obj.id !== result.data.id) {

@@ -9,15 +9,14 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectListCtrl', ['objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$scope', '_',
-      function (objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $scope, _) {
+    .controller('ObjectListCtrl', ['$q', 'objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$scope', '_',
+      function ($q, objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $scope, _) {
 
       var ctrl = this;
       $scope.objectType = objectType;
       $scope.order = [];
 
       ctrl.getObjects = function () {
-          // console.log($scope.objectType)
           switch($scope.objectType) {
               case "car":
                   $scope.title = { value: "Car" };
@@ -33,7 +32,6 @@
 
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
-                      // console.log(ctrl.prospectStatuses)
                       $scope.statuses = ctrl.prospectStatuses.statuses;
                       $scope.newIndex = { val: null };    // stores index changes
                       _.each($scope.statuses, function(status, i) {
@@ -42,12 +40,12 @@
                   });
 
                   return prospectHelpers.get;
+                  
               case "asset":
                   $scope.title = { value: "Asset" };
                   $scope.profile = { state: 'assetData({ id: object.id })' };
 
                   assetHelpers.getTypes().then(function(result) {
-                      // console.log(result);
                       $scope.assetTypes = result.data;
                       $scope.types = $scope.assetTypes.types;
                       _.each($scope.types, function(type, i) {
@@ -55,10 +53,8 @@
                       });
                   });
 
-                  // $scope.order = [];
-                  // $scope.newIndex = { val: null };    // stores index changes
-
                   return assetHelpers.get;
+
               default:
                   $scope.title = { value: "Car" };
                   $scope.profile = { state: 'carData({ id: object.id })' };
@@ -69,15 +65,9 @@
       ctrl.getObjects()().then(function(result) {
           $scope.objects = result.data;
           $scope.simpleObjects = objectHelpers.simplify($scope.objects);
-          // console.log($scope.simpleObjects);
       });
 
-      // submit xeditable row form by pressing enter
-      // will then call updateDriver
-      // to use this add following attribute to button element
-      // e-ng-keypress="keypress($event, driverRowForm)"
-
-      // This actually works
+      // Submit with enter
       // $scope.keypress = function(e, form) {
       //     if (e.which === 13) {
       //         form.$submit();
@@ -85,7 +75,6 @@
       // };
 
       $scope.thereAreObjects = function() {
-          // console.log($scope.objects);
           return (typeof $scope.objects !== 'undefined' && $scope.objects.length > 0);
       };
 
@@ -194,9 +183,9 @@
           $state.forceReload();
       };
 
-      //
-      // Prospect list stuff
-      /////////////////////////////////////////////////////////////////////
+      /*****************
+       * Prospect list *
+       *****************/
       $scope.belongsToStatus = prospectHelpers.belongsToStatus;
 
       ctrl.updateOrder = function(oldIndex, newIndex) {
@@ -206,20 +195,37 @@
 
       // when status name changes
       ctrl.updateStatusInProspects = function(oldName, newName) {
-          _.each($scope.objects, function(prospect) {
-              if(prospect.status.value === oldName) {
-                  prospect.status.value = newName;
-                  prospect.data.status.value = newName;
-                  prospectHelpers.update(prospect);
-              }
-          });
+        var deferred = $q.defer();
+        var updates = [];
+        _.each($scope.objects, function(prospect) {
+            if(prospect.status.value === oldName) {
+                prospect.status.value = newName;
+                prospect.data.status.value = newName;
+                updates.push(prospectHelpers.update(prospect));
+            }
+        });
+
+        $q.all(updates).then(function(values) {
+          deferred.resolve(values);
+          deferred.reject(new Error("Error updating prospect statuses"));
+        });
+
+        return deferred.promise;
       };
 
       $scope.saveStatus = function(data, oldIndex, oldName) {
-          if(oldIndex != $scope.newIndex.val) { ctrl.updateOrder(oldIndex, $scope.newIndex.val); }
-          prospectHelpers.updateStatuses(ctrl.prospectStatuses);
-          ctrl.updateStatusInProspects(oldName, data.name);
-          $state.forceReload();
+          if(oldIndex != $scope.newIndex.val) {
+            ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+          }
+
+          var promises = [
+            prospectHelpers.updateStatuses(ctrl.prospectStatuses),
+            ctrl.updateStatusInProspects(oldName, data.name)
+          ];
+
+          $q.all(promises).then(function(values) {
+            // console.log(values);
+          });
       };
 
       ctrl.getDefaultStatus = function() {
