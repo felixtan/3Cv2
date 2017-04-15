@@ -332,12 +332,9 @@
 
       $scope.convert = function() {
         objectHelpers.getFormDataAndReference('driver').then(function(driver) {
-          // console.log(driver);
           var fields = ctrl.partitionFields($scope.object.data, driver.referenceObject.data)
-          // console.log(fields);
-          // console.log($scope.object.data);
           var result = ctrl.resolveNameConflicts(fields, $scope.object.data);
-          // console.log(result);
+
           ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
             var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
 

@@ -49,10 +49,6 @@
         </button>
     </div>
 
-    <!-- Order by user provided order -->
-    <!-- {{ statuses }}
-    {{ order }}
-    {{ newIndex }} -->
     <div ng-repeat='status in statuses'>
         <h3>
             <span ng-show='!rowform.$visible'>
@@ -66,9 +62,9 @@
 
             <span ng-show='rowform.$visible'>Order: </span>
             <span ng-show='rowform.$visible' e-form='rowform'>
-                <select ng-model='newIndex.val'>
-                    <option ng-repeat='index in order' value='{{ index }}'>
-                        {{ ::index }}
+                <select ng-model='statusOrder[$index]'>
+                    <option ng-repeat='status in statuses' value='{{ ::$index }}'>
+                        {{ ::$index }}
                     </option>
                 </select>
             </span>

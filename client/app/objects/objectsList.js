@@ -15,6 +15,7 @@
       var ctrl = this;
       $scope.objectType = objectType;
       $scope.order = [];
+      $scope.statusOrder = {};     // Track changes in status ordering
 
       ctrl.getObjects = function () {
           switch($scope.objectType) {
@@ -32,15 +33,11 @@
 
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
-                      $scope.statuses = ctrl.prospectStatuses.statuses;
-                      $scope.newIndex = { val: null };    // stores index changes
-                      _.each($scope.statuses, function(status, i) {
-                          $scope.order[i] = i;
-                      });
+                      $scope.statuses = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
                   });
 
                   return prospectHelpers.get;
-                  
+
               case "asset":
                   $scope.title = { value: "Asset" };
                   $scope.profile = { state: 'assetData({ id: object.id })' };
@@ -177,7 +174,10 @@
       };
 
       $scope.saveType = function(data, oldIndex, oldName) {
-          if(oldIndex != $scope.newIndex.val) { ctrl.updateOrder(oldIndex, $scope.newIndex.val); }
+          if(oldIndex != $scope.statusOrder[oldIndex]) {
+            ctrl.updateOrder(oldIndex, $scope.statusOrder[oldIndex]);
+          }
+
           assetHelpers.updateTypes($scope.assetTypes);
           $scope.updateTypeInAssets(oldName, data.name);
           $state.forceReload();
@@ -187,6 +187,20 @@
        * Prospect list *
        *****************/
       $scope.belongsToStatus = prospectHelpers.belongsToStatus;
+
+      ctrl.convertArrayLikeObjToArrayOfObj = function(obj) {
+        return _.reduce(obj, function(memo, v, k) {
+          memo[k] = v;
+          return memo;
+        }, []);
+      };
+
+      ctrl.convertArrayOfObjToArrayLikeObj = function(arr) {
+        return _.reduce(arr, function(memo, v) {
+          memo[memo.length++] = v;
+          return memo;
+        }, { length: 0 });
+      };
 
       ctrl.updateOrder = function(oldIndex, newIndex) {
           $scope.statuses.move(oldIndex, newIndex);
@@ -213,10 +227,16 @@
         return deferred.promise;
       };
 
+      // $scope.setIndexVal = function(orderIndex) {
+      //   $scope.statusOrder.val = orderIndex;
+      // };
+
       $scope.saveStatus = function(data, oldIndex, oldName) {
-          if(oldIndex != $scope.newIndex.val) {
-            ctrl.updateOrder(oldIndex, $scope.newIndex.val);
+          if(oldIndex !== $scope.statusOrder[oldIndex]) {
+            ctrl.updateOrder(oldIndex, $scope.statusOrder[oldIndex]);
           }
+
+          var updatedProspectStatuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
 
           var promises = [
             prospectHelpers.updateStatuses(ctrl.prospectStatuses),
