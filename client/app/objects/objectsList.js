@@ -34,7 +34,6 @@
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
                       $scope.statuses = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
-                      console.log($scope.statuses)
                   });
 
                   return prospectHelpers.get;
@@ -249,28 +248,40 @@
       };
 
       ctrl.getDefaultStatus = function() {
-          return _.findWhere($scope.statuses, { special: true });
+          var status = null;
+
+          for (var i = 0; i < $scope.statuses.length; i++) {
+            if ($scope.statuses[i].special) {
+              status = $scope.statuses[i];
+              break;
+            }
+          }
+
+          return status;
       };
 
-      // when a status is deleted
+      // Move prospects to Unassigned status when a status is deleted
       ctrl.unassignProspects = function(statusName) {
+          var updatesToMake = [];
           var defaultStatus = ctrl.getDefaultStatus();
+
           _.each($scope.objects, function(prospect) {
               if(prospect.status.value === statusName) {
                   prospect.status = defaultStatus;
                   prospect.data.status = defaultStatus;
-                  prospectHelpers.update(prospect);
+                  updatesToMake.push(prospectHelpers.update(prospect));
               }
           });
+
+          $q.all(updatesToMake);
       };
 
       // TODO add warning for user
       // Prospects with the deleted status are reassigned to Unassigned
       $scope.deleteStatus = function(index, statusName) {
           $scope.statuses.splice(index, 1);
-          // ctrl.prospectStatuses.statuses = $scope.statuses;
-          var updateProspectStatuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
-          prospectHelpers.updateStatuses(updatedProspectStatuses);
+          ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          prospectHelpers.updateStatuses(ctrl.prospectStatuses);
           ctrl.unassignProspects(statusName);
           $state.forceReload();
       };
