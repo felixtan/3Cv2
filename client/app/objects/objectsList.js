@@ -145,6 +145,8 @@
       $scope.belongsToType = assetHelpers.belongsToType;
 
       ctrl.move = function(arr, oldIndex, newIndex) {
+        oldIndex = parseInt(oldIndex)
+        newIndex = parseInt(newIndex)
         if (newIndex < arr.length) {
           arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
         } else {
