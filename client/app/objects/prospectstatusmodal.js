@@ -9,20 +9,18 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ProspectStatusModalCtrl', ['dataService', '$scope', 'getProspectStatuses', '$state', '$uibModalInstance',
-      function (dataService, $scope, getProspectStatuses, $state, $uibModalInstance) {
+    .controller('ProspectStatusModalCtrl', ['dataService', '$scope', 'prospectStatuses', '$state', '$uibModalInstance',
+      function(dataService, $scope, prospectStatuses, $state, $uibModalInstance) {
 
-      $scope.statuses = getProspectStatuses.data;
       $scope.newStatus = { value: null };
 
       $scope.validForm = function() {
           return (($scope.newStatus.value !== null) && (typeof $scope.newStatus.value !== "undefined"));
       };
-      console.log($scope.statuses)
+
       $scope.submit = function() {
-          // $scope.statuses.statuses.push($scope.newStatus);
-          // $scope.statuses.statuses[]
-          dataService.updateProspectStatuses($scope.statuses);
+          prospectStatuses.statuses[prospectStatuses.statuses.length++] = $scope.newStatus;
+          dataService.updateProspectStatuses(prospectStatuses);
           $scope.close();
       };
 

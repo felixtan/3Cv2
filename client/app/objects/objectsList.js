@@ -282,8 +282,8 @@
               controller: 'ProspectStatusModalCtrl',
               size: 'md',
               resolve: {
-                  getProspectStatuses: function() {
-                      return prospectHelpers.getStatuses();
+                  prospectStatuses: function() {
+                      return ctrl.prospectStatuses;
                   }
               }
           });
