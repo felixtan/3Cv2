@@ -18,9 +18,10 @@
       $scope.validForm = function() {
           return (($scope.newStatus.value !== null) && (typeof $scope.newStatus.value !== "undefined"));
       };
-
+      console.log($scope.statuses)
       $scope.submit = function() {
-          $scope.statuses.statuses.push($scope.newStatus);
+          // $scope.statuses.statuses.push($scope.newStatus);
+          // $scope.statuses.statuses[]
           dataService.updateProspectStatuses($scope.statuses);
           $scope.close();
       };

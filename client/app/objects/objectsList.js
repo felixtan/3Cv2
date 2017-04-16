@@ -34,6 +34,7 @@
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
                       $scope.statuses = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
+                      console.log($scope.statuses)
                   });
 
                   return prospectHelpers.get;
@@ -204,7 +205,6 @@
 
       ctrl.updateOrder = function(oldIndex, newIndex) {
           $scope.statuses.move(oldIndex, newIndex);
-          ctrl.prospectStatuses.statuses = $scope.statuses;
       };
 
       // when status name changes
@@ -236,11 +236,11 @@
             ctrl.updateOrder(oldIndex, $scope.statusOrder[oldIndex]);
           }
 
-          var updatedProspectStatuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
 
           var promises = [
-            prospectHelpers.updateStatuses(ctrl.prospectStatuses),
-            ctrl.updateStatusInProspects(oldName, data.name)
+            prospectHelpers.updateStatuses(ctrl.prospectStatuses),        // updates statuses
+            ctrl.updateStatusInProspects(oldName, data.name)              // updates prospects
           ];
 
           $q.all(promises).then(function(values) {
@@ -268,8 +268,9 @@
       // Prospects with the deleted status are reassigned to Unassigned
       $scope.deleteStatus = function(index, statusName) {
           $scope.statuses.splice(index, 1);
-          ctrl.prospectStatuses.statuses = $scope.statuses;
-          prospectHelpers.updateStatuses(ctrl.prospectStatuses);
+          // ctrl.prospectStatuses.statuses = $scope.statuses;
+          var updateProspectStatuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          prospectHelpers.updateStatuses(updatedProspectStatuses);
           ctrl.unassignProspects(statusName);
           $state.forceReload();
       };
