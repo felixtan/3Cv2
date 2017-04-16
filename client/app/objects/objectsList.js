@@ -106,7 +106,6 @@
           modalInstance.result.then(function () {
               // $state.forceReload();
           }, function() {
-              // $state.forceReload();
               console.log('Modal dismissed at: ' + new Date());
           });
       };
@@ -145,20 +144,17 @@
       */
       $scope.belongsToType = assetHelpers.belongsToType;
 
-      // TODO: make a functional method for this; modifying native methods is bad practice apparently
-      // http://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
-      Array.prototype.move = function (old_index, new_index) {
-          if (new_index >= this.length) {
-              var k = new_index - this.length;
-              while ((k--) + 1) {
-                  this.push(undefined);
-              }
-          }
-          this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+      ctrl.move = function(arr, oldIndex, newIndex) {
+        if (newIndex < arr.length) {
+          arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+        } else {
+          // This shouldn't happen
+          throw new Error("Index out of bounds.");
+        }
       };
 
       ctrl.updateOrder = function(oldIndex, newIndex) {
-          $scope.types.move(oldIndex, newIndex);
+          ctrl.move($scope.types, oldIndex, newIndex);
           $scope.assetTypes.types = $scope.types;
       };
 
@@ -203,7 +199,8 @@
       };
 
       ctrl.updateOrder = function(oldIndex, newIndex) {
-          $scope.statuses.move(oldIndex, newIndex);
+          ctrl.move($scope.statuses, oldIndex, newIndex);
+          $state.forceReload();
       };
 
       // when status name changes
@@ -283,7 +280,6 @@
           ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
           prospectHelpers.updateStatuses(ctrl.prospectStatuses);
           ctrl.unassignProspects(statusName);
-          $state.forceReload();
       };
 
       $scope.addStatus = function() {

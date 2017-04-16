@@ -64,10 +64,10 @@
             data: (sendData(method, resource) ? data : null),
           }).then(function(result) {
             // console.log(result)
-            forceReload(method, resource)
+            // forceReload(method, resource)
             return result;
           }, function(err) {
-            forceReload(method, resource)
+            // forceReload(method, resource)
             // console.error(err);
           });
         };

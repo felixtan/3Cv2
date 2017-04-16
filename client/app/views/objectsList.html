@@ -64,7 +64,7 @@
             <span ng-show='rowform.$visible' e-form='rowform'>
                 <select ng-model='statusOrder[$index]'>
                     <option ng-repeat='status in statuses' value='{{ ::$index }}'>
-                        {{ ::$index }}
+                        {{ ::$index+1 }}
                     </option>
                 </select>
             </span>
