@@ -143,7 +143,7 @@
         var objects = (typeof assetType === 'string') ? assetHelpers.filterAssetsByType($scope.objects, assetType)
                                                       : $scope.objects;
 
-        console.log(objects)
+        // console.log(objects)
         _.each(objects, function(o) {
           o.identifier = $scope.identifier.value;
           $scope.update(o);
@@ -170,7 +170,6 @@
           // console.log($scope.formData)
           // console.log($scope.identifier)
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
-              // console.log(newObject);
               if(objectType === 'car') {
                 if($scope.identifierChanged()) {
                   ctrl.updateIdentifierForAllObjects();
@@ -192,7 +191,7 @@
                   });
               } else if(objectType === 'asset') {
                   if($scope.identifierChanged()) {
-                    ctrl.updateIdentifierForAllObjects(result.data.assetType);
+                    ctrl.updateIdentifierForAllObjects(newObject.assetType);
                   }
 
                   $scope.save(newObject).then(function() {
