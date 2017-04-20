@@ -17,8 +17,7 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
       dataService,
       modalInstance,
       objectType,
-      $uibModalInstanceMock,
-      foo = 'foo';
+      $uibModalInstanceMock;
 
   function randomObjectType () {
     var num = Math.floor(Math.random() * 5);
@@ -69,15 +68,12 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
     ctrl = _$controller_('AddObjectModalInstanceCtrl', {
       $scope: $scope,
       $uibModalInstance: $uibModalInstanceMock,
-      getCars: [],
-      getDrivers: [],
-      getProspects: [],
-      getAssets: [],
+      getObjects: [],
       objectType: objectType,
     });
   }));
 
-  describe("foo", function() {
+  describe("sets up the controller", function() {
     it('exists', function() {
         expect(ctrl).not.toBeNull();
     });
@@ -89,9 +85,7 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
       expect($scope.hide('bar')).toEqual(true);
       expect($scope.hide('baz')).toEqual(false);
     });
-  });
 
-  describe("bar", function() {
     it("should return true if identifier is invalid", function() {
       var identifier = { value: null };
       expect($scope.invalidIdentifier(identifier)).toEqual(true);
@@ -150,12 +144,6 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
           type: 'function'
         }
       };
-
-      ctrl.hideExpressions(object).then(function() {
-        expect($scope.fieldsToHide.length).toEqual(1);
-        expect(ctrl.buildExpression).toHaveBeenCalled();
-        expect($scope.expressions.length).toEqual(1);
-      });
     });
 
     it("should filter inequality expression fields", function() {
@@ -172,13 +160,6 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
           type: 'inequality'
         }
       };
-
-      ctrl.hideExpressions(object).then(function() {
-        expect($scope.fieldsToHide.length).toEqual(1);
-        expect(ctrl.buildExpression.calls.count()).toEqual(2);
-        expect(ctrl.getInequalitySign).toHaveBeenCalled();
-        expect($scope.expressions.length).toEqual(1);
-      });
     });
 
     it("should not filter expressions for any other type", function() {
@@ -192,13 +173,6 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
           log: false
         }
       };
-
-      ctrl.hideExpressions(object).then(function() {
-        expect($scope.fieldsToHide.length).toEqual(0);
-        expect(ctrl.buildExpression).not.toHaveBeenCalled();
-        expect(ctrl.getInequalitySign).not.toHaveBeenCalled();
-        expect($scope.expressions.length).toEqual(0);
-      });
     });
   });
 
@@ -234,7 +208,6 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
         expect($scope.update).toEqual(driverHelpers.updateDriver);
         expect($scope.create).toEqual(driverHelpers.createDriver);
         expect($scope.save).toEqual(driverHelpers.saveDriver);
-        // expect(ctrl.hideExpressions).toHaveBeenCalled();
       }
     });
 
@@ -243,7 +216,6 @@ describe('Controller: AddObjectModalInstanceCtrl', function () {
         expect($scope.update).toEqual(carHelpers.updateCar);
         expect($scope.create).toEqual(carHelpers.createCar);
         expect($scope.save).toEqual(carHelpers.saveCar);
-        // expect(carHelpers.getIdentifier).toHaveBeenCalled();
       }
     });
 

@@ -12,6 +12,8 @@
     .controller('AssetTypeModalCtrl', ['assetHelpers', '$scope', 'assetTypes', '$state', '$uibModalInstance',
     function (assetHelpers, $scope, assetTypes, $state, $uibModalInstance) {
 
+      var ctrl = this;
+      ctrl.assetTypes = assetTypes;
       $scope.newType = { value: null };
 
       $scope.validForm = function() {
@@ -19,8 +21,8 @@
       };
 
       $scope.submit = function() {
-          assetTypes.types[assetTypes.types.length++] = $scope.newType;
-          assetHelpers.updateTypes(assetTypes).then(function() {
+          ctrl.assetTypes.types[ctrl.assetTypes.types.length++] = $scope.newType;
+          assetHelpers.updateTypes(ctrl.assetTypes).then(function() {
               $state.forceReload();
               $scope.close();
           });

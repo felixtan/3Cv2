@@ -125,7 +125,7 @@
             <li ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
               <h4>
                 <a ui-sref='assetData({ id: asset.id })'>
-                  {{ ::asset.identifierValue }}
+                  {{ ::asset.identifierValue || 'null' }}
                 </a>
               </h4>
             </li>

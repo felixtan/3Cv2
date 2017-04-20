@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('AddFieldModalInstanceCtrl', ['$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
-    function($scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
+    .controller('AddFieldModalInstanceCtrl', ['$q', '$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
+    function($q, $scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
 
       var isValid = objectHelpers.isValid;
 
@@ -62,7 +62,6 @@
         ctrl.objects = _.filter(ctrl.objects, function(asset) {
           return asset.assetType === ctrl.assetType;
         });
-
       } else {
         $state.go('dashboard.cars');
       }
@@ -93,17 +92,20 @@
       };
 
       $scope.submit = function() {
+        var updates = [];
         var fieldDataObj = ctrl.createNewFieldData($scope.field);
 
         if(ctrl.objects.length > 0) {
           _.each(ctrl.objects, function(object) {
             var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
-            console.log(objectToUpdate);
-            ctrl.update(objectToUpdate);
+            updates.push(ctrl.update(objectToUpdate));
           });
         }
 
-        $scope.ok(fieldDataObj, $scope.field.name);
+        $q.all(updates).then(function() {
+          $state.forceReload();
+          $scope.ok(fieldDataObj, $scope.field.name);
+        });
       };
 
       $scope.reset = function () {
@@ -114,7 +116,6 @@
       };
 
       $scope.ok = function(newFieldObject, newFieldName) {
-        $state.forceReload();
         $uibModalInstance.close({
           name: newFieldName,
           data: newFieldObject,

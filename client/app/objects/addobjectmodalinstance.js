@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddObjectModalInstanceCtrl', ['_', 'getObjects', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function(_, getObjects, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
+    .controller('AddObjectModalInstanceCtrl', ['$q', '_', 'getObjects', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function($q, _, getObjects, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
 
       var ctrl = this;
 
@@ -139,14 +139,24 @@
           $state.go("dashboard.cars");
       }
 
-      ctrl.updateIdentifierForAllObjects = function(assetType) {
+      ctrl.updateIdentifierForAllObjects = function(idToIgnore, assetType) {
+        var updates = [];
         var objects = (typeof assetType === 'string') ? assetHelpers.filterAssetsByType($scope.objects, assetType)
                                                       : $scope.objects;
 
-        // console.log(objects)
         _.each(objects, function(o) {
-          o.identifier = $scope.identifier.value;
-          $scope.update(o);
+          if (o.id !== idToIgnore) {
+            if ($scope.identifier.value === $scope.newField) {
+                o.data[$scope.newField].value = null;
+            }
+
+            o.identifier = $scope.identifier.value;
+            updates.push($scope.update(o));
+          }
+        });
+
+        $q.all(updates).then(function() {
+          $state.forceReload();
         });
       };
 
@@ -167,15 +177,14 @@
 
       $scope.submit = function() {
           var updateTasks = [];
-          // console.log($scope.formData)
-          // console.log($scope.identifier)
+
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
               if(objectType === 'car') {
-                if($scope.identifierChanged()) {
-                  ctrl.updateIdentifierForAllObjects();
-                }
+                $scope.save(newObject).then(function(result) {
+                  if($scope.identifierChanged()) {
+                    ctrl.updateIdentifierForAllObjects(result.data.id);
+                  }
 
-                $scope.save(newObject).then(function() {
                   $scope.ok(newObject);
                 });
               } else if(objectType === 'prospect') {
@@ -190,12 +199,12 @@
                       $scope.ok(newObject);
                   });
               } else if(objectType === 'asset') {
-                  if($scope.identifierChanged()) {
-                    ctrl.updateIdentifierForAllObjects(newObject.assetType);
-                  }
+                  $scope.save(newObject).then(function(result) {
+                    if($scope.identifierChanged()) {
+                      ctrl.updateIdentifierForAllObjects(result.data.id, newObject.assetType);
+                    }
 
-                  $scope.save(newObject).then(function() {
-                      $scope.ok(newObject);
+                    $scope.ok(newObject);
                   });
               }
           });
@@ -209,7 +218,6 @@
       };
 
       $scope.ok = function(object) {
-          $state.forceReload();
           $uibModalInstance.close(object);
       };
 
@@ -239,17 +247,24 @@
                       return objectType;
                   },
                   assetType: function() {
-                      return objectType === 'asset' ? identifier : null;
+                      return objectType === 'asset' ? $scope.formData.assetType.value : null;
                   }
               }
           });
 
           modalInstance.result.then(function (newField) {
-              // console.log(newField);
+              // newField.data.value = null;
               $scope.fields.push(newField.name);
               $scope.formData[newField.name] = newField.data;
+              $scope.newField = newField.name;
+              // if (objectType === 'asset') {
+              //     $scope.formData[newField.name].value = null;
+                  // console.log(newField)
+                  // console.log($scope.formData[newField.name])
+                  // console.log($scope.objects)
+              // }
           }, function() {
-              $state.forceReload();
+              // $state.forceReload();
               console.log('Modal dismissed at: ' + new Date());
           });
       };

@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('EditFieldModalCtrl', ['$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
-      function ($window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+    .controller('EditFieldModalCtrl', ['$q', '$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      function ($q, $window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
       var ctrl = this,
           notName = driverHelpers.notName;
@@ -124,10 +124,12 @@
       };
 
       $scope.submit = function() {
+        var updates = [];
+
         if($scope.objectType === 'prospect' && $scope.field.name === 'status') {
           $scope.object.status = $scope.field.value;
           $scope.object.data[$scope.field.name].value = $scope.field.value.value;
-          $scope.update($scope.object);
+          updates.push($scope.update($scope.object));
         } else {
           _.each($scope.objects, function(object) {
             /* If field name changed, all objects' data must be updated */
@@ -162,11 +164,14 @@
               }
             }
 
-            $scope.update(objectToSave);
+            updates.push($scope.update(objectToSave));
           });
         }
 
-        $scope.ok();
+        $q.all(updates).then(function() {
+          $state.forceReload();
+          $scope.ok();
+        });
       };
 
       $scope.invalidFieldType = function() {
@@ -181,7 +186,6 @@
       };
 
       $scope.ok = function() {
-        // $state.forceReload();
         $uibModalInstance.close();
       };
 

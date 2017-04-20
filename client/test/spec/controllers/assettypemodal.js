@@ -8,25 +8,29 @@ describe('Controller: AssetTypeModalCtrl', function () {
   var ctrl,
       $scope,
       $state,
-      dataService;
+      assetHelpers;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope, _dataService_) {
+  beforeEach(inject(function ($controller, $rootScope, _assetHelpers_) {
     $scope = $rootScope.$new();
-    dataService = _dataService_;
-
-    spyOn(dataService, 'updateAssetTypes');
+    assetHelpers = _assetHelpers_;
 
     ctrl = $controller('AssetTypeModalCtrl', {
       $scope: $scope,
       $uibModalInstance: jasmine.createSpyObj('$uibModalInstance', ['close', 'dismiss']),
-      dataService: dataService,
-      getTypes: { data: { types: ['foo', 'bar'] } }
+      assetHelpers: assetHelpers,
+      assetTypes: {
+        types: {
+          0: { value: 'foo' },
+          1: { value: 'bar'},
+          length: 2
+        }
+      }
     });
   }));
 
   it("should load the data", function() {
-    expect($scope.assetTypes.types.length).toBe(2);
+    expect(ctrl.assetTypes.types.length).toBe(2);
     expect($scope.newType.value).toBeNull()
   });
 
