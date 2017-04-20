@@ -116,11 +116,11 @@
       </button>
     </div><br>
 
-    <accordion>
-      <accordion-group ng-repeat='type in types'>
-        <accordion-heading>
+    <uib-accordion>
+      <div uib-accordion-group ng-repeat='type in types'>
+        <uib-accordion-heading>
           {{ type.value }} <i class="pull-right fa fa-chevron-down"></i>
-        </accordion-heading>
+        </uib-accordion-heading>
           <ul class='assetsOfType'>
             <li ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
               <h4>
@@ -130,7 +130,7 @@
               </h4>
             </li>
           </ul>
-      </accordion-group>
-    </accordion>
+      </div>
+    </uib-accordion>
   </div>
 </div>

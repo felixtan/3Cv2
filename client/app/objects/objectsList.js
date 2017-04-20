@@ -43,11 +43,8 @@
                   $scope.profile = { state: 'assetData({ id: object.id })' };
 
                   assetHelpers.getTypes().then(function(result) {
-                      $scope.assetTypes = result.data;
-                      $scope.types = $scope.assetTypes.types;
-                      _.each($scope.types, function(type, i) {
-                          $scope.order[i] = i;
-                      });
+                      ctrl.assetTypes = result.data;
+                      $scope.types = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.assetTypes.types);
                   });
 
                   return assetHelpers.get;
@@ -85,34 +82,22 @@
                   objectType: function() {
                       return $scope.objectType;
                   },
-                  getCars: function() {
-                      return ($scope.objectType === 'car') ? carHelpers.get() : [];
-                  },
-                  getDrivers: function() {
-                      return ($scope.objectType === 'driver') ? driverHelpers.get() : [];
-                  },
-                  getProspects: function() {
-                      return ($scope.objectType === 'prospect') ? prospectHelpers.get() : [];
-                  },
-                  getAssets: function() {
-                      return ($scope.objectType === 'asset') ? assetHelpers.get() : [];
-                  },
-                  assetType: function() {
-                      return null;
+                  getObjects: function() {
+                      return $scope.objects;
                   }
               }
           });
 
           modalInstance.result.then(function () {
-              // $state.forceReload();
+              $state.forceReload();
           }, function() {
               console.log('Modal dismissed at: ' + new Date());
           });
       };
 
-      //
-      // Asset list stuff
-      /////////////////////////////////////////////////////////////////////
+      /**************
+       * Asset list *
+       **************/
       $scope.thereAreAssetsOfType = function(type) {
           var assets = _.filter($scope.assets, function(asset) {
               return asset.assetTtype === type;
@@ -126,8 +111,8 @@
               controller: 'AssetTypeModalCtrl',
               size: 'md',
               resolve: {
-                  getTypes: function() {
-                      return assetHelpers.getTypes();
+                  assetTypes: function() {
+                      return ctrl.assetTypes;
                   }
               }
           });
@@ -144,20 +129,16 @@
       */
       $scope.belongsToType = assetHelpers.belongsToType;
 
-      ctrl.move = function(arr, oldIndex, newIndex) {
-        oldIndex = parseInt(oldIndex)
-        newIndex = parseInt(newIndex)
-        if (newIndex < arr.length) {
+      ctrl.updateOrder = function(arr, oldIndex, newIndex) {
+        if (oldIndex !== newIndex && newIndex < arr.length) {
           arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+          $state.forceReload();
+        } else if (oldIndex === newIndex) {
+          // pass
         } else {
           // This shouldn't happen
           throw new Error("Index out of bounds.");
         }
-      };
-
-      ctrl.updateOrder = function(oldIndex, newIndex) {
-          ctrl.move($scope.types, oldIndex, newIndex);
-          $scope.assetTypes.types = $scope.types;
       };
 
       // when type name changes
@@ -173,10 +154,10 @@
 
       $scope.saveType = function(data, oldIndex, oldName) {
           if(oldIndex != $scope.statusOrder[oldIndex]) {
-            ctrl.updateOrder(oldIndex, $scope.statusOrder[oldIndex]);
+            ctrl.updateOrder($scope.types, oldIndex, $scope.statusOrder[oldIndex]);
           }
 
-          assetHelpers.updateTypes($scope.assetTypes);
+          assetHelpers.updateTypes(ctrl.assetTypes);
           $scope.updateTypeInAssets(oldName, data.name);
           $state.forceReload();
       };
@@ -200,11 +181,6 @@
         }, { length: 0 });
       };
 
-      ctrl.updateOrder = function(oldIndex, newIndex) {
-          ctrl.move($scope.statuses, oldIndex, newIndex);
-          $state.forceReload();
-      };
-
       // when status name changes
       ctrl.updateStatusInProspects = function(oldName, newName) {
         var deferred = $q.defer();
@@ -225,24 +201,24 @@
         return deferred.promise;
       };
 
-      // $scope.setIndexVal = function(orderIndex) {
-      //   $scope.statusOrder.val = orderIndex;
-      // };
-
       $scope.saveStatus = function(data, oldIndex, oldName) {
-          if(oldIndex !== $scope.statusOrder[oldIndex]) {
-            ctrl.updateOrder(oldIndex, $scope.statusOrder[oldIndex]);
+          var updateTasks = [];
+          var newIndex = !$scope.statusOrder[oldIndex] ? oldIndex : parseInt($scope.statusOrder[oldIndex]);
+          oldIndex = parseInt(oldIndex);
+
+          if (oldIndex !== newIndex) {
+            ctrl.updateOrder($scope.statuses, oldIndex, newIndex);
+          }
+
+          if (oldName !== data.name) {
+            updateTasks.push(ctrl.updateStatusInProspects(oldName, data.name));
           }
 
           ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          updateTasks.push(prospectHelpers.updateStatuses(ctrl.prospectStatuses));
 
-          var promises = [
-            prospectHelpers.updateStatuses(ctrl.prospectStatuses),        // updates statuses
-            ctrl.updateStatusInProspects(oldName, data.name)              // updates prospects
-          ];
-
-          $q.all(promises).then(function(values) {
-            // console.log(values);
+          $q.all(updateTasks).then(function() {
+            $state.forceReload();
           });
       };
 

@@ -38,7 +38,7 @@
               } else {
                 return url + "/" + data
               }
-            } else if (resource === 'prospect-statuses') {
+            } else if (resource === 'prospect-statuses' || resource === 'asset-types' ) {
               return url
             } else {
               return url + "/" + data.id

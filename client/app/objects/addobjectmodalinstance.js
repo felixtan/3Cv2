@@ -9,13 +9,13 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddObjectModalInstanceCtrl', ['_', 'getCars', 'getAssets', 'getProspects', 'getDrivers', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function(_, getCars, getAssets, getProspects, getDrivers, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
+    .controller('AddObjectModalInstanceCtrl', ['_', 'getObjects', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function(_, getObjects, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
 
       var ctrl = this;
 
       $scope.formData = {};                                     // Stores the addObjectModal form data
-      $scope.objects = [];                                      // Existing objects of type objectType
+      $scope.objects = getObjects;
       $scope.identifier = { value: null };                      // Potentially new identifier of objectType
       $scope.currentIdentifier = { value: null };               // Identifier of objectType
       $scope.fields = [];                                       // Properties of objects of type objectType
@@ -57,9 +57,7 @@
 
       // determine the state or ui calling this modal
       if(objectType === 'driver') {
-          // console.log('called from drivers ui');
-          $scope.objects = getDrivers.data;
-          $scope.update = driverHelpers.updateDriver;
+          $scope.update = driverHelpers.update;
           $scope.create = driverHelpers.createDriver;
           $scope.save = driverHelpers.saveDriver;
           ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
@@ -74,9 +72,7 @@
             $scope.formData.assetType = { value: null };
           });
       } else if(objectType === 'car') {
-          // console.log('called from cars ui');
-          $scope.objects = getCars.data;
-          $scope.update = carHelpers.updateCar;
+          $scope.update = carHelpers.update;
           $scope.create = carHelpers.createCar;
           $scope.save = carHelpers.saveCar;
           ctrl.getFormDataAndReference = objectHelpers.getFormDataAndReference;
@@ -95,8 +91,6 @@
               });
           });
       } else if(objectType === 'prospect') {
-          // console.log('called from prospects ui');
-          $scope.objects = getProspects.data;
           $scope.update = prospectHelpers.update;
           $scope.create = prospectHelpers.createProspect;
           $scope.save = prospectHelpers.saveProspect;
@@ -117,9 +111,7 @@
               });
           });
       } else if(objectType === 'asset') {
-          // console.log('called from assets ui');
-          $scope.objects = getAssets.data;
-          $scope.update = assetHelpers.updateAsset;
+          $scope.update = assetHelpers.update;
           $scope.create = assetHelpers.createAsset;
           $scope.save = assetHelpers.saveAsset;
           $scope.fieldsToHide.push("assetType");
@@ -147,81 +139,63 @@
           $state.go("dashboard.cars");
       }
 
+      ctrl.updateIdentifierForAllObjects = function(assetType) {
+        var objects = (typeof assetType === 'string') ? assetHelpers.filterAssetsByType($scope.objects, assetType)
+                                                      : $scope.objects;
+
+        console.log(objects)
+        _.each(objects, function(o) {
+          o.identifier = $scope.identifier.value;
+          $scope.update(o);
+        });
+      };
+
+      ctrl.setStatusForNewProspect = function(newProspect) {
+        newProspect.status = {
+            value: ($scope.status.value || defaultStatus.value)
+        };
+
+        newProspect.data.status = {
+            value: ($scope.status.value || defaultStatus.value),
+            log: false,
+            type: 'text',
+            dataType: 'text'
+        };
+
+        return newProspect;
+      };
+
       $scope.submit = function() {
-          console.log($scope.formData)
-          console.log($scope.identifier)
+          var updateTasks = [];
+          // console.log($scope.formData)
+          // console.log($scope.identifier)
           $scope.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
               // console.log(newObject);
               if(objectType === 'car') {
-                  $scope.save(newObject).then(function(result) {
-                      if($scope.identifierChanged()) {
-                          _.each($scope.objects, function(obj) {
-                              // console.log(obj.id);
-                              // console.log(result.data.id);
-                              if(obj.id !== result.data.id) {
-                                  obj.identifier = $scope.identifier.value;
-                                  $scope.update(obj);
-                              }
-                          });
-                      }
+                if($scope.identifierChanged()) {
+                  ctrl.updateIdentifierForAllObjects();
+                }
 
-                      $scope.ok(newObject);
-                  });
+                $scope.save(newObject).then(function() {
+                  $scope.ok(newObject);
+                });
               } else if(objectType === 'prospect') {
                   prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
-
-                      newObject.status = {
-                          value: ($scope.status.value || defaultStatus.value)
-                      };
-
-                      newObject.data.status = {
-                          value: ($scope.status.value || defaultStatus.value),
-                          log: false,
-                          type: 'text',
-                          dataType: 'text'
-                      };
-
-                      $scope.save(newObject).then(function(result) {
-                          if($scope.identifierChanged()) {
-                              _.each($scope.objects, function(obj) {
-                                  if(obj.id !== result.data.id) {
-                                      obj.identifier = $scope.identifier.value;
-                                      $scope.update(obj);
-                                  }
-                              });
-                          }
-
+                      newObject = ctrl.setStatusForNewProspect(newObject);
+                      $scope.save(newObject).then(function() {
                           $scope.ok(newObject);
                       });
                   });
               } else if(objectType === 'driver') {
-                  // console.log(newObject);
-                  $scope.save(newObject).then(function(result) {
-                      // console.log(result);
-                      if($scope.identifierChanged()) {
-                          _.each($scope.objects, function(obj) {
-                              if(obj.id !== result.data.id) {
-                                  obj.identifier = $scope.identifier.value;
-                                  $scope.update(obj);
-                              }
-                          });
-                      }
-
+                  $scope.save(newObject).then(function() {
                       $scope.ok(newObject);
                   });
               } else if(objectType === 'asset') {
-                  $scope.save(newObject).then(function(result) {
-                      // console.log(result);
-                      if($scope.identifierChanged()) {
-                          var assetsOfType = assetHelpers.filterAssetsByType($scope.objects, result.data.assetType);
-                          _.each(assetsOfType, function(asset) {
-                              if(asset.id !== result.data.id) {
-                                 asset.identifier = $scope.identifier.value;
-                                  $scope.update(asset);
-                              }
-                          });
-                      }
+                  if($scope.identifierChanged()) {
+                    ctrl.updateIdentifierForAllObjects(result.data.assetType);
+                  }
 
+                  $scope.save(newObject).then(function() {
                       $scope.ok(newObject);
                   });
               }

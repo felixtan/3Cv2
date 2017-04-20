@@ -22,19 +22,24 @@
       var update = dataService.updateAsset;
       var deleteAsset = dataService.deleteAsset;
       var getTypes = dataService.getTypes;
+      var updateTypes = dataService.updateAssetTypes;
 
       return {
 
         // Data
         getOrganizationId: getOrganizationId,
-        get: get,
+
         getTypes: getTypes,
         getByType: getByType,
+        updateTypes: updateTypes,
+
         getById: getById,
+        get: get,
         saveAsset: saveAsset,
         update: update,
         createAsset: createAsset,
         deleteAsset: deleteAsset,
+
         thereAreAssetsOfType: thereAreAssetsOfType,
         _getFields: _getFields,
         getFields: getFields,

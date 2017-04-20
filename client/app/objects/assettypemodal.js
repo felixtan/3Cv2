@@ -9,9 +9,9 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AssetTypeModalCtrl', ['dataService', '$scope', 'getTypes', '$state', '$uibModalInstance',
-    function (dataService, $scope, getTypes, $state, $uibModalInstance) {
-      $scope.assetTypes = getTypes.data;
+    .controller('AssetTypeModalCtrl', ['assetHelpers', '$scope', 'assetTypes', '$state', '$uibModalInstance',
+    function (assetHelpers, $scope, assetTypes, $state, $uibModalInstance) {
+
       $scope.newType = { value: null };
 
       $scope.validForm = function() {
@@ -19,9 +19,11 @@
       };
 
       $scope.submit = function() {
-          $scope.assetTypes.types.push($scope.newType);
-          dataService.updateAssetTypes($scope.assetTypes);
-          $scope.close();
+          assetTypes.types[assetTypes.types.length++] = $scope.newType;
+          assetHelpers.updateTypes(assetTypes).then(function() {
+              $state.forceReload();
+              $scope.close();
+          });
       };
 
       $scope.reset = function () {
@@ -29,7 +31,6 @@
       };
 
       $scope.close = function () {
-          $state.forceReload();
           $uibModalInstance.dismiss('cancel');
       };
     }]);

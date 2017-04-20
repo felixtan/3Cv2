@@ -9,8 +9,8 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ProspectStatusModalCtrl', ['dataService', '$scope', 'prospectStatuses', '$state', '$uibModalInstance',
-      function(dataService, $scope, prospectStatuses, $state, $uibModalInstance) {
+    .controller('ProspectStatusModalCtrl', ['prospectHelpers', '$scope', 'prospectStatuses', '$state', '$uibModalInstance',
+      function(prospectHelpers, $scope, prospectStatuses, $state, $uibModalInstance) {
 
       $scope.newStatus = { value: null };
 
@@ -20,8 +20,10 @@
 
       $scope.submit = function() {
           prospectStatuses.statuses[prospectStatuses.statuses.length++] = $scope.newStatus;
-          dataService.updateProspectStatuses(prospectStatuses);
-          $scope.close();
+          prospectHelpers.updateStatuses(prospectStatuses).then(function() {
+              $state.forceReload();
+              $scope.close();
+          });
       };
 
       $scope.reset = function () {
@@ -29,7 +31,6 @@
       };
 
       $scope.close = function () {
-          $state.forceReload();
           $uibModalInstance.dismiss('cancel');
       };
     }]);

@@ -1,13 +1,6 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc function
-   * @name clientApp.controller:AddfieldmodalinstanceCtrl
-   * @description
-   * # AddfieldmodalinstanceCtrl
-   * Controller of the clientApp
-   */
   angular.module('clientApp')
     .controller('AddFieldModalInstanceCtrl', ['$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
     function($scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
@@ -17,23 +10,13 @@
       var ctrl = this;
       ctrl.update = null;
       ctrl.fields = [];
-      ctrl.objects = [];
+      ctrl.objects = getObjects;
       ctrl.objectType = objectType;
       ctrl.assetType = assetType;
 
       $scope.formData = {};
 
-      /*
-        Type of field     Data type
-        -------------     ---------
-        text              text
-        number            number
-        boolean           boolean
-        function          number
-        inequality        boolean
-      */
-
-      $scope.field = {  // when this value changes, the UI dynamically changes
+      $scope.field = {
         name: null,
         type: null,
         dataType: null,
@@ -63,26 +46,22 @@
       if(objectType === 'car') {
 
         ctrl.update = dataService.updateCar;
-        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
 
       } else if(objectType === 'driver') {
 
         ctrl.update = dataService.updateDriver;
-        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
 
       } else if(objectType === 'prospect') {
 
         ctrl.update = dataService.updateProspect;
-        if(typeof getObjects !== 'undefined' && getObjects.length > 0) { ctrl.objects = getObjects; }
 
       } else if(objectType === 'asset') {
+
         ctrl.update = dataService.updateAsset;
 
-        var assetsOfType = _.filter(getObjects, function(asset) {
+        ctrl.objects = _.filter(ctrl.objects, function(asset) {
           return asset.assetType === ctrl.assetType;
         });
-
-        if(assetsOfType !== 'undefined' && assetsOfType.length > 0) { ctrl.objects = assetsOfType; }
 
       } else {
         $state.go('dashboard.cars');
@@ -119,6 +98,7 @@
         if(ctrl.objects.length > 0) {
           _.each(ctrl.objects, function(object) {
             var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+            console.log(objectToUpdate);
             ctrl.update(objectToUpdate);
           });
         }
