@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat='log in logs | orderBy:"-weekOf"'>
+                <tr ng-repeat='log in logs'>
                     <td>
                         <span class='log-date'>
                             {{ ::log.weekOf | date:'longDate' }}

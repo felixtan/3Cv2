@@ -51,7 +51,7 @@
             $scope.object = result.data;
           }
 
-          $scope.logs = $scope.object.logs
+          $scope.logs = objectHelpers.convertArrayOfObjToArrayLikeObj(_.reverse($scope.object.logs))
           $scope.identifierValue = objectHelpers.getIdentifierValue(result.data);
           $scope.assetType = $scope.object.assetType || null;
           $scope.tabs = [
@@ -68,7 +68,7 @@
       });
 
       /**
-       * Used by view to tabulate log data
+       * Used to tabulate log data
        * */
       $scope.getLogDataByDate = function(date) {
           return $scope.logDataObj[date];
@@ -94,7 +94,6 @@
 
             $scope.logDataObj[date] = logData;
         });
-        // console.log($scope.logDataObj);
       };
 
       $scope.getMostRecentLogDate = function() {

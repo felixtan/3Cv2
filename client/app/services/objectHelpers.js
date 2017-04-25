@@ -19,17 +19,29 @@
               updateDataIfFieldNameChanged              : updateDataIfFieldNameChanged,
               getFormDataAndReference                   : getFormDataAndReference,
               getIdentifierValue                        : getIdentifierValue,
-              getStateRef                               : getStateRef
+              getStateRef                               : getStateRef,
+              convertArrayLikeObjToArrayOfObj           : convertArrayLikeObjToArrayOfObj,
+              convertArrayOfObjToArrayLikeObj           : convertArrayOfObjToArrayLikeObj
           };
+
+          function convertArrayLikeObjToArrayOfObj(obj) {
+            return _.reduce(obj, function(memo, v, k) {
+              memo[k] = v;
+              return memo;
+            }, []);
+          }
+
+          function convertArrayOfObjToArrayLikeObj(arr) {
+            return _.reduce(arr, function(memo, v) {
+              memo[memo.length++] = v;
+              return memo;
+            }, { length: 0 });
+          }
 
           /**
            * view is a String; either 'Data' or 'Logs'
            */
           function getStateRef(objectType, objectId, view) {
-            // function getLogsStateName(objectType) {
-            //   return ($scope.objectType === 'car' || $scope.objectType === 'driver' || $scope.objectType === 'asset') ? `${objectType}` : null
-            // }
-            // return `${objectType}${view}({id:${objectId}})`
             return objectType + view + "({id:" + objectId + "})"
           }
 

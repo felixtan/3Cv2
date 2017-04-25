@@ -48,8 +48,7 @@
 
       ctrl.getAssetsOfTypeAndLogs = function (assetType) {
           assetHelpers.getByType(assetType).then(function(result) {
-            console.log(result);
-            // $scope.
+            $scope.objects = result.data;
           });
 
           ctrl.getLogDates()(assetType).then(function(dates) {
@@ -124,15 +123,19 @@
 
       // returns an object to be object.logs[i].data with keys (feilds) to be logged
       ctrl.newDataObj = function() {
-          var data = {},
-              objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType);
+          var data = {};
+          var objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType);
 
-          // first object is taken because fields in object.data are assumed to be uniform for all objects
-          var fields = ctrl.getFieldsToBeLogged(objects[0]);
+          if (objects.length === 0) {
+            alert("Sorry, there are no " + $scope.objectType + "s.")
+          } else {
+            // first object is taken because fields in object.data are assumed to be uniform for all objects
+            var fields = ctrl.getFieldsToBeLogged(objects[0]);
 
-          _.each(fields, function(field) {
-              data[field] = null;
-          });
+            _.each(fields, function(field) {
+                data[field] = null;
+            });
+          }
 
           return data;
       };
@@ -156,10 +159,10 @@
           // 4. create for all objects
           // employ loading animation
 
-          var d = $scope.datepicker.dt,
-              weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime(),
-              blankDataObj = ctrl.newDataObj(),
-              promises = [];
+          var d = $scope.datepicker.dt;
+          var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
+          var blankDataObj = ctrl.newDataObj();
+          var promises = [];
 
           _.each($scope.objects, function(object) {
               var objectToUpdate = ctrl.createLogForObject(object, weekOf, blankDataObj);

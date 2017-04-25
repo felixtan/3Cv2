@@ -33,7 +33,7 @@
 
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
-                      $scope.statuses = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
+                      $scope.statuses = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
                   });
 
                   return prospectHelpers.get;
@@ -44,7 +44,7 @@
 
                   assetHelpers.getTypes().then(function(result) {
                       ctrl.assetTypes = result.data;
-                      $scope.types = ctrl.convertArrayLikeObjToArrayOfObj(ctrl.assetTypes.types);
+                      $scope.types = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.assetTypes.types);
                   });
 
                   return assetHelpers.get;
@@ -167,20 +167,6 @@
        *****************/
       $scope.belongsToStatus = prospectHelpers.belongsToStatus;
 
-      ctrl.convertArrayLikeObjToArrayOfObj = function(obj) {
-        return _.reduce(obj, function(memo, v, k) {
-          memo[k] = v;
-          return memo;
-        }, []);
-      };
-
-      ctrl.convertArrayOfObjToArrayLikeObj = function(arr) {
-        return _.reduce(arr, function(memo, v) {
-          memo[memo.length++] = v;
-          return memo;
-        }, { length: 0 });
-      };
-
       // when status name changes
       ctrl.updateStatusInProspects = function(oldName, newName) {
         var deferred = $q.defer();
@@ -214,7 +200,7 @@
             updateTasks.push(ctrl.updateStatusInProspects(oldName, data.name));
           }
 
-          ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj($scope.statuses);
           updateTasks.push(prospectHelpers.updateStatuses(ctrl.prospectStatuses));
 
           $q.all(updateTasks).then(function() {
@@ -255,7 +241,7 @@
       // Prospects with the deleted status are reassigned to Unassigned
       $scope.deleteStatus = function(index, statusName) {
           $scope.statuses.splice(index, 1);
-          ctrl.prospectStatuses.statuses = ctrl.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj($scope.statuses);
           prospectHelpers.updateStatuses(ctrl.prospectStatuses);
           ctrl.unassignProspects(statusName);
       };
