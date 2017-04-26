@@ -17,8 +17,10 @@
     <!-- build:css(.tmp) styles/main.css -->
 
     <!-- endbuild -->
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
     <!-- Angular xeditable -->
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
@@ -26,9 +28,6 @@
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body ng-app="clientApp">
-    <!--[if lte IE 8]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
 
     <!-- Add your site or application content here -->
     <!-- if-user this nav -->
@@ -43,6 +42,8 @@
           </button>
           <a class="navbar-brand" ui-sref="dashboard.cars">{{ user.customData.organization }} <span ng-show='!user.customData.organization'>Dashboard</span></a>
         </div>
+
+        <!-- Sidebar -->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
 
@@ -94,6 +95,7 @@
             <input type="text" class="form-control" placeholder="Search...">
           </form> -->
         </div>
+
       </div>
     </nav>
 
@@ -102,10 +104,30 @@
         <!-- if-user this div -->
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><a ui-sref="dashboard.cars"  class='fa fa-car'> Cars<span class="sr-only">(current)</span></a></li>
-            <li><a ui-sref="dashboard.drivers"  class='fa fa-users'> Drivers<span class="sr-only">(current)</span></a></li>
-            <li><a ui-sref="dashboard.assets" class='fa fa-credit-card'> Assets</a></li>
-            <li><a ui-sref="dashboard.prospects" class='fa fa-user-plus'> Prospects</a></li>
+            <li>
+              <a ui-sref="dashboard.cars">
+                <i class='fa fa-car'></i>
+                Cars
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.drivers">
+                <i class='fa fa-users'></i>
+                Drivers
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.assets">
+                <i class='fa fa-credit-card'></i>
+                Assets
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.prospects">
+                <i class='fa fa-user-plus'></i>
+                Prospects
+              </a>
+            </li>
             <!-- <li class='dropdown'>
               <a href="" class='dropdown-toggle' data-toggle='dropdown'>
                 Logs
@@ -113,9 +135,24 @@
               </a> -->
 
               <!-- <ul class='dropdown-menu' role='menu'> -->
-                <li><a ui-sref="logs.cars" class='fa fa-wrench'> Car Logs</a></li>
-                <li><a ui-sref="logs.drivers" class='fa fa-clipboard'> Driver Logs</a></li>
-                <li><a ui-sref="logs.assets" class='fa fa-credit-card-alt'> Asset Logs</a></li>
+                <li>
+                  <a ui-sref="logs.cars">
+                    <i class='fa fa-wrench'></i>
+                    Car Logs
+                  </a>
+                </li>
+                <li>
+                  <a ui-sref="logs.drivers">
+                    <i class='fa fa-clipboard'></i>
+                    Driver Logs
+                  </a>
+                </li>
+                <li>
+                  <a ui-sref="logs.assets">
+                    <i class='fa fa-credit-card-alt'></i>
+                    Asset Logs
+                  </a>
+                </li>
               <!-- </ul> -->
             <!-- </li> -->
           </ul>

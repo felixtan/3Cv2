@@ -14,7 +14,6 @@
     "angular-ui-router": "0.2.18",
     "angular-xeditable": "~0.1.9",
     "normalize.css": "~3.0.3",
-    "font-awesome": "~4.4.0",
     "stormpath-sdk-angularjs": "^2.0.0",
     "angular-bootstrap-switch": "~0.4.1",
     "bootstrap": "~3.3.6",

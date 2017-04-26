@@ -1,18 +1,15 @@
 <link rel="stylesheet" href="styles/assetList.css">
 
-<div class='col-md-offset-2 table-responsive' id='object-list'>
+<!-- <div class='col-md-offset-2 table-responsive' id='object-list'> -->
+<div class='col-md-offset-2 col-sm-offset-3 table-responsive'>
 
-  <h2 class='page-header' ng-if='objectType === "car"'>{{ title.value }}s</h2>
-  <h2 class='page-header' ng-if='objectType === "driver"'>{{ title.value }}s</h2>
-  <h2 class='page-header' ng-if='objectType === "prospect"'>{{ title.value }}s</h2>
-  <h2 class='page-header' ng-if='objectType === "asset"'>{{ title.value }}s</h2>
-
+  <h2 class='object-header'>{{ ::title.value }}s</h2>
   <br>
 
   <div ng-if='objectType === "car" || objectType === "driver"'>
     <table class='table table-striped'>
       <thead>
-        <td>
+        <td class='object-list-add-btns'>
           <button type='button' class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
             + {{ title.value }}
           </button>
@@ -40,17 +37,17 @@
 
   <!-- Prospect List -->
   <div ng-if='objectType === "prospect"'>
-    <div>
+    <div class='object-list-add-btns'>
         <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
             + Prospect
         </button>
         <button class='btn btn-success' ng-click='addStatus()'>
             + Status
         </button>
-    </div>
+    </div><br>
 
     <div ng-repeat='status in statuses'>
-        <h3>
+        <h3 class='prospect-status'>
             <span ng-show='!rowform.$visible'>
                 {{ ::status.value }}
             </span>
@@ -107,7 +104,7 @@
   <!-- Assets List -->
   <div ng-if='objectType === "asset"'>
 
-    <div>
+    <div class='object-list-add-btns'>
       <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
           + Asset
       </button>
@@ -119,17 +116,26 @@
     <uib-accordion>
       <div uib-accordion-group ng-repeat='type in types'>
         <uib-accordion-heading>
-          {{ type.value }} <i class="pull-right fa fa-chevron-down"></i>
+          <h4>
+            {{ ::type.value }}
+            <i class="pull-right fa fa-chevron-down"></i>
+          </h4>
         </uib-accordion-heading>
-          <ul class='assetsOfType'>
-            <li ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
-              <h4>
-                <a ui-sref='assetData({ id: asset.id })'>
-                  {{ ::asset.identifierValue || 'null' }}
-                </a>
-              </h4>
-            </li>
-          </ul>
+          <!-- <ul class='assetsOfType'> -->
+          <table class='table table-striped'>
+            <tbody>
+              <tr ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
+                <td>
+                  <h4>
+                    <a ui-sref='assetData({ id: asset.id })'>
+                      {{ ::asset.identifierValue || 'null' }}
+                    </a>
+                  </h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- </ul> -->
       </div>
     </uib-accordion>
   </div>
