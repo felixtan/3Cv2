@@ -40,7 +40,7 @@
       };
 
       $scope.invalidFieldType = function() {
-        return (($scope.field.type === null) || (typeof $scope.field.type === 'undefined') || ($scope.field.dataType === null) || (typeof $scope.field.dataType === 'undefined'));
+         return $scope.field.dataType === null || typeof $scope.field.dataType === 'undefined';
       };
 
       if(objectType === 'car') {

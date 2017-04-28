@@ -241,14 +241,12 @@
           });
 
           modalInstance.result.then(function (newField) {
-              // newField.data.value = null;
               $scope.fields.push(newField.name);
               $scope.formData[newField.name] = newField.data;
               $scope.newField = newField.name;
 
           }, function() {
-              // $state.forceReload();
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
     }]);
