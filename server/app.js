@@ -16,7 +16,8 @@ app.use(logger('dev'));
 
 // allows CORS
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Origin", getClientUrl())
+  res.header("Access-Control-Allow-Credentials", true)
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   res.header("Access-Control-Allow-Methods", "PUT, DELETE")
   next()
@@ -89,3 +90,11 @@ if(app.get('env') === 'production') {
 var router = require('./router')(app);
 
 module.exports = app;
+
+function getClientUrl() {
+  if (app.get('env') === 'production') {
+    return "http://www.fleetly-herokuapp.com"
+  } else {
+    return "http://localhost:9000"
+  }
+}

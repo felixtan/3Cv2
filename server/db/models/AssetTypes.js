@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         },
 
         types: {
-            type: DataTypes.ARRAY(DataTypes.JSONB),
+            type: DataTypes.JSONB,
             allowNull: false
         }
 

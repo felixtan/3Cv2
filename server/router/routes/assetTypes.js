@@ -9,7 +9,7 @@ var filterByOrgId = helpers.filterByOrgId;
 
 module.exports = {
     get: function(req, res) {
-        AssetTypes.findOne({ 
+        AssetTypes.findOne({
             where: filterByOrgId(req)
         }).then(function(types) {
             res.json(types);

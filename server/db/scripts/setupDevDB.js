@@ -3,7 +3,7 @@
 var models = require('../models');
 var Car = models.Car;
 var Driver = models.Driver;
-var Prospects = models.Prospect; 
+var Prospects = models.Prospect;
 var ProspectStatuses = models.ProspectStatuses;
 var Assets = models.Asset;
 var AssetTypes = models.AssetTypes;
@@ -12,7 +12,7 @@ var AssetTypes = models.AssetTypes;
 module.exports = {
 
     test: function() {
-        
+
         // sequelize.query(queryString, { model: Car }).then(function(cars) {
         //     console.log('test query result:', cars);
         // });
@@ -442,37 +442,36 @@ module.exports = {
         ProspectStatuses.create({
             organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
             data: {},
-            statuses: [
-                {
-                    value: 'Callers'
-                },
-                {
-                    value: 'Interviewed'
-                },
-                {
-                    value: 'Waiting List'
-                },
-                {
-                    value: 'Rejected'
-                },
-                {
-                    value: 'Unassigned',
-                    special: true
-                }
-            ]
+            statuses: {
+              length: 5,
+              0: {
+                  value: 'Callers'
+              },
+              1: {
+                  value: 'Interviewed'
+              },
+              2: {
+                  value: 'Waiting List'
+              },
+              3: {
+                  value: 'Rejected'
+              },
+              4: {
+                  value: 'Unassigned',
+                  special: true
+              },
+            }
         });
 
         AssetTypes.create({
             organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
             data: {},
-            types: [
-                // {
-                //     value: 'Gas Cards'
-                // },
-                // {
-                //     value: 'EZ Passes'
-                // }
-            ]
+            types: {
+              length: 1,
+              0: {
+                value: "Fuel Card"
+              }
+            }
         });
     }
 }
@@ -484,7 +483,7 @@ module.exports = {
         //         tlc: '1 month',
         //         dmv: '20',
         //         points: '0',
-        //         accidents: '0', 
+        //         accidents: '0',
         //         shift: 'Am/flexible',
         //         address: 'Queens corona',
         //         status: 'rejected',
@@ -494,7 +493,7 @@ module.exports = {
         //         name: 'James B Grossweiner',
         //         tlc: 'New',
         //         dmv: '7',
-        //         accidents: '2', 
+        //         accidents: '2',
         //         shift: 'Pm/flexible',
         //         address: '16043 Claude avenue Jamaica',
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
@@ -509,7 +508,7 @@ module.exports = {
         //         name: 'Thomas Grube',
         //         tlc: '15',
         //         points: '0',
-        //         accidents: '0', 
+        //         accidents: '0',
         //         shift: 'Pm',
         //         address: 'Harlem',
         //         status: 'interviewed',
@@ -521,7 +520,7 @@ module.exports = {
         //         tlc: '1',
         //         dmv: '9',
         //         points: '0',
-        //         accidents: '0', 
+        //         accidents: '0',
         //         shift: "Am,pair with gustavo",
         //         address: '3245 Fenton avenue',
         //         status: 'waiting list',
@@ -546,7 +545,7 @@ module.exports = {
         //         description: 'drove T627066 1/6/15',
         //         // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
-        // },  
+        // },
         //     driver2 = {
         //         givenName: 'Seymour',
         //         surName: 'Butz',
@@ -576,7 +575,7 @@ module.exports = {
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
         // };
 
-        /* LOGS */ 
+        /* LOGS */
         // var d = new Date('July 27 2015');
         // var dateInMs = d.getTime();
 
@@ -712,24 +711,24 @@ module.exports = {
         //             CarLog.create(car1_log).then(function(carLog) {
 
         //                 maintenanceLog.addCarLog([carLog.id]);
-                    
+
         //                 Driver.create(driver1).then(function(driver1) {
 
         //                     driver1.addGasCard([1]);
         //                     driver1.addCar([car1.id]);
         //                     driver1_log.driverId = driver1.id;
-        //                     driver1_log.givenName = driver1.givenName;    
+        //                     driver1_log.givenName = driver1.givenName;
         //                     driver1_log.surName = driver1.surName;
-                            
+
         //                     driverLog.create(driver1_log).then(function(driverLog) {
         //                         driver1.addLog([driverLog.id]);
         //                         ptgLog.addDriverLog([driverLog.id]);
-                                
+
         //                         car1.addLog([carLog.id]);
         //                     });
-                        
+
         //                 });
-        //             });         
+        //             });
 
         //         }).then(function() {
 
@@ -751,18 +750,18 @@ module.exports = {
         //                         });
 
         //                         Driver.create(driver3).then(function(driver3) {
-                                    
+
         //                             driver2.addCar([car2.id]);
         //                             driver3.addCar([car2.id]);
 
         //                             driver3_log.driverId = driver3.id;
         //                             driver3_log.givenName = driver3.givenName;
         //                             driver3_log.surName = driver3.surName;
-                                    
+
         //                             driverLog.create(driver3_log).then(function(driverLog) {
         //                                 driver3.addLog([driverLog.id]);
         //                                 ptgLog.addDriverLog([driverLog.id]);
-                                        
+
         //                                 car2.addLog([carLog.id]);
         //                             });
         //                         });
@@ -783,9 +782,8 @@ module.exports = {
 
         // }).then(function() {
 
-        //     console.log('Finished populating the development database.');    
+        //     console.log('Finished populating the development database.');
 
         // });
 
 // Need to add logs to their owners
-

@@ -10,8 +10,6 @@ var http = require('http');
 var pg = require("pg");
 var config = require('../db/config/config.json')[process.env.NODE_ENV];
 
-// pg settings from
-// https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
 pg.defaults.ssl = true;
 
 /**
@@ -34,23 +32,16 @@ var server = http.createServer(app);
 // Makes models variable a singleton to prevent
 // multiple connections to the database
 var models = app.get('models');
-var setupDevDB = require('../db/scripts/setupDevDB');
-// var opts = (process.env.NODE_ENV === 'development') ? { force: true } : {};
+var setupDB = require('../db/scripts/setupDB');
+var opts = { force: true };
+// var opts = {};
 
 // pg.connect(config.url, function(err, client) {
   // if(err) throw err;
-models.sequelize.sync({}).then(function(db) {
+models.sequelize.sync(opts).then(function(db) {
     console.log("Connected to potsgres database.");
 
-    if(process.env.NODE_ENV === 'development' || 'testing') {
-      db.query(`select id from "Cars"`).then(function(result) {
-        const metadata = result[1]
-        if (metadata.rowCount !== 3) {
-          console.log('Populating development test data.');
-          setupDevDB.populate();
-        }
-      })
-    }
+    if (opts.force) setupDB.populate();
 
     // app.on('stormpath.ready', function() {
     // console.log('Stormpath initialized.')
