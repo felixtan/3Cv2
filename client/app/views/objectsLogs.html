@@ -5,10 +5,10 @@
         <h2 class='object-header'>{{ ::title }} Logs</h2>
     </div>
 
-    <tabset ng-if="objectType === 'asset'">
-        <tab ng-repeat='tab in tabs' data-tabName='{{ ::tab.title }}' heading='{{ ::tab.title }}' active='tab.active' select='renderLogs(tab.title)'>
-        </tab>
-    </tabset><br>
+    <uib-tabset ng-if="objectType === 'asset'">
+        <uib-tab ng-repeat='tab in tabs' index='$index' data-tabName='{{ ::tab.title || "null" }}' heading='{{ ::tab.title || "null" }}' active='tab.active' select='renderLogs(tab.title)'>
+        </uib-tab>
+    </uib-tabset><br>
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
@@ -97,7 +97,5 @@
                 </tr>
             </tbody>
         </table>
-        <!-- {{ invalidEntries }} -->
-        <!-- {{ objects }} -->
     </div>
 </div>

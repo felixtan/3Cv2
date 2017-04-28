@@ -28,7 +28,6 @@
               ctrl.update = prospectHelpers.update;
               return prospectHelpers.get;
           } else if($scope.objectType === 'asset') {
-              // $scope.title = 'Asset';
               ctrl.update = assetHelpers.update;
               return assetHelpers.getTypes;
           }
@@ -47,6 +46,8 @@
       };
 
       ctrl.getAssetsOfTypeAndLogs = function (assetType) {
+          $scope.title = assetType;
+
           assetHelpers.getByType(assetType).then(function(result) {
             $scope.objects = result.data;
           });
