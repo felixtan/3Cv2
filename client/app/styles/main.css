@@ -9,6 +9,11 @@ body {
   .container {
     max-width: 730px;
   }
+
+  #top-nav-links,
+  .top-nav-link {
+      display: none;
+  }
 }
 
 .sub-header {

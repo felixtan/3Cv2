@@ -5,7 +5,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
@@ -23,8 +23,11 @@
 
     <!-- Angular xeditable -->
     <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+
+    <!-- Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
+
+    <!-- Main styles -->
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body ng-app="clientApp">
@@ -34,7 +37,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav-links-container" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -44,9 +47,8 @@
         </div>
 
         <!-- Sidebar -->
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-
+        <div id="top-nav-links-container" class="navbar-collapse collapse">
+          <ul id="top-nav-links" class="nav navbar-nav navbar-right">
             <li class='top-nav-link dropdown'>
               <a href="" class='dropdown-toggle' data-toggle='dropdown'>
                 Tables
@@ -66,7 +68,7 @@
                  <li>
                   <a ui-sref='dashboard.assets'>Assets</a>
                 </li>
-                </ul>
+              </ul>
             </li>
 
             <li class='top-nav-link dropdown'>
@@ -247,38 +249,11 @@
         <!-- produced by grunt-ng-constant -->
         <script src='config.js'></script>
 
-    <!-- math expression parser -->
-    <!-- <script src="bower_components/math-expression-evaluator/dist/math-expression-evaluator.min.js"></script> -->
-
     <!-- Applies css to side nav active page element -->
     <script type="text/javascript">
       $(document).ready(function() {
-
-        $(window).width(function(index, value) {
-          if(value >= 768) $(".top-nav-link").toggleClass("hidden");
-        });
-
-
-        $(window).on('resize', function() {
-          $(this).width(function(index, value) {
-            /*
-              Hide top nav links in desktop view
-              Show them in collapsed version for tablet and mobile view
-            */
-            var isHidden = $(".top-nav-link").hasClass("hidden");
-            if(value >= 768) {
-              if(!isHidden) $(".top-nav-link").toggleClass("hidden");
-            } else {
-              if(isHidden) $(".top-nav-link").toggleClass("hidden");
-            }
-          });
-        });
-
-        /*
-          Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
-          Based on this solution: https://jsfiddle.net/Frondor/sey4wsah/
-        */
-        $(".top-nav-link").on("click", "a", function (e) {
+        // Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
+        $("#top-nav-links-container").on("click", "a", function (e) {
           if(!$(e.currentTarget).hasClass("dropdown-toggle")) $('.navbar-collapse.in').collapse('hide');
         });
       });
