@@ -76,6 +76,28 @@ body {
   padding-left: 8px;
 }
 
+/* Sidebar logs */
+#sidebar-logs-links {
+    list-style-type: none;
+}
+
+#sidebar-logs-links li {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-logs-links li:hover {
+    background-color: #eeeeee;
+}
+
+#sidebar-logs-links li a {
+    text-decoration: none;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
 /*Required for angular-ui-bootstrap*/
 .nav,
 .pagination,

@@ -130,33 +130,32 @@
                 Prospects
               </a>
             </li>
-            <!-- <li class='dropdown'>
-              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
-                Logs
-                <i class='fa fa-caret-down'></i>
-              </a> -->
-
-              <!-- <ul class='dropdown-menu' role='menu'> -->
-                <li>
-                  <a ui-sref="logs.cars">
-                    <i class='fa fa-wrench'></i>
-                    Car Logs
-                  </a>
-                </li>
-                <li>
-                  <a ui-sref="logs.drivers">
-                    <i class='fa fa-clipboard'></i>
-                    Driver Logs
-                  </a>
-                </li>
-                <li>
-                  <a ui-sref="logs.assets">
-                    <i class='fa fa-credit-card-alt'></i>
-                    Asset Logs
-                  </a>
-                </li>
-              <!-- </ul> -->
-            <!-- </li> -->
+            <li class='dropdown'>
+                <a id='sidebar-logs-links-dropdown-btn' data-target="#sidebar-logs-links" data-toggle='collapse'>
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                    Logs
+                </a>
+                <ul id='sidebar-logs-links' class='collapse'>
+                  <li>
+                    <a ui-sref="logs.cars">
+                      <i class='fa fa-wrench'></i>
+                      Cars
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="logs.drivers">
+                      <i class='fa fa-clipboard'></i>
+                      Drivers
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="logs.assets">
+                      <i class='fa fa-credit-card-alt'></i>
+                      Assets
+                    </a>
+                  </li>
+                </ul>
+            </li>
           </ul>
         </div>
 
@@ -253,8 +252,14 @@
     <script type="text/javascript">
       $(document).ready(function() {
         // Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
-        $("#top-nav-links-container").on("click", "a", function (e) {
-          if(!$(e.currentTarget).hasClass("dropdown-toggle")) $('.navbar-collapse.in').collapse('hide');
+        $("#top-nav-links-container").on("click", "a", function(e) {
+            if (!$(e.currentTarget).hasClass("dropdown-toggle"))
+                $('.navbar-collapse.in').collapse('hide');
+        });
+
+        // Collapse Logs dropdown in sidebar when a dropdown link is clicked
+        $("#sidebar-logs-links").on("click", "a", function(e) {
+            $("#sidebar-logs-links-dropdown-btn").click();
         });
       });
     </script>
