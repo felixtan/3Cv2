@@ -162,7 +162,7 @@ module.exports = {
             driversAssigned: []
         },
             car2 = {
-                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+                organizationId: ENV.stormpathConfig.organizationId,
                 identifier: "licensePlate",
                 data: {
                     licensePlate: {
@@ -298,7 +298,7 @@ module.exports = {
                 driversAssigned: []
         },
             car3 = {
-                organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+                organizationId: ENV.stormpathConfig.organizationId,
                 identifier: "licensePlate",
                 data: {
                     licensePlate: {
@@ -440,7 +440,7 @@ module.exports = {
 
         // This should be default to the production app
         ProspectStatuses.create({
-            organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+            organizationId: ENV.stormpathConfig.organizationId,
             data: {},
             statuses: {
               length: 5,
@@ -464,7 +464,7 @@ module.exports = {
         });
 
         AssetTypes.create({
-            organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+            organizationId: ENV.stormpathConfig.organizationId,
             data: {},
             types: {
               length: 1,
@@ -487,7 +487,7 @@ module.exports = {
         //         shift: 'Am/flexible',
         //         address: 'Queens corona',
         //         status: 'rejected',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     prospect2 = {
         //         name: 'James B Grossweiner',
@@ -496,12 +496,12 @@ module.exports = {
         //         accidents: '2',
         //         shift: 'Pm/flexible',
         //         address: '16043 Claude avenue Jamaica',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     prospect3 = {
         //         name: 'Dovran Esenov',
         //         address: '1802 ocean pkwy a17',
-        //         // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         // organization: ENV.stormpathConfig.organizationId
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         // },
         //     prospect4 = {
@@ -512,7 +512,7 @@ module.exports = {
         //         shift: 'Pm',
         //         address: 'Harlem',
         //         status: 'interviewed',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     prospect5 = {
         //         name: 'Maurice Cloyd',
@@ -524,7 +524,7 @@ module.exports = {
         //         shift: "Am,pair with gustavo",
         //         address: '3245 Fenton avenue',
         //         status: 'waiting list',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // };
 
         // Prospects.create(prospect1);
@@ -543,7 +543,7 @@ module.exports = {
         //         address: '4703 Bayberry Drive Staunton, VA 24401',
         //         payRate: '40',
         //         description: 'drove T627066 1/6/15',
-        //         // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         // organization: ENV.stormpathConfig.organizationId
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         // },
         //     driver2 = {
@@ -558,7 +558,7 @@ module.exports = {
         //         dmv: '15',
         //         tlc: '3',
         //         description: 'can start 4/24/15',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     driver3 = {
         //         givenName: 'Max',
@@ -572,7 +572,7 @@ module.exports = {
         //         dmv: '22',
         //         points: '0',
         //         description: 'has ticket for 60',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // };
 
         /* LOGS */
@@ -586,7 +586,7 @@ module.exports = {
         //         licensePlate: car1.licensePlate,
         //         mileage: car1.mileage,
         //         note: "Added too much air, told him to release air",
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     car2_log = {
         //         date: d,
@@ -594,7 +594,7 @@ module.exports = {
         //         licensePlate: car2.licensePlate,
         //         mileage: car2.mileage,
         //         note: 'Left side back door damage below handle 6 inches below ',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     car3_log = {
         //         date: d,
@@ -615,7 +615,7 @@ module.exports = {
         //         deposit: 0,
         //         hours: 45,
         //         acceptRate: 98,
-        //         // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         // organization: ENV.stormpathConfig.organizationId
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         // },
         //     driver2_log = {
@@ -627,7 +627,7 @@ module.exports = {
         //         deposit: 75,
         //         hours: 24.4,
         //         acceptRate: 98,
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     driver3_log = {
         //         date: d,
@@ -638,39 +638,39 @@ module.exports = {
         //         deposit: 75,
         //         hours: 46.4,
         //         acceptRate: 81,
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // };
 
         // // PTG Logs
         // var ptgLog1 = {
         //     date: d,
         //     dateInMs: dateInMs,
-        //     organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //     organization: ENV.stormpathConfig.organizationId
         // };
 
         // // Maintenance Logs
         // var maintenanceLog1 = {
         //     date: d,
         //     dateInMs: dateInMs,
-        //     organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //     organization: ENV.stormpathConfig.organizationId
         // };
 
         // // Assets
         // var ezPass1 = {
         //         number: '00809549650',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     ezPass2 = {
         //         number: '00809320883',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     ezPass3 = {
         //         number: '00809531889',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     ezPass4 = {
         //         number: '00807409342',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // };
 
         // EzPass.create(ezPass1);
@@ -680,20 +680,20 @@ module.exports = {
 
         // var gasCard1 = {
         //         number: 'Driver 26 (2336)',
-        //         // organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         // organization: ENV.stormpathConfig.organizationId
         //         organization: '3Qnv2pMAxLZqVdp7n8RZ0y'
         // },
         //     gasCard2 = {
         //         number: 'Driver 17 (2278)',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     gasCard3 = {
         //         number: 'Driver 3 (0165)',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // },
         //     gasCard4 = {
         //         number: 'Driver 30 (8961)',
-        //         organization: '3Qnv2pMAxLZqVdp7n8RZ0x'
+        //         organization: ENV.stormpathConfig.organizationId
         // };
 
         // GasCard.create(gasCard1);

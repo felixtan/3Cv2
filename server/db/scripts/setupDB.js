@@ -7,6 +7,7 @@ var Prospects = models.Prospect;
 var ProspectStatuses = models.ProspectStatuses;
 var Assets = models.Asset;
 var AssetTypes = models.AssetTypes;
+var EXAMPLE_ORGANIZATION_ID = '3Qnv2pMAxLZqVdp7n8RZ0x';
 
 // Populate the db with fake data
 module.exports = {
@@ -91,7 +92,7 @@ function populate() {
 
     // Prospects
     ProspectStatuses.create({
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+        organizationId: EXAMPLE_ORGANIZATION_ID,
         data: {},
         statuses: {
           length: 5,
@@ -140,7 +141,7 @@ function populate() {
     });
 
     AssetTypes.create({
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+        organizationId: EXAMPLE_ORGANIZATION_ID,
         data: {},
         types: {
           length: 1,
@@ -195,7 +196,7 @@ function fullName(first, last) {
 
 function createExampleProspect(firstName, lastName, status, shift) {
     return {
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+        organizationId: EXAMPLE_ORGANIZATION_ID,
         identifier: "Name",
         status: { value: status },
         data: {
@@ -212,7 +213,7 @@ function createExampleProspect(firstName, lastName, status, shift) {
 
 function createExampleCar(make, model, year, notes, operational) {
     return {
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+        organizationId: EXAMPLE_ORGANIZATION_ID,
         identifier: "licensePlate",
         data: {
             licensePlate: createField(randomLicensePlate(), 'text'),
@@ -235,7 +236,7 @@ function createExampleDriver(firstName, lastName, shift) {
     driverData['Revenue'] = createField(randomInt(500, 1500), 'number', true);
 
     return {
-        organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x',
+        organizationId: EXAMPLE_ORGANIZATION_ID,
         identifier: "Name",
         data: driverData,
         logs: [],

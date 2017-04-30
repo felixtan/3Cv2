@@ -25,9 +25,7 @@ angular
     'config',
     'frapontillo.bootstrap-switch',
   ])
-  .config(function (ENV, $stateProvider, $urlRouterProvider, $provide, $qProvider) {
-
-    // STORMPATH_CONFIG.ENDPOINT_PREFIX = 'http://localhost:9000'
+  .config(function ($stateProvider, $urlRouterProvider, $provide, $qProvider) {
 
     $qProvider.errorOnUnhandledRejections(false);
 
@@ -41,12 +39,6 @@ angular
         };
         return $delegate;
     });
-
-    var getsp = function() {
-        var authOn = { authenticate: true };
-        var authOff = {};
-        return authOff;
-    };
 
     // $urlRouterProvider.otherwise('/login');
     $urlRouterProvider.otherwise('/dashboard/cars');
@@ -76,7 +68,6 @@ angular
         abstract: true,
         url: '/dashboard',
         template: '<ui-view/>',
-        sp: getsp()
     })
     .state('dashboard.cars', {
         url: '/cars',
@@ -86,7 +77,7 @@ angular
           objectType: function() {
             return "car";
           }
-        },
+        }
     })
     .state('dashboard.drivers', {
         url: '/drivers',
@@ -122,7 +113,6 @@ angular
         abstract: true,
         url: '/logs',
         template: '<ui-view/>',
-        sp: getsp()
     })
     .state('logs.cars', {
         url: '/cars',
@@ -132,8 +122,7 @@ angular
             objectType: function () {
                 return "car";
             }
-        },
-        sp: getsp()
+        }
     })
     .state('logs.drivers', {
         url: '/drivers',
@@ -143,8 +132,7 @@ angular
             objectType: function () {
                 return "driver";
             }
-        },
-        sp: getsp()
+        }
     })
     .state('logs.assets', {  // logs for assets of a certain type
         url: '/assets',
@@ -154,14 +142,12 @@ angular
             objectType: function () {
                 return "asset";
             }
-        },
-        sp: getsp()
+        }
     })
     .state('carData', {
         url: '/cars/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "car";
@@ -175,7 +161,6 @@ angular
         url: '/cars/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "car";
@@ -189,7 +174,6 @@ angular
         url: '/drivers/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "driver";
@@ -203,7 +187,6 @@ angular
         url: '/drivers/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "driver";
@@ -217,7 +200,6 @@ angular
         url: '/prospects/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "prospect";
@@ -231,7 +213,6 @@ angular
         url: '/assets/:id/data',
         templateUrl: '/views/objectData.html',
         controller: 'ObjectDataCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "asset";
@@ -245,7 +226,6 @@ angular
         url: '/assets/:id/logs',
         templateUrl: '/views/objectLogs.html',
         controller: 'ObjectLogsCtrl',
-        sp: getsp(),
         resolve: {
             objectType: function() {
                 return "asset";
@@ -258,7 +238,7 @@ angular
   })
 
   // add when you want stormpath: , $stormpath
-  .run(function(ENV, editableOptions, $state, $stateParams, $rootScope) {
+  .run(function(editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope

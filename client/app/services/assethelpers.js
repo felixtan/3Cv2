@@ -74,13 +74,12 @@
       }
 
       function getOrganizationId() {
-        return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
+        return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : ENV.stormpathConfig.organizationId;
       }
 
       function thereAreAssetsOfType(assetType) {
         var deferred = $q.defer();
         get().then(function(result) {
-          // console.log('checking if there are assets of type', result);
           var assets = _.filter(result.data, function(asset) {
               return asset.assetType === assetType;
           });

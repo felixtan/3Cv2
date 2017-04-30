@@ -5,6 +5,9 @@ client/.sass-cache
 client/bower_components
 client/coverage
 client/test
+client/env.js
 
 #server
 server/node_modules
+server/db/config
+server/db/scripts

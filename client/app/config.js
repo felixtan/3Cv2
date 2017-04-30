@@ -1,8 +1,11 @@
 "use strict";
 
- angular.module('config', [])
+var ENV = {};
 
-.constant('ENV', {
-  name: 'development',
-  apiEndpoint: 'http://localhost:3000'
-});
+// Import variables if present (from env.js)
+if (window) {
+  Object.assign(ENV, window.__env);
+}
+
+ angular.module('config', [])
+.constant('ENV', ENV);

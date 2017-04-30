@@ -51,7 +51,7 @@
       }
 
       function getOrganizationId() {
-        return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : '3Qnv2pMAxLZqVdp7n8RZ0x';
+        return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : ENV.stormpathConfig.organizationId;
       }
 
       function getFullName(prospectData) {

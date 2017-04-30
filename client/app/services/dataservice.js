@@ -4,8 +4,8 @@
   angular.module('clientApp')
     .factory('dataService', ['$state', '$http', '$q', 'ENV', function ($state, $http, $q, ENV) {
 
-      var params = (ENV.name === ('production' || 'staging')) ? {} : { organizationId: '3Qnv2pMAxLZqVdp7n8RZ0x' };
-      var apiHost = (ENV.name === ('production' || 'staging')) ? 'http://www.fleetly.herokuapp.com/api/' : 'http://localhost:3000/api/';
+      var params = { organizationId: ENV.stormpathConfig.organizationId };
+      var apiUrl = ENV.apiUrl;
 
       function forceReload(method, resource) {
         if (method === 'PUT' && resource === 'asset-types' ||
@@ -55,7 +55,7 @@
 
       function req(method, resource) {
         return function(data) {
-          var url = appendDataToUrl(method, resource, data, (apiHost + resource));
+          var url = appendDataToUrl(method, resource, data, (apiUrl + resource));
           // console.log(url, method, resource, data)
           return $http({
             method: method,
