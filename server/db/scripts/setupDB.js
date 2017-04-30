@@ -15,8 +15,18 @@ module.exports = {
 }
 
 function populate() {
+    populateExampleCars();
+    populateExampleProspectStatuses();
+    populateExampleProspects();
+    populateExampleAssetTypes();
+    populateExampleAssets();
+}
 
-    // Cars
+/*
+    Populate objects
+*/
+
+function populateExampleCars() {
     /*
         logs example
         {
@@ -64,9 +74,9 @@ function populate() {
     exampleCars.forEach(function(c) {
         Cars.create(c);
     });
+}
 
-
-    // Drivers
+function populateExampleDrivers() {
     var driver1x = createExampleDriver('Gandalf', 'the Grey', 'Flexible')
     ,   driver2x = createExampleDriver('Saruman', 'the White', 'PM')
     ,   driver3x = createExampleDriver('Gollum', '', 'PM')
@@ -89,8 +99,9 @@ function populate() {
     exampleDrivers.forEach(function(d) {
         Drivers.create(d);
     });
+}
 
-    // Prospects
+function populateExampleProspectStatuses() {
     ProspectStatuses.create({
         organizationId: EXAMPLE_ORGANIZATION_ID,
         data: {},
@@ -114,7 +125,9 @@ function populate() {
           },
         }
     });
+}
 
+function populateExampleProspects() {
     var prospect1x = createExampleProspect('Frodo', 'Baggins', 'Callers', 'Flexible')
     ,   prospect2x = createExampleProspect('Samwise', 'Gamgee', 'Callers', 'Flexible')
     ,   prospect3x = createExampleProspect('Legolas', '', 'Callers', 'AM')
@@ -139,18 +152,53 @@ function populate() {
     exampleProspects.forEach(function(p) {
         Prospects.create(p);
     });
+}
 
+function populateExampleAssetTypes() {
     AssetTypes.create({
         organizationId: EXAMPLE_ORGANIZATION_ID,
         data: {},
         types: {
-          length: 1,
-          0: {
-            value: "Fuel Card"
-          }
+            length: 3,
+            0: { value: "Fuel Card" },
+            1: { value: "E-ZPass"},
+            2: { value: "Food Card"},
         }
     });
 }
+
+function populateExampleAssets() {
+    var ezpass = createExampleAsset('E-ZPass', 'Account #', 500.00, {
+        'Account #': createField(randomInt(1000000000, 9999999999), 'text')
+    });
+
+    var fuelCard1 = createExampleAsset('Fuel Card', 'Number', 421.76, {
+            'Number': createField(randomInt(1000000000, 9999999999), 'text'),
+            'Company': createField('Shell', 'text'),
+            'Name': createField('Thranduil', 'text'),
+            'Expires': createField('12/19', 'text')
+    }),
+        fuelCard2 = createExampleAsset('Fuel Card', 'Number', 874.21, {
+            'Number': createField(randomInt(1000000000, 9999999999), 'text'),
+            'Company': createField('ExxonMobil', 'text'),
+            'Name': createField('Sauron', 'text'),
+            'Expires': createField('06/22', 'text')
+    });
+
+    var exampleAssets = [
+        ezpass,
+        fuelCard1,
+        fuelCard2
+    ];
+
+    exampleAssets.forEach(function(a) {
+        Assets.create(a);
+    });
+}
+
+/*
+    Utilities
+*/
 
 function createField(value, dataType, log) {
     var field = {};
@@ -242,5 +290,24 @@ function createExampleDriver(firstName, lastName, shift) {
         logs: [],
         carsAssigned: [],
         assetsAssigned: []
+    }
+}
+
+/*
+    otherFields is an object where keys are strings and values are objects output
+    from createField
+*/
+function createExampleAsset(type, identifier, balance, otherFields) {
+    var commonFields = {
+        "Balance": createField(balance, 'number', true)
+    };
+
+    return {
+        organizationId: EXAMPLE_ORGANIZATION_ID,
+        identifier: identifier,
+        assetType: type,
+        data: data,
+        logs: [],
+        driversAssigned: []
     }
 }

@@ -269,7 +269,7 @@
               // console.log(assetsOfType[0].data[field]);
               return assetsOfType[0].data[field].log;
             });
-            // console.log(fields);
+
             deferred.resolve(fields);
             deferred.reject(new Error('Error getting fields to be logged'));
           } else {
