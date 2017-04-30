@@ -16,19 +16,19 @@
                 <h4 class='control-label'>Type</h4>
                 <div class='radio'>
                     <label>
-                        <input id='text' ng-model='field.type' value='text' type='radio' ng-change='setDataType(field.type)'>Text
+                        <input id='text' ng-model='field.dataType' value='text' type='radio' ng-change='setDataType(field.dataType)'>Text
                         <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
                     </label>
                 </div>
                 <div class='radio'>
                     <label>
-                        <input id='number' ng-model='field.type' value='number' type='radio' ng-change='setDataType(field.type)'>Number
+                        <input id='number' ng-model='field.dataType' value='number' type='radio' ng-change='setDataType(field.dataType)'>Number
                         <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
                     </label>
                 </div>
                 <div class='radio'>
                     <label>
-                        <input id='boolean' ng-model='field.type' value='boolean' type='radio' ng-change='setDataType(field.type)'>Boolean
+                        <input id='boolean' ng-model='field.dataType' value='boolean' type='radio' ng-change='setDataType(field.dataType)'>Boolean
                         <!-- <i class="fa fa-question-circle" tooltip="ex. yes/no, true/false"></i> -->
                     </label>
                 </div>
@@ -36,7 +36,8 @@
         </div>
 
         <!-- Choose field data type -->
-        <div class='form-group' ng-show='field.type === "variable"'>
+         <!-- ng-show='field.dataType === "variable"' -->
+        <div class='form-group'>
             <div class='alert alert-info'>
                 <ul class='fieldTypes'>
                     <label class='control-label'>Field data type</label>
@@ -68,7 +69,8 @@
             <input name='field' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
         </div>
 
-        <div class='form-group' ng-show='field.type === "variable"'>
+         <!-- ng-show='field.dataType === "variable"' -->
+        <div class='form-group'>
             <label for='value'>Value</label>
             <input name='value' class='form-control' ng-model='formData.value'>
         </div>

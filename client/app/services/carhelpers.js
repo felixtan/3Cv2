@@ -143,10 +143,9 @@
             // console.log(carData);
             _.each(carData, function(data, field) {
               formData[field] = {
-                value: (data.type === 'boolean') ? false : null,
+                value: (data.dataType === 'boolean') ? false : null,
                 log: data.log,
                 dataType: data.dataType,
-                type: data.type,
               };
             });
             // console.log(fromData);

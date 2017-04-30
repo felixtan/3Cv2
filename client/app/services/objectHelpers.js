@@ -121,10 +121,9 @@
                               // console.log(field);
                               // console.log(list);
                               formData[field] = {
-                                  value: (data.type === 'boolean') ? false : null,
+                                  value: (data.dataType === 'boolean') ? false : null,
                                   log: data.log,
                                   dataType: data.dataType,
-                                  type: data.type,
                               };
                           });
 

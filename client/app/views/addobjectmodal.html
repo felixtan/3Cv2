@@ -1,5 +1,3 @@
-<link rel="stylesheet" href='styles/forms.scss'>
-
 <div class="modal-header">
     <h3 class="modal-title">Add {{ objectType }}</h3>
     <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
@@ -56,11 +54,11 @@
         <div class='form-group' ng-repeat='(field, data) in formData' ng-if='!hide(field)'>
             <label for="{{ ::field }}" class='field-name-label'>{{ ::field }}</label>
 
-            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "text"' >
+            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "text"' >
 
-            <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' data-fieldType='{{ ::data.type }}' ng-if='data.type === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
+            <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
 
-            <br ng-if='data.type === "boolean"'>
+            <br ng-if='data.dataType === "boolean"'>
             <input bs-switch
                 ng-model="formData[field].value"
                 type="checkbox"
@@ -69,12 +67,11 @@
                 switch-label=""
                 switch-inverse='true'
                 switch-off-color='primary'
-                ng-if='data.type === "boolean"'
+                ng-if='data.dataType === "boolean"'
                 class='boolean-field-switch'
                 id='{{ ::field }}'
                 name='{{ ::field }}'
-                data-dataType='{{ ::data.dataType }}'
-                data-fieldType='{{ ::data.type }}' >
+                data-dataType='{{ ::data.dataType }}' >
                 <!-- {{ formData[field].value }} -->
         </div>
 

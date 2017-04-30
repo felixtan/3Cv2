@@ -82,7 +82,6 @@
           value: null,
           log: $scope.formData.log || false,
           dataType: field.dataType,
-          type: field.type,
         };
       };
 

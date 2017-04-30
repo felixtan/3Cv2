@@ -33,8 +33,8 @@ var server = http.createServer(app);
 // multiple connections to the database
 var models = app.get('models');
 var setupDB = require('../db/scripts/setupDB');
-var opts = { force: true };
-// var opts = {};
+// var opts = { force: true };
+var opts = {};
 
 // pg.connect(config.url, function(err, client) {
   // if(err) throw err;

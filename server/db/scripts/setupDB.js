@@ -216,8 +216,8 @@ function createExampleCar(make, model, year, notes, operational) {
         identifier: "licensePlate",
         data: {
             licensePlate: createField(randomLicensePlate(), 'text'),
-            licenseNumber: createField(randomInt(100000, 999999), 'number'),
-            mileage: createField(randomInt(10000, 150000), 'number', true),
+            licenseNumber: createField(randomInt(100000, 999999), 'text'),
+            mileage: createField(randomInt(50000, 150000), 'number', true),
             make: createField(make, 'text'),
             model: createField(model, 'text'),
             year: createField(year, 'number'),
