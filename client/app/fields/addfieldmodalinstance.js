@@ -14,29 +14,15 @@
       ctrl.objectType = objectType;
       ctrl.assetType = assetType;
 
-      $scope.formData = {};
-
+      $scope.dataTypes = [
+        'Text',
+        'Number',
+        'Monetary',
+        'Boolean'
+      ];
       $scope.field = {
         name: null,
-        type: null,
         dataType: null,
-      };
-
-      $scope.setDataType = function(field) {
-        switch(field) {
-          case "text":
-            $scope.field.dataType = "text";
-            break;
-          case "number":
-            $scope.field.dataType = "number";
-            break;
-          case "boolean":
-            $scope.field.dataType = "boolean";
-            break;
-          default:
-            $scope.field.dataType = undefined;
-            break;
-        }
       };
 
       $scope.invalidFieldType = function() {
@@ -80,35 +66,35 @@
       ctrl.createNewFieldData = function(field) {
         return {
           value: null,
-          log: $scope.formData.log || false,
+          log: false,
           dataType: field.dataType,
         };
       };
 
-      ctrl.appendNewFieldToObject = function(fieldName, fieldDataObj, object) {
-        object.data[fieldName] = fieldDataObj;
+      ctrl.appendNewFieldToObject = function(fieldName, fieldData, object) {
+        object.data[fieldName] = fieldData;
         return object;
       };
 
       $scope.submit = function() {
         var updates = [];
-        var fieldDataObj = ctrl.createNewFieldData($scope.field);
+        var fieldData = ctrl.createNewFieldData($scope.field);
 
         if(ctrl.objects.length > 0) {
           _.each(ctrl.objects, function(object) {
-            var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldDataObj, object);
+            var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldData, object);
             updates.push(ctrl.update(objectToUpdate));
           });
         }
 
         $q.all(updates).then(function() {
-          $state.forceReload();
-          $scope.ok(fieldDataObj, $scope.field.name);
+            $state.forceReload();
+            $scope.ok(fieldData, $scope.field.name);
+            $scope.ok();
         });
       };
 
       $scope.reset = function () {
-        $scope.formData = {};
         $scope.form.$setPristine();
         $scope.form.$setUntouched();
         $state.forceReload();

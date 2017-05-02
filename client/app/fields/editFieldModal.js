@@ -40,18 +40,15 @@
         $scope.objects = [];
         $scope.objectType = objectType;
 
-        // console.log($scope.object.status);
-        // console.log(field);
-        // console.log($scope.objectType);
-        // console.log($scope.isProspectStatus(field));
         $scope.field = {
             name: field,
-            type: $scope.object.data[field].type,
             dataType: $scope.object.data[field].dataType,
             value: $scope.isProspectStatus(field) ? $scope.object.status : $scope.object.data[field].value,
             log: $scope.object.data[field].log,
             identifier: $scope.object.identifier === field,
         };
+
+        console.log($scope.field)
       };
       ctrl.initialize();
 

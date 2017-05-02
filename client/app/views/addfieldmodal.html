@@ -9,27 +9,15 @@
 
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='submit()'>
-
+        
         <!-- Choose field dataType -->
         <div class='form-group'>
             <div class='alert alert-info'>
                 <h4 class='control-label'>Type</h4>
-                <div class='radio'>
+
+                <div class='radio' ng-repeat='type in dataTypes'>
                     <label>
-                        <input id='text' ng-model='field.dataType' value='text' type='radio' ng-change='setDataType(field.dataType)'>Text
-                        <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
-                    </label>
-                </div>
-                <div class='radio'>
-                    <label>
-                        <input id='number' ng-model='field.dataType' value='number' type='radio' ng-change='setDataType(field.dataType)'>Number
-                        <!-- <i class="fa fa-question-circle" tooltip=""></i> -->
-                    </label>
-                </div>
-                <div class='radio'>
-                    <label>
-                        <input id='boolean' ng-model='field.dataType' value='boolean' type='radio' ng-change='setDataType(field.dataType)'>Boolean
-                        <!-- <i class="fa fa-question-circle" tooltip="ex. yes/no, true/false"></i> -->
+                        <input id='text' ng-model='field.dataType' value='{{ type.toLowerCase() }}' type='radio'>{{ type }}
                     </label>
                 </div>
             </div>
@@ -38,11 +26,6 @@
         <div class='form-group'>
             <label for='field'>Name</label>
             <input name='field' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
-        </div>
-
-        <div class='form-group'>
-            <label for='value'>Value</label>
-            <input name='value' class='form-control' ng-model='formData.value'>
         </div>
 
         <div ng-messages="form.field.$error" ng-show='form.field.$dirty && form.field.$invalid' class="alert alert-danger" role="alert">

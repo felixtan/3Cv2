@@ -281,7 +281,7 @@ function createExampleCar(make, model, year, notes, operational) {
 function createExampleDriver(firstName, lastName, shift) {
     var driverData = createExampleProspect(firstName, lastName, null, shift).data;
     delete driverData.status;
-    driverData['Revenue'] = createField(randomInt(500, 1500), 'number', true);
+    driverData['Revenue'] = createField(randomInt(500, 1500), 'monetary', true);
 
     return {
         organizationId: EXAMPLE_ORGANIZATION_ID,
@@ -299,7 +299,7 @@ function createExampleDriver(firstName, lastName, shift) {
 */
 function createExampleAsset(type, identifier, balance, otherFields) {
     var commonFields = {
-        "Balance": createField(balance, 'number', true)
+        "Balance": createField(balance, 'monetary', true)
     };
 
     return {
