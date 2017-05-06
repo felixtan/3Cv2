@@ -24,7 +24,6 @@
       ctrl.objIdentifier = null;   // get this from settings
       ctrl.formData = {};
       ctrl.objectType = objectType;
-      ctrl.assetTypes = getTypes.data;
 
       if(ctrl.subjectType === 'driver') {
           // console.log("assignment modal called from driverProfile");
@@ -42,15 +41,16 @@
               });
           } else if(ctrl.objectType === 'asset') {
               ctrl.updateObj = dataService.updateAsset;
-              getAssets().then(function(result) {
-                  ctrl.fullObjects = result.data;
-                  ctrl.simpleObjects = objectHelpers.simplify(ctrl.fullObjects);
-                  ctrl.objIdentifiers = _.uniq(_.map(ctrl.fullObjects, function(asset) {
-                      return asset.assetType;
-                  }));
+              getTypes().then(function(assetTypes) {
+                    ctrl.assetTypes = assetTypes.data.types;
+                  getAssets().then(function(result) {
+                      ctrl.fullObjects = result.data;
+                      ctrl.simpleObjects = objectHelpers.simplify(ctrl.fullObjects);
+                      ctrl.objIdentifiers = ctrl.mapAssetTypesToIdentifiers(ctrl.assetTypes, ctrl.simpleObjects);
+                  });
               });
           } else {
-            console.log(ctrl.objectType)
+            console.err(ctrl.objectType)
           }
       } else if(ctrl.subjectType === 'car') {
           // console.log("assignment modal called from carProfile");
@@ -92,6 +92,23 @@
       ctrl.close = function () {
           $state.forceReload();
           $uibModalInstance.close('ok');
+      };
+
+      ctrl.mapAssetTypesToIdentifiers = function(assetTypes, simpleAssets) {
+          return _.reduce(assetTypes, function(memo, type) {
+
+              var exampleAsset = _.find(simpleAssets, function(asset) {
+                  return asset.assetType === type.value;
+              });
+
+              if (exampleAsset) {
+                  memo[type.value] = exampleAsset.identifier;
+              } else {
+                  memo[type.value] = null;
+              }
+
+              return memo;
+          }, {});
       };
 
       ctrl.getObjectIdentifierValue = function(id) {

@@ -8,33 +8,33 @@
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='assignModal.submit()'>
 
-        <div class='form-group' ng-if='objectType === "asset"'>
+        <div class='form-group' ng-if='assignModal.objectType === "asset"'>
             Select asset type
             <select class='form-control' ng-model='assignModal.formData.assetType'>
-                <option ng-repeat='assetType in assignModal.assetTypes.types' value='{{ assetType.value }}'>
-                    {{ assignModal.assetType.value }}
+                <option ng-repeat='assetType in assignModal.assetTypes' value='{{ ::assetType.value }}'>
+                    {{ ::assetType.value }}
                 </option>
             </select>
         </div>
 
         <!-- Assigning non assets -->
-        <div class='form-group' ng-if='objectType !== "asset"'>
-            Select <span ng-if='objIdentifier !== "Name"'>{{ objIdentifier }}</span><span ng-if='objIdentifier === "Name"'>Driver</span>
+        <div class='form-group' ng-if='assignModal.objectType !== "asset"'>
+            Select <span ng-if='assignModal.objIdentifier !== "Name"'>{{ ::assignModal.objIdentifier }}</span><span ng-if='assignModal.objIdentifier === "Name"'>Driver</span>
             <select class='form-control' ng-model='assignModal.formData.objId'>
                 <option ng-repeat='object in assignModal.simpleObjects | orderBy:"id"'
-                value='{{ object.id }}'>
-                    {{ ::assignModal.object.identifierValue }}
+                value='{{ ::object.id }}'>
+                    {{ ::object.identifierValue }}
                 </option>
             </select>
         </div>
 
         <!-- Assigning assets -->
-        <div class='form-group' ng-if='objectType === "asset"'>
-            Select
+        <div class='form-group' ng-if='assignModal.objectType === "asset"'>
+            Select asset by {{ assignModal.objIdentifiers[assignModal.formData.assetType] }}
             <select class='form-control' ng-model='assignModal.formData.objId'>
                 <option ng-repeat='object in assignModal.simpleObjects | orderBy:"id"'
-                value='{{ object.id }}' ng-if='object.assetType === formData.assetType'>
-                    {{ ::assignModal.object.identifierValue }}
+                value='{{ ::object.id }}' ng-if='object.assetType === assignModal.formData.assetType'>
+                    {{ ::object.identifierValue }}
                 </option>
             </select>
         </div>
@@ -45,11 +45,11 @@
                <div class="input-group date-picker">
                     <input type="text"
                         class="form-control"
-                        datepicker-popup="{{ datepicker.format }}"
+                        uib-datepicker-popup="{{ ::assignModal.datepicker.format }}"
                         ng-model="assignModal.datepicker.dt"
-                        is-open="datepicker.status.opened"
-                        max-date="datepicker.maxDate"
-                        datepicker-options="datepicker.dateOptions"
+                        is-open="assignModal.datepicker.status.opened"
+                        max-date="assignModal.datepicker.maxDate"
+                        datepicker-options="assignModal.datepicker.dateOptions"
                         ng-required="true"
                         close-text="Close" />
                     <div class="input-group-btn">
@@ -64,6 +64,6 @@
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-success" type="button" ng-click="assignModal.submit()" ng-disabled='validForm()'>Submit</button>
+    <button class="btn btn-success" type="button" ng-click="assignModal.submit()" ng-disabled='assignModal.validForm()'>Submit</button>
     <button class='btn btn-default' type='button' ng-click='assignModal.close()'>Close</button>
 </div>
