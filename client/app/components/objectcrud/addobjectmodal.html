@@ -56,7 +56,7 @@
 
             <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "text"' >
 
-            <input id='{{ ::field }}' name='numberField' type='text' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "number"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
+            <input id='{{ ::field }}' name='numberField' type='number' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "number" || data.dataType === "monetary"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
 
             <br ng-if='data.dataType === "boolean"'>
             <input bs-switch
@@ -86,9 +86,6 @@
 
 <div class="modal-footer">
   <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button>
-  <!-- {{ !disableConditions(formData) }}
-  {{ invalidIdentifier(identifier) }}
-  {{ form.$invalid }} -->
   <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
   <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
 </div>

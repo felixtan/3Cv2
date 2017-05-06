@@ -209,7 +209,6 @@
               assetType: {
                 value: assetType,
                 log: false,
-                type: 'text',
                 dataType: 'text',
               }
             },

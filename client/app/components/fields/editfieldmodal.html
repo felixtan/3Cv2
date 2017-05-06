@@ -1,4 +1,4 @@
-<link rel='stylesheet' href='styles/addFieldModal.css'>
+<link rel='stylesheet' href=components/fields/fieldmodal.css>
 
 <div class="modal-header">
     <h3 class="modal-title">Edit field</h3>
@@ -10,12 +10,7 @@
 <div class="modal-body">
     <form novalidate role='form' name='form' ng-submit='submit()'>
 
-        <!-- <div class='form-group' ng-if='objectType === "prospect" && field.name === "status"'>
-            <label for='status'>Status</label>
-
-            <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' name='fieldName' type='text' class='form-control' ng-model='field.value' ng-required='true'>
-        </div> -->
-
+        <!-- Field name -->
         <div class='form-group'>
             <label for='fieldName'>Name</label>
 
@@ -24,30 +19,31 @@
             <p ng-if='dontEditFieldName(field.name)'>{{ ::field.name.capitalizeIfStatus() }}</p>
         </div>
 
+        <!-- Special case: prospect statuses -->
         <div class='form-group' ng-if='isProspectStatus(field.name)'>
             <label for='fieldValue'>Value</label>
-            {{ field.value }}
             <select id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' type='text' class='form-control' ng-model='field.value' ng-required='true' ng-options='status.value for status in statuses' name='textField'></select>
         </div>
 
+        <!-- Field type: text -->
         <div class='form-group' ng-if='field.dataType === "text"' ng-hide="isProspectStatus(field.name)">
             <label for='fieldValue'>Value</label>
-
             <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' name='textField' type='text' class='form-control' ng-model='field.value' ng-required='true'>
         </div>
 
+        <!-- Field type: number -->
         <div class='form-group' ng-if='field.dataType === "number"'>
             <label for='fieldValue'>Value</label>
-
             <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' name='numberField' type='number' class='form-control' ng-model='field.value' ng-required='true' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
         </div>
 
+        <!-- Field type: monetary -->
         <div class='form-group' ng-if='field.dataType === "monetary"'>
             <label for='fieldValue'>Value</label>
-
             <input id='{{ ::field.name }}' data-dataType='{{ ::field.dataType }}' name='monetaryField' type='number' class='form-control' ng-model='field.value' ng-required='true' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
         </div>
 
+        <!-- Field type: boolean -->
         <div class='form-group' ng-if='field.dataType === "boolean"'>
             <label for='fieldValue'>Value</label>
             <br>
@@ -63,11 +59,11 @@
                 id='{{ ::field.name }}'
                 name='booleanField'
                 data-dataType='{{ ::field.dataType }}' >
-                <!-- {{ formData[field].value }} -->
         </div>
 
+        <!-- Field log value -->
         <div class='form-group' ng-if='loggable(field.name)'>
-            <label for='logValue'>Log?</label>
+            <label for='logValue'>Log it?</label>
             <br>
             <input bs-switch
                 ng-model='field.log'
@@ -84,6 +80,7 @@
                 ng-change="logValueChanged.value = !logValueChanged.value" >
         </div>
 
+        <!-- Field identifier value -->
         <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
             <label>Identify {{  object.assetType.value || objectType }}<span ng-if='!object.assetType.value'>s</span> with this field</label>
             <br>

@@ -1,11 +1,10 @@
-<link rel="stylesheet" type="text/css" href="styles/tables.css">
+<link rel="stylesheet" type="text/css" href="components/objectdata/objectdata.css">
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
     <div class='sub-header'>
         <h3 class='object-header'>{{ identifierValue || 'null' }}</h3>
-        <!-- <button class='btn btn-danger btn-xs delete-obj' ng-controller='DeleteObjModalCtrl' ng-click='open(lg, car.id)'>Delete</button> -->
     </div>
-    <!-- {{ state }}  -->
+
     <uib-tabset active='0' ng-if="objectType !== 'prospect'">
         <uib-tab ng-repeat='tab in tabs' index='$index' data-tabName='{{ tab.title ? tab.title : false }}' heading='{{ tab.title ? tab.title : false }}' ui-sref='{{ tab.stateRef ? tab.stateRef : false }}'>
         </uib-tab>
@@ -20,7 +19,7 @@
             </button>
         </div>
         <div class='btn-group' role='group' style='float:right;' ng-if='objectType === "prospect"'>
-            <button class='btn btn-danger' role='group' ng-click='openDeleteModal()' ng-controller='DeleteObjModalCtrl'>
+            <button class='btn btn-danger' role='group' ng-click='openDeleteModal()'>
                 Delete
             </button>
         </div>
@@ -29,11 +28,6 @@
                 Convert to driver
             </button>
         </div>
-        <!-- <div class='btn-group' role='group' style='float:right;'>
-            <button class='btn btn-danger' role='group' ng-click='open(prospect.id)' ng-controller='DeleteObjModalCtrl'>
-                Delete
-            </button>
-        </div> -->
     </div>
 
     <br>

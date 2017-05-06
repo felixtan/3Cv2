@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('DeleteObjModalInstanceCtrl', ['id', 'dataService', '$scope', '$uibModalInstance', '$state',
+    .controller('DeleteObjModalCtrl', ['id', 'dataService', '$scope', '$uibModalInstance', '$state',
       function (id, dataService, $scope, $uibModalInstance, $state) {
 
       $scope.input = null;
@@ -34,7 +34,6 @@
       $scope.submit = function() {
           if($scope.input === 'DELETE') {
               if((typeof id !== 'undefined') && (id !== null) && (typeof $scope.objectType === 'string')) {
-                  console.log(id)
                   $scope.delete(id);
               }
 

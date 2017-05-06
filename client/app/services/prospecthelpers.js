@@ -94,7 +94,6 @@
           value: getFullName(prospectData),
           log: false,
           dataType: 'text',
-          type: 'text'
         }
 
         return prospectData;
@@ -158,25 +157,21 @@
                   value: null,
                   log: false,
                   dataType: 'text',
-                  type: 'text'
                 },
                 "Last Name": {
                   value: null,
                   log: false,
                   dataType: 'text',
-                  type: 'text'
                 },
                 'Name': {
                   value: null,
                   log: false,
                   dataType: 'text',
-                  type: 'text'
                 },
                 status: {
                   value: defaultStatus.value,
                   log: false,
                   dataType: 'text',
-                  type: 'text'
                 },
               },
               organizationId: getOrganizationId(),
@@ -200,7 +195,6 @@
                   value: null,
                   log: prospectData[field].log,
                   dataType: prospectData[field].dataType,
-                  type: prospectData[field].type
                 }
               });
               deferred.resolve({

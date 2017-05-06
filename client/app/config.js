@@ -2,7 +2,7 @@
 
 var ENV = {};
 
-// Import variables if present (from env.js)
+// Import variables if present from client/env.js
 if (window) {
   Object.assign(ENV, window.__env);
 }

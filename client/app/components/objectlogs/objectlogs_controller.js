@@ -88,7 +88,7 @@
                 logData.push({
                     field: loggedField,
                     value: log.data[loggedField],
-                    type: $scope.object.data[loggedField].type
+                    dataType: $scope.object.data[loggedField].dataType
                 });
             });
 

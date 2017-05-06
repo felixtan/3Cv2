@@ -216,6 +216,9 @@ function createField(value, dataType, log) {
         case 'boolean':
             field.dataType = 'boolean';
             break;
+        case 'monetary':
+            field.dataType = 'monetary';
+            break;
         default:
             throw new Error('Unknown field dataType ' + dataType)
     }
@@ -306,7 +309,7 @@ function createExampleAsset(type, identifier, balance, otherFields) {
         organizationId: EXAMPLE_ORGANIZATION_ID,
         identifier: identifier,
         assetType: type,
-        data: data,
+        data: Object.assign(commonFields, otherFields),
         logs: [],
         driversAssigned: []
     }

@@ -89,7 +89,6 @@
           value: getFullName(driverData),
           log: false,
           dataType: 'text',
-          type: 'text'
         };
 
         return driverData;
@@ -138,19 +137,16 @@
                 value: null,
                 log: false,
                 dataType: 'text',
-                type: 'text'
               },
               "Last Name": {
                 value: null,
                 log: false,
                 dataType: 'text',
-                type: 'text'
               },
               "Name": {
                 value: null,
                 log: false,
                 dataType: 'text',
-                type: 'text'
               }
             },
             logs: [],
@@ -177,7 +173,6 @@
                   value: null,
                   log: driverData[field].log,
                   dataType: driverData[field].dataType,
-                  type: driverData[field].type
                 };
               });
 
@@ -209,14 +204,6 @@
       function getLogDates() {
         var deferred = $q.defer();
         var logDates = [];
-
-        // if(existingDrivers.constructor === Object) {
-        //   drivers = existingDrivers.data;   // should be from dataService
-        // } else if(existingDrivers.constructor === Array) {
-        //   drivers = existingDrivers;
-        // } else {
-        //   reject(new Error('Invalid existingDrivers data type:', existingDrivers));
-        // }
 
         get().then(function(result) {
           var drivers = result.data;

@@ -9,14 +9,14 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('DeleteFieldModalInstanceCtrl', ['_', 'objectHelpers', 'getAssets', 'getProspects', 'getDrivers', 'getCars', 'objectType', 'thing', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function(_, objectHelpers, getAssets, getProspects, getDrivers, getCars, objectType, thing, dataService, $scope, $uibModalInstance, $state) {
+    .controller('DeleteFieldModalCtrl', ['_', 'objectHelpers', 'getObjects', 'objectType', 'thing', 'dataService', '$scope', '$uibModalInstance', '$state',
+      function(_, objectHelpers, getObjects, objectType, thing, dataService, $scope, $uibModalInstance, $state) {
 
       // not used by view
       var ctrl = this;
-      ctrl.objects = [];
+      ctrl.objects = getObjects;
       ctrl.update = null;
-
+      
       // used by view
       $scope.confirmation = { value: "" };
       $scope.objectType = objectType;
@@ -24,20 +24,12 @@
 
       // determine the state or ui calling this modal
       if($scope.objectType === 'driver') {
-          // console.log('called from drivers uaq
-          ctrl.objects = getDrivers;
           ctrl.update = dataService.updateDriver;
       } else if($scope.objectType === 'car') {
-          // console.log('called from cars ui');
-          ctrl.objects = getCars;
           ctrl.update = dataService.updateCar;
       } else if($scope.objectType === 'prospect') {
-          // console.log('called from prospects ui');
-          ctrl.objects = getProspects;
           ctrl.update = dataService.updateProspect;
       } else if($scope.objectType === 'asset') {
-          ctrl.objects = getAssets;
-          console.log(getAssets);
           ctrl.update = dataService.updateAsset;
       } else {
           throw Error("Undefined object type");

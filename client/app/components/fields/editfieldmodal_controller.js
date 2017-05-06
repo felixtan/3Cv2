@@ -47,8 +47,6 @@
             log: $scope.object.data[field].log,
             identifier: $scope.object.identifier === field,
         };
-
-        console.log($scope.field)
       };
       ctrl.initialize();
 
@@ -69,7 +67,6 @@
           });
       } else if (objectType === 'asset') {
           $scope.update = assetHelpers.update;
-          // $scope.objects = assetHelpers.getAssetsOfType($scope.object.assetType);
           $scope.objects = getAssets;
       } else {
           $window.alert('Unrecognized object type!');
@@ -194,8 +191,8 @@
       $scope.delete = function () {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/deletefieldmodal.html',
-              controller: 'DeleteFieldModalInstanceCtrl',
+              templateUrl: 'components/fields/deletefieldmodal.html',
+              controller: 'DeleteFieldModalCtrl',
               size: 'md',
               resolve: {
                   thing: function() {
@@ -205,17 +202,8 @@
                       };
                       // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                   },
-                  getCars: function() {
-                      return (($scope.objectType === 'car') ? $scope.objects : {});
-                  },
-                  getDrivers: function() {
-                      return (($scope.objectType === 'driver') ? $scope.objects : {});
-                  },
-                  getProspects: function() {
-                      return (($scope.objectType === 'prospect') ? $scope.objects : {});
-                  },
-                  getAssets: function() {
-                      return (($scope.objectType === 'prospect') ? $scope.objects : {});
+                  getObjects: function() {
+                      return $scope.objects;
                   },
                   objectType: function() {
                     return $scope.objectType;
@@ -226,7 +214,7 @@
           modalInstance.result.then(function () {
               $scope.ok();
           }, function () {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
 

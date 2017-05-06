@@ -71,7 +71,7 @@ angular
     })
     .state('dashboard.cars', {
         url: '/cars',
-        templateUrl: 'views/objectsList.html',
+        templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
         resolve: {
           objectType: function() {
@@ -81,7 +81,7 @@ angular
     })
     .state('dashboard.drivers', {
         url: '/drivers',
-        templateUrl: 'views/objectsList.html',
+        templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
         resolve: {
             objectType: function() {
@@ -91,7 +91,7 @@ angular
     })
     .state('dashboard.prospects', {
         url: '/prospects',
-        templateUrl: 'views/objectsList.html',
+        templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
         resolve: {
             objectType: function() {
@@ -101,7 +101,7 @@ angular
     })
     .state('dashboard.assets', {
         url: '/assets',
-        templateUrl: 'views/objectsList.html',
+        templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
         resolve: {
             objectType: function() {
@@ -116,7 +116,7 @@ angular
     })
     .state('logs.cars', {
         url: '/cars',
-        templateUrl: 'views/objectsLogs.html',
+        templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
             objectType: function () {
@@ -126,7 +126,7 @@ angular
     })
     .state('logs.drivers', {
         url: '/drivers',
-        templateUrl: 'views/objectsLogs.html',
+        templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
             objectType: function () {
@@ -136,7 +136,7 @@ angular
     })
     .state('logs.assets', {  // logs for assets of a certain type
         url: '/assets',
-        templateUrl: '/views/objectsLogs.html',
+        templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
         resolve: {
             objectType: function () {
@@ -146,7 +146,7 @@ angular
     })
     .state('carData', {
         url: '/cars/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -159,7 +159,7 @@ angular
     })
     .state('carLogs', {
         url: '/cars/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: '/components/objectlogs/objectlogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {
@@ -172,7 +172,7 @@ angular
     })
     .state('driverData', {
         url: '/drivers/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -185,7 +185,7 @@ angular
     })
     .state('driverLogs', {
         url: '/drivers/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: '/components/objectlogs/objectlogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {
@@ -198,7 +198,7 @@ angular
     })
     .state('prospectData', {
         url: '/prospects/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -211,7 +211,7 @@ angular
     })
     .state('assetData', {
         url: '/assets/:id/data',
-        templateUrl: '/views/objectData.html',
+        templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
         resolve: {
             objectType: function() {
@@ -224,7 +224,7 @@ angular
     })
     .state('assetLogs', {
         url: '/assets/:id/logs',
-        templateUrl: '/views/objectLogs.html',
+        templateUrl: '/components/objectlogs/objectlogs.html',
         controller: 'ObjectLogsCtrl',
         resolve: {
             objectType: function() {

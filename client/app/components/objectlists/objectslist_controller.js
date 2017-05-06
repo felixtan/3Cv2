@@ -58,15 +58,9 @@
 
       ctrl.getObjects()().then(function(result) {
           $scope.objects = result.data;
+          console.log($scope.objects)
           $scope.simpleObjects = objectHelpers.simplify($scope.objects);
       });
-
-      // Submit with enter
-      // $scope.keypress = function(e, form) {
-      //     if (e.which === 13) {
-      //         form.$submit();
-      //     }
-      // };
 
       $scope.thereAreObjects = function() {
           return (typeof $scope.objects !== 'undefined' && $scope.objects.length > 0);
@@ -75,8 +69,8 @@
       $scope.addObject = function() {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/addobjectmodal.html',
-              controller: 'AddObjectModalInstanceCtrl',
+              templateUrl: 'components/objectcrud/addobjectmodal.html',
+              controller: 'AddObjectModalCtrl',
               size: 'md',
               resolve: {
                   objectType: function() {
@@ -91,7 +85,7 @@
           modalInstance.result.then(function () {
               $state.forceReload();
           }, function() {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
 
@@ -107,7 +101,7 @@
       $scope.addType = function() {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/assetTypeModal.html',
+              templateUrl: 'components/fields/assettypemodal.html',
               controller: 'AssetTypeModalCtrl',
               size: 'md',
               resolve: {
@@ -249,7 +243,7 @@
       $scope.addStatus = function() {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/prospectstatusmodal.html',
+              templateUrl: 'components/fields/prospectstatusmodal.html',
               controller: 'ProspectStatusModalCtrl',
               size: 'md',
               resolve: {
@@ -260,7 +254,7 @@
           });
 
           modalInstance.result.then(function () {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
   }]);

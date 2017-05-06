@@ -67,8 +67,8 @@
       $scope.addField = function() {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/addfieldmodal.html',
-              controller: 'AddFieldModalInstanceCtrl',
+              templateUrl: 'components/fields/addfieldmodal.html',
+              controller: 'AddFieldModalCtrl',
               size: 'md',
               resolve: {
                   getObjects: function() {
@@ -99,8 +99,9 @@
           // console.log(`Assign ${thing} to ${$scope.objectType}`)
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/assignmentmodal.html',
+              templateUrl: 'components/assignment/assignmentmodal.html',
               controller: 'AssignmentModalCtrl',
+              controllerAs: 'assignModal',
               size: 'md',
               resolve: {
                   getDrivers: function() {
@@ -142,7 +143,7 @@
           // console.log(field);
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/editFieldModal.html',
+              templateUrl: 'components/fields/editfieldmodal.html',
               controller: 'EditFieldModalCtrl',
               size: 'md',
               resolve: {
@@ -285,7 +286,6 @@
                           driver.data[field] = {
                               value: null,
                               log: false,
-                              type: prospectData[field].type,
                               dataType: prospectData[field].dataType
                           };
 
@@ -358,8 +358,8 @@
         // console.log(objectId)
         var modalInstance = $uibModal.open({
           animation: true,
-          templateUrl: 'views/deleteobjmodal.html',
-          controller: 'DeleteObjModalInstanceCtrl',
+          templateUrl: 'components/objectcrud/deleteobjmodal.html',
+          controller: 'DeleteObjModalCtrl',
           size: 'md',
           resolve: {
             id: function() {

@@ -246,24 +246,16 @@
       $scope.open = function (size, thing) {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'views/deletefieldmodal.html',
-              controller: 'DeleteFieldModalInstanceCtrl',
+              templateUrl: 'components/fields/deletefieldmodal.html',
+              controller: 'DeleteFieldModalCtrl',
               size: size,
               resolve: {
                   thing: function() {
                       return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
                   },
-                  getCars: function () {
-                      return ($scope.objectType === 'car') ? $scope.objects : {};
-                  },
-                  getDrivers: function () {
-                      return ($scope.objectType === 'driver') ? $scope.objects : {};
-                  },
-                  getProspects: function() {
-                      return ($scope.objectType === 'prospect') ? $scope.objects : {};
-                  },
-                  getAssets: function () {
-                      return ($scope.objectType === 'asset') ? assetHelpers.filterAssetsByType($scope.objects, $scope.assetType) : {};
+                  getObjects: function() {
+                      return $scope.objectType === 'asset' ? assetHelpers.filterAssetsByType($scope.objects, $scope.assetType)
+                                                           : $scope.objects;
                   },
                   objectType: function () {
                       return $scope.objectType;
@@ -273,7 +265,7 @@
 
           modalInstance.result.then(function (input) {
               $scope.input = input;
-              console.log('passed back from DeleteFieldModalInstanceCtrl:', input);
+              console.log('passed back from DeleteFieldModalCtrl:', input);
           }, function () {
               console.log('Modal dismissed at: ' + new Date());
           });

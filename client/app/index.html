@@ -28,7 +28,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
 
     <!-- Main styles -->
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="./main.css">
   </head>
   <body ng-app="clientApp">
 
@@ -218,34 +218,30 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src='bower_components/angular-xeditable/dist/js/xeditable.min.js'></script>
         <script src="app.js"></script>
+
         <script src="services/dataservice.js"></script>
         <script src="services/underscore.js"></script>
         <script src="services/datepicker.js"></script>
-        <script src="services/objectHelpers.js"></script>
+        <script src="services/objecthelpers.js"></script>
         <script src="services/assethelpers.js"></script>
         <script src="services/prospecthelpers.js"></script>
         <script src="services/carhelpers.js"></script>
         <script src="services/driverhelpers.js"></script>
 
-        <script src="fields/addfieldmodalinstance.js"></script>
-        <script src="fields/deleteFieldModal.js"></script>
-        <script src="fields/deleteFieldModalInstance.js"></script>
-        <script src="fields/editFieldModal.js"></script>
+        <script src="components/fields/addfieldmodal_controller.js"></script>
+        <script src="components/fields/deletefieldmodal_controller.js"></script>
+        <script src="components/fields/editfieldmodal_controller.js"></script>
+        <script src="components/fields/prospectstatusmodal_controller.js"></script>
+        <script src="components/fields/assettypemodal_controller.js"></script>
 
-        <script src="objects/deleteobjmodal.js"></script>
-        <script src="objects/deleteobjmodalinstance.js"></script>
-        <script src="objects/prospectstatusmodal.js"></script>
-        <script src="objects/addobjectmodal.js"></script>
-        <script src="objects/addobjectmodalinstance.js"></script>
-        <script src="objects/assettypemodal.js"></script>
-        <script src="objects/objectsList.js"></script>
-        <script src="objects/objectData.js"></script>
-        <script src="objects/objectLogs.js"></script>
-        <script src="objects/objectsLogs.js"></script>
+        <script src="components/objectcrud/deleteobjmodal_controller.js"></script>
+        <script src="components/objectcrud/addobjectmodal_controller.js"></script>
+        <script src="components/objectlists/objectslist_controller.js"></script>
+        <script src="components/objectdata/objectdata_controller.js"></script>
+        <script src="components/objectlogs/objectlogs_controller.js"></script>
+        <script src="components/objectlogs/objectslogs_controller.js"></script>
 
-        <script src="assignment/assignmentmodal.js"></script>
-
-        <script src="logs/assettypelogs.js"></script>
+        <script src="components/assignment/assignmentmodal_controller.js"></script>
         <!-- endbuild -->
 
         <!-- produced by grunt-ng-constant -->

@@ -1,18 +1,18 @@
 <div class="modal-header">
-    <h3 class="modal-title">Assign {{ ::objectType }}</h3>
-    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+    <h3 class="modal-title">Assign {{ ::assignModal.objectType }}</h3>
+    <button type="button" class='close' ng-click='assignModal.close()' style='margin-top:-35px;'>
         &times;
     </button>
 </div>
 
 <div class="modal-body">
-    <form novalidate role='form' name='form' ng-submit='submit()'>
+    <form novalidate role='form' name='form' ng-submit='assignModal.submit()'>
 
         <div class='form-group' ng-if='objectType === "asset"'>
             Select asset type
-            <select class='form-control' ng-model='formData.assetType'>
-                <option ng-repeat='assetType in assetTypes.types' value='{{ assetType.value }}'>
-                    {{ assetType.value }}
+            <select class='form-control' ng-model='assignModal.formData.assetType'>
+                <option ng-repeat='assetType in assignModal.assetTypes.types' value='{{ assetType.value }}'>
+                    {{ assignModal.assetType.value }}
                 </option>
             </select>
         </div>
@@ -20,11 +20,10 @@
         <!-- Assigning non assets -->
         <div class='form-group' ng-if='objectType !== "asset"'>
             Select <span ng-if='objIdentifier !== "Name"'>{{ objIdentifier }}</span><span ng-if='objIdentifier === "Name"'>Driver</span>
-            <select class='form-control' ng-model='formData.objId'>
-                <option ng-repeat='object in simpleObjects | orderBy:"id"'
+            <select class='form-control' ng-model='assignModal.formData.objId'>
+                <option ng-repeat='object in assignModal.simpleObjects | orderBy:"id"'
                 value='{{ object.id }}'>
-                    <!-- Do not show inactive cars -->
-                    {{ ::object.identifierValue }}
+                    {{ ::assignModal.object.identifierValue }}
                 </option>
             </select>
         </div>
@@ -32,11 +31,10 @@
         <!-- Assigning assets -->
         <div class='form-group' ng-if='objectType === "asset"'>
             Select
-            <select class='form-control' ng-model='formData.objId'>
-                <option ng-repeat='object in simpleObjects | orderBy:"id"'
+            <select class='form-control' ng-model='assignModal.formData.objId'>
+                <option ng-repeat='object in assignModal.simpleObjects | orderBy:"id"'
                 value='{{ object.id }}' ng-if='object.assetType === formData.assetType'>
-                    <!-- Do not show inactive cars -->
-                    {{ ::object.identifierValue }}
+                    {{ ::assignModal.object.identifierValue }}
                 </option>
             </select>
         </div>
@@ -48,14 +46,14 @@
                     <input type="text"
                         class="form-control"
                         datepicker-popup="{{ datepicker.format }}"
-                        ng-model="datepicker.dt"
+                        ng-model="assignModal.datepicker.dt"
                         is-open="datepicker.status.opened"
                         max-date="datepicker.maxDate"
                         datepicker-options="datepicker.dateOptions"
                         ng-required="true"
                         close-text="Close" />
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-primary" ng-click="datepicker.open($event)">
+                        <button type="button" class="btn btn-primary" ng-click="assignModal.datepicker.open($event)">
                             <i class="fa fa-calendar"></i>
                         </button>
                     </div>
@@ -63,14 +61,9 @@
             </div>
         </div>
     </form>
-
-    <!-- <div>
-        {{ formData.carId }}
-        {{ dt }}
-    </div> -->
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-success" type="button" ng-click="submit()" ng-disabled='validForm()'>Submit</button>
-    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+    <button class="btn btn-success" type="button" ng-click="assignModal.submit()" ng-disabled='validForm()'>Submit</button>
+    <button class='btn btn-default' type='button' ng-click='assignModal.close()'>Close</button>
 </div>

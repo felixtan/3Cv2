@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('AddFieldModalInstanceCtrl', ['$q', '$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
+    .controller('AddFieldModalCtrl', ['$q', '$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
     function($q, $scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
 
       var isValid = objectHelpers.isValid;
