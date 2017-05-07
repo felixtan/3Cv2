@@ -148,6 +148,7 @@ angular
         url: '/cars/:id/data',
         templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
+        controllerAs: 'objectData',
         resolve: {
             objectType: function() {
                 return "car";
@@ -174,6 +175,7 @@ angular
         url: '/drivers/:id/data',
         templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
+        controllerAs: 'objectData',
         resolve: {
             objectType: function() {
                 return "driver";
@@ -200,6 +202,7 @@ angular
         url: '/prospects/:id/data',
         templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
+        controllerAs: 'objectData',
         resolve: {
             objectType: function() {
                 return "prospect";
@@ -213,6 +216,7 @@ angular
         url: '/assets/:id/data',
         templateUrl: '/components/objectdata/objectdata.html',
         controller: 'ObjectDataCtrl',
+        controllerAs: 'objectData',
         resolve: {
             objectType: function() {
                 return "asset";

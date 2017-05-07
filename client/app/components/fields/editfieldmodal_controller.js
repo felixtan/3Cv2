@@ -2,12 +2,13 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('EditFieldModalCtrl', ['$q', '$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
-      function ($q, $window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+    .controller('EditFieldModalCtrl', ['$q', '$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getObjects', '$uibModalInstance', '$state', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      function ($q, $window, _, objectHelpers, $uibModal, dataService, getObjects, $uibModalInstance, $state, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
       var ctrl = this
       ,   notName = driverHelpers.notName;
 
+      ctrl.objects = getObjects;
       ctrl.fieldNamesNotToEdit = [];
       ctrl.statuses = null;
       ctrl.prospectStatuses = null;
@@ -55,22 +56,18 @@
 
       if(objectType === 'car') {
           ctrl.update = carHelpers.update;
-          ctrl.objects = getCars;
       } else if(objectType === 'driver') {
         ctrl.fieldNamesNotToEdit.push("First Name", "Last Name");
           ctrl.update = driverHelpers.update;
-          ctrl.objects = getDrivers;
       } else if(objectType === 'prospect') {
           ctrl.fieldNamesNotToEdit.push("status", "First Name", "Last Name");
           ctrl.update = prospectHelpers.update;
-          ctrl.objects = getProspects;
           prospectHelpers.getStatuses().then(function(result) {
             ctrl.prospectStatuses = result.data;
             ctrl.statuses = ctrl.prospectStatuses.statuses;
           });
       } else if (objectType === 'asset') {
           ctrl.update = assetHelpers.update;
-          ctrl.objects = getAssets;
       } else {
           $window.alert('Unrecognized object type!');
       }

@@ -2,44 +2,43 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('ObjectDataCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'driverHelpers', 'carHelpers', '$q', '$state', '$scope', '$uibModal',
-      function(_, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $scope, $uibModal) {
+    .controller('ObjectDataCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'driverHelpers', 'carHelpers', '$q', '$state', '$uibModal',
+      function(_, objectType, objectId, objectHelpers, assetHelpers, prospectHelpers, driverHelpers, carHelpers, $q, $state, $uibModal) {
 
       var ctrl = this;
-      // ctrl.assetType = { value: null };
-      $scope.objectType = objectType;
-      $scope.carIdentifier = null;
-      $scope.tabs = [];
+      ctrl.objectType = objectType;
+      ctrl.carIdentifier = null;
+      ctrl.tabs = [];
 
-      $scope.valid = function (thing) {
+      ctrl.valid = function (thing) {
           return thing !== null && typeof thing !== "undefined";
       };
 
       ctrl.getObjectById = function () {
-          if($scope.objectType === 'car') {
+          if(ctrl.objectType === 'car') {
               return carHelpers.getById;
-          } else if($scope.objectType === 'driver') {
-              // console.log($scope.stateRef);
+          } else if(ctrl.objectType === 'driver') {
+              // console.log(ctrl.stateRef);
               carHelpers.getIdentifier().then(function(identifier) {
-                  $scope.carIdentifier = identifier;
+                  ctrl.carIdentifier = identifier;
               });
 
               return driverHelpers.getById;
-          } else if($scope.objectType === 'prospect') {
+          } else if(ctrl.objectType === 'prospect') {
               return prospectHelpers.getById;
-          } else if($scope.objectType === 'asset') {
+          } else if(ctrl.objectType === 'asset') {
               return assetHelpers.getById;
           }
       };
 
       ctrl.getObjects = function (assetType) {
-          if($scope.objectType === 'car') {
+          if(ctrl.objectType === 'car') {
               return carHelpers.get;
-          } else if($scope.objectType === 'driver') {
+          } else if(ctrl.objectType === 'driver') {
               return driverHelpers.get;
-          } else if($scope.objectType === 'prospect') {
+          } else if(ctrl.objectType === 'prospect') {
               return prospectHelpers.get;
-          } else if($scope.objectType === 'asset') {
+          } else if(ctrl.objectType === 'asset') {
               return assetHelpers.getByType;
           }
       };
@@ -47,24 +46,24 @@
       ctrl.getObjectById()(objectId).then(function(result1) {
           // console.log(result1);
           if(result1) {
-            $scope.object = result1.data;
+            ctrl.object = result1.data;
           }
 
-          ctrl.assetType = $scope.object.assetType;
-          $scope.identifierValue = $scope.object.data[$scope.object.identifier].value;
+          ctrl.assetType = ctrl.object.assetType;
+          ctrl.identifierValue = ctrl.object.data[ctrl.object.identifier].value;
 
-          $scope.tabs = [
-              { title: 'Data', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
-              { title: 'Logs', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
+          ctrl.tabs = [
+              { title: 'Data', stateRef: objectHelpers.getStateRef(ctrl.objectType, ctrl.object.id, 'Data') },
+              { title: 'Logs', stateRef: objectHelpers.getStateRef(ctrl.objectType, ctrl.object.id, 'Logs') }
           ];
 
-          ctrl.getObjects()($scope.object.assetType).then(function(result2) {
+          ctrl.getObjects()(ctrl.object.assetType).then(function(result2) {
               ctrl.objects = result2.data;
           });
       });
 
       // Add field
-      $scope.addField = function() {
+      ctrl.addField = function() {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/addfieldmodal.html',
@@ -76,10 +75,10 @@
                       return ctrl.objects
                   },
                   assetType: function() {
-                      return $scope.objectType === 'asset' ? ctrl.assetType : null;
+                      return ctrl.objectType === 'asset' ? ctrl.assetType : null;
                   },
                   objectType: function() {
-                      return $scope.objectType;
+                      return ctrl.objectType;
                   }
               }
           });
@@ -96,8 +95,8 @@
       // Driver Assignment UI /////
       /////////////////////////////
 
-      $scope.assign = function(thing) {
-          // console.log(`Assign ${thing} to ${$scope.objectType}`)
+      ctrl.assign = function(thing) {
+          // console.log(`Assign ${thing} to ${ctrl.objectType}`)
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/assignment/assignmentmodal.html',
@@ -106,28 +105,28 @@
               size: 'md',
               resolve: {
                   getDrivers: function() {
-                      return $scope.objectType === 'car' ? driverHelpers.get : null;
+                      return ctrl.objectType === 'car' ? driverHelpers.get : null;
                   },
                   getCars: function() {
-                      return ($scope.objectType === 'driver' && thing === 'car') ? carHelpers.get : null;
+                      return (ctrl.objectType === 'driver' && thing === 'car') ? carHelpers.get : null;
                   },
                   subject: function() {
-                      return $scope.object
+                      return ctrl.object
                   },
                   subjectType: function() {
-                      return $scope.objectType;
+                      return ctrl.objectType;
                   },
                   objectType: function() {
                       return thing;
                   },
                   getTypes: function() {
-                      return ($scope.objectType === 'driver' && thing === 'asset') ? assetHelpers.getTypes : { data: null };
+                      return (ctrl.objectType === 'driver' && thing === 'asset') ? assetHelpers.getTypes : { data: null };
                   },
                   getAssets: function() {
-                      return ($scope.objectType === 'driver' && thing === 'asset') ? assetHelpers.get : null;
+                      return (ctrl.objectType === 'driver' && thing === 'asset') ? assetHelpers.get : null;
                   },
                   asset: function() {
-                      return $scope.objectType === 'asset' ? driverHelpers.get : null;
+                      return ctrl.objectType === 'asset' ? driverHelpers.get : null;
                   },
               }
           });
@@ -139,9 +138,8 @@
           });
       };
 
-      $scope.editField = function(object, field) {
-          // console.log(object);
-          // console.log(field);
+      ctrl.editField = function(field) {
+        //   console.log(field);
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/editfieldmodal.html',
@@ -153,23 +151,13 @@
                       return field;
                   },
                   _object: function() {
-                      return object;
+                      return ctrl.object;
                   },
                   objectType: function() {
-                      return $scope.objectType;
+                      return ctrl.objectType;
                   },
-                  getCars: function() {
-                      // console.log(ctrl.objects);
-                      return $scope.objectType === 'car' ? ctrl.objects : [];
-                  },
-                  getProspects: function() {
-                      return $scope.objectType === 'prospect' ? ctrl.objects : [];
-                  },
-                  getDrivers: function() {
-                      return $scope.objectType === 'driver' ? ctrl.objects : [];
-                  },
-                  getAssets: function() {
-                      return $scope.objectType === 'asset' ? ctrl.objects : [];
+                  getObjects: function() {
+                      return ctrl.objects;
                   }
               }
           });
@@ -186,20 +174,20 @@
       //
       // Prospect data stuff
       /////////////////////////////////////////////////
-      $scope.notName = function(field) {
+      ctrl.notName = function(field) {
           // console.log(field);
-          return ($scope.objectType === "prospect" || $scope.objectType === 'driver') && field === "Name" || field === 'assetType';
+          return (ctrl.objectType === "prospect" || ctrl.objectType === 'driver') && field === "Name" || field === 'assetType';
       };
 
-      $scope.notStatus = function(field) {
+      ctrl.notStatus = function(field) {
           return (field.toLowerCase() !== "status");
       };
 
       String.prototype.capitalizeIfStatus = function() {
-          return (this === 'status' && $scope.objectType === "prospect") ? (this.charAt(0).toUpperCase() + this.slice(1)) : this;
+          return (this === 'status' && ctrl.objectType === "prospect") ? (this.charAt(0).toUpperCase() + this.slice(1)) : this;
       };
 
-      $scope.notNameOrStatus = function(field) {
+      ctrl.notNameOrStatus = function(field) {
           return ((field !== "First Name") && (field !== "Last Name") && (field !== "Name") && (field.toLowerCase() !== "status"));
       };
 
@@ -323,7 +311,7 @@
           _.each(prospectData, function(data, field) {
               // var temp = field.replace(/~/g, "");
               if(_.includes(partedFields.inCommon, field) || _.includes(partedFields.uniqueToProspect, field)) {
-                  prospectData[field] = $scope.object.data[field];
+                  prospectData[field] = ctrl.object.data[field];
               } else {
                   prospectData[field].value = null;
               }
@@ -332,10 +320,10 @@
           return prospectData
       };
 
-      $scope.convert = function() {
+      ctrl.convert = function() {
         objectHelpers.getFormDataAndReference('driver').then(function(driver) {
-          var fields = ctrl.partitionFields($scope.object.data, driver.referenceObject.data)
-          var result = ctrl.resolveNameConflicts(fields, $scope.object.data);
+          var fields = ctrl.partitionFields(ctrl.object.data, driver.referenceObject.data)
+          var result = ctrl.resolveNameConflicts(fields, ctrl.object.data);
 
           ctrl.addProspectFieldsToExistingDrivers(result.partedFields.uniqueToProspect, result.prospectData).then(function(prospectDataWithNoConflictingFields) {
             var newDriverData = ctrl.buildNewDriverData(prospectDataWithNoConflictingFields, result.partedFields)
@@ -347,7 +335,7 @@
               }
 
               driverHelpers.saveDriver(newDriver).then(function() {
-                prospectHelpers.deleteProspect($scope.object.id);
+                prospectHelpers.deleteProspect(ctrl.object.id);
                 $state.go('dashboard.prospects');
               });
             });
@@ -356,7 +344,7 @@
       };
 
       // Delete modal
-      $scope.openDeleteModal = function() {
+      ctrl.openDeleteModal = function() {
         // console.log(objectId)
         var modalInstance = $uibModal.open({
           animation: true,

@@ -123,8 +123,8 @@
       };
 
       ctrl.assignSubjectToObject = function() {
-          console.log(ctrl.subjIdentifier);
-          console.log(ctrl.subject);
+        //   console.log(ctrl.subjIdentifier);
+        //   console.log(ctrl.subject);
           var subject = {
               id: ctrl.subject.id,
               identifier: {
