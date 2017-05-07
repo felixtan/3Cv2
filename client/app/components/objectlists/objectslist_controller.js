@@ -58,7 +58,6 @@
 
       ctrl.getObjects()().then(function(result) {
           $scope.objects = result.data;
-          console.log($scope.objects)
           $scope.simpleObjects = objectHelpers.simplify($scope.objects);
       });
 
@@ -103,6 +102,7 @@
               animation: true,
               templateUrl: 'components/fields/assettypemodal.html',
               controller: 'AssetTypeModalCtrl',
+              controllerAs: 'assetTypeModal',
               size: 'md',
               resolve: {
                   assetTypes: function() {

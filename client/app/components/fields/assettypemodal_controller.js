@@ -9,30 +9,30 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AssetTypeModalCtrl', ['assetHelpers', '$scope', 'assetTypes', '$state', '$uibModalInstance',
-    function (assetHelpers, $scope, assetTypes, $state, $uibModalInstance) {
+    .controller('AssetTypeModalCtrl', ['assetHelpers', 'assetTypes', '$state', '$uibModalInstance',
+    function (assetHelpers, assetTypes, $state, $uibModalInstance) {
 
       var ctrl = this;
       ctrl.assetTypes = assetTypes;
-      $scope.newType = { value: null };
+      ctrl.newType = { value: null };
 
-      $scope.validForm = function() {
-          return (($scope.newType.value !== null) && (typeof $scope.newType.value !== "undefined"));
+      ctrl.validForm = function() {
+          return ((ctrl.newType.value !== null) && (typeof ctrl.newType.value !== "undefined"));
       };
 
-      $scope.submit = function() {
-          ctrl.assetTypes.types[ctrl.assetTypes.types.length++] = $scope.newType;
+      ctrl.submit = function() {
+          ctrl.assetTypes.types[ctrl.assetTypes.types.length++] = ctrl.newType;
           assetHelpers.updateTypes(ctrl.assetTypes).then(function() {
               $state.forceReload();
-              $scope.close();
+              ctrl.close();
           });
       };
 
-      $scope.reset = function () {
-        $scope.newType = { value: null };
+      ctrl.reset = function () {
+        ctrl.newType = { value: null };
       };
 
-      $scope.close = function () {
+      ctrl.close = function () {
           $uibModalInstance.dismiss('cancel');
       };
     }]);
