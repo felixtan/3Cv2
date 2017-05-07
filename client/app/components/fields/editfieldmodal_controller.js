@@ -2,78 +2,81 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('EditFieldModalCtrl', ['$q', '$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', '$scope', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
-      function ($q, $window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, $scope, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
+    .controller('EditFieldModalCtrl', ['$q', '$window', '_', 'objectHelpers', '$uibModal', 'dataService', 'getDrivers', 'getAssets', 'getProspects', 'getCars', '$uibModalInstance', '$state', 'field', '_object', 'objectType', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers',
+      function ($q, $window, _, objectHelpers, $uibModal, dataService, getDrivers, getAssets, getProspects, getCars, $uibModalInstance, $state, field, _object, objectType, carHelpers, driverHelpers, prospectHelpers, assetHelpers) {
 
-      var ctrl = this,
-          notName = driverHelpers.notName;
+      var ctrl = this
+      ,   notName = driverHelpers.notName;
 
-      $scope.fieldNamesNotToEdit = [];
-      $scope.statuses = null;
-      $scope.prospectStatuses = null;
+      ctrl.fieldNamesNotToEdit = [];
+      ctrl.statuses = null;
+      ctrl.prospectStatuses = null;
+      ctrl.originalName = field;
 
-      $scope.loggable = function (fieldName) {
-        if($scope.objectType !== 'prospect') {
+      ctrl.loggable = function (fieldName) {
+        if(ctrl.objectType !== 'prospect') {
           return notName(fieldName);
         } else {
           return false;
         }
       };
 
-      String.prototype.capitalizeIfStatus = function() {
-          return (this === 'status' && $scope.objectType === "prospect") ? (this.charAt(0).toUpperCase() + this.slice(1)) : this;
+      ctrl.capitalizeIfStatus = function(str) {
+          return (str === 'status' && ctrl.objectType === "prospect") ? (str.charAt(0).toUpperCase() + str.slice(1)) : str;
       };
 
-      $scope.dontEditFieldName = function(fieldName) {
-        return _.includes($scope.fieldNamesNotToEdit, fieldName);
+      ctrl.dontEditFieldName = function(fieldName) {
+        return _.includes(ctrl.fieldNamesNotToEdit, fieldName);
       };
 
-      $scope.isProspectStatus = function(fieldName) {
-        return $scope.objectType === 'prospect' && fieldName === 'status';
+      ctrl.isProspectStatus = function(fieldName) {
+        return ctrl.objectType === 'prospect' && fieldName === 'status';
       };
 
       // INITIALIZE
       ctrl.initialize = function() {
-        $scope.logValueChanged = { value: false };
-        $scope.object = _object;
-        $scope.fields = _.without(Object.keys($scope.object.data), field);
-        $scope.objects = [];
-        $scope.objectType = objectType;
+        ctrl.logValueChanged = { value: false };
+        ctrl.object = _object;
+        ctrl.fields = _.without(Object.keys(ctrl.object.data), field);
+        ctrl.objects = [];
+        ctrl.objectType = objectType;
 
-        $scope.field = {
-            name: field,
-            dataType: $scope.object.data[field].dataType,
-            value: $scope.isProspectStatus(field) ? $scope.object.status : $scope.object.data[field].value,
-            log: $scope.object.data[field].log,
-            identifier: $scope.object.identifier === field,
+        ctrl.field = {
+            name: ctrl.originalName,
+            dataType: ctrl.object.data[field].dataType,
+            value: ctrl.isProspectStatus(field) ? ctrl.object.status : ctrl.object.data[field].value,
+            log: ctrl.object.data[field].log,
+            isIdentifier: ctrl.object.identifier === field,
         };
+
+        console.log(ctrl.field)
       };
       ctrl.initialize();
 
       if(objectType === 'car') {
-          $scope.update = carHelpers.update;
-          $scope.objects = getCars;
+          ctrl.update = carHelpers.update;
+          ctrl.objects = getCars;
       } else if(objectType === 'driver') {
-        $scope.fieldNamesNotToEdit.push("First Name", "Last Name");
-          $scope.update = driverHelpers.update;
-          $scope.objects = getDrivers;
+        ctrl.fieldNamesNotToEdit.push("First Name", "Last Name");
+          ctrl.update = driverHelpers.update;
+          ctrl.objects = getDrivers;
       } else if(objectType === 'prospect') {
-          $scope.fieldNamesNotToEdit.push("status", "First Name", "Last Name");
-          $scope.update = prospectHelpers.update;
-          $scope.objects = getProspects;
+          ctrl.fieldNamesNotToEdit.push("status", "First Name", "Last Name");
+          ctrl.update = prospectHelpers.update;
+          ctrl.objects = getProspects;
           prospectHelpers.getStatuses().then(function(result) {
-            $scope.prospectStatuses = result.data;
-            $scope.statuses = $scope.prospectStatuses.statuses;
+            ctrl.prospectStatuses = result.data;
+            ctrl.statuses = ctrl.prospectStatuses.statuses;
           });
       } else if (objectType === 'asset') {
-          $scope.update = assetHelpers.update;
-          $scope.objects = getAssets;
+          ctrl.update = assetHelpers.update;
+          ctrl.objects = getAssets;
       } else {
           $window.alert('Unrecognized object type!');
       }
 
-      $scope.fieldNameAlreadyExists = function () {
-        return _.includes($scope.fields, $scope.field.name);
+      ctrl.fieldNameAlreadyExists = function () {
+        return _.includes(ctrl.fields, ctrl.field.name);
       };
 
       ctrl.pruneFieldData = function (fieldData) {
@@ -88,15 +91,16 @@
       };
 
       ctrl.updateLogStuff = function(object) {
-        if($scope.logValueChanged.value) {
-          object.data[field].log = $scope.field.log;
-          object.data[$scope.field.name].log = $scope.field.log;
+        if(ctrl.logValueChanged.value) {
+
+        //   object.data[ctrl.originalName].log = ctrl.field.log;
+          object.data[ctrl.field.name].log = ctrl.field.log;
 
           // Only if the field isn't already being logged
-          if($scope.field.log) {
+          if(ctrl.field.log) {
             _.each(object.logs, function(log) {
-              if (!log.data[$scope.field.name]) {
-                  log.data[$scope.field.name] = null;
+              if (!log.data[ctrl.field.name]) {
+                  log.data[ctrl.field.name] = null;
               }
             });
           }
@@ -106,9 +110,9 @@
             2. log value is true
             3. field name changed
           */
-          if($scope.field.log && $scope.field.name !== field) {
+          if(ctrl.field.log && ctrl.field.name !== field) {
             _.each(object.logs, function(log) {
-              log.data[$scope.field.name] = log.data[field];
+              log.data[ctrl.field.name] = log.data[field];
               delete log.data[field];
             });
           }
@@ -117,102 +121,103 @@
         return object;
       };
 
-      $scope.submit = function() {
+      ctrl.submit = function() {
         var updates = [];
 
-        if($scope.objectType === 'prospect' && $scope.field.name === 'status') {
-          $scope.object.status = $scope.field.value;
-          $scope.object.data[$scope.field.name].value = $scope.field.value.value;
-          updates.push($scope.update($scope.object));
+        if(ctrl.objectType === 'prospect' && ctrl.field.name === 'status') {
+          ctrl.object.status = ctrl.field.value;
+          ctrl.object.data[ctrl.field.name].value = ctrl.field.value.value;
+          updates.push(ctrl.update(ctrl.object));
         } else {
-          _.each($scope.objects, function(object) {
+          _.each(ctrl.objects, function(object) {
             /* If field name changed, all objects' data must be updated */
-            var withUpdatedFieldName = objectHelpers.updateDataIfFieldNameChanged(field, $scope.field.name, object);
+            var withUpdatedFieldName = objectHelpers.updateDataIfFieldNameChanged(field, ctrl.field.name, object);
 
             /* If field name changed, all objects' logs must be updated */
             var objectToSave = ctrl.updateLogStuff(withUpdatedFieldName);
 
-            ctrl.pruneFieldData(objectToSave.data[$scope.field.name]);
+            ctrl.pruneFieldData(objectToSave.data[ctrl.field.name]);
 
             // identifier changed?
-            if($scope.field.identifier) {
-              objectToSave.identifier = $scope.field.name;
+            if(ctrl.field.isIdentifier) {
+              objectToSave.identifier = ctrl.field.name;
             }
 
             // Update the field's value
-            if($scope.object.id === objectToSave.id) {
+            if(ctrl.object.id === objectToSave.id) {
 
               // if driver/prospect Last Name and/or First Name was changed, then update Name
-              if ($scope.objectType === 'prospect' || $scope.objectType === 'driver') {
+              if (ctrl.objectType === 'prospect' || ctrl.objectType === 'driver') {
 
-                if($scope.field.name === "First Name") {
-                  objectToSave.data.Name.value = $scope.field.value + " " + objectToSave.data["Last Name"].value;
-                } else if($scope.field.name === "Last Name") {
-                  objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + $scope.field.value;
+                if(ctrl.field.name === "First Name") {
+                  objectToSave.data.Name.value = ctrl.field.value + " " + objectToSave.data["Last Name"].value;
+                } else if(ctrl.field.name === "Last Name") {
+                  objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + ctrl.field.value;
                 } else {
-                  objectToSave.data[$scope.field.name].value = $scope.field.value;
+                  objectToSave.data[ctrl.field.name].value = ctrl.field.value;
                 }
 
               } else {
-                objectToSave.data[$scope.field.name].value = $scope.field.value;
+                objectToSave.data[ctrl.field.name].value = ctrl.field.value;
               }
             }
 
-            updates.push($scope.update(objectToSave));
+            updates.push(ctrl.update(objectToSave));
           });
         }
 
         $q.all(updates).then(function() {
           $state.forceReload();
-          $scope.ok();
+          ctrl.ok();
         });
       };
 
-      $scope.invalidFieldType = function() {
-        return $scope.field.dataType === null || typeof $scope.field.dataType === 'undefined';
+      ctrl.invalidFieldType = function() {
+        return ctrl.field.dataType === null || typeof ctrl.field.dataType === 'undefined';
       };
 
-      $scope.reset = function () {
+      ctrl.reset = function () {
           ctrl.initialize();
-          $scope.form.$setPristine();
-          $scope.form.$setUntouched();
+          ctrl.form.$setPristine();
+          ctrl.form.$setUntouched();
           $state.forceReload();
       };
 
-      $scope.ok = function() {
+      ctrl.ok = function() {
         $uibModalInstance.close();
       };
 
-      $scope.close = function () {
+      ctrl.close = function () {
           // $state.forceReload();
           $uibModalInstance.dismiss('cancel');
       };
 
-      $scope.delete = function () {
+      ctrl.delete = function () {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'components/fields/deletefieldmodal.html',
-              controller: 'DeleteFieldModalCtrl',
+              templateUrl: 'components/fields/deletemodal.html',
+              controller: 'DeleteModalCtrl',
+              controllerAs: 'deleteModal',
               size: 'md',
               resolve: {
                   thing: function() {
                       return {
-                        fieldName: $scope.field.name,
+                        fieldName: ctrl.field.name,
                         type: 'field',
                       };
-                      // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                      // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ ctrl.fields or ctrl.dates
                   },
                   getObjects: function() {
-                      return $scope.objects;
+                      return ctrl.objects;
                   },
                   objectType: function() {
-                    return $scope.objectType;
+                    return ctrl.objectType;
                   }
               }
           });
 
           modalInstance.result.then(function () {
-              $scope.ok();
+              ctrl.ok();
           }, function () {
             //   console.log('Modal dismissed at: ' + new Date());
           });
@@ -221,14 +226,14 @@
       // Prospect edit field stuff
       ////////////////////////////////////////////////////////////
 
-      $scope.setStatusChanged = function(statusName) {
-          var prospect = $scope.object;
+      ctrl.setStatusChanged = function(statusName) {
+          var prospect = ctrl.object;
           if((prospect.status.value != statusName) ||
             (prospect.data.status.value != statusName) &&
             (typeof statusName !== 'undefined') &&
             (statusName !== null)) {
-              $scope.statusChanged = true;
-              $scope.status = statusName;
+              ctrl.statusChanged = true;
+              ctrl.status = statusName;
           }
       };
 

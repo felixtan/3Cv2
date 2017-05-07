@@ -9,40 +9,40 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('DeleteFieldModalCtrl', ['_', 'objectHelpers', 'getObjects', 'objectType', 'thing', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function(_, objectHelpers, getObjects, objectType, thing, dataService, $scope, $uibModalInstance, $state) {
+    .controller('DeleteModalCtrl', ['_', 'objectHelpers', 'getObjects', 'objectType', 'thing', 'dataService', '$uibModalInstance', '$state',
+      function(_, objectHelpers, getObjects, objectType, thing, dataService, $uibModalInstance, $state) {
 
       // not used by view
       var ctrl = this;
       ctrl.objects = getObjects;
       ctrl.update = null;
-      
+
       // used by view
-      $scope.confirmation = { value: "" };
-      $scope.objectType = objectType;
-      $scope.thing = thing;
+      ctrl.confirmation = { value: "" };
+      ctrl.objectType = objectType;
+      ctrl.thing = thing;
 
       // determine the state or ui calling this modal
-      if($scope.objectType === 'driver') {
+      if(ctrl.objectType === 'driver') {
           ctrl.update = dataService.updateDriver;
-      } else if($scope.objectType === 'car') {
+      } else if(ctrl.objectType === 'car') {
           ctrl.update = dataService.updateCar;
-      } else if($scope.objectType === 'prospect') {
+      } else if(ctrl.objectType === 'prospect') {
           ctrl.update = dataService.updateProspect;
-      } else if($scope.objectType === 'asset') {
+      } else if(ctrl.objectType === 'asset') {
           ctrl.update = dataService.updateAsset;
       } else {
           throw Error("Undefined object type");
       }
 
-      $scope.submit = function () {
+      ctrl.submit = function () {
           // assumes car, driver, etc. have the same schema structure
-          if($scope.confirmation.value === 'DELETE') {
+          if(ctrl.confirmation.value === 'DELETE') {
               if(ctrl.objects !== undefined && ctrl.objects !== null) {
-                  switch($scope.thing.type) {
+                  switch(ctrl.thing.type) {
                       case 'field':
                           ctrl.objects.forEach(function(obj) {
-                              delete obj.data[$scope.thing.fieldName];
+                              delete obj.data[ctrl.thing.fieldName];
                               ctrl.update(obj);
                               // TODO: What to do with logs containing this field?
                           });
@@ -50,7 +50,7 @@
                       case 'log':
                           ctrl.objects.forEach(function(obj) {
                               obj.logs.forEach(function(log) {
-                                  if(log.weekOf === $scope.thing.logDate) {
+                                  if(log.weekOf === ctrl.thing.logDate) {
                                       obj.logs.splice(obj.logs.indexOf(log), 1);
                                       ctrl.update(obj);
                                   }
@@ -63,15 +63,15 @@
               }
           }
 
-          $scope.ok();
+          ctrl.ok();
       };
 
-      $scope.ok = function() {
+      ctrl.ok = function() {
           $state.forceReload();
           $uibModalInstance.close();
       };
 
-      $scope.close = function () {
+      ctrl.close = function () {
           $state.forceReload();
           $uibModalInstance.dismiss('cancel');
       };

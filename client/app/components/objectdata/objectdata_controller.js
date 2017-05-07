@@ -146,6 +146,7 @@
               animation: true,
               templateUrl: 'components/fields/editfieldmodal.html',
               controller: 'EditFieldModalCtrl',
+              controllerAs: 'editFieldModal',
               size: 'md',
               resolve: {
                   field: function() {

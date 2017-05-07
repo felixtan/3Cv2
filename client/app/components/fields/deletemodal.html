@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        Delete
+    </h3>
+    <button type="button" class='close' ng-click='deleteModal.close()' style='margin-top:-35px;'>
+        &times;
+    </button>
+</div>
+
+<div class="modal-body">
+    <form novalidate role='form'>
+        <div class='form-group'>
+            <label for='input'>
+                Deleting this will apply to ALL {{ ::deleteModal.objectType }}s and is irreversible. Enter "DELETE" below to confirm you want to permanently delete it:
+            </label>
+            <input class='form-control' id='delete-confirmation' type='text' ng-model='deleteModal.confirmation.value'>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="deleteModal.close()">
+        Cancel
+    </button>
+    <button class='btn btn-danger' id='delete-btn-final' type='button' ng-click='deleteModal.submit()' ng-disabled="deleteModal.confirmation.value !== 'DELETE'">
+        DELETE
+    </button>
+</div>

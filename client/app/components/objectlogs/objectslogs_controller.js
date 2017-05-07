@@ -246,8 +246,9 @@
       $scope.open = function (size, thing) {
           var modalInstance = $uibModal.open({
               animation: true,
-              templateUrl: 'components/fields/deletefieldmodal.html',
-              controller: 'DeleteFieldModalCtrl',
+              templateUrl: 'components/fields/deletemodal.html',
+              controller: 'DeleteModalCtrl',
+              controllerAs: 'deleteModal',
               size: size,
               resolve: {
                   thing: function() {
@@ -265,9 +266,9 @@
 
           modalInstance.result.then(function (input) {
               $scope.input = input;
-              console.log('passed back from DeleteFieldModalCtrl:', input);
+              console.log('passed back from DeleteModalCtrl:', input);
           }, function () {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
     }]);
