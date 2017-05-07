@@ -2,22 +2,22 @@
 
 <div class="modal-header">
     <h3 class="modal-title" id='add-field-header'>Add field</h3>
-    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+    <button type="button" class='close' ng-click='addFieldModal.close()' style='margin-top:-35px;'>
         &times;
     </button>
 </div>
 
 <div class="modal-body">
-    <form novalidate role='form' name='form' ng-submit='submit()'>
+    <form novalidate role='form' name='form' ng-submit='addFieldModal.submit()'>
 
         <!-- Choose field dataType -->
         <div class='form-group'>
             <div class='alert alert-info'>
                 <h4 class='control-label'>Type</h4>
 
-                <div class='radio' ng-repeat='type in dataTypes'>
+                <div class='radio' ng-repeat='type in addFieldModal.dataTypes'>
                     <label>
-                        <input id='text' ng-model='field.dataType' value='{{ type.toLowerCase() }}' type='radio'>{{ type }}
+                        <input id='text' ng-model='addFieldModal.field.dataType' value='{{ type.toLowerCase() }}' type='radio'>{{ type }}
                     </label>
                 </div>
             </div>
@@ -25,10 +25,10 @@
 
         <div class='form-group'>
             <label for='field'>Name</label>
-            <input name='field' type='text' class='form-control' ng-model='field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
+            <input name='field' type='text' class='form-control' ng-model='addFieldModal.field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/">
         </div>
 
-        <div ng-messages="form.field.$error" ng-show='form.field.$dirty && form.field.$invalid' class="alert alert-danger" role="alert">
+        <div ng-messages="addFieldModal.form.field.$error" ng-show='addFieldModal.form.field.$dirty && addFieldModal.form.field.$invalid' class="alert alert-danger" role="alert">
             <div>
                 Field must
                 <ul>
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div id='field-name-exists-msg' ng-messages="form.field.$error" ng-show='form.field.$dirty && fieldNameAlreadyExists()' class="alert alert-danger" role="alert">
+        <div id='field-name-exists-msg' ng-messages="addFieldModal.form.field.$error" ng-show='addFieldModal.form.field.$dirty && addFieldModal.fieldNameAlreadyExists()' class="alert alert-danger" role="alert">
             <p>
                 Error: Field name already exists.
             </p>
@@ -50,7 +50,7 @@
 </div>
 
 <div class="modal-footer">
-    <button id='submit-field' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='form.$invalid || invalidFieldType() || fieldNameAlreadyExists()'>Submit</button>
-    <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-    <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+    <button id='submit-field' class="btn btn-success" type="button" ng-click="addFieldModal.submit()" ng-disabled='addFieldModal.form.$invalid || addFieldModal.invalidFieldType() || addFieldModal.fieldNameAlreadyExists()'>Submit</button>
+    <button class="btn btn-danger" type="button" ng-click="addFieldModal.reset()">Reset</button>
+    <button class='btn btn-default' type='button' ng-click='addFieldModal.close()'>Close</button>
 </div>

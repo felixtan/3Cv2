@@ -11,7 +11,7 @@
     <form novalidate role='form'>
         <div class='form-group'>
             <label for='input'>
-                Deleting this will apply to ALL {{ ::objectType }}s and is irreversible.<span ng-if='thing.type === "field"'> Please note that functions and inequalities using this field will not be deleted. </span> Enter "DELETE" below to confirm you want to permanently delete it:
+                Deleting this will apply to ALL {{ ::objectType }}s and is irreversible. Enter "DELETE" below to confirm you want to permanently delete it:
             </label>
             <input class='form-control' id='delete-confirmation' type='text' ng-model='confirmation.value'>
         </div>

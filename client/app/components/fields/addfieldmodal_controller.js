@@ -2,8 +2,8 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('AddFieldModalCtrl', ['$q', '$scope', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
-    function($q, $scope, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
+    .controller('AddFieldModalCtrl', ['$q', '$state', '$uibModalInstance', 'getObjects', 'dataService', 'objectHelpers', '_', 'objectType', 'assetType',
+    function($q, $state, $uibModalInstance, getObjects, dataService, objectHelpers, _, objectType, assetType) {
 
       var isValid = objectHelpers.isValid;
 
@@ -14,19 +14,19 @@
       ctrl.objectType = objectType;
       ctrl.assetType = assetType;
 
-      $scope.dataTypes = [
+      ctrl.dataTypes = [
         'Text',
         'Number',
         'Monetary',
         'Boolean'
       ];
-      $scope.field = {
+      ctrl.field = {
         name: null,
         dataType: null,
       };
 
-      $scope.invalidFieldType = function() {
-         return $scope.field.dataType === null || typeof $scope.field.dataType === 'undefined';
+      ctrl.invalidFieldType = function() {
+         return ctrl.field.dataType === null || typeof ctrl.field.dataType === 'undefined';
       };
 
       if(objectType === 'car') {
@@ -59,8 +59,8 @@
         ctrl.fields = Object.keys(ctrl.objects[0].data);
       }
 
-      $scope.fieldNameAlreadyExists = function () {
-        return _.includes(ctrl.fields, $scope.field.name);
+      ctrl.fieldNameAlreadyExists = function () {
+        return _.includes(ctrl.fields, ctrl.field.name);
       };
 
       ctrl.createNewFieldData = function(field) {
@@ -76,38 +76,38 @@
         return object;
       };
 
-      $scope.submit = function() {
+      ctrl.submit = function() {
         var updates = [];
-        var fieldData = ctrl.createNewFieldData($scope.field);
+        var fieldData = ctrl.createNewFieldData(ctrl.field);
 
         if(ctrl.objects.length > 0) {
           _.each(ctrl.objects, function(object) {
-            var objectToUpdate = ctrl.appendNewFieldToObject($scope.field.name, fieldData, object);
+            var objectToUpdate = ctrl.appendNewFieldToObject(ctrl.field.name, fieldData, object);
             updates.push(ctrl.update(objectToUpdate));
           });
         }
 
         $q.all(updates).then(function() {
             $state.forceReload();
-            $scope.ok(fieldData, $scope.field.name);
-            $scope.ok();
+            ctrl.ok(fieldData, ctrl.field.name);
+            ctrl.ok();
         });
       };
 
-      $scope.reset = function () {
-        $scope.form.$setPristine();
-        $scope.form.$setUntouched();
+      ctrl.reset = function () {
+        ctrl.form.$setPristine();
+        ctrl.form.$setUntouched();
         $state.forceReload();
       };
 
-      $scope.ok = function(newFieldObject, newFieldName) {
+      ctrl.ok = function(newFieldObject, newFieldName) {
         $uibModalInstance.close({
           name: newFieldName,
           data: newFieldObject,
         });
       };
 
-      $scope.close = function () {
+      ctrl.close = function () {
           $state.forceReload();
           $uibModalInstance.dismiss('cancel');
       };

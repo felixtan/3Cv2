@@ -69,6 +69,7 @@
               animation: true,
               templateUrl: 'components/fields/addfieldmodal.html',
               controller: 'AddFieldModalCtrl',
+              controllerAs: 'addFieldModal',
               size: 'md',
               resolve: {
                   getObjects: function() {
