@@ -70,6 +70,7 @@
               animation: true,
               templateUrl: 'components/objectcrud/addobjectmodal.html',
               controller: 'AddObjectModalCtrl',
+              controllerAs: 'addObjectModal',
               size: 'md',
               resolve: {
                   objectType: function() {
@@ -245,6 +246,7 @@
               animation: true,
               templateUrl: 'components/fields/prospectstatusmodal.html',
               controller: 'ProspectStatusModalCtrl',
+              controllerAs: 'prospectStatusModal',
               size: 'md',
               resolve: {
                   prospectStatuses: function() {

@@ -1,66 +1,65 @@
 <div class="modal-header">
     <h3 class="modal-title">Add {{ objectType }}</h3>
-    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+    <button type="button" class='close' ng-click='addObjectModal.close()' style='margin-top:-35px;'>
         &times;
     </button>
 </div>
-<!-- {{ assetType }} -->
-<!-- {{ identifier }} -->
+
 <div class="modal-body">
 
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group">
             <!-- opens add field modal -->
-            <button class='btn btn-info' ng-click='addField(identifier.value)' ng-disabled='disableAddField()' name='addFieldBtn'>
+            <button class='btn btn-info' ng-click='addObjectModal.addField(identifier.value)' ng-disabled='addObjectModal.disableAddField()' name='addFieldBtn'>
                 + Field
             </button>
         </div>
     </div>
     <!-- add field disabled: {{ disableAddField() }} -->
-    <br ng-show='disableAddField()'>
+    <br ng-show='addObjectModal.disableAddField()'>
 
-    <div class="alert alert-danger" role="alert" ng-show='objectType === "asset" && disableAddField()'>
+    <div class="alert alert-danger" role="alert" ng-show='addObjectModal.objectType === "asset" && addObjectModal.disableAddField()'>
         Please add an asset type before adding fields.
     </div>
 
-    <br ng-show='!disableAddField()'>
+    <br ng-show='!addObjectModal.disableAddField()'>
 
-    <form novalidate role='form' id='newObjectForm' name='form' ng-submit='submit($data)'>
+    <form novalidate role='form' id='newObjectForm' name='form' ng-submit='addObjectModal.submit($data)'>
 
-        <div class='form-group' ng-if='objectType === "asset"'>
+        <div class='form-group' ng-if='addObjectModal.objectType === "asset"'>
             <label>Type</label>
 
-            <select ng-model='formData.assetType.value' class='form-control' ng-change='renderForm(formData.assetType.value)'>
-                <option ng-repeat='type in assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
+            <select ng-model='addObjectModal.formData.assetType.value' class='form-control' ng-change='addObjectModal.renderForm(formData.assetType.value)'>
+                <option ng-repeat='type in addObjectModal.assetTypes' value='{{ ::type.value }}'>{{ ::type.value }}</option>
             </select>
         </div>
 
         <!-- <h4 id='fields-header' ng-show="expressions.length">Fields</h4> -->
-        <div class='form-group' ng-if='(objectType === "car") || (objectType === "asset")'>
-            <label>Organize {{  assetType.value || objectType }}<span ng-if='!formData.assetType'></span> with this identifier</label>
+        <div class='form-group' ng-if='addObjectModal.forCarOrAsset()'>
+            <label>Organize {{  addObjectModal.assetType.value || addObjectModal.objectType }}<span ng-if='!addObjectModal.formData.assetType'></span> with this identifier</label>
 
-            <select ng-model='identifier.value' class='form-control' ng-options='field for field in fields' ng-if='field !== "assetType"'>
+            <select ng-model='addObjectModal.identifier.value' class='form-control' ng-options='field for field in addObjectModal.fields' ng-if='field !== "assetType"'>
             </select>
         </div>
 
-        <div class='form-group' ng-if='objectType === "prospect"'>
+        <div class='form-group' ng-if='addObjectModal.objectType === "prospect"'>
             <label>Status</label>
 
-            <select ng-model='status.value' class='form-control'>
-                <option ng-repeat='status in statuses' value='{{ ::status.value }}' ng-if='!status.special'>{{ ::status.value }}</option>
+            <select ng-model='addObjectModal.status.value' class='form-control'>
+                <option ng-repeat='status in addObjectModal.statuses' value='{{ ::status.value }}' ng-if='!status.special'>{{ ::status.value }}</option>
             </select>
         </div>
 
-        <div class='form-group' ng-repeat='(field, data) in formData' ng-if='!hide(field)'>
+        <div class='form-group' ng-repeat='(field, data) in addObjectModal.formData' ng-if='!addObjectModal.hide(field)'>
             <label for="{{ ::field }}" class='field-name-label'>{{ ::field }}</label>
 
-            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "text"' >
+            <input id='{{ ::field }}' name='{{ ::field }}' type='text' class='form-control field-value-input' ng-model="addObjectModal.formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "text"' >
 
-            <input id='{{ ::field }}' name='numberField' type='number' class='form-control' ng-model="formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "number" || data.dataType === "monetary"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
+            <input id='{{ ::field }}' name='numberField' type='number' class='form-control' ng-model="addObjectModal.formData[field].value" data-dataType='{{ ::data.dataType }}' ng-if='data.dataType === "number" || data.dataType === "monetary"' ng-pattern='/^[-+]?([0-9]*\.[0-9]+|[0-9]+)$/'>
 
             <br ng-if='data.dataType === "boolean"'>
             <input bs-switch
-                ng-model="formData[field].value"
+                ng-model="addObjectModal.formData[field].value"
                 type="checkbox"
                 switch-on-text="Yes"
                 switch-off-text="No"
@@ -72,11 +71,10 @@
                 id='{{ ::field }}'
                 name='{{ ::field }}'
                 data-dataType='{{ ::data.dataType }}' >
-                <!-- {{ formData[field].value }} -->
         </div>
 
         <!-- Error messages -->
-        <div id='add-object-error-msg' ng-messages="form.numberField.$error" ng-show='form.numberField.$dirty && form.numberField.$invalid' class="alert alert-danger" role="alert">
+        <div id='add-object-error-msg' ng-messages="addObjectModal.form.numberField.$error" ng-show='addObjectModal.form.numberField.$dirty && addObjectModal.form.numberField.$invalid' class="alert alert-danger" role="alert">
             <p>
                 Error: Non-number entered into number field.
             </p>
@@ -85,7 +83,7 @@
 </div>
 
 <div class="modal-footer">
-  <button id='submit-object' class="btn btn-success" type="button" ng-click="submit()" ng-disabled='!disableConditions(formData) || invalidIdentifier(identifier) || form.numberField.$invalid'>Submit</button>
-  <button class="btn btn-danger" type="button" ng-click="reset()">Reset</button>
-  <button class='btn btn-default' type='button' ng-click='close()'>Close</button>
+  <button id='submit-object' class="btn btn-success" type="button" ng-click="addObjectModal.submit()" ng-disabled='!addObjectModal.disableConditions(formData) || addObjectModal.invalidIdentifier() || addObjectModal.form.numberField.$invalid'>Submit</button>
+  <button class="btn btn-danger" type="button" ng-click="addObjectModal.reset()">Reset</button>
+  <button class='btn btn-default' type='button' ng-click='addObjectModal.close()'>Close</button>
 </div>

@@ -49,7 +49,7 @@
             isIdentifier: ctrl.object.identifier === field,
         };
 
-        console.log(ctrl.field)
+        // console.log(ctrl.field)
       };
       ctrl.initialize();
 

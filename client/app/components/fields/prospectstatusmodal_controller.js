@@ -1,37 +1,31 @@
 (function() {
   'use strict';
 
-  /**
-   * @ngdoc function
-   * @value clientApp.controller:ProspectStatusModalCtrl
-   * @description
-   * # ProspectStatusModalCtrl
-   * Controller of the clientApp
-   */
   angular.module('clientApp')
-    .controller('ProspectStatusModalCtrl', ['prospectHelpers', '$scope', 'prospectStatuses', '$state', '$uibModalInstance',
-      function(prospectHelpers, $scope, prospectStatuses, $state, $uibModalInstance) {
+    .controller('ProspectStatusModalCtrl', ['prospectHelpers', 'prospectStatuses', '$state', '$uibModalInstance',
+    function(prospectHelpers, prospectStatuses, $state, $uibModalInstance) {
 
-      $scope.newStatus = { value: null };
+        var ctrl = this;
+        ctrl.newStatus = { value: null };
 
-      $scope.validForm = function() {
-          return (($scope.newStatus.value !== null) && (typeof $scope.newStatus.value !== "undefined"));
-      };
+        ctrl.validForm = function() {
+            return ((ctrl.newStatus.value !== null) && (typeof ctrl.newStatus.value !== "undefined"));
+        };
 
-      $scope.submit = function() {
-          prospectStatuses.statuses[prospectStatuses.statuses.length++] = $scope.newStatus;
-          prospectHelpers.updateStatuses(prospectStatuses).then(function() {
-              $state.forceReload();
-              $scope.close();
-          });
-      };
+        ctrl.submit = function() {
+            prospectStatuses.statuses[prospectStatuses.statuses.length++] = ctrl.newStatus;
+            prospectHelpers.updateStatuses(prospectStatuses).then(function() {
+                $state.forceReload();
+                ctrl.close();
+            });
+        };
 
-      $scope.reset = function () {
-        $scope.newStatus = { value: null };
-      };
+        ctrl.reset = function () {
+            ctrl.newStatus = { value: null };
+        };
 
-      $scope.close = function () {
-          $uibModalInstance.dismiss('cancel');
-      };
+        ctrl.close = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }]);
 })();

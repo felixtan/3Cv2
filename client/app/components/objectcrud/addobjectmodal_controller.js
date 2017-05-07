@@ -9,84 +9,79 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('AddObjectModalCtrl', ['$q', '_', 'getObjects', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$scope', '$uibModalInstance', '$state',
-      function($q, _, getObjects, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $scope, $uibModalInstance, $state) {
+    .controller('AddObjectModalCtrl', ['$q', '_', 'getObjects', 'objectType', '$uibModal', 'objectHelpers', 'assetHelpers', 'prospectHelpers', 'carHelpers', 'driverHelpers', 'dataService', '$uibModalInstance', '$state',
+      function($q, _, getObjects, objectType, $uibModal, objectHelpers, assetHelpers, prospectHelpers, carHelpers, driverHelpers, dataService, $uibModalInstance, $state) {
 
       var ctrl = this;
 
-      $scope.objects = getObjects;
-      $scope.objectType = objectType;
-      $scope.formData = {};                                     // Stores the addObjectModal form data
-      $scope.identifier = { value: null };                      // Potentially new identifier of objectType
-      $scope.currentIdentifier = { value: null };               // Identifier of objectType
-      $scope.fields = [];                                       // Properties of objects of type objectType
-      $scope.fieldsToHide = ["Name", "assetType", "status"];    // Properties of objects of type objectType to hide from addObjectModal form
-      $scope.statuses = [];                                     // List of statuses for prospects. "status" is a property specific to prospects.
-      $scope.status = {};                                       // status of a prospect ot be added.
-      $scope.assetTypes = [];                                   // List of assetTypes for assets. "assetType" is a a property specific to assets.
-      $scope.assetType = { value: null };                       // assetType of an asset to be added.
+      ctrl.objects = getObjects;
+      ctrl.objectType = objectType;
+      ctrl.formData = {};                                     // Stores the addObjectModal form data
+      ctrl.identifier = { value: null };                      // Potentially new identifier of objectType
+      ctrl.initialIdentifier = { value: null };               // Identifier of objectType
+      ctrl.fields = [];                                       // Properties of objects of type objectType
+      ctrl.fieldsToHide = ["Name", "assetType", "status"];    // Properties of objects of type objectType to hide from addObjectModal form
+      ctrl.statuses = [];                                     // List of statuses for prospects. "status" is a property specific to prospects.
+      ctrl.status = {};                                       // status of a prospect ot be added.
+      ctrl.assetTypes = [];                                   // List of assetTypes for assets. "assetType" is a a property specific to assets.
+      ctrl.assetType = { value: null };                       // assetType of an asset to be added.
+
+      ctrl.getIdentifier = getIdentifier;
 
       // Overwritten if objectType = asset
-      $scope.disableConditions = function() { return true; };
+      ctrl.disableConditions = function() { return true; };
 
-      $scope.hide = function(field) {
-          return _.includes($scope.fieldsToHide, field);
+      ctrl.hide = function(field) {
+          return _.includes(ctrl.fieldsToHide, field);
       };
 
-      $scope.invalidIdentifier = function(identifier) {
-          return identifier.value === null || typeof identifier.value === 'undefined';
+      ctrl.invalidIdentifier = function(identifier) {
+          return !identifier.value;
       };
 
-      $scope.identifierChanged = function() {
-          return $scope.identifier.value !== $scope.currentIdentifier.value;
+       function identifierChanged() {
+          return ctrl.identifier.value !== ctrl.initialIdentifier.value;
       };
 
-      $scope.disableAddField = function() {
-          return objectType === "asset" && ($scope.formData.assetType === null || typeof $scope.formData.assetType === 'undefined');
+      ctrl.disableAddField = function() {
+          return objectType === "asset" && (ctrl.formData.assetType === null || typeof ctrl.formData.assetType === 'undefined');
       };
 
       // only for assets
-      $scope.renderForm = null;
+      ctrl.renderForm = null;
 
       // Determine the state or ui calling this modal
       if(objectType === 'driver') {
           ctrl.update = driverHelpers.update;
           ctrl.create = driverHelpers.createDriver;
           ctrl.save = driverHelpers.saveDriver;
-
+          ctrl.identifier.value = ctrl.initialIdentifier.value = ctrl.getIdentifier();
           objectHelpers.getFormDataAndReference('driver').then(function(result) {
-            $scope.currentIdentifier.value = "Name";
-            angular.copy($scope.currentIdentifier, $scope.identifier);
-            $scope.formData = result.formData;
-            $scope.formData.assetType = { value: null };
+            ctrl.initialIdentifier.value = "Name";
+            ctrl.formData = result.formData;
+            ctrl.formData.assetType = { value: null };
           });
       } else if(objectType === 'car') {
           ctrl.update = carHelpers.update;
           ctrl.create = carHelpers.createCar;
           ctrl.save = carHelpers.saveCar;
-
+          ctrl.identifier.value = ctrl.initialIdentifier.value = ctrl.getIdentifier();
           objectHelpers.getFormDataAndReference('car').then(function(result) {
-              carHelpers.getIdentifier().then(function(identifier) {
-                  $scope.formData = result.formData;
-                  $scope.formData.assetType = { value: null };
-                  $scope.fields = Object.keys(result.formData);
-                  $scope.fields = _.without($scope.fields, "assetType");
-                  $scope.currentIdentifier.value = identifier;
-                  angular.copy($scope.currentIdentifier, $scope.identifier);
-              });
+              ctrl.formData = result.formData;
+              ctrl.formData.assetType = { value: null };
+              ctrl.fields = Object.keys(result.formData);
+              ctrl.fields = _.without(ctrl.fields, "assetType");
           });
       } else if(objectType === 'prospect') {
           ctrl.update = prospectHelpers.update;
           ctrl.create = prospectHelpers.createProspect;
           ctrl.save = prospectHelpers.saveProspect;
-
+          ctrl.identifier.value = ctrl.initialIdentifier.value = "Name";
           objectHelpers.getFormDataAndReference('prospect').then(function(result1) {
               prospectHelpers.getStatuses().then(function(result2) {
-                  $scope.currentIdentifier.value = "Name";
-                  angular.copy($scope.currentIdentifier, $scope.identifier);
-                  $scope.statuses = result2.data.statuses;
-                  $scope.formData = result1.formData;
-                  $scope.formData.assetType = { value: null };
+                  ctrl.statuses = result2.data.statuses;
+                  ctrl.formData = result1.formData;
+                  ctrl.formData.assetType = { value: null };
               });
           });
       } else if(objectType === 'asset') {
@@ -94,19 +89,18 @@
           ctrl.create = assetHelpers.createAsset;
           ctrl.save = assetHelpers.saveAsset;
 
-          $scope.fieldsToHide.push("assetType");
+          ctrl.fieldsToHide.push("assetType");
 
           assetHelpers.getTypes().then(function(result){
-              $scope.assetTypes = result.data.types;
+              ctrl.assetTypes = result.data.types;
 
-              $scope.renderForm = function(assetType) {
+              ctrl.renderForm = function(assetType) {
                   objectHelpers.getFormDataAndReference('asset', assetType).then(function(result) {
-                      $scope.currentIdentifier.value = result.referenceObject.identifier;
-                      $scope.fields = Object.keys(result.formData);
-                      $scope.formData = result.formData;
-                      $scope.formData.assetType.value = assetType;
-                      $scope.disableConditions = assetHelpers.invalidAssetType;
-                      angular.copy($scope.currentIdentifier, $scope.identifier);
+                      ctrl.identifier.value = ctrl.initialIdentifier.value = result.referenceObject.identifier;
+                      ctrl.fields = Object.keys(result.formData);
+                      ctrl.formData = result.formData;
+                      ctrl.formData.assetType.value = assetType;
+                      ctrl.disableConditions = assetHelpers.invalidAssetType;
                   });
               };
           });
@@ -114,18 +108,22 @@
           $state.go("dashboard.cars");
       }
 
+      function getIdentifier () {
+          return ctrl.objects[0].identifier ? ctrl.objects[0].identifier : null;
+      }
+
       ctrl.updateIdentifierForAllObjects = function(idToIgnore, assetType) {
         var updates = [];
-        var objects = (typeof assetType === 'string') ? assetHelpers.filterAssetsByType($scope.objects, assetType)
-                                                      : $scope.objects;
+        var objects = (typeof assetType === 'string') ? assetHelpers.filterAssetsByType(ctrl.objects, assetType)
+                                                      : ctrl.objects;
 
         _.each(objects, function(o) {
           if (o.id !== idToIgnore) {
-            if ($scope.identifier.value === $scope.newField) {
-                o.data[$scope.newField].value = null;
+            if (ctrl.identifier.value === ctrl.newField) {
+                o.data[ctrl.newField].value = null;
             }
 
-            o.identifier = $scope.identifier.value;
+            o.identifier = ctrl.identifier.value;
             updates.push(ctrl.update(o));
           }
         });
@@ -137,11 +135,11 @@
 
       ctrl.setStatusForNewProspect = function(newProspect) {
         newProspect.status = {
-            value: ($scope.status.value || defaultStatus.value)
+            value: (ctrl.status.value || defaultStatus.value)
         };
 
         newProspect.data.status = {
-            value: ($scope.status.value || defaultStatus.value),
+            value: (ctrl.status.value || defaultStatus.value),
             log: false,
             dataType: 'text'
         };
@@ -149,65 +147,69 @@
         return newProspect;
       };
 
-      $scope.submit = function() {
+      ctrl.submit = function() {
           var updateTasks = [];
 
-          ctrl.create($scope.formData, $scope.identifier.value, $scope.formData.assetType.value).then(function(newObject) {
+          ctrl.create(ctrl.formData, ctrl.identifier.value, ctrl.formData.assetType.value).then(function(newObject) {
               if(objectType === 'car') {
                 ctrl.save(newObject).then(function(result) {
-                  if($scope.identifierChanged()) {
+                  if(identifierChanged()) {
                     ctrl.updateIdentifierForAllObjects(result.data.id);
                   }
 
-                  $scope.ok(newObject);
+                  ctrl.ok(newObject);
                 });
               } else if(objectType === 'prospect') {
                   prospectHelpers.getDefaultStatus().then(function(defaultStatus) {
                       newObject = ctrl.setStatusForNewProspect(newObject);
                       ctrl.save(newObject).then(function() {
-                          $scope.ok(newObject);
+                          ctrl.ok(newObject);
                       });
                   });
               } else if(objectType === 'driver') {
                   ctrl.save(newObject).then(function() {
-                      $scope.ok(newObject);
+                      ctrl.ok(newObject);
                   });
               } else if(objectType === 'asset') {
                   ctrl.save(newObject).then(function(result) {
-                    if($scope.identifierChanged()) {
+                    if(identifierChanged()) {
                       ctrl.updateIdentifierForAllObjects(result.data.id, newObject.assetType);
                     }
 
-                    $scope.ok(newObject);
+                    ctrl.ok(newObject);
                   });
               }
           });
       };
 
-      $scope.reset = function () {
-        $scope.formData = {};
-        $scope.form.$setPristine();
-        $scope.form.$setUntouched();
+      ctrl.reset = function () {
+        ctrl.formData = {};
+        ctrl.form.$setPristine();
+        ctrl.form.$setUntouched();
         $state.forceReload();
       };
 
-      $scope.ok = function(object) {
+      ctrl.ok = function(object) {
           $uibModalInstance.close(object);
       };
 
-      $scope.close = function () {
+      ctrl.close = function () {
           $state.forceReload();
           $uibModalInstance.dismiss('close');
       };
 
       ctrl.updateModal = function(newField) {
-          $scope.fields.push(newField.name);
-          $scope.formData[newField.name] = newField.data;
+          ctrl.fields.push(newField.name);
+          ctrl.formData[newField.name] = newField.data;
 
-          return $scope.formData;
+          return ctrl.formData;
       };
 
-      $scope.addField = function(identifier) {
+      ctrl.forCarOrAsset = function() {
+          return ctrl.objectType === "car" || ctrl.objectType === "asset";
+      };
+
+      ctrl.addField = function(identifier) {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/addfieldmodal.html',
@@ -216,21 +218,21 @@
               size: 'md',
               resolve: {
                   getObjects: function() {
-                      return $scope.objects;
+                      return ctrl.objects;
                   },
                   objectType: function() {
                       return objectType;
                   },
                   assetType: function() {
-                      return objectType === 'asset' ? $scope.formData.assetType.value : null;
+                      return objectType === 'asset' ? ctrl.formData.assetType.value : null;
                   }
               }
           });
 
           modalInstance.result.then(function (newField) {
-              $scope.fields.push(newField.name);
-              $scope.formData[newField.name] = newField.data;
-              $scope.newField = newField.name;
+              ctrl.fields.push(newField.name);
+              ctrl.formData[newField.name] = newField.data;
+              ctrl.newField = newField.name;
 
           }, function() {
             //   console.log('Modal dismissed at: ' + new Date());
