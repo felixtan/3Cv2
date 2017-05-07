@@ -2,28 +2,28 @@
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
      <div class='sub-header'>
-        <h3 class='object-header'>{{ identifierValue || 'null' }}</h3>
+        <h3 class='object-header'>{{ objectLogs.identifierValue || 'null' }}</h3>
     </div>
 
     <uib-tabset active='1'>
-        <uib-tab ng-repeat='tab in tabs' index='$index' heading='{{ tab.title ? tab.title : false }}' ui-sref="{{ tab.stateRef ? tab.stateRef : false }}">
+        <uib-tab ng-repeat='tab in objectLogs.tabs' index='$index' heading='{{ tab.title ? tab.title : false }}' ui-sref="{{ tab.stateRef ? tab.stateRef : false }}">
         </uib-tab>
     </uib-tabset>
 
     <br>
 
-    <div class="table-responsive" ng-model='object' ng-init="tabs[0].active = true">
+    <div class="table-responsive" ng-model='objectLogs.object' ng-init="objectLogs.tabs[0].active = true">
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
                     <td><strong>Week \ Fields</strong></td>
-                    <td ng-repeat="field in fields | orderBy:'$index'">
+                    <td ng-repeat="field in objectLogs.fields | orderBy:'$index'">
                         {{ ::field }}
                     </td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat='log in logs'>
+                <tr ng-repeat='log in objectLogs.logs'>
                     <td>
                         <span class='log-date'>
                             {{ ::log.weekOf | date:'longDate' }}
@@ -43,7 +43,7 @@
                         </div>
                     </td>
 
-                    <td ng-repeat='logData in getLogDataByDate(log.weekOf)'>
+                    <td ng-repeat='logData in objectLogs.getLogDataByDate(log.weekOf)'>
                         <span editable-text='log.data.{{ ::logData.field }}' e-name='{{ ::logData.field }}' data-fieldEntry='{{ ::logData.field }}' e-form='logform' e-required>
                             {{ ::logData.value }}
                         </span>

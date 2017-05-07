@@ -9,60 +9,60 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$scope',
-      function (_, objectType, objectId, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $scope) {
+    .controller('ObjectLogsCtrl', ['_', 'objectType', 'objectId', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state',
+      function (_, objectType, objectId, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state) {
 
       var ctrl = this;
-      $scope.identifierValue = null
-      $scope.objectType = objectType;
-      $scope.logDataObj = {};
-      $scope.tabs = [];
+      ctrl.identifierValue = null
+      ctrl.objectType = objectType;
+      ctrl.logDataObj = {};
+      ctrl.tabs = [];
 
-      $scope.getObject = function () {
-          if($scope.objectType === 'car') {
-              $scope.update = carHelpers.update;
+      ctrl.getObject = function () {
+          if(ctrl.objectType === 'car') {
+              ctrl.update = carHelpers.update;
               return carHelpers.getById;
-          } else if($scope.objectType === 'driver') {
-              $scope.update = driverHelpers.update;
+          } else if(ctrl.objectType === 'driver') {
+              ctrl.update = driverHelpers.update;
               return driverHelpers.getById;
-          } else if($scope.objectType === 'prospect') {
-              $scope.update = prospectHelpers.update;
+          } else if(ctrl.objectType === 'prospect') {
+              ctrl.update = prospectHelpers.update;
               return prospectHelpers.getById;
-          } else if($scope.objectType === 'asset') {
-              $scope.update = assetHelpers.update;
+          } else if(ctrl.objectType === 'asset') {
+              ctrl.update = assetHelpers.update;
               return assetHelpers.getById;
           }
       };
 
-      $scope.getLogDates = function () {
-          if($scope.objectType === 'car') {
+      ctrl.getLogDates = function () {
+          if(ctrl.objectType === 'car') {
               return carHelpers.getLogDates;
-          } else if($scope.objectType === 'driver') {
+          } else if(ctrl.objectType === 'driver') {
               return driverHelpers.getLogDates;
-          } else if($scope.objectType === 'prospect') {
+          } else if(ctrl.objectType === 'prospect') {
               return function () {};
-          } else if($scope.objectType === 'asset') {
+          } else if(ctrl.objectType === 'asset') {
               return assetHelpers.getLogDates;
           }
       };
 
-      $scope.getObject()(objectId).then(function(result) {
+      ctrl.getObject()(objectId).then(function(result) {
           if (result) {
-            $scope.object = result.data;
+            ctrl.object = result.data;
           }
 
-          $scope.logs = objectHelpers.convertArrayOfObjToArrayLikeObj(_.reverse($scope.object.logs))
-          $scope.identifierValue = objectHelpers.getIdentifierValue(result.data);
-          $scope.assetType = $scope.object.assetType || null;
-          $scope.tabs = [
-              { title: 'Data', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Data') },
-              { title: 'Logs', stateRef: objectHelpers.getStateRef($scope.objectType, $scope.object.id, 'Logs') }
+          ctrl.logs = objectHelpers.convertArrayOfObjToArrayLikeObj(_.reverse(ctrl.object.logs))
+          ctrl.identifierValue = objectHelpers.getIdentifierValue(result.data);
+          ctrl.assetType = ctrl.object.assetType || null;
+          ctrl.tabs = [
+              { title: 'Data', stateRef: objectHelpers.getStateRef(ctrl.objectType, ctrl.object.id, 'Data') },
+              { title: 'Logs', stateRef: objectHelpers.getStateRef(ctrl.objectType, ctrl.object.id, 'Logs') }
           ];
 
-          $scope.getLogDates()($scope.assetType).then(function(dates) {
-              $scope.dates = dates;
-              $scope.mostRecentLogDate = $scope.getMostRecentLogDate();
-              $scope.fields = ctrl.getFieldsToBeLogged($scope.object);
+          ctrl.getLogDates()(ctrl.assetType).then(function(dates) {
+              ctrl.dates = dates;
+              ctrl.mostRecentLogDate = ctrl.getMostRecentLogDate();
+              ctrl.fields = ctrl.getFieldsToBeLogged(ctrl.object);
               ctrl.logDataToArray();
           });
       });
@@ -70,8 +70,8 @@
       /**
        * Used to tabulate log data
        * */
-      $scope.getLogDataByDate = function(date) {
-          return $scope.logDataObj[date];
+      ctrl.getLogDataByDate = function(date) {
+          return ctrl.logDataObj[date];
       };
 
       /**
@@ -79,26 +79,26 @@
        * The object will be used by the template.
        * */
       ctrl.logDataToArray = function() {
-        _.each($scope.dates, function(date) {
+        _.each(ctrl.dates, function(date) {
             var logData = [];
-            var index = $scope.dates.indexOf(date);
-            var log = $scope.object.logs[index];
+            var index = ctrl.dates.indexOf(date);
+            var log = ctrl.object.logs[index];
 
-            _.each($scope.fields, function(loggedField) {
+            _.each(ctrl.fields, function(loggedField) {
                 logData.push({
                     field: loggedField,
                     value: log.data[loggedField],
-                    dataType: $scope.object.data[loggedField].dataType
+                    dataType: ctrl.object.data[loggedField].dataType
                 });
             });
 
-            $scope.logDataObj[date] = logData;
+            ctrl.logDataObj[date] = logData;
         });
       };
 
-      $scope.getMostRecentLogDate = function() {
+      ctrl.getMostRecentLogDate = function() {
           // assuming sorted from recent to past
-          return $scope.dates[0];
+          return ctrl.dates[0];
       };
 
       ctrl.getFieldsToBeLogged = function(object) {
@@ -116,28 +116,28 @@
       };
 
       ctrl.updateMostRecentData = function() {
-          var mostRecentLog = _.find($scope.object.logs, function(log) {
-            return log.weekOf === $scope.mostRecentLogDate;
+          var mostRecentLog = _.find(ctrl.object.logs, function(log) {
+            return log.weekOf === ctrl.mostRecentLogDate;
           });
 
           for(var field in mostRecentLog.data) {
               if(mostRecentLog.data[field] !== null && typeof mostRecentLog.data[field] !== 'undefined') {
-                  $scope.object.data[field].value = mostRecentLog.data[field];
+                  ctrl.object.data[field].value = mostRecentLog.data[field];
               }
           }
 
-          return $scope.object;
+          return ctrl.object;
       };
 
-      $scope.save = function() {
-          // if(logDate === $scope.mostRecentLogDate) {
+      ctrl.save = function() {
+          // if(logDate === ctrl.mostRecentLogDate) {
           //     // update object.data is new value isn't null
           //     // update data if most recent log was changed
           //     ctrl.updateMostRecentData().then(function(objectWithUpdatedData) {
-          //         $scope.update(objectWithUpdatedData);
+          //         ctrl.update(objectWithUpdatedData);
           //     });
           // }
-          $scope.update($scope.object);
+          ctrl.update(ctrl.object);
       };
     }]);
 })();
