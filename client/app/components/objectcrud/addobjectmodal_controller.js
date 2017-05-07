@@ -35,8 +35,8 @@
           return _.includes(ctrl.fieldsToHide, field);
       };
 
-      ctrl.invalidIdentifier = function(identifier) {
-          return !identifier.value;
+      ctrl.invalidIdentifier = function() {
+          return !ctrl.identifier.value;
       };
 
        function identifierChanged() {

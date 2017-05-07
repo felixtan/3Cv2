@@ -73,6 +73,7 @@ angular
         url: '/cars',
         templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
+        controllerAs: 'objectList',
         resolve: {
           objectType: function() {
             return "car";
@@ -83,6 +84,7 @@ angular
         url: '/drivers',
         templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
+        controllerAs: 'objectList',
         resolve: {
             objectType: function() {
                 return "driver";
@@ -93,6 +95,7 @@ angular
         url: '/prospects',
         templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
+        controllerAs: 'objectList',
         resolve: {
             objectType: function() {
                 return "prospect";
@@ -103,6 +106,7 @@ angular
         url: '/assets',
         templateUrl: '/components/objectlists/objectslist.html',
         controller: 'ObjectListCtrl',
+        controllerAs: 'objectList',
         resolve: {
             objectType: function() {
                 return "asset";

@@ -9,63 +9,63 @@
    * Controller of the clientApp
    */
   angular.module('clientApp')
-    .controller('ObjectListCtrl', ['$q', 'objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '$scope', '_',
-      function ($q, objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, $scope, _) {
+    .controller('ObjectListCtrl', ['$q', 'objectType', 'objectHelpers', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '$uibModal', '_',
+      function ($q, objectType, objectHelpers, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, $uibModal, _) {
 
       var ctrl = this;
-      $scope.objectType = objectType;
-      $scope.order = [];
-      $scope.statusOrder = {};     // Track changes in status ordering
+      ctrl.objectType = objectType;
+      ctrl.order = [];
+      ctrl.statusOrder = {};     // Track changes in status ordering
 
       ctrl.getObjects = function () {
-          switch($scope.objectType) {
+          switch(ctrl.objectType) {
               case "car":
-                  $scope.title = { value: "Car" };
-                  $scope.profile = { state: 'carData({ id: object.id })' };
+                  ctrl.title = { value: "Car" };
+                  ctrl.profile = { state: 'carData({ id: object.id })' };
                   return carHelpers.get;
               case "driver":
-                  $scope.title = { value: "Driver" };
-                  $scope.profile = { state: 'driverData({ id: object.id })' };
+                  ctrl.title = { value: "Driver" };
+                  ctrl.profile = { state: 'driverData({ id: object.id })' };
                   return driverHelpers.get;
               case "prospect":
-                  $scope.title = { value: "Prospect" };
-                  $scope.profile = { state: 'prospectData({ id: object.id })' };
+                  ctrl.title = { value: "Prospect" };
+                  ctrl.profile = { state: 'prospectData({ id: object.id })' };
 
                   prospectHelpers.getStatuses().then(function(result) {
                       ctrl.prospectStatuses = result.data;
-                      $scope.statuses = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
+                      ctrl.statuses = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.prospectStatuses.statuses);
                   });
 
                   return prospectHelpers.get;
 
               case "asset":
-                  $scope.title = { value: "Asset" };
-                  $scope.profile = { state: 'assetData({ id: object.id })' };
+                  ctrl.title = { value: "Asset" };
+                  ctrl.profile = { state: 'assetData({ id: object.id })' };
 
                   assetHelpers.getTypes().then(function(result) {
                       ctrl.assetTypes = result.data;
-                      $scope.types = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.assetTypes.types);
+                      ctrl.types = objectHelpers.convertArrayLikeObjToArrayOfObj(ctrl.assetTypes.types);
                   });
 
                   return assetHelpers.get;
 
               default:
-                  $scope.title = { value: "Car" };
-                  $scope.profile = { state: 'carData({ id: object.id })' };
+                  ctrl.title = { value: "Car" };
+                  ctrl.profile = { state: 'carData({ id: object.id })' };
                   return carHelpers.get;
           }
       };
 
       ctrl.getObjects()().then(function(result) {
-          $scope.objects = result.data;
-          $scope.simpleObjects = objectHelpers.simplify($scope.objects);
+          ctrl.objects = result.data;
+          ctrl.simpleObjects = objectHelpers.simplify(ctrl.objects);
       });
 
-      $scope.thereAreObjects = function() {
-          return (typeof $scope.objects !== 'undefined' && $scope.objects.length > 0);
+      ctrl.thereAreObjects = function() {
+          return (typeof ctrl.objects !== 'undefined' && ctrl.objects.length > 0);
       };
 
-      $scope.addObject = function() {
+      ctrl.addObject = function() {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/objectcrud/addobjectmodal.html',
@@ -74,10 +74,10 @@
               size: 'md',
               resolve: {
                   objectType: function() {
-                      return $scope.objectType;
+                      return ctrl.objectType;
                   },
                   getObjects: function() {
-                      return $scope.objects;
+                      return ctrl.objects;
                   }
               }
           });
@@ -92,13 +92,13 @@
       /**************
        * Asset list *
        **************/
-      $scope.thereAreAssetsOfType = function(type) {
-          var assets = _.filter($scope.assets, function(asset) {
+      ctrl.thereAreAssetsOfType = function(type) {
+          var assets = _.filter(ctrl.assets, function(asset) {
               return asset.assetTtype === type;
           });
       };
 
-      $scope.addType = function() {
+      ctrl.addType = function() {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/assettypemodal.html',
@@ -122,7 +122,7 @@
               1. asset object
               2. type object
       */
-      $scope.belongsToType = assetHelpers.belongsToType;
+      ctrl.belongsToType = assetHelpers.belongsToType;
 
       ctrl.updateOrder = function(arr, oldIndex, newIndex) {
         if (oldIndex !== newIndex && newIndex < arr.length) {
@@ -137,8 +137,8 @@
       };
 
       // when type name changes
-      $scope.updateTypeInAssets = function(oldName, newName) {
-          _.each($scope.assets, function(asset) {
+      ctrl.updateTypeInAssets = function(oldName, newName) {
+          _.each(ctrl.assets, function(asset) {
               if(asset.status.value === oldName) {
                   asset.status.value = newName;
                   asset.data.status.value = newName;
@@ -147,26 +147,26 @@
           });
       };
 
-      $scope.saveType = function(data, oldIndex, oldName) {
-          if(oldIndex != $scope.statusOrder[oldIndex]) {
-            ctrl.updateOrder($scope.types, oldIndex, $scope.statusOrder[oldIndex]);
+      ctrl.saveType = function(data, oldIndex, oldName) {
+          if(oldIndex != ctrl.statusOrder[oldIndex]) {
+            ctrl.updateOrder(ctrl.types, oldIndex, ctrl.statusOrder[oldIndex]);
           }
 
           assetHelpers.updateTypes(ctrl.assetTypes);
-          $scope.updateTypeInAssets(oldName, data.name);
+          ctrl.updateTypeInAssets(oldName, data.name);
           $state.forceReload();
       };
 
       /*****************
        * Prospect list *
        *****************/
-      $scope.belongsToStatus = prospectHelpers.belongsToStatus;
+      ctrl.belongsToStatus = prospectHelpers.belongsToStatus;
 
       // when status name changes
       ctrl.updateStatusInProspects = function(oldName, newName) {
         var deferred = $q.defer();
         var updates = [];
-        _.each($scope.objects, function(prospect) {
+        _.each(ctrl.objects, function(prospect) {
             if(prospect.status.value === oldName) {
                 prospect.status.value = newName;
                 prospect.data.status.value = newName;
@@ -182,20 +182,20 @@
         return deferred.promise;
       };
 
-      $scope.saveStatus = function(data, oldIndex, oldName) {
+      ctrl.saveStatus = function(data, oldIndex, oldName) {
           var updateTasks = [];
-          var newIndex = !$scope.statusOrder[oldIndex] ? oldIndex : parseInt($scope.statusOrder[oldIndex]);
+          var newIndex = !ctrl.statusOrder[oldIndex] ? oldIndex : parseInt(ctrl.statusOrder[oldIndex]);
           oldIndex = parseInt(oldIndex);
 
           if (oldIndex !== newIndex) {
-            ctrl.updateOrder($scope.statuses, oldIndex, newIndex);
+            ctrl.updateOrder(ctrl.statuses, oldIndex, newIndex);
           }
 
           if (oldName !== data.name) {
             updateTasks.push(ctrl.updateStatusInProspects(oldName, data.name));
           }
 
-          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj($scope.statuses);
+          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj(ctrl.statuses);
           updateTasks.push(prospectHelpers.updateStatuses(ctrl.prospectStatuses));
 
           $q.all(updateTasks).then(function() {
@@ -206,9 +206,9 @@
       ctrl.getDefaultStatus = function() {
           var status = null;
 
-          for (var i = 0; i < $scope.statuses.length; i++) {
-            if ($scope.statuses[i].special) {
-              status = $scope.statuses[i];
+          for (var i = 0; i < ctrl.statuses.length; i++) {
+            if (ctrl.statuses[i].special) {
+              status = ctrl.statuses[i];
               break;
             }
           }
@@ -221,7 +221,7 @@
           var updatesToMake = [];
           var defaultStatus = ctrl.getDefaultStatus();
 
-          _.each($scope.objects, function(prospect) {
+          _.each(ctrl.objects, function(prospect) {
               if(prospect.status.value === statusName) {
                   prospect.status = defaultStatus;
                   prospect.data.status = defaultStatus;
@@ -234,14 +234,14 @@
 
       // TODO add warning for user
       // Prospects with the deleted status are reassigned to Unassigned
-      $scope.deleteStatus = function(index, statusName) {
-          $scope.statuses.splice(index, 1);
-          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj($scope.statuses);
+      ctrl.deleteStatus = function(index, statusName) {
+          ctrl.statuses.splice(index, 1);
+          ctrl.prospectStatuses.statuses = objectHelpers.convertArrayOfObjToArrayLikeObj(ctrl.statuses);
           prospectHelpers.updateStatuses(ctrl.prospectStatuses);
           ctrl.unassignProspects(statusName);
       };
 
-      $scope.addStatus = function() {
+      ctrl.addStatus = function() {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/prospectstatusmodal.html',

@@ -1,31 +1,30 @@
 <link rel="stylesheet" href="components/objectlists/objectslist.css">
 
-<!-- <div class='col-md-offset-2 table-responsive' id='object-list'> -->
 <div class='col-md-offset-2 col-sm-offset-3 table-responsive'>
 
-  <h2 class='object-header'>{{ ::title.value }}s</h2>
+  <h2 class='object-header'>{{ ::objectList.title.value }}s</h2>
   <br>
 
-  <div ng-if='objectType === "car" || objectType === "driver"'>
+  <div ng-if='objectList.objectType === "car" || objectList.objectType === "driver"'>
     <table class='table table-striped'>
       <thead>
         <td class='object-list-add-btns'>
-          <button type='button' class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
-            + {{ ::title.value }}
+          <button type='button' class='btn btn-success' data-toggle='modal' ng-click='objectList.addObject()'>
+            + {{ ::objectList.title.value }}
           </button>
         </td>
         <td>
-          <h4 ng-if='thereAreObjects()'>{{ ::simpleObjects[0].identifier }}</h4>
+          <h4 ng-if='objectList.thereAreObjects()'>{{ ::objectList.simpleObjects[0].identifier }}</h4>
         </td>
       </thead>
       <tbody>
-        <tr ng-repeat='object in simpleObjects | orderBy:"id"'>
+        <tr ng-repeat='object in objectList.simpleObjects | orderBy:"id"'>
           <td>
             <h4>{{ ::$index+1 }}</h4>
           </td>
           <td>
             <h4>
-              <a ui-sref='{{ profile.state }}'>
+              <a ui-sref='{{ ::objectList.profile.state }}'>
                 {{ ::object.identifierValue || "null" }}
               </a>
             </h4>
@@ -36,31 +35,31 @@
   </div>
 
   <!-- Prospect List -->
-  <div ng-if='objectType === "prospect"'>
+  <div ng-if='objectList.objectType === "prospect"'>
     <div class='object-list-add-btns'>
-        <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
+        <button class='btn btn-success' data-toggle='modal' ng-click='objectList.addObject()'>
             + Prospect
         </button>
-        <button class='btn btn-success' ng-click='addStatus()'>
+        <button class='btn btn-success' ng-click='objectList.addStatus()'>
             + Status
         </button>
     </div><br>
 
-    <div ng-repeat='status in statuses'>
+    <div ng-repeat='status in objectList.statuses'>
         <h3 class='prospect-status'>
             <span ng-show='!rowform.$visible'>
                 {{ ::status.value }}
             </span>
 
             <span ng-show='rowform.$visible'>Name: </span>
-            <span editable-text='status.value' e-name='name' e-form='rowform' onbeforesave='saveStatusName()' ng-show='rowform.$visible'>
+            <span editable-text='status.value' e-name='name' e-form='rowform' onbeforesave='objectList.saveStatusName()' ng-show='rowform.$visible'>
                 {{ status.value }}
             </span>
 
             <span ng-show='rowform.$visible'>Order: </span>
             <span ng-show='rowform.$visible' e-form='rowform'>
-                <select ng-model='statusOrder[$index]'>
-                    <option ng-repeat='status in statuses' value='{{ ::$index }}'>
+                <select ng-model='objectList.statusOrder[$index]'>
+                    <option ng-repeat='status in objectList.statuses' value='{{ ::$index }}'>
                         {{ ::$index+1 }}
                     </option>
                 </select>
@@ -70,11 +69,11 @@
                 Edit
             </button>
 
-            <form editable-form name='rowform' onbeforesave='saveStatus($data, $index, status.value)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
+            <form editable-form name='rowform' onbeforesave='objectList.saveStatus($data, $index, status.value)' ng-show='rowform.$visible' class='form-buttons form-inline' style='float:right;'>
                 <button type='submit' ng-disabled='rowform.$waiting' class='btn btn-primary btn-xs'>
                     Save
                 </button>
-                <button class='btn btn-xs btn-danger' ng-click='deleteStatus($index, status.value)' type='button' ng-if='!status.special'>
+                <button class='btn btn-xs btn-danger' ng-click='objectList.deleteStatus($index, status.value)' type='button' ng-if='!status.special'>
                     Delete
                 </button>
                 <button class='btn btn-xs btn-default' ng-click="rowform.$cancel()" type='button' ng-disabled='rowform.$waiting'>
@@ -85,12 +84,11 @@
         <table class='table table-striped'>
             <tbody>
                 <!-- filter prospects with status -->
-                <tr ng-repeat='object in objects' ng-if='belongsToStatus(object, status)'>
+                <tr ng-repeat='object in objectList.objects' ng-if='objectList.belongsToStatus(object, status)'>
                     <td>
                         <h4>
                             <a ui-sref='prospectData({ id: object.id })'>
-                                <!-- {{ ::prospect.identifierValue }} -->
-                                {{ ::object.data.Name.value }}
+                                {{ ::objectList.object.data.Name.value }}
                             </a>
                         </h4>
                     </td>
@@ -102,40 +100,38 @@
   </div>
 
   <!-- Assets List -->
-  <div ng-if='objectType === "asset"'>
+  <div ng-if='objectList.objectType === "asset"'>
 
     <div class='object-list-add-btns'>
-      <button class='btn btn-success' data-toggle='modal' ng-click='addObject()'>
+      <button class='btn btn-success' data-toggle='modal' ng-click='objectList.addObject()'>
           + Asset
       </button>
-      <button class='btn btn-success' ng-click='addType()'>
+      <button class='btn btn-success' ng-click='objectList.addType()'>
           + Type
       </button>
     </div><br>
 
     <uib-accordion>
-      <div uib-accordion-group ng-repeat='type in types'>
+      <div uib-accordion-group ng-repeat='type in objectList.types'>
         <uib-accordion-heading>
           <h4>
             {{ ::type.value }}
             <i class="pull-right fa fa-chevron-down"></i>
           </h4>
         </uib-accordion-heading>
-          <!-- <ul class='assetsOfType'> -->
           <table class='table table-striped'>
             <tbody>
-              <tr ng-repeat='asset in simpleObjects' ng-if='belongsToType(asset, type.value)'>
+              <tr ng-repeat='asset in objectList.simpleObjects' ng-if='objectList.belongsToType(asset, type.value)'>
                 <td>
                   <h4>
                     <a ui-sref='assetData({ id: asset.id })'>
-                      {{ asset.identifierValue || 'null' }}
+                      {{ ::asset.identifierValue || 'null' }}
                     </a>
                   </h4>
                 </td>
               </tr>
             </tbody>
           </table>
-          <!-- </ul> -->
       </div>
     </uib-accordion>
   </div>
