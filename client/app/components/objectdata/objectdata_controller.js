@@ -362,12 +362,17 @@
           animation: true,
           templateUrl: 'components/objectcrud/deleteobjmodal.html',
           controller: 'DeleteObjModalCtrl',
+          controllerAs: 'deleteObjModal',
           size: 'md',
           resolve: {
             id: function() {
               return objectId;
             }
           }
+        });
+
+        modalInstance.result.then(function() {
+            // $state.forceReload();
         });
       };
     }]);

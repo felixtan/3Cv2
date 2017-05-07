@@ -255,8 +255,8 @@
               }
           });
 
-          modalInstance.result.then(function () {
-            //   console.log('Modal dismissed at: ' + new Date());
+          modalInstance.result.then(function(data) {
+            //   console.log('Deleted ' + data.type + ' with id = ' + data.id);
           });
       };
   }]);

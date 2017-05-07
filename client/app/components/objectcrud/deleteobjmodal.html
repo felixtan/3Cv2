@@ -1,8 +1,8 @@
 <div class="modal-header">
     <h3 class="modal-title">
-        Delete {{ objectType }}
+        Delete {{ ::deleteObjModal.objectType }}
     </h3>
-    <button type="button" class='close' ng-click='close()' style='margin-top:-35px;'>
+    <button type="button" class='close' ng-click='deleteObjModal.close()' style='margin-top:-35px;'>
         &times;
     </button>
 </div>
@@ -11,18 +11,18 @@
     <form novalidate role='form'>
         <div class='form-group'>
             <label for='input'>
-                Deleting this {{ ::objectType }} and is irreversible. <span ng-if='objectType !== "prospect"'>Its logs will not be deleted.</span> Enter "DELETE" below to confirm you want to permanently delete:
+                Deleting this {{ ::deleteObjModal.objectType }} and is irreversible. <span ng-if='deleteObjModal.objectType !== "prospect"'>Its logs will not be deleted.</span> Enter "DELETE" below to confirm you want to permanently delete:
             </label>
-            <input class='form-control' id='delete-confirmation' type='text' ng-model='input'>
+            <input class='form-control' id='delete-confirmation' type='text' ng-model='deleteObjModal.input'>
         </div>
     </form>
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-default" type="button" ng-click="close()">
+    <button class="btn btn-default" type="button" ng-click="deleteObjModal.close()">
         Cancel
     </button>
-    <button id='delete-btn-final' class='btn btn-danger' type='button' ng-click='submit()' ng-disabled="input !== 'DELETE'">
+    <button id='delete-btn-final' class='btn btn-danger' type='button' ng-click='deleteObjModal.submit()' ng-disabled="deleteObjModal.input !== 'DELETE'">
         DELETE
     </button>
 </div>
