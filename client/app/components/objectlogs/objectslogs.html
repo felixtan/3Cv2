@@ -57,7 +57,7 @@
                     <td><strong>Week \ {{ ::objectsLogs.title }}</strong></td>
                     <td ng-repeat="object in objectsLogs.objects | orderBy:'id'" ng-if='objectsLogs.ifAssetIsOfType(object)'>
                         <a ui-sref='{{ ::objectsLogs.getStateRef(objectsLogs.objectType, object.id, "Logs") }}'>
-                            {{ objectsLogs.getIdentifierValue(object) || 'null' }}
+                            {{ ::(objectsLogs.getIdentifierValue(object) || 'null') }}
                         </a>
                     </td>
                 </tr>

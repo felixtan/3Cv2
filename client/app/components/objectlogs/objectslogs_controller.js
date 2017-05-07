@@ -220,23 +220,23 @@
       };
 
       // TODO: Refactor
-      ctrl.invalidEntries = [];
-      ctrl.validValue = true;
-      ctrl.validate = function (newValue, oldValue, fieldName, _log_, _object_) {
-          console.log(fieldName)
-
-          var object = _.find(ctrl.objects, function(object) { return object.id === _object_.id; }),
-              fieldData = object.data[fieldName],
-              log = _.find(object.logs, function(log) { return log.weekOf === _log_.weekOf; }),
-              logData = log.data[fieldName];
-
-          if (fieldData.type === 'number' || fieldData.type === 'monetary') {
-              logData = isNaN(newValue) ? oldValue : newValue;
-              ctrl.validValue = isNaN(newValue);
-          } else {
-              ctrl.validValue = true;
-          }
-      };
+    //   ctrl.invalidEntries = [];
+    //   ctrl.validValue = true;
+    //   ctrl.validate = function (newValue, oldValue, fieldName, _log_, _object_) {
+    //       console.log(fieldName)
+      //
+    //       var object = _.find(ctrl.objects, function(object) { return object.id === _object_.id; }),
+    //           fieldData = object.data[fieldName],
+    //           log = _.find(object.logs, function(log) { return log.weekOf === _log_.weekOf; }),
+    //           logData = log.data[fieldName];
+      //
+    //       if (fieldData.type === 'number' || fieldData.type === 'monetary') {
+    //           logData = isNaN(newValue) ? oldValue : newValue;
+    //           ctrl.validValue = isNaN(newValue);
+    //       } else {
+    //           ctrl.validValue = true;
+    //       }
+    //   };
 
       ctrl.createNewRow = function(date) {
           // add new date to array of log dates

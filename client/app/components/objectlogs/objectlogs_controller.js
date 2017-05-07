@@ -137,7 +137,9 @@
           //         ctrl.update(objectWithUpdatedData);
           //     });
           // }
-          ctrl.update(ctrl.object);
+          ctrl.update(ctrl.object).then(function() {
+              $state.forceReload();
+          });
       };
     }]);
 })();
