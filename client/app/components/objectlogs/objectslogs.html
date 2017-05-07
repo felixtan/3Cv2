@@ -2,17 +2,17 @@
 
 <div class='col-md-10 col-md-offset-2 col-sm-offset-3'>
     <div class='sub-header'>
-        <h2 class='object-header'>{{ ::title }} Logs</h2>
+        <h2 class='object-header'>{{ ::objectsLogs.title }} Logs</h2>
     </div>
 
-    <uib-tabset ng-if="objectType === 'asset'">
-        <uib-tab ng-repeat='tab in tabs' index='$index' data-tabName='{{ ::tab.title || "null" }}' heading='{{ ::tab.title || "null" }}' active='tab.active' select='renderLogs(tab.title)'>
+    <uib-tabset ng-if="objectsLogs.objectType === 'asset'">
+        <uib-tab ng-repeat='tab in objectsLogs.tabs' index='$index' data-tabName='{{ ::tab.title || "null" }}' heading='{{ ::tab.title || "null" }}' active='tab.active' select='objectsLogs.renderLogs(tab.title)'>
         </uib-tab>
     </uib-tabset><br>
 
     <div class='btn-toolbar' role='toolbar'>
         <div class='btn-group' role='group'>
-            <button class='btn btn-success' ng-click='newLog()' ng-disabled='datepicker.dt.getDay() !== datepicker.getStartingDayNum()'>
+            <button class='btn btn-success' ng-click='objectsLogs.newLog()' ng-disabled='objectsLogs.datepicker.dt.getDay() !== objectsLogs.datepicker.getStartingDayNum()'>
                 + Log
             </button>
         </div>
@@ -20,15 +20,15 @@
            <div class="input-group date-picker">
                 <input type="text"
                     class="form-control"
-                    uib-datepicker-popup="{{ ::datepicker.format }}"
-                    ng-model="datepicker.dt"
-                    is-open="datepicker.status.opened"
-                    max-date="datepicker.maxDate"
-                    datepicker-options="datepicker.dateOptions"
+                    uib-datepicker-popup="{{ ::objectsLogs.datepicker.format }}"
+                    ng-model="objectsLogs.datepicker.dt"
+                    is-open="objectsLogs.datepicker.status.opened"
+                    max-date="objectsLogs.datepicker.maxDate"
+                    datepicker-options="objectsLogs.datepicker.dateOptions"
                     ng-required="true"
                     close-text="Close" />
                 <div class="input-group-btn">
-                    <button type="button" class="btn btn-primary" ng-click="datepicker.open($event)">
+                    <button type="button" class="btn btn-primary" ng-click="objectsLogs.datepicker.open($event)">
                         <i class="fa fa-calendar"></i>
                     </button>
                 </div>
@@ -36,16 +36,16 @@
         </div>
         <div class='btn-group' role='group'>
             <p id='datepicker-instructions'>
-                * Choose the {{ ::datepicker.getStartingDay() }} of the week to be logged.
+                * Choose the {{ ::objectsLogs.datepicker.getStartingDay() }} of the week to be logged.
             </p>
         </div>
     </div>
     <!-- <div>most recent log: {{ mostRecentLogDate | date:'longDate' }}</div> -->
     <br>
 
-    <div ng-messages="logForm.$error" ng-show='invalidEntries.length > 0' class="alert alert-danger" role="alert">
+    <div ng-messages="logForm.$error" ng-show='objectsLogs.invalidEntries.length > 0' class="alert alert-danger" role="alert">
         <!-- field is object with name, identifierVal, logDate properties -->
-        <p ng-repeat='entry in invalidEntries'>
+        <p ng-repeat='entry in objectsLogs.invalidEntries'>
             Invalid entry for number field <span class='underline'>{{ ::entry.fieldName }}</span> of <span class='underline'>{{ ::entry.identifierValue }}</span>, date <span class='underline'>{{ ::entry.logDate | date:'longDate'}}</span>.
         </p>
     </div>
@@ -54,16 +54,16 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <td><strong>Week \ {{ title }}</strong></td>
-                    <td ng-repeat="object in objects | orderBy:'id'" ng-if='ifAssetIsOfType(object)'>
-                        <a ui-sref='{{ ::getStateRef(objectType, object.id, "Logs") }}'>
-                            {{ getIdentifierValue(object) || 'null' }}
+                    <td><strong>Week \ {{ ::objectsLogs.title }}</strong></td>
+                    <td ng-repeat="object in objectsLogs.objects | orderBy:'id'" ng-if='objectsLogs.ifAssetIsOfType(object)'>
+                        <a ui-sref='{{ ::objectsLogs.getStateRef(objectsLogs.objectType, object.id, "Logs") }}'>
+                            {{ objectsLogs.getIdentifierValue(object) || 'null' }}
                         </a>
                     </td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat='date in dates'>
+                <tr ng-repeat='date in objectsLogs.dates'>
                     <td>
                         <span class='log-date'>
                             {{ ::date | date:'longDate' }}
@@ -72,23 +72,24 @@
                             Edit
                         </button>
                         <div class='btn-toolbar' role='toolbar'>
-                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='save(date)'>
+                            <form editable-form name="logform" ng-show="logform.$visible" class="form-buttons form-inline" onaftersave='objectsLogs.save(date)'>
                                 <button type="submit" ng-disabled="logform.$waiting" class="btn btn-success btn-xs">
                                     Save
                                 </button>
                                 <button type="button" ng-disabled="logform.$waiting" ng-click="logform.$cancel()" class="btn btn-default btn-xs">
                                     Cancel
                                 </button>
-                                <button class='btn btn-danger btn-xs' style='margin-left:1vw' ng-click='open(lg, { type: "log", logDate: date })'>
+                                <button class='btn btn-danger btn-xs' style='margin-left:1vw' ng-click='objectsLogs.open(lg, { type: "log", logDate: date })'>
                                     Delete
                                 </button>
                             </form>
                         </div>
                     </td>
-                    <td ng-repeat='object in objects | orderBy:"id"' ng-if='ifAssetIsOfType(object)'>
+                    <td ng-repeat='object in objectsLogs.objects | orderBy:"id"' ng-if='objectsLogs.ifAssetIsOfType(object)'>
                         <ul ng-repeat="log in object.logs" ng-if='log.weekOf === date' class='log'>
                             <li ng-repeat='(field, value) in log.data'>
-                                <span editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform' onbeforesave='validate($data, value, field, log, object)'>
+                                <!-- onbeforesave='objectsLogs.validate($data, value, field, log, object)' -->
+                                <span editable-text="log.data.{{ ::field }}" e-name='{{ ::field }}' e-form='logform'>
                                     {{ ::field }}: {{ value }}
                                 </span>
                             </li>

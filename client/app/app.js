@@ -122,6 +122,7 @@ angular
         url: '/cars',
         templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
+        controllerAs: 'objectsLogs',
         resolve: {
             objectType: function () {
                 return "car";
@@ -132,6 +133,7 @@ angular
         url: '/drivers',
         templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
+        controllerAs: 'objectsLogs',
         resolve: {
             objectType: function () {
                 return "driver";
@@ -142,6 +144,7 @@ angular
         url: '/assets',
         templateUrl: '/components/objectlogs/objectslogs.html',
         controller: 'ObjectsLogsCtrl',
+        controllerAs: 'objectsLogs',
         resolve: {
             objectType: function () {
                 return "asset";

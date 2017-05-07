@@ -2,109 +2,109 @@
   'use strict';
 
   angular.module('clientApp')
-    .controller('ObjectsLogsCtrl', ['$q', '$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$scope', '$state', '_', '$window',
-      function ($q, $uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $scope, $state, _, $window) {
+    .controller('ObjectsLogsCtrl', ['$q', '$uibModal', 'objectType', 'objectHelpers', 'datepicker', 'carHelpers', 'driverHelpers', 'prospectHelpers', 'assetHelpers', '$state', '_', '$window',
+      function ($q, $uibModal, objectType, objectHelpers, datepicker, carHelpers, driverHelpers, prospectHelpers, assetHelpers, $state, _, $window) {
 
       var ctrl = this;
-      $scope.objectType = objectType;
-      $scope.datepicker = datepicker;
-      $scope.dummyNum = { value: null };
+      ctrl.objectType = objectType;
+      ctrl.datepicker = datepicker;
+      ctrl.dummyNum = { value: null };
 
       // Helpers
-      $scope.getIdentifierValue = objectHelpers.getIdentifierValue
-      $scope.getStateRef = objectHelpers.getStateRef
+      ctrl.getIdentifierValue = objectHelpers.getIdentifierValue
+      ctrl.getStateRef = objectHelpers.getStateRef
 
       ctrl.getObjects = function () {
-          if($scope.objectType === 'car') {
-              $scope.title = 'Car';
+          if(ctrl.objectType === 'car') {
+              ctrl.title = 'Car';
               ctrl.update = carHelpers.update;
               return carHelpers.get;
-          } else if($scope.objectType === 'driver') {
-              $scope.title = 'Driver';
+          } else if(ctrl.objectType === 'driver') {
+              ctrl.title = 'Driver';
               ctrl.update = driverHelpers.update;
               return driverHelpers.get;
-          } else if($scope.objectType === 'prospect') {
-              $scope.title = 'Prospect';
+          } else if(ctrl.objectType === 'prospect') {
+              ctrl.title = 'Prospect';
               ctrl.update = prospectHelpers.update;
               return prospectHelpers.get;
-          } else if($scope.objectType === 'asset') {
+          } else if(ctrl.objectType === 'asset') {
               ctrl.update = assetHelpers.update;
               return assetHelpers.getTypes;
           }
       };
 
       ctrl.getLogDates = function () {
-          if($scope.objectType === 'car') {
+          if(ctrl.objectType === 'car') {
               return carHelpers.getLogDates;
-          } else if($scope.objectType === 'driver') {
+          } else if(ctrl.objectType === 'driver') {
               return driverHelpers.getLogDates;
-          } else if($scope.objectType === 'prospect') {
+          } else if(ctrl.objectType === 'prospect') {
               return function () {};
-          } else if($scope.objectType === 'asset') {
+          } else if(ctrl.objectType === 'asset') {
               return assetHelpers.getLogDates;
           }
       };
 
       ctrl.getAssetsOfTypeAndLogs = function (assetType) {
-          $scope.title = assetType;
+          ctrl.title = assetType;
 
           assetHelpers.getByType(assetType).then(function(result) {
-            $scope.objects = result.data;
+            ctrl.objects = result.data;
           });
 
           ctrl.getLogDates()(assetType).then(function(dates) {
-              $scope.dates = dates;
+              ctrl.dates = dates;
               ctrl.getMostRecentLogDate();
           });
       };
 
       ctrl.getObjects()().then(function(result) {
-          if ($scope.objectType !== 'asset') {
+          if (ctrl.objectType !== 'asset') {
 
-              $scope.objects = result.data;
+              ctrl.objects = result.data;
               ctrl.getLogDates()().then(function(dates) {
-                $scope.dates = dates
+                ctrl.dates = dates
                 ctrl.getMostRecentLogDate()
               });
           } else {
-              $scope.assetTypes = result.data.types;
-              $scope.assetType = $scope.assetTypes[0].value;
-              $scope.tabs = [];
+              ctrl.assetTypes = result.data.types;
+              ctrl.assetType = ctrl.assetTypes[0].value;
+              ctrl.tabs = [];
 
-              _.each($scope.assetTypes, function(assetType, index) {
-                  $scope.tabs.push({
+              _.each(ctrl.assetTypes, function(assetType, index) {
+                  ctrl.tabs.push({
                       title: assetType.value,
                       active: (index === 0),
                   });
               });
 
-              ctrl.getAssetsOfTypeAndLogs($scope.assetType);
+              ctrl.getAssetsOfTypeAndLogs(ctrl.assetType);
           }
       });
 
 
 
-      $scope.renderLogs = function (assetType) {
+      ctrl.renderLogs = function (assetType) {
           // console.log(assetType);
-          $scope.assetType = assetType;
-          $scope.title = assetType;
-          ctrl.getAssetsOfTypeAndLogs($scope.assetType);
+          ctrl.assetType = assetType;
+          ctrl.title = assetType;
+          ctrl.getAssetsOfTypeAndLogs(ctrl.assetType);
       };
 
-      $scope.ifAssetIsOfType = function (object) {
-          if ($scope.objectType === 'asset') {
-              return object.assetType === $scope.assetType;
+      ctrl.ifAssetIsOfType = function (object) {
+          if (ctrl.objectType === 'asset') {
+              return object.assetType === ctrl.assetType;
           } else {
               return true;
           }
       };
 
       ctrl.getMostRecentLogDate = function() {
-          // return Math.max(...$scope.dates); -> assuming unsorted
+          // return Math.max(...ctrl.dates); -> assuming unsorted
 
           // assuming sorted from recent to past
-          if($scope.dates.length > 0) {
-              ctrl.mostRecentLogDate = $scope.dates[0];
+          if(ctrl.dates.length > 0) {
+              ctrl.mostRecentLogDate = ctrl.dates[0];
           } else {
               ctrl.mostRecentLogDate = null;
           }
@@ -125,10 +125,10 @@
       // returns an object to be object.logs[i].data with keys (feilds) to be logged
       ctrl.newDataObj = function() {
           var data = {};
-          var objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType);
+          var objects = (ctrl.objectType !== 'asset') ? ctrl.objects : assetHelpers.filterAssetsByType(ctrl.objects, ctrl.assetType);
 
           if (objects.length === 0) {
-            alert("Sorry, there are no " + $scope.objectType + "s.")
+            alert("Sorry, there are no " + ctrl.objectType + "s.")
           } else {
             // first object is taken because fields in object.data are assumed to be uniform for all objects
             var fields = ctrl.getFieldsToBeLogged(objects[0]);
@@ -142,7 +142,7 @@
       };
 
       ctrl.createLogForObject = function(object, date, data) {
-          if (!_.includes($scope.dates, date)) {
+          if (!_.includes(ctrl.dates, date)) {
               object.logs.push({
                   createdAt: (new Date()),
                   weekOf: date,
@@ -153,24 +153,24 @@
           return object;
       };
 
-      $scope.newLog = function() {
+      ctrl.newLog = function() {
           // 1. show date picker
           // 2. user picks date -> store in log.date
           // 3. start of week -> stored in log.weekStarting
           // 4. create for all objects
           // employ loading animation
 
-          var d = $scope.datepicker.dt;
+          var d = ctrl.datepicker.dt;
           var weekOf = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0)).getTime();
           var blankDataObj = ctrl.newDataObj();
           var promises = [];
 
-          _.each($scope.objects, function(object) {
+          _.each(ctrl.objects, function(object) {
               var objectToUpdate = ctrl.createLogForObject(object, weekOf, blankDataObj);
               promises.push(ctrl.update(objectToUpdate));
           });
 
-          if(!_.includes($scope.dates, weekOf)) {
+          if(!_.includes(ctrl.dates, weekOf)) {
               $q.all(promises).then(function(values) {
                   ctrl.createNewRow(weekOf);
                   $state.forceReload();
@@ -184,11 +184,11 @@
       };
 
       // need to make this more efficient
-      $scope.save = function(logDate) {
-          // if($scope.invalidEntries.length === 0) {
+      ctrl.save = function(logDate) {
+          // if(ctrl.invalidEntries.length === 0) {
               var mostRecentLog = null;
-              _.each($scope.objects, function(object) {
-                  if ($scope.objectType !== 'asset') {
+              _.each(ctrl.objects, function(object) {
+                  if (ctrl.objectType !== 'asset') {
                       if (logDate === ctrl.mostRecentLogDate) {
                           // update object.data is new value isn't null
                           mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
@@ -197,7 +197,7 @@
                           }
                       }
                   } else {
-                      if ($scope.assetType === $scope.objectType) {
+                      if (ctrl.assetType === ctrl.objectType) {
                           if (logDate === ctrl.mostRecentLogDate) {
                               // update object.data is new value isn't null
                               mostRecentLog = _.find(object.logs, function(log) { return log.weekOf === ctrl.mostRecentLogDate; });
@@ -213,37 +213,39 @@
           // }
       };
 
-      $scope.getLog = function (date) {
-          return _.find($scope.object.logs, function(log) {
+      ctrl.getLog = function (date) {
+          return _.find(ctrl.object.logs, function(log) {
               return log.weekOf === date;
           });
       };
 
-      $scope.invalidEntries = [];
-      $scope.validValue = true;
-      $scope.validate = function (newValue, oldValue, fieldName, _log_, _object_) {
-          var objects = ($scope.objectType !== 'asset') ? $scope.objects : assetHelpers.filterAssetsByType($scope.objects, $scope.assetType),
-              object = _.find(objects, function(object) { return object.id === _object_.id; }),
+      // TODO: Refactor
+      ctrl.invalidEntries = [];
+      ctrl.validValue = true;
+      ctrl.validate = function (newValue, oldValue, fieldName, _log_, _object_) {
+          console.log(fieldName)
+
+          var object = _.find(ctrl.objects, function(object) { return object.id === _object_.id; }),
               fieldData = object.data[fieldName],
               log = _.find(object.logs, function(log) { return log.weekOf === _log_.weekOf; }),
               logData = log.data[fieldName];
 
-          if (fieldData.type === 'number') {
+          if (fieldData.type === 'number' || fieldData.type === 'monetary') {
               logData = isNaN(newValue) ? oldValue : newValue;
-              $scope.validValue = isNaN(newValue);
+              ctrl.validValue = isNaN(newValue);
           } else {
-              $scope.validValue = true;
+              ctrl.validValue = true;
           }
       };
 
       ctrl.createNewRow = function(date) {
           // add new date to array of log dates
-          if (!_.includes($scope.dates, date)) {
-            $scope.dates.push(date);
+          if (!_.includes(ctrl.dates, date)) {
+            ctrl.dates.push(date);
           }
       };
 
-      $scope.open = function (size, thing) {
+      ctrl.open = function (size, thing) {
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/deletemodal.html',
@@ -252,20 +254,20 @@
               size: size,
               resolve: {
                   thing: function() {
-                      return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ $scope.fields or $scope.dates
+                      return thing;   // object { type: x, value: y } such that x ∈ ['field', 'log'] and y ∈ ctrl.fields or ctrl.dates
                   },
                   getObjects: function() {
-                      return $scope.objectType === 'asset' ? assetHelpers.filterAssetsByType($scope.objects, $scope.assetType)
-                                                           : $scope.objects;
+                      return ctrl.objectType === 'asset' ? assetHelpers.filterAssetsByType(ctrl.objects, ctrl.assetType)
+                                                           : ctrl.objects;
                   },
                   objectType: function () {
-                      return $scope.objectType;
+                      return ctrl.objectType;
                   },
               }
           });
 
           modalInstance.result.then(function (input) {
-              $scope.input = input;
+              ctrl.input = input;
               console.log('passed back from DeleteModalCtrl:', input);
           }, function () {
             //   console.log('Modal dismissed at: ' + new Date());
