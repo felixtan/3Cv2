@@ -4,10 +4,10 @@ client/.tmp
 client/.sass-cache
 client/bower_components
 client/coverage
-client/test
-client/env.js
+client/app/env.js
 
 #server
 server/node_modules
 server/db/config
+server/config.json
 server/db/scripts

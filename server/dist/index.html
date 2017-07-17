@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/normalize.css/normalize.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/main.css -->
+
+    <!-- endbuild -->
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <!-- Angular xeditable -->
+    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+
+    <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
+
+    <!-- Main styles -->
+    <link rel="stylesheet" href="./main.css">
+  </head>
+  <body ng-app="clientApp">
+
+    <!-- Add your site or application content here -->
+    <!-- if-user this nav -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav-links-container" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" ui-sref="dashboard.cars">{{ user.customData.organization }} <span ng-show='!user.customData.organization'>Dashboard</span></a>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="top-nav-links-container" class="navbar-collapse collapse">
+          <ul id="top-nav-links" class="nav navbar-nav navbar-right">
+            <li class='top-nav-link dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Tables
+                <i class='fa fa-caret-down'></i>
+              </a>
+
+              <ul class='dropdown-menu'>
+                <li>
+                  <a ui-sref='dashboard.cars'>Cars</a>
+                </li>
+                <li>
+                  <a ui-sref='dashboard.drivers'>Drivers</a>
+                </li>
+                 <li>
+                  <a ui-sref='dashboard.prospects'>Prospects</a>
+                </li>
+                 <li>
+                  <a ui-sref='dashboard.assets'>Assets</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class='top-nav-link dropdown'>
+              <a href="" class='dropdown-toggle' data-toggle='dropdown'>
+                Logs
+                <i class='fa fa-caret-down'></i>
+              </a>
+
+              <ul class='dropdown-menu'>
+                <li>
+                  <a ui-sref='logs.cars'>Cars</a>
+                </li>
+                <li>
+                  <a ui-sref='logs.drivers'>Drivers</a>
+                </li>
+                <li>
+                  <a ui-sref='logs.assets'>Assets</a>
+                </li>
+              </ul>
+            </li>
+            <!-- <li>
+              <a sp-logout ui-sref="login">Logout</a>
+            </li> -->
+          </ul>
+          <!-- <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form> -->
+        </div>
+
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- if-user this div -->
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li>
+              <a ui-sref="dashboard.cars">
+                <i class='fa fa-car'></i>
+                Cars
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.drivers">
+                <i class='fa fa-users'></i>
+                Drivers
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.assets">
+                <i class='fa fa-credit-card'></i>
+                Assets
+              </a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.prospects">
+                <i class='fa fa-user-plus'></i>
+                Prospects
+              </a>
+            </li>
+            <li class='dropdown'>
+                <a id='sidebar-logs-links-dropdown-btn' data-target="#sidebar-logs-links" data-toggle='collapse'>
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                    Logs
+                </a>
+                <ul id='sidebar-logs-links' class='collapse'>
+                  <li>
+                    <a ui-sref="logs.cars">
+                      <i class='fa fa-wrench'></i>
+                      Cars
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="logs.drivers">
+                      <i class='fa fa-clipboard'></i>
+                      Drivers
+                    </a>
+                  </li>
+                  <li>
+                    <a ui-sref="logs.assets">
+                      <i class='fa fa-credit-card-alt'></i>
+                      Assets
+                    </a>
+                  </li>
+                </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- settings sidebar -->
+        <!-- if-user this div -->
+        <div class="col-sm-3 col-md-2 sidebar" ng-if="$state.includes('settings')">
+          <ul class="nav nav-sidebar">
+            <li>
+              <a ui-sref='settings.models.car' class='fa fa-user'>Cars</a>
+            </li>
+          </ul>
+        </div>
+
+        <div ui-view></div>
+        <!-- ngView -->
+      </div>
+    </div>
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <!-- Environment vars -->
+    <script src='env.js'></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="ie10-viewport-bug-workaround.js"></script>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src='bower_components/jquery/dist/jquery.js'></script>
+    <script src='bower_components/angular/angular.js'></script>
+    <script src='bower_components/angular-animate/angular-animate.js'></script>
+    <script src='bower_components/angular-bootstrap/ui-bootstrap-tpls.js'></script>
+    <script src='bower_components/angular-cookies/angular-cookies.js'></script>
+    <script src='bower_components/angular-messages/angular-messages.js'></script>
+    <script src='bower_components/angular-resource/angular-resource.js'></script>
+    <script src='bower_components/angular-route/angular-route.js'></script>
+    <script src='bower_components/angular-sanitize/angular-sanitize.js'></script>
+    <script src='bower_components/angular-touch/angular-touch.js'></script>
+    <script src='bower_components/angular-ui-router/release/angular-ui-router.js'></script>
+    <script src='bower_components/angular-xeditable/dist/js/xeditable.js'></script>
+    <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.min.js'></script>
+    <script src='bower_components/stormpath-sdk-angularjs/dist/stormpath-sdk-angularjs.tpls.min.js'></script>
+    <script src='bower_components/bootstrap/dist/js/bootstrap.js'></script>
+    <script src='bower_components/bootstrap-switch/dist/js/bootstrap-switch.js'></script>
+    <script src='bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js'></script>
+    <script src='bower_components/lodash/lodash.js'></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src='bower_components/angular-xeditable/dist/js/xeditable.min.js'></script>
+        <script src="app.js"></script>
+
+        <script src="services/dataservice.js"></script>
+        <script src="services/underscore.js"></script>
+        <script src="services/datepicker.js"></script>
+        <script src="services/objecthelpers.js"></script>
+        <script src="services/assethelpers.js"></script>
+        <script src="services/prospecthelpers.js"></script>
+        <script src="services/carhelpers.js"></script>
+        <script src="services/driverhelpers.js"></script>
+
+        <script src="components/fields/addfieldmodal_controller.js"></script>
+        <script src="components/fields/deletemodal_controller.js"></script>
+        <script src="components/fields/editfieldmodal_controller.js"></script>
+        <script src="components/fields/prospectstatusmodal_controller.js"></script>
+        <script src="components/fields/assettypemodal_controller.js"></script>
+
+        <script src="components/objectcrud/deleteobjmodal_controller.js"></script>
+        <script src="components/objectcrud/addobjectmodal_controller.js"></script>
+        <script src="components/objectlists/objectslist_controller.js"></script>
+        <script src="components/objectdata/objectdata_controller.js"></script>
+        <script src="components/objectlogs/objectlogs_controller.js"></script>
+        <script src="components/objectlogs/objectslogs_controller.js"></script>
+
+        <script src="components/assignment/assignmentmodal_controller.js"></script>
+        <!-- endbuild -->
+
+        <!-- produced by grunt-ng-constant -->
+        <script src='config.js'></script>
+
+    <!-- Applies css to side nav active page element -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        // Collapses top navbar when a link is clicked. Bootstrap's default is not to collapse it.
+        $("#top-nav-links-container").on("click", "a", function(e) {
+            if (!$(e.currentTarget).hasClass("dropdown-toggle"))
+                $('.navbar-collapse.in').collapse('hide');
+        });
+
+        // Collapse Logs dropdown in sidebar when a dropdown link is clicked
+        $("#sidebar-logs-links").on("click", "a", function(e) {
+            $("#sidebar-logs-links-dropdown-btn").click();
+        });
+      });
+    </script>
+</body>
+</html>

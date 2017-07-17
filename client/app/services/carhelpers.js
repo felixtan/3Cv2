@@ -49,7 +49,7 @@
     };
 
     function getOrganizationId() {
-      return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : ENV.stormpathConfig.organizationId;
+      return (ENV.name === ('production' || 'staging')) ? $rootScope.user.customData.organizationId : ENV.organizationId;
     }
 
     function thereAreCars() {

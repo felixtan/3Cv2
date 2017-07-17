@@ -1,10 +1,10 @@
 var express = require('express');
-var stormpath = require('express-stormpath');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('./config.json');
 
 var app = express();
 
@@ -14,7 +14,7 @@ app.set('models', require('./db/models'));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 
-// allows CORS
+// CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", getClientUrl())
   res.header("Access-Control-Allow-Credentials", true)
@@ -26,30 +26,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// stormpath
-if(app.get('env') === 'production') {
-app.use(stormpath.init(app, {
-  debug: 'info, error',
-  website: true,
-  web: {
-    spaRoot: process.env.HOME + '/Development/3C/client/app/index.html'
-  },
-  postRegistrationHandler: function(account, res, req, next) {
-    var hrefArray = account.href.split('/');
-
-    account.getCustomData(function(err, data) {
-      if(err) {
-        next(err);
-      } else {
-        data.organizationId = hrefArray[hrefArray.length-1];
-        data.save();
-        next();
-      }
-    });
-  }
-}));
-}
 
 // development error handler
 // will print stacktrace
@@ -93,8 +69,8 @@ module.exports = app;
 
 function getClientUrl() {
   if (app.get('env') === 'production') {
-    return "http://www.fleetly-herokuapp.com"
+    return config.CLIENT_PROD;
   } else {
-    return "http://localhost:9000"
+    return config.CLIENT_DEV;
   }
 }

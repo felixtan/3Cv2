@@ -389,8 +389,8 @@ module.exports = function (grunt) {
       server: [],
       test: [],
       dist: [
-        'imagemin',
-        'svgmin'
+        // 'imagemin',
+        // 'svgmin'
       ]
     },
 

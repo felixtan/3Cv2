@@ -10,7 +10,8 @@ var http = require('http');
 var pg = require("pg");
 var config = require('../db/config/config.json')[process.env.NODE_ENV];
 
-pg.defaults.ssl = true;
+if (process.env.NODE_ENV === "production")
+    pg.defaults.ssl = true;
 
 /**
  * Get port from environment and store in Express.
@@ -36,19 +37,15 @@ var setupDB = require('../db/scripts/setupDB');
 // var opts = { force: true };
 var opts = {};
 
-// pg.connect(config.url, function(err, client) {
-  // if(err) throw err;
 models.sequelize.sync(opts).then(function(db) {
-    console.log("Connected to potsgres database.");
+    console.log("Connected to db.");
 
-    if (opts.force) setupDB.populate();
+    if (opts.force)
+        setupDB.populate();
 
-    // app.on('stormpath.ready', function() {
-    // console.log('Stormpath initialized.')
     server.listen(port, function() {
       console.log('Listening on port ' + port + ' in ' + process.env.NODE_ENV.toUpperCase() + ' mode.');
     });
-  // });
 });
 
 server.on('error', onError);

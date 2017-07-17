@@ -83,12 +83,11 @@
         </h3>
         <table class='table table-striped'>
             <tbody>
-                <!-- filter prospects with status -->
                 <tr ng-repeat='object in objectList.objects' ng-if='objectList.belongsToStatus(object, status)'>
                     <td>
                         <h4>
                             <a ui-sref='prospectData({ id: object.id })'>
-                                {{ ::objectList.object.data.Name.value }}
+                                {{ ::object.data.Name.value }}
                             </a>
                         </h4>
                     </td>

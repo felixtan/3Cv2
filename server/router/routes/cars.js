@@ -13,6 +13,7 @@ var Promise = require('Bluebird');
 module.exports = {
 
     get: function(req, res) {
+        console.log(req)
         Cars.findAll({
             where: filterByOrgId(req)
         }).then(function(cars) {

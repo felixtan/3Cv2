@@ -15,7 +15,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       modalInstance;
 
   // Initialize the controller and a mock $scope
-  beforeEach(inject(function (_$httpBackend_, $q, $controller, $rootScope, _dataService_, _$state_) {
+  beforeEach(inject(function (_$$httpBackend_, $q, $controller, $rootScope, _dataService_, _$state_) {
     $scope = $rootScope.$new();
     dataService = _dataService_;
     $state = _$state_;
@@ -35,8 +35,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
     });
 
     modalInstance = mockModalInstance;
-    // spyOn(modalInstance, 'close');
-    // spyOn(modalInstance, 'dismiss');
+
     spyOn(state, 'go');
     spyOn(state, 'forceReload');
     spyOn(dataService, 'updateCar');
@@ -269,14 +268,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
 
     describe("general validation", function() {
       beforeEach(function() {
-        httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-        httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-        httpBackend.expectGET("views/carList.html");
+        $httpBackend.whenGET("views/carList.html").respond('');
+        $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+        $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+        $httpBackend.expectGET("views/carList.html");
       });
 
       afterEach(function() {
-        httpBackend.flush();
+        $httpBackend.flush();
       });
 
       xit("should involve multiple stages of validation", function() {
@@ -331,14 +330,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
     describe("first stage validation", function() {
 
       beforeEach(function() {
-        httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-        httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-        httpBackend.expectGET("views/carList.html");
+        $httpBackend.whenGET("views/carList.html").respond('');
+        $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+        $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+        $httpBackend.expectGET("views/carList.html");
       });
 
       afterEach(function() {
-        httpBackend.flush();
+        $httpBackend.flush();
       });
 
       xit("should evaluate expressions to be invalid if fields are not preceeded or followed by an operator", function() {
@@ -435,14 +434,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
     describe("mid stage functions", function() {
 
       beforeEach(function() {
-        httpBackend.whenGET("views/carList.html").respond('');
-        httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-        httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-        httpBackend.expectGET("views/carList.html");
+        $httpBackend.whenGET("views/carList.html").respond('');
+        $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+        $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+        $httpBackend.expectGET("views/carList.html");
       });
 
       afterEach(function() {
-        httpBackend.flush();
+        $httpBackend.flush();
       });
 
       xit("should build a test expression out of testExpressionItems", function() {
@@ -521,21 +520,21 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   describe("undo expression", function() {
 
     beforeEach(function() {
-      // httpBackend.whenGET("views/carList.html").respond('');
-      // httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
-      // httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      // httpBackend.expectGET("views/carList.html");
+      // $httpBackend.whenGET("views/carList.html").respond('');
+      // $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond(getCars);
+      // $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      // $httpBackend.expectGET("views/carList.html");
     });
 
     afterEach(function() {
-      // httpBackend.flush();
+      // $httpBackend.flush();
     });
 
     xit('should validate after removing last item from expression', function() {
-      httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-      httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      httpBackend.expectGET("views/carList.html");
+      $httpBackend.whenGET("views/carList.html").respond('');
+      $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+      $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      $httpBackend.expectGET("views/carList.html");
 
       $scope.field.type = 'function';
       $scope.field.expressionItems = ctrl.testExpressionItems = [{ type: 'constant', value: '3.14'}];
@@ -549,7 +548,7 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
       $scope.$digest();
       expect(ctrl.validateExpression).toHaveBeenCalled();
 
-      httpBackend.flush();
+      $httpBackend.flush();
     });
 
     xit("should remove last item from function", function() {
@@ -584,14 +583,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   describe("evaluate expression after undo", function() {
 
     beforeEach(function() {
-      httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-      httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      httpBackend.expectGET("views/carList.html");
+      $httpBackend.whenGET("views/carList.html").respond('');
+      $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+      $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      $httpBackend.expectGET("views/carList.html");
     });
 
     afterEach(function() {
-      httpBackend.flush();
+      $httpBackend.flush();
     });
 
     xit("should return true if testExpressionItems has 1 item", function() {
@@ -716,14 +715,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   describe("createNewFieldData", function() {
 
     beforeEach(function() {
-      httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-      httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      httpBackend.expectGET("views/carList.html");
+      $httpBackend.whenGET("views/carList.html").respond('');
+      $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+      $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      $httpBackend.expectGET("views/carList.html");
     });
 
     afterEach(function() {
-      httpBackend.flush();
+      $httpBackend.flush();
     });
 
     xit("should return a data object for function field", function() {
@@ -974,14 +973,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   describe('build and evaluate expression for object', function() {
 
     beforeEach(function() {
-      httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-      httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      httpBackend.expectGET("views/carList.html");
+      $httpBackend.whenGET("views/carList.html").respond('');
+      $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+      $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      $httpBackend.expectGET("views/carList.html");
     });
 
     afterEach(function() {
-      httpBackend.flush();
+      $httpBackend.flush();
     });
 
     xit("should build expression for an object", function() {
@@ -1010,14 +1009,14 @@ describe('Controller: AddFieldModalInstanceCtrl', function () {
   describe('submit', function() {
 
     beforeEach(function() {
-      httpBackend.whenGET("views/carList.html").respond('');
-      httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
-      httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
-      httpBackend.expectGET("views/carList.html");
+      $httpBackend.whenGET("views/carList.html").respond('');
+      $httpBackend.whenGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x").respond("");
+      $httpBackend.expectGET("/api/cars?organizationId=3Qnv2pMAxLZqVdp7n8RZ0x");
+      $httpBackend.expectGET("views/carList.html");
     });
 
     afterEach(function() {
-      httpBackend.flush();
+      $httpBackend.flush();
     });
 
     xit("should update all objects in field is function", function() {

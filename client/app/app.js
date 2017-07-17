@@ -19,8 +19,6 @@ angular
     'xeditable',
     'ui.bootstrap',
     'ngMessages',
-    // 'stormpath',
-    // 'stormpath.templates',
     'ui.router',
     'config',
     'frapontillo.bootstrap-switch',
@@ -48,22 +46,6 @@ angular
         url: '/',
         templateUrl: '<div></div>'
     })
-    // .state('login', {
-    //     url: '/login',
-    //     templateUrl: 'login.html'
-    // })
-    // .state('registration', {
-    //     url: '/registration',
-    //     templateUrl: 'registration.html'
-    // })
-    // .state('forgot-password', {
-    //     url: '/forgot-password',
-    //     templateUrl: 'forgotpw.html'
-    // })
-    // .state('reset-password', {
-    //     url:'/reset?sptoken',
-    //     templateUrl: 'resetpw.html'
-    // })
     .state('dashboard', {
         abstract: true,
         url: '/dashboard',
@@ -251,16 +233,10 @@ angular
     });
   })
 
-  // add when you want stormpath: , $stormpath
   .run(function(editableOptions, $state, $stateParams, $rootScope) {
     editableOptions.theme = 'bs3';
 
     // exposes $state to $rootScope so it can be referenced on any view/scope
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-
-    // $stormpath.uiRouter({
-    //     loginState: 'login',
-    //     defaultPostLoginState: 'dashboard'
-    // });
   });

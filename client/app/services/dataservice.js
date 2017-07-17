@@ -4,7 +4,7 @@
   angular.module('clientApp')
     .factory('dataService', ['$state', '$http', '$q', 'ENV', function ($state, $http, $q, ENV) {
 
-      var params = { organizationId: ENV.stormpathConfig.organizationId };
+      var params = { organizationId: ENV.organizationId };
       var apiUrl = ENV.apiUrl;
 
       function forceReload(method, resource) {
@@ -27,10 +27,9 @@
       }
 
       function appendDataToUrl(method, resource, data, url) {
-        // console.log(method, resource, data, url)
         if (method !== 'POST' && data !== undefined && data !== null) {
           if (method === 'GET') {
-            return url + "/" + data
+                return url + "/" + data
           } else if (method === 'PUT' || method === 'DELETE') {
             if (resource === 'prospects') {
               if (typeof data === 'object') {
@@ -56,19 +55,16 @@
       function req(method, resource) {
         return function(data) {
           var url = appendDataToUrl(method, resource, data, (apiUrl + resource));
-          // console.log(url, method, resource, data)
+
           return $http({
             method: method,
             url: url,
             params: params,
             data: (sendData(method, resource) ? data : null),
           }).then(function(result) {
-            // console.log(result)
-            // forceReload(method, resource)
-            return result;
+              return result;
           }, function(err) {
-            // forceReload(method, resource)
-            // console.error(err);
+              console.error(err);
           });
         };
       }
