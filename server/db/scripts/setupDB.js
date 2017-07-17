@@ -16,6 +16,7 @@ module.exports = {
 
 function populate() {
     populateExampleCars();
+    populateExampleDrivers();
     populateExampleProspectStatuses();
     populateExampleProspects();
     populateExampleAssetTypes();
@@ -93,7 +94,7 @@ function populateExampleDrivers() {
         driver4x,
         driver5x,
         driver6x,
-        driver7x,
+        driver7x
     ];
 
     exampleDrivers.forEach(function(d) {

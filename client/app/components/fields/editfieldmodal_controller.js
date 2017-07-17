@@ -39,7 +39,6 @@
         ctrl.logValueChanged = { value: false };
         ctrl.object = _object;
         ctrl.fields = _.without(Object.keys(ctrl.object.data), field);
-        ctrl.objects = [];
         ctrl.objectType = objectType;
 
         ctrl.field = {
@@ -49,8 +48,6 @@
             log: ctrl.object.data[field].log,
             isIdentifier: ctrl.object.identifier === field,
         };
-
-        // console.log(ctrl.field)
       };
       ctrl.initialize();
 
@@ -119,49 +116,49 @@
       };
 
       ctrl.submit = function() {
-        var updates = [];
+          var updates = [];
 
-        if(ctrl.objectType === 'prospect' && ctrl.field.name === 'status') {
-          ctrl.object.status = ctrl.field.value;
-          ctrl.object.data[ctrl.field.name].value = ctrl.field.value.value;
-          updates.push(ctrl.update(ctrl.object));
-        } else {
-          _.each(ctrl.objects, function(object) {
-            /* If field name changed, all objects' data must be updated */
-            var withUpdatedFieldName = objectHelpers.updateDataIfFieldNameChanged(field, ctrl.field.name, object);
+          if(ctrl.objectType === 'prospect' && ctrl.field.name === 'status') {
+              ctrl.object.status = ctrl.field.value;
+              ctrl.object.data[ctrl.field.name].value = ctrl.field.value.value;
+              updates.push(ctrl.update(ctrl.object));
+          } else {
+              _.each(ctrl.objects, function(object) {
+                  /* If field name changed, all objects' data must be updated */
+                  var withUpdatedFieldName = objectHelpers.updateDataIfFieldNameChanged(field, ctrl.field.name, object);
 
-            /* If field name changed, all objects' logs must be updated */
-            var objectToSave = ctrl.updateLogStuff(withUpdatedFieldName);
+                  /* If field name changed, all objects' logs must be updated */
+                  var objectToSave = ctrl.updateLogStuff(withUpdatedFieldName);
+                  
+                  ctrl.pruneFieldData(objectToSave.data[ctrl.field.name]);
 
-            ctrl.pruneFieldData(objectToSave.data[ctrl.field.name]);
+                  // identifier changed?
+                  if(ctrl.field.isIdentifier) {
+                      objectToSave.identifier = ctrl.field.name;
+                  }
 
-            // identifier changed?
-            if(ctrl.field.isIdentifier) {
-              objectToSave.identifier = ctrl.field.name;
-            }
+                  // Update the field's value
+                  if(ctrl.object.id === objectToSave.id) {
 
-            // Update the field's value
-            if(ctrl.object.id === objectToSave.id) {
+                      // if driver/prospect Last Name and/or First Name was changed, then update Name
+                      if (ctrl.objectType === 'prospect' || ctrl.objectType === 'driver') {
 
-              // if driver/prospect Last Name and/or First Name was changed, then update Name
-              if (ctrl.objectType === 'prospect' || ctrl.objectType === 'driver') {
+                          if(ctrl.field.name === "First Name") {
+                              objectToSave.data.Name.value = ctrl.field.value + " " + objectToSave.data["Last Name"].value;
+                          } else if(ctrl.field.name === "Last Name") {
+                              objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + ctrl.field.value;
+                          } else {
+                              objectToSave.data[ctrl.field.name].value = ctrl.field.value;
+                          }
 
-                if(ctrl.field.name === "First Name") {
-                  objectToSave.data.Name.value = ctrl.field.value + " " + objectToSave.data["Last Name"].value;
-                } else if(ctrl.field.name === "Last Name") {
-                  objectToSave.data.Name.value = objectToSave.data["First Name"].value + " " + ctrl.field.value;
-                } else {
-                  objectToSave.data[ctrl.field.name].value = ctrl.field.value;
-                }
+                      } else {
+                          objectToSave.data[ctrl.field.name].value = ctrl.field.value;
+                      }
+                  }
 
-              } else {
-                objectToSave.data[ctrl.field.name].value = ctrl.field.value;
-              }
-            }
-
-            updates.push(ctrl.update(objectToSave));
-          });
-        }
+                  updates.push(ctrl.update(objectToSave));
+              });
+          }
 
         $q.all(updates).then(function() {
           $state.forceReload();

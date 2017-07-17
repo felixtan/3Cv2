@@ -18,7 +18,7 @@
           if(ctrl.objectType === 'car') {
               return carHelpers.getById;
           } else if(ctrl.objectType === 'driver') {
-              // console.log(ctrl.stateRef);
+
               carHelpers.getIdentifier().then(function(identifier) {
                   ctrl.carIdentifier = identifier;
               });
@@ -87,7 +87,7 @@
               $state.forceReload();
           }, function() {
               $state.forceReload();
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
 
@@ -132,14 +132,13 @@
           });
 
           modalInstance.result.then(function (input) {
-              console.log('passed back from AssignmentModalCtrl:', input);
+            //   console.log('passed back from AssignmentModalCtrl:', input);
           }, function () {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
           });
       };
 
       ctrl.editField = function(field) {
-        //   console.log(field);
           var modalInstance = $uibModal.open({
               animation: true,
               templateUrl: 'components/fields/editfieldmodal.html',

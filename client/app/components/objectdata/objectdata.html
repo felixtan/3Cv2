@@ -5,8 +5,12 @@
         <h3 class='object-header'>{{ objectData.identifierValue || 'null' }}</h3>
     </div>
 
-    <uib-tabset active='0' ng-if="objectData.objectType !== 'prospect'">
-        <uib-tab ng-repeat='tab in objectData.tabs' index='$index' data-tabName='{{ tab.title ? tab.title : false }}' heading='{{ tab.title ? tab.title : false }}' ui-sref='{{ tab.stateRef ? tab.stateRef : false }}'>
+    <uib-tabset ng-if="objectData.objectType !== 'prospect'">
+        <uib-tab ng-repeat='tab in objectData.tabs'
+                 index='$index'
+                 data-tabName='{{ tab.title ? tab.title : false }}'
+                 heading='{{ tab.title ? tab.title : false }}'
+                 ui-sref='{{ tab.stateRef ? tab.stateRef : false }}'>
         </uib-tab>
     </uib-tabset>
 
