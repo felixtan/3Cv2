@@ -166,7 +166,7 @@
               // console.log('passed back from EditFieldModalCtrl:', input);
               $state.forceReload();
           }, function () {
-              console.log('Modal dismissed at: ' + new Date());
+            //   console.log('Modal dismissed at: ' + new Date());
               $state.forceReload();
           });
       };

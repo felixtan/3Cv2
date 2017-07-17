@@ -13,20 +13,18 @@
         <!-- Field name -->
         <div class='form-group'>
             <label for='fieldName'>Name</label>
-
-            <input id='{{ ::editFieldModal.field.name }}' data-dataType='{{ ::editFieldModal.field.dataType }}' name='fieldName' type='text' class='form-control' ng-model='editFieldModal.field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/" ng-if='!editFieldModal.dontEditFieldName(field.name)'>
-
-            <p ng-if='editFieldModal.dontEditFieldName(field.name)'>{{ ::editFieldModal.capitalizeIfStatus(field.name) }}</p>
+            <input id='{{ ::editFieldModal.field.name }}' data-dataType='{{ ::editFieldModal.field.dataType }}' name='fieldName' type='text' class='form-control' ng-model='editFieldModal.field.name' ng-required='true' ng-pattern="/^[a-zA-Z0-9_]*$/" ng-if='!editFieldModal.dontEditFieldName(editFieldModal.field.name)'>
+            <p ng-if='editFieldModal.dontEditFieldName(editFieldModal.field.name)'>{{ ::editFieldModal.capitalizeIfStatus(editFieldModal.field.name) }}</p>
         </div>
 
         <!-- Special case: prospect statuses -->
-        <div class='form-group' ng-if='editFieldModal.isProspectStatus(field.name)'>
+        <div class='form-group' ng-if='editFieldModal.isProspectStatus(editFieldModal.field.name)'>
             <label for='fieldValue'>Value</label>
             <select id='{{ ::editFieldModal.field.name }}' data-dataType='{{ ::editFieldModal.field.dataType }}' type='text' class='form-control' ng-model='editFieldModal.field.value' ng-required='true' ng-options='status.value for status in editFieldModal.statuses' name='textField'></select>
         </div>
 
         <!-- Field type: text -->
-        <div class='form-group' ng-if='editFieldModal.field.dataType === "text"' ng-hide="editFieldModal.isProspectStatus(field.name)">
+        <div class='form-group' ng-if='editFieldModal.field.dataType === "text"' ng-hide="editFieldModal.isProspectStatus(editFieldModal.field.name)">
             <label for='fieldValue'>Value</label>
             <input id='{{ ::editFieldModal.field.name }}' data-dataType='{{ ::editFieldModal.field.dataType }}' name='textField' type='text' class='form-control' ng-model='editFieldModal.field.value' ng-required='true'>
         </div>
